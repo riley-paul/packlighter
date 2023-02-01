@@ -24,10 +24,6 @@
       console.error(err.data);
     }
   }
-
-  function signOut() {
-    pb.authStore.clear();
-  }
 </script>
 
 <form on:submit|preventDefault>
