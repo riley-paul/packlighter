@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
 
   import Login from "./lib/Login.svelte";
-  import ListsList from "./lib/ListsList.svelte";
+  import PackingLists from "./lib/PackingLists.svelte";
   import ItemsList from "./lib/ItemsList.svelte";
 
   import { currentUser, pb } from "./lib/pocketbase";
@@ -19,7 +19,7 @@
       >
     </p>
 
-    <ListsList />
+    <PackingLists />
     <ItemsList />
   {:else}
     <Login />
