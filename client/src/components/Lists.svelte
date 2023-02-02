@@ -4,9 +4,9 @@
   import { slide } from "svelte/transition";
 
   // state
-  let open = true;
+  let open = false;
   let lists = [];
-  let selectedList = { name: "", description: "" };
+  let selectedList = { name: "", description: "", id: "" };
 
   onMount(async () => {
     lists = await pb.collection("lists").getFullList();
@@ -68,37 +68,56 @@
       console.error(err);
     }
   }
+
+  function handleKeypress(event: KeyboardEvent) {
+    let pressedKey = event.key;
+    let targetElement = event.target as HTMLDivElement;
+
+    switch (pressedKey) {
+      case "Escape":
+        targetElement.blur();
+        break;
+      case "Enter":
+        targetElement.blur();
+        break;
+    }
+  }
 </script>
 
-<header class="bg-slate-800 text-gray-50 px-2 py-4">
-  <div class="flex">
-    <input
+<header class="bg-slate-800 text-gray-50 p-2">
+  <div class="flex text-3xl font-bold justify-between items-start gap-2 py-2">
+    <div
       id="selected-list-name"
-      class="bg-inherit text-3xl font-bold text-red-500"
-      type="text"
-      name="selected-list-name"
-      placeholder="List Name"
-      bind:value={selectedList.name}
-      on:change={editList}
+      contenteditable="true"
+      class="bg-inherit flex-1 text-red-500 cursor-text"
+      data-ph="List Name"
+      bind:textContent={selectedList.name}
+      on:blur={editList}
       on:focus={() => (open = false)}
+      on:keypress={handleKeypress}
     />
-    <button on:click={() => (open = !open)}>{open ? "hide" : "show"}</button>
+    <button class=" px-2 h-auto aspect-square" on:click={() => (open = !open)}
+      ><i
+        class="fa-regular {!open ? 'fa-square-plus' : 'fa-square-minus'}"
+      /></button
+    >
   </div>
   {#if !open}
-    <textarea
-      class="bg-inherit text-gray-300 w-full h-auto overflow-visible"
-      name="selected-list-description"
+    <div
+      class="bg-inherit text-gray-300 cursor-text"
+      contenteditable="true"
       id="selected-list-description"
-      placeholder="List Description"
+      data-ph="List Description"
       in:slide
-      bind:value={selectedList.description}
-      on:change={editList}
+      bind:textContent={selectedList.description}
+      on:blur={editList}
+      on:keypress={handleKeypress}
     />
   {/if}
 
   {#if open}
     <div in:slide>
-      <ul>
+      <ul class="flex flex-col gap-1.5">
         {#each lists.filter((i) => i.id !== selectedList.id) as list (list.id)}
           <li class="flex justify-between items-center">
             <button
@@ -111,11 +130,17 @@
           </li>
         {/each}
       </ul>
-      <div class="flex justify-center items-center">
-        <button class="px-4 py-1 rounded bg-slate-700" on:click={addList}
-          >new list</button
-        >
-      </div>
+      <button
+        class="px-4 py-1 rounded bg-slate-700 w-full mt-4"
+        on:click={addList}><i class="fa-regular fa-plus" /> Add List</button
+      >
     </div>
   {/if}
 </header>
+
+<style>
+  [contenteditable="true"]:empty:not(:focus):before {
+    content: attr(data-ph);
+    color: grey;
+  }
+</style>
