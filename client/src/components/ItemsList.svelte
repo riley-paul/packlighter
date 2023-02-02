@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { pb } from "./pocketbase";
+  import { pb } from "../lib/pocketbase";
 
   let items = [];
   onMount(async () => {

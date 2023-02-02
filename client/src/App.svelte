@@ -1,15 +1,13 @@
-<script>
+<script lang="ts">
   import "./app.css";
-  import { onMount } from "svelte";
-
-  import Login from "./lib/Login.svelte";
-  import PackingLists from "./lib/PackingLists.svelte";
-  import ItemsList from "./lib/ItemsList.svelte";
-
-  import { currentUser, pb } from "./lib/pocketbase";
+  import Lists from "./components/Lists.svelte";
 </script>
 
-<main class="p-2">
+<main>
+  <Lists />
+</main>
+
+<!-- <main class="p-2">
   {#if $currentUser}
     <p>
       Signed in as {$currentUser.username}
@@ -24,4 +22,4 @@
   {:else}
     <Login />
   {/if}
-</main>
+</main> -->
