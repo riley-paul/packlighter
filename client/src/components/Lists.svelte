@@ -61,6 +61,11 @@
 
   async function removeList(id) {
     try {
+      const listName = lists.find((i) => i.id === id).name;
+      const confirmation = confirm(
+        `Are you sure you want to delete the list '${listName}'`
+      );
+      if (!confirmation) return;
       await pb.collection("lists").delete(id);
       lists = await pb.collection("lists").getFullList();
     } catch (err) {
@@ -89,14 +94,16 @@
     <div
       id="selected-list-name"
       contenteditable="true"
-      class="bg-inherit flex-1 text-red-500 cursor-text"
+      class="bg-inherit flex-1 text-red-500 cursor-text focus:bg-gray-50 focus:text-gray-900"
       data-ph="List Name"
       bind:textContent={selectedList.name}
       on:blur={editList}
       on:focus={() => (open = false)}
       on:keypress={handleKeypress}
     />
-    <button class=" px-2 h-auto aspect-square" on:click={() => (open = !open)}
+    <button
+      class="text-slate-300 px-2 h-auto aspect-square"
+      on:click={() => (open = !open)}
       ><i
         class="fa-regular {!open ? 'fa-square-plus' : 'fa-square-minus'}"
       /></button
@@ -104,7 +111,7 @@
   </div>
   {#if !open}
     <div
-      class="bg-inherit text-gray-300 cursor-text"
+      class="bg-inherit text-gray-300 cursor-text focus:bg-gray-50 focus:text-gray-900"
       contenteditable="true"
       id="selected-list-description"
       data-ph="List Description"
@@ -126,7 +133,9 @@
             >
               {list.name || "Unnamed List"}
             </button>
-            <button on:click={() => removeList(list.id)}>delete</button>
+            <button class="text-slate-500" on:click={() => removeList(list.id)}
+              >delete</button
+            >
           </li>
         {/each}
       </ul>

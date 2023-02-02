@@ -1,10 +1,12 @@
 <script lang="ts">
   import "./app.css";
   import Lists from "./components/Lists.svelte";
+  import AllItems from "./components/AllItems.svelte";
 </script>
 
 <main>
   <Lists />
+  <AllItems />
 </main>
 
 <!-- <main class="p-2">
