@@ -10,13 +10,15 @@
   let lists = [];
   let selectedList = { name: "", description: "", id: "" };
 
-  onMount(async () => {
+  async function getLists() {
     lists = await pb.collection("lists").getFullList();
-  });
+  }
+
+  onMount(getLists);
 
   // debug
-  $: console.log("lists", lists);
-  $: console.log("selected list", selectedList);
+  // $: console.log("lists", lists);
+  // $: console.log("selected list", selectedList);
 
   // compute
   $: selectedList =
@@ -53,7 +55,7 @@
       const newList = await pb
         .collection("lists")
         .create({ user: $currentUser.id });
-      lists = await pb.collection("lists").getFullList();
+      getLists()
       selectList(newList.id);
     } catch (err) {
       console.log("could not create a new list");
@@ -68,8 +70,9 @@
         `Are you sure you want to delete the list '${listName}'`
       );
       if (!confirmation) return;
+      
       await pb.collection("lists").delete(id);
-      lists = await pb.collection("lists").getFullList();
+      getLists()
     } catch (err) {
       console.log("Could not delete list");
       console.error(err);

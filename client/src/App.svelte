@@ -2,11 +2,13 @@
   import "./app.css";
   import Lists from "./components/Lists.svelte";
   import Items from "./components/Items.svelte";
+  import PackingList from "./components/PackingList.svelte";
 </script>
 
 <main>
   <Lists />
   <Items />
+  <PackingList />
 </main>
 
 <!-- <main class="p-2">

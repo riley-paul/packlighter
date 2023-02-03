@@ -12,7 +12,7 @@
 </script>
 
 <div class="flex justify-between text-xl p-2 bg-slate-700 text-gray-100">
-  <OpenButton bind:open classes="w-full">Gear</OpenButton>
+  <OpenButton bind:open classes="w-full">All Gear</OpenButton>
 </div>
 
 {#if open}
