@@ -2,6 +2,8 @@
   import { onMount } from "svelte";
   import { pb, currentUser } from "../lib/pocketbase";
   import { slide } from "svelte/transition";
+  import OpenButton from "./OpenButton.svelte";
+  import EditableDiv from "./EditableDiv.svelte";
 
   // state
   let open = false;
@@ -73,53 +75,28 @@
       console.error(err);
     }
   }
-
-  function handleKeypress(event: KeyboardEvent) {
-    let pressedKey = event.key;
-    let targetElement = event.target as HTMLDivElement;
-
-    switch (pressedKey) {
-      case "Escape":
-        targetElement.blur();
-        break;
-      case "Enter":
-        targetElement.blur();
-        break;
-    }
-  }
 </script>
 
 <header class="bg-slate-800 text-gray-50 p-2">
   <div class="flex text-3xl font-bold justify-between items-start gap-2 py-2">
-    <div
-      id="selected-list-name"
-      contenteditable="true"
-      class="bg-inherit flex-1 text-red-500 cursor-text focus:bg-gray-50 focus:text-gray-900"
-      data-ph="List Name"
-      bind:textContent={selectedList.name}
-      on:blur={editList}
-      on:focus={() => (open = false)}
-      on:keypress={handleKeypress}
+    <EditableDiv
+      bind:content={selectedList.name}
+      classes="flex-1 text-red-500"
+      placeholder="List Name"
+      handleBlur={editList}
+      handleFocus={() => (open = false)}
     />
-    <button
-      class="text-slate-300 px-2 h-auto aspect-square"
-      on:click={() => (open = !open)}
-      ><i
-        class="fa-regular {!open ? 'fa-square-plus' : 'fa-square-minus'}"
-      /></button
-    >
+    <OpenButton bind:open classes="text-gray-300" />
   </div>
   {#if !open}
-    <div
-      class="bg-inherit text-gray-300 cursor-text focus:bg-gray-50 focus:text-gray-900"
-      contenteditable="true"
-      id="selected-list-description"
-      data-ph="List Description"
-      in:slide
-      bind:textContent={selectedList.description}
-      on:blur={editList}
-      on:keypress={handleKeypress}
-    />
+    <div in:slide>
+      <EditableDiv
+        bind:content={selectedList.description}
+        classes="text-gray-300"
+        placeholder="List Description"
+        handleBlur={editList}
+      />
+    </div>
   {/if}
 
   {#if open}
@@ -146,10 +123,3 @@
     </div>
   {/if}
 </header>
-
-<style>
-  [contenteditable="true"]:empty:not(:focus):before {
-    content: attr(data-ph);
-    color: grey;
-  }
-</style>
