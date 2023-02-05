@@ -1,6 +1,6 @@
 <script lang="ts">
-  export let content: string;
-  export let classes: string;
+  export let content = "Empty";
+  export let classes = "";
   export let placeholder = ""
   export let handleBlur = () => undefined;
   export let handleFocus = () => undefined;
