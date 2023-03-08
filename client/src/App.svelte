@@ -19,7 +19,7 @@
         <section>
           <h1 class="text-2xl font-bold">PackLighter</h1>
           <p>
-            Inspired by <a href="https://lighterpack.com/">LighterPack.com</a>
+            Inspired by <a class="text-sky-500" href="https://lighterpack.com/">LighterPack.com</a>
           </p>
         </section>
 
