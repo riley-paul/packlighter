@@ -11,25 +11,20 @@
   });
 </script>
 
-<div class="flex justify-between text-xl p-2 bg-slate-700 text-gray-100">
-  <OpenButton bind:open classes="w-full">All Gear</OpenButton>
-</div>
 
-{#if open}
-  <ul class="divide-y px-2 py-1" in:slide>
-    {#each items as item}
-      <li class="py-1">
-        <div class="flex justify-between items-center">
-          <div>
-            {item.name}
-            <p class="text-slate-500">{item.description}</p>
-          </div>
-          <div class="flex items-center">
-            <span>{item.weight_g}g</span>
-            <i class="fa-solid fa-x px-3" />
-          </div>
+<ul class="divide-y px-2 py-1 overflow-scroll bg-slate-700">
+  {#each items as item}
+    <li class="py-1">
+      <div class="flex justify-between items-center">
+        <div>
+          {item.name}
+          <p class="text-slate-500">{item.description}</p>
         </div>
-      </li>
-    {/each}
-  </ul>
-{/if}
+        <div class="flex items-center">
+          <span>{item.weight_g}g</span>
+          <i class="fa-solid fa-x px-3" />
+        </div>
+      </div>
+    </li>
+  {/each}
+</ul>

@@ -29,11 +29,13 @@
 <div class="flex justify-center items-center h-screen bg-slate-900">
   <form
     on:submit|preventDefault
-    class="flex flex-col bg-slate-800 p-8 gap-4 w-3/4"
+    class="flex flex-col bg-slate-800 p-8 gap-4 max-w-lg m-8 rounded"
   >
-    <div class="text-white">
-      <h1 class="font-bold text-2xl">Welcome to PackLighter</h1>
-      <p class="text-gray-300">Please login to start optimizing your packing lists!</p>
+    <div class="text-white text-center">
+      <h1 class="font-bold text-3xl">Welcome to PackLighter</h1>
+      <p class="text-gray-300">
+        Please login to start optimizing your packing lists
+      </p>
     </div>
     <input
       placeholder="Username"

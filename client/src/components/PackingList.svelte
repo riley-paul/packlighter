@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import App from "../App.svelte";
   import { currentUser, pb } from "./../lib/pocketbase";
   import EditableDiv from "./EditableDiv.svelte";
 
@@ -15,8 +14,11 @@
     });
   }
 
+  $: $currentUser, getList();
+
   onMount(getList);
 
+  // debug
   $: console.log(categories);
 </script>
 
@@ -29,10 +31,10 @@
       {#each category.expand["categories_items(category)"] || [] as item (item.id)}
         <Item item={item.expand.item} />
       {/each}
-      <img src="" alt="">
-      <EditableDiv></EditableDiv>
-      <EditableDiv></EditableDiv>
-      <EditableDiv></EditableDiv>
+      <img src="" alt="" />
+      <EditableDiv />
+      <EditableDiv />
+      <EditableDiv />
     </div>
   {/each}
 </div>
