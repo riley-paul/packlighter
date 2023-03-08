@@ -70,17 +70,20 @@
 <button class="px-4 py-1 rounded bg-slate-500 w-full" on:click={addList}
   ><i class="fa-regular fa-plus" /> Add List</button
 >
-<ul class="flex flex-col gap-1.5 bg-slate-700 p-2 overflow-scroll">
-  {#each lists.filter((i) => i.id !== selectedList.id) as list (list.id)}
+<ul class="flex flex-col gap-1.5 bg-slate-700 p-2 overflow-scroll rounded">
+  {#each lists as list (list.id)}
     <li class="flex justify-between items-center">
       <button
         class="text-lg flex-1 text-left"
+        class:font-bold={list.id === $currentUser.selected_list}
         on:click={() => selectList(list.id)}
       >
         {list.name || "Unnamed List"}
       </button>
-      <button class="text-slate-500" on:click={() => removeList(list.id)}
-        >delete</button
+      <button
+        class="text-slate-500"
+        class:hidden={list.id === $currentUser.selected_list}
+        on:click={() => removeList(list.id)}>delete</button
       >
     </li>
   {/each}

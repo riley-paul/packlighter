@@ -22,19 +22,19 @@
   $: console.log(categories);
 </script>
 
-<div class="flex flex-col gap-4">
-  {#each categories as category (category.id)}
-    <div class="grid grid-cols-[100px_1fr_2fr_60px_60px] divide-y">
-      <div class="font-bold col-span-3">{category.name}</div>
-      <div class="font-bold text-center">Weight</div>
-      <div class="font-bold text-center">Qty</div>
-      {#each category.expand["categories_items(category)"] || [] as item (item.id)}
-        <Item item={item.expand.item} />
-      {/each}
-      <img src="" alt="" />
-      <EditableDiv />
-      <EditableDiv />
-      <EditableDiv />
-    </div>
-  {/each}
-</div>
+  <div class="flex flex-col gap-4">
+    {#each categories as category (category.id)}
+      <div class="grid grid-cols-[100px_1fr_2fr_60px_60px] gap-2">
+        <div class="font-bold col-span-3">{category.name}</div>
+        <div class="font-bold text-center">Weight</div>
+        <div class="font-bold text-center">Qty</div>
+        {#each category.expand["categories_items(category)"] || [] as item (item.id)}
+          <Item item={item.expand.item} />
+        {/each}
+        <img src="" alt="" />
+        <EditableDiv />
+        <EditableDiv />
+        <EditableDiv />
+      </div>
+    {/each}
+  </div>

@@ -12,7 +12,7 @@
 </script>
 
 
-<ul class="divide-y px-2 py-1 overflow-scroll bg-slate-700">
+<ul class="divide-y px-2 py-1 overflow-scroll bg-slate-700 rounded">
   {#each items as item}
     <li class="py-1">
       <div class="flex justify-between items-center">
