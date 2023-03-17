@@ -59,7 +59,11 @@
           <th colspan="3" class="text-left">{category.name}</th>
           <th class="w-1/12">Weight</th>
           <th class="w-1/12">Qty</th>
-          <th class="w-10 hide"><DeleteButton onClick={() => removeCategory(category)} /></th>
+          <th class="w-10">
+            <div class="hide">
+              <DeleteButton onClick={() => removeCategory(category)} />
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody class="divide-y">
@@ -77,9 +81,10 @@
 <style>
   .hide {
     visibility: hidden;
-  }  
-  
-  tr:hover > .hide {
+  }
+
+  *:hover > * > .hide {
     visibility: visible;
   }
+  
 </style>

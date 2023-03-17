@@ -33,7 +33,11 @@
   >
   <td class="text-center">{item.weight_g}</td>
   <td class="text-center">{1}</td>
-  <td class="text-center hide"><DeleteButton onClick={removeFromList} /></td>
+  <td class="text-center"
+    ><div class="hide">
+      <DeleteButton onClick={removeFromList} />
+    </div></td
+  >
 </tr>
 
 <style>
@@ -41,7 +45,7 @@
     visibility: hidden;
   }
 
-  tr:hover > .hide {
+  *:hover > * > .hide {
     visibility: visible;
   }
 </style>

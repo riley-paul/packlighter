@@ -1,7 +1,6 @@
 <script>
   export let onClick;
   export let name = "";
-  export let classes = "";
 
   function onClickConfirm() {
     const message =

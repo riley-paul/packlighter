@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { prop_dev } from "svelte/internal";
   import { pb } from "../lib/pocketbase";
+  import DeleteButton from "./DeleteButton.svelte";
 
   let searchTerm = "";
   let gear = [];
@@ -20,16 +21,10 @@
 
   async function removeGear(id) {
     try {
-      const gearName = gear.find((i) => i.id === id).name;
-      const confirmation = confirm(
-        `Are you sure you want to delete the gear '${gearName}'`
-      );
-      if (!confirmation) return;
-
       await pb.collection("gear").delete(id);
       getGear();
     } catch (err) {
-      alert("Could not delete gear")
+      alert("Could not delete gear");
       console.log("Could not delete gear");
       console.error(err);
     }
@@ -45,19 +40,32 @@
 
 <ul class="divide-y px-2 py-1 overflow-y-scroll bg-slate-700 rounded">
   {#each filteredGear as item}
-    <li class="py-1">
+    <li class="py-2">
       <div class="flex justify-between items-center">
         <div>
           {item.name}
           <p class="text-slate-500">{item.description}</p>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center gap-2">
           <span>{item.weight_g}g</span>
-          <button on:click={() => removeGear(item.id)}>
-            <i class="fa-solid fa-x px-3 hover:text-red-500" />
-          </button>
+          <div class="hide">
+            <DeleteButton
+              onClick={() => removeGear(item.id)}
+              name={item.name}
+            />
+          </div>
         </div>
       </div>
     </li>
   {/each}
 </ul>
+
+<style>
+  .hide {
+    visibility: hidden;
+  }
+
+  *:hover > * > .hide {
+    visibility: visible;
+  }
+</style>

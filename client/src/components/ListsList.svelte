@@ -4,6 +4,7 @@
   import { slide } from "svelte/transition";
   import OpenButton from "./OpenButton.svelte";
   import EditableDiv from "./EditableDiv.svelte";
+  import DeleteButton from "./DeleteButton.svelte";
 
   // state
   let open = false;
@@ -52,16 +53,10 @@
 
   async function removeList(id) {
     try {
-      const listName = lists.find((i) => i.id === id).name;
-      const confirmation = confirm(
-        `Are you sure you want to delete the list '${listName}'`
-      );
-      if (!confirmation) return;
-
       await pb.collection("lists").delete(id);
       getLists();
     } catch (err) {
-      alert("Could not delete list")
+      alert("Could not delete list");
       console.log("Could not delete list");
       console.error(err);
     }
@@ -81,11 +76,19 @@
       >
         {list.name || "Unnamed List"}
       </button>
-      <button
-        class="text-slate-500"
-        class:hidden={list.id === $currentUser.selected_list}
-        on:click={() => removeList(list.id)}>delete</button
-      >
+      <div class:hidden={list.id === $currentUser.selected_list} class="hide">
+        <DeleteButton onClick={() => removeList(list.id)} name={list.name} />
+      </div>
     </li>
   {/each}
 </ul>
+
+<style>
+  .hide {
+    visibility: hidden;
+  }
+
+  *:hover > .hide {
+    visibility: visible;
+  }
+</style>
