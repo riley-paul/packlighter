@@ -38,19 +38,15 @@
 <ul class="divide-y px-2 py-1 overflow-y-scroll bg-slate-700 rounded">
   {#each filteredGear as item}
     <li class="py-2">
-      <div class="flex justify-between items-center">
-        <div>
+      <div class="flex gap-2 items-center">
+        <i class="fa-regular fa-grip-vertical text-xl cursor-grab" />
+        <div class="flex-1">
           {item.name}
           <p class="text-slate-500">{item.description}</p>
         </div>
-        <div class="flex items-center gap-2">
-          <span>{item.weight_g}g</span>
-          <div class="hide">
-            <DeleteButton
-              onClick={() => removeGear(item.id)}
-              name={item.name}
-            />
-          </div>
+        <span>{item.weight_g}g</span>
+        <div class="hide">
+          <DeleteButton onClick={() => removeGear(item.id)} name={item.name} />
         </div>
       </div>
     </li>
