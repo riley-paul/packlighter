@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { currentUser, pb } from "./../lib/pocketbase";
+  import DeleteButton from "./DeleteButton.svelte";
   import EditableDiv from "./EditableDiv.svelte";
 
   import Gear from "./Gear.svelte";
@@ -58,6 +59,7 @@
           <th colspan="3" class="text-left">{category.name}</th>
           <th class="w-1/12">Weight</th>
           <th class="w-1/12">Qty</th>
+          <th class="w-10 hide"><DeleteButton onClick={() => removeCategory(category)} /></th>
         </tr>
       </thead>
       <tbody class="divide-y">
@@ -71,3 +73,13 @@
     >
   {/each}
 </div>
+
+<style>
+  .hide {
+    visibility: hidden;
+  }  
+  
+  tr:hover > .hide {
+    visibility: visible;
+  }
+</style>
