@@ -47,6 +47,7 @@
           >
         </div>
         <CurrentList />
+        <br>
         <PackingList />
       </div>
     </div>
