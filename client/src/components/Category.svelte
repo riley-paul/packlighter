@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { pb } from "./../lib/pocketbase";
+  import { currentUser, pb } from "./../lib/pocketbase";
+  import CreateButton from "./CreateButton.svelte";
   import DeleteButton from "./DeleteButton.svelte";
   import EditableDiv from "./EditableDiv.svelte";
 
   export let category;
   export let handleRemove = () => undefined;
+  export let handleCreate = () => undefined;
 
   async function updateCategory() {
     try {
@@ -42,9 +44,7 @@
     <slot />
   </tbody>
 </table>
-<button class="text-left text-gray-500 hover:underline">
-  <i class="fa-plus fa-solid" /> Create new item...
-</button>
+<CreateButton entity="item" onClick={handleCreate} />
 
 <style>
   .hide {

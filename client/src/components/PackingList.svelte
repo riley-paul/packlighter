@@ -6,6 +6,7 @@
 
   import Gear from "./Gear.svelte";
   import Category from "./Category.svelte";
+  import CreateButton from "./CreateButton.svelte";
 
   let categories = [];
 
@@ -14,6 +15,34 @@
       filter: `list="${$currentUser.selected_list}"`,
       expand: "categories_gear(category).gear",
     });
+  }
+
+  async function removeItem(categoryGearID) {
+    try {
+      await pb.collection("categories_gear").delete(categoryGearID);
+      getList();
+    } catch (err) {
+      alert("Could not remove item from category");
+      console.log("Could not remove item from category");
+      console.error(err);
+    }
+  }
+
+  async function createItem(categoryID) {
+    try {
+      const newItem = await pb
+        .collection("gear")
+        .create({ user: $currentUser.id });
+      await pb
+        .collection("categories_gear")
+        .create({ category: categoryID, gear: newItem.id });
+      console.log("Item created");
+      getList();
+    } catch (err) {
+      alert("Could not create new item");
+      console.log("Could not create new item");
+      console.error(err);
+    }
   }
 
   async function removeCategory(id) {
@@ -40,65 +69,28 @@
     }
   }
 
-  async function updateCategory(id, category) {
-    try {
-      await pb.collection("list_categories").update(id, { ...category });
-      console.log("Category updated");
-      getList();
-    } catch (err) {
-      alert("Could not remove category");
-      console.log("Could not remove category");
-      console.error(err);
-    }
-  }
-
   $: $currentUser, getList();
 
   onMount(getList);
 
   // debug
-  // $: console.log(categories);
+  $: console.log(categories);
 </script>
-
-<!-- <div class="flex flex-col gap-4">
-  {#each categories as category (category.id)}
-    <div class="grid grid-cols-[100px_1fr_2fr_60px_60px] gap-2">
-      <div class="font-bold col-span-3">{category.name}</div>
-      <div class="font-bold text-center">Weight</div>
-      <div class="font-bold text-center">Qty</div>
-      {#each category.expand["categories_items(category)"] || [] as item (item.id)}
-        <Item item={item.expand.item} />
-      {/each}
-      <img src="" alt="" />
-      <EditableDiv />
-      <EditableDiv />
-      <EditableDiv />
-    </div>
-  {/each}
-</div> -->
 
 <div class="flex flex-col gap-4">
   {#each categories as category (category.id)}
-    <Category {category}>
+    <Category
+      {category}
+      handleRemove={() => removeCategory(category.id)}
+      handleCreate={() => createItem(category.id)}
+    >
       {#each category.expand["categories_gear(category)"] || [] as gear (gear.id)}
-        <Gear item={gear.expand.gear} />
+        <Gear
+          item={gear.expand.gear}
+          handleRemove={() => removeItem(gear.id)}
+        />
       {/each}
     </Category>
   {/each}
-  <button
-    class="text-left text-gray-500 hover:underline"
-    on:click={createCategory}
-  >
-    <i class="fa-plus fa-solid" /> Create new category...
-  </button>
+  <CreateButton entity="category" onClick={createCategory} />
 </div>
-
-<style>
-  .hide {
-    visibility: hidden;
-  }
-
-  *:hover > * > .hide {
-    visibility: visible;
-  }
-</style>

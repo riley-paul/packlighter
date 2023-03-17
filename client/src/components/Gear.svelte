@@ -73,7 +73,7 @@
   <td class="text-center">{1}</td>
   <td class="text-center">
     <div class="hide">
-      <DeleteButton onClick={handleRemove} />
+      <DeleteButton onClick={handleRemove} askConfirm={false} />
     </div>
   </td>
 </tr>

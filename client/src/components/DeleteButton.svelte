@@ -1,6 +1,7 @@
 <script>
-  export let onClick;
+  export let onClick = () => undefined;
   export let name = "";
+  export let askConfirm = true;
 
   function onClickConfirm() {
     const message =
@@ -12,7 +13,7 @@
 </script>
 
 <button
-  on:click={onClickConfirm}
+  on:click={askConfirm ? onClickConfirm : onClick}
   class="hover:bg-red-500 hover:text-white w-8 h-8 rounded-full transition-colors"
 >
   <i class="fa-solid fa-trash text-base" />
