@@ -22,8 +22,8 @@
 </script>
 
 <table class="table-fixed">
-  <thead>
-    <tr class="text-lg">
+  <thead class="text-lg border-b-2">
+    <tr>
       <th colspan="6" class="text-left">
         <EditableDiv
           bind:content={category.name}

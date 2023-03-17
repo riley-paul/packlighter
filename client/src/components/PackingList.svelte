@@ -17,9 +17,12 @@
     });
   }
 
-  async function removeItem(categoryGearID) {
+  async function removeItem(categoryGearID, gear) {
     try {
       await pb.collection("categories_gear").delete(categoryGearID);
+      if (!gear.name && !gear.description) {
+        await pb.collection("gear").delete(gear.id);
+      }
       getList();
     } catch (err) {
       alert("Could not remove item from category");
@@ -87,7 +90,7 @@
       {#each category.expand["categories_gear(category)"] || [] as gear (gear.id)}
         <Gear
           item={gear.expand.gear}
-          handleRemove={() => removeItem(gear.id)}
+          handleRemove={() => removeItem(gear.id, gear.expand.gear)}
         />
       {/each}
     </Category>

@@ -18,7 +18,7 @@
   }
 </script>
 
-<tr class="border-t hover:bg-gray-50">
+<tr class="border-y hover:bg-gray-50">
   <td class="w-[100px]">
     <img src={item.image_url} alt="" />
   </td>

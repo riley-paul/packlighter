@@ -4,7 +4,7 @@
   import EditableDiv from "./EditableDiv.svelte";
 
   // state
-  let selectedList = { name: "", description: "", id: "" };
+  let selectedList = { name: "", description: ""};
 
   onMount(getList);
 
@@ -28,15 +28,17 @@
   $: $currentUser, getList();
 </script>
 
-<EditableDiv
-  bind:content={selectedList.name}
-  classes="flex-1 text-red-500 text-3xl"
-  placeholder="List Name"
-  handleBlur={editList}
-/>
-<EditableDiv
-  bind:content={selectedList.description}
-  classes="text-gray-700"
-  placeholder="List Description"
-  handleBlur={editList}
-/>
+<div class="flex flex-col gap-2">
+  <EditableDiv
+    bind:content={selectedList.name}
+    classes="flex-1 text-orange-500 text-3xl font-bold"
+    placeholder="List Name"
+    handleBlur={editList}
+  />
+  <EditableDiv
+    bind:content={selectedList.description}
+    classes="text-gray-700"
+    placeholder="List Description"
+    handleBlur={editList}
+  />
+</div>

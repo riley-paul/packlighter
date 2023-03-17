@@ -71,7 +71,7 @@
     <li class="flex justify-between items-center py-2">
       <button
         class="text-lg flex-1 text-left"
-        class:text-red-500={list.id === $currentUser.selected_list}
+        class:text-orange-500={list.id === $currentUser.selected_list}
         on:click={() => selectList(list.id)}
       >
         {list.name || "Unnamed List"}
