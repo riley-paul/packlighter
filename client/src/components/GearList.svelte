@@ -1,16 +1,13 @@
 <script>
   import { onMount } from "svelte";
-  import { prop_dev } from "svelte/internal";
   import { pb } from "../lib/pocketbase";
   import DeleteButton from "./DeleteButton.svelte";
 
-  let searchTerm = "";
-  let gear = [];
-  let filteredGear = [];
+  export let gear = [];
+  export let getGear = () => undefined;
 
-  async function getGear() {
-    gear = await pb.collection("gear").getFullList();
-  }
+  let searchTerm = "";
+  let filteredGear = [];
 
   onMount(getGear);
 

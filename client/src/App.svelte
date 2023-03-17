@@ -8,6 +8,18 @@
   import GearList from "./components/GearList.svelte";
   import PackingList from "./components/PackingList.svelte";
   import CurrentList from "./components/CurrentList.svelte";
+  import Logo from "./components/Logo.svelte";
+
+  let lists = [];
+  let gear = [];
+
+  async function getLists() {
+    lists = await pb.collection("lists").getFullList();
+  }
+
+  async function getGear() {
+    gear = await pb.collection("gear").getFullList();
+  }
 </script>
 
 {#if $currentUser}
@@ -15,23 +27,13 @@
     <aside
       class="w-1/5 h-screen bg-slate-800 text-gray-200 p-4 flex flex-col gap-2"
     >
-      <section>
-        <div class="flex gap-2 items-center">
-          <div class="h-8"><img class="h-full" src="/favicon.png" alt="" /></div>
-          <h1 class="text-4xl font-bold">PackLighter</h1>
-        </div>
-        <p>
-          Inspired by <a class="text-sky-500" href="https://lighterpack.com/"
-            >LighterPack.com</a
-          >
-        </p>
-      </section>
+      <Logo />
 
       <h2 class="text-xl font-bold">LISTS</h2>
-      <ListsList />
+      <ListsList {lists} {getLists} />
 
       <h2 class="text-xl font-bold">GEAR</h2>
-      <GearList />
+      <GearList {gear} {getGear} />
       <p>
         Built by <a href="https://rileypaul.ca" class="text-sky-500"
           >Riley Paul</a
@@ -51,7 +53,7 @@
         </div>
       </header>
       <main class="p-4">
-        <CurrentList />
+        <CurrentList {getLists}/>
         <br />
         <PackingList />
       </main>

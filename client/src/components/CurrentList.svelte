@@ -4,7 +4,8 @@
   import EditableDiv from "./EditableDiv.svelte";
 
   // state
-  let selectedList = { name: "", description: ""};
+  export let getLists = () => undefined;
+  let selectedList = { name: "", description: "" };
 
   onMount(getList);
 
@@ -20,12 +21,12 @@
         .collection("lists")
         .update($currentUser.selected_list, { ...selectedList });
       console.log("list updated");
+      getLists();
     } catch (err) {
       console.error(err);
     }
   }
 
-  $: $currentUser, getList();
 </script>
 
 <div class="flex flex-col gap-2">

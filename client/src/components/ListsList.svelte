@@ -1,25 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { pb, currentUser } from "../lib/pocketbase";
-  import { slide } from "svelte/transition";
-  import OpenButton from "./OpenButton.svelte";
-  import EditableDiv from "./EditableDiv.svelte";
   import DeleteButton from "./DeleteButton.svelte";
 
-  // state
-  let open = false;
-  let lists = [];
-  let selectedList = { name: "", description: "", id: "" };
-
-  async function getLists() {
-    lists = await pb.collection("lists").getFullList();
-  }
+  export let lists = [];
+  export let getLists = () => undefined;
 
   onMount(getLists);
-
-  // debug
-  // $: console.log("lists", lists);
-  // $: console.log("selected list", selectedList);
 
   // compute
   $: selectedList =
@@ -31,8 +18,8 @@
       await pb
         .collection("users")
         .update($currentUser.id, { selected_list: id });
-      open = false;
     } catch (err) {
+      alert("Could not change lists");
       console.log("Could not change lists");
       console.error(err);
     }
