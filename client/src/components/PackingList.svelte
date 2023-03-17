@@ -1,13 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { currentUser, pb } from "./../lib/pocketbase";
-  import DeleteButton from "./DeleteButton.svelte";
-  import EditableDiv from "./EditableDiv.svelte";
 
   import Gear from "./Gear.svelte";
   import Category from "./Category.svelte";
   import CreateButton from "./CreateButton.svelte";
 
+  export let getGear = () => undefined;
   let categories = [];
 
   async function getList() {
@@ -24,6 +23,7 @@
         await pb.collection("gear").delete(gear.id);
       }
       getList();
+      getGear();
     } catch (err) {
       alert("Could not remove item from category");
       console.log("Could not remove item from category");
@@ -41,6 +41,7 @@
         .create({ category: categoryID, gear: newItem.id });
       console.log("Item created");
       getList();
+      getGear();
     } catch (err) {
       alert("Could not create new item");
       console.log("Could not create new item");
@@ -91,6 +92,7 @@
         <Gear
           item={gear.expand.gear}
           handleRemove={() => removeItem(gear.id, gear.expand.gear)}
+          {getGear}
         />
       {/each}
     </Category>

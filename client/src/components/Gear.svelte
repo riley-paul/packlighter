@@ -5,11 +5,13 @@
 
   export let item;
   export let handleRemove = () => undefined;
+  export let getGear = () => undefined;
 
   async function updateGear() {
     try {
       await pb.collection("gear").update(item.id, { ...item });
       console.log("Gear updated");
+      getGear();
     } catch (err) {
       alert("Could not update gear");
       console.log("Could not update gear");

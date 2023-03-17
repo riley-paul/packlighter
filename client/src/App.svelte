@@ -55,7 +55,7 @@
       <main class="p-4">
         <CurrentList {getLists}/>
         <br />
-        <PackingList />
+        <PackingList {getGear}/>
       </main>
     </div>
   </div>
