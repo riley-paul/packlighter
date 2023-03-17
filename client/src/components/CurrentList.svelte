@@ -16,19 +16,16 @@
 
   async function editList() {
     try {
-      const { name, description } = selectedList;
-      await pb.collection("lists").update($currentUser.selected_list, {
-        name,
-        description,
-      });
+      await pb
+        .collection("lists")
+        .update($currentUser.selected_list, { ...selectedList });
       console.log("list updated");
     } catch (err) {
       console.error(err);
     }
   }
 
-  $: $currentUser, getList()
-
+  $: $currentUser, getList();
 </script>
 
 <EditableDiv

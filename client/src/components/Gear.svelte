@@ -25,12 +25,39 @@
   <td class="w-[100px]">
     <img src={item.image_url} alt="" />
   </td>
-  <td class="w-1/6"
-    ><EditableDiv bind:content={item.name} handleBlur={updateGear} /></td
-  >
-  <td class="text-gray-500"
-    ><EditableDiv bind:content={item.description} handleBlur={updateGear} /></td
-  >
+  <td class="w-1/6">
+    <EditableDiv bind:content={item.name} handleBlur={updateGear} />
+  </td>
+  <td class="text-gray-500">
+    <EditableDiv bind:content={item.description} handleBlur={updateGear} />
+  </td>
+  <td class="w-8">
+    <i class="hide hover:text-gray-500 transition-colors fa-solid fa-camera" />
+  </td>
+  <td class="w-8">
+    <button
+      class:hide={!item.cons_weight}
+      class:text-sky-500={item.cons_weight}
+      on:click={() => {
+        item.cons_weight = !item.cons_weight;
+        updateGear();
+      }}
+    >
+      <i class="hover:text-gray-500 transition-colors fa-solid fa-shirt" />
+    </button>
+  </td>
+  <td class="w-8">
+    <button
+      class:hide={!item.worn_weight}
+      class:text-sky-500={item.worn_weight}
+      on:click={() => {
+        item.worn_weight = !item.worn_weight;
+        updateGear();
+      }}
+    >
+      <i class="hover:text-gray-500 transition-colors fa-solid fa-utensils" />
+    </button>
+  </td>
   <td class="text-center">{item.weight_g}</td>
   <td class="text-center">{1}</td>
   <td class="text-center"

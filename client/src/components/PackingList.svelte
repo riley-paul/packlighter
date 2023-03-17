@@ -56,7 +56,7 @@
     <table class="table-fixed">
       <thead>
         <tr class="text-lg">
-          <th colspan="3" class="text-left">{category.name}</th>
+          <th colspan="6" class="text-left">{category.name}</th>
           <th class="w-1/12">Weight</th>
           <th class="w-1/12">Qty</th>
           <th class="w-10">
