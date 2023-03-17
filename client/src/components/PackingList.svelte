@@ -5,6 +5,7 @@
   import EditableDiv from "./EditableDiv.svelte";
 
   import Gear from "./Gear.svelte";
+  import Category from "./Category.svelte";
 
   let categories = [];
 
@@ -26,12 +27,37 @@
     }
   }
 
+  async function createCategory() {
+    try {
+      await pb
+        .collection("list_categories")
+        .create({ list: $currentUser.selected_list });
+      getList();
+    } catch (err) {
+      alert("Could not create new category");
+      console.log("Could not create new category");
+      console.error(err);
+    }
+  }
+
+  async function updateCategory(id, category) {
+    try {
+      await pb.collection("list_categories").update(id, { ...category });
+      console.log("Category updated");
+      getList();
+    } catch (err) {
+      alert("Could not remove category");
+      console.log("Could not remove category");
+      console.error(err);
+    }
+  }
+
   $: $currentUser, getList();
 
   onMount(getList);
 
   // debug
-  $: console.log(categories);
+  // $: console.log(categories);
 </script>
 
 <!-- <div class="flex flex-col gap-4">
@@ -53,29 +79,18 @@
 
 <div class="flex flex-col gap-4">
   {#each categories as category (category.id)}
-    <table class="table-fixed">
-      <thead>
-        <tr class="text-lg">
-          <th colspan="6" class="text-left">{category.name}</th>
-          <th class="w-1/12">Weight</th>
-          <th class="w-1/12">Qty</th>
-          <th class="w-10">
-            <div class="hide">
-              <DeleteButton onClick={() => removeCategory(category)} />
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody class="divide-y">
-        {#each category.expand["categories_gear(category)"] || [] as gear (gear.id)}
-          <Gear item={gear.expand.gear} />
-        {/each}
-      </tbody>
-    </table>
-    <button class="text-left"
-      ><i class="fa-plus fa-solid" /> Create new item...</button
-    >
+    <Category {category}>
+      {#each category.expand["categories_gear(category)"] || [] as gear (gear.id)}
+        <Gear item={gear.expand.gear} />
+      {/each}
+    </Category>
   {/each}
+  <button
+    class="text-left text-gray-500 hover:underline"
+    on:click={createCategory}
+  >
+    <i class="fa-plus fa-solid" /> Create new category...
+  </button>
 </div>
 
 <style>
@@ -86,5 +101,4 @@
   *:hover > * > .hide {
     visibility: visible;
   }
-  
 </style>

@@ -4,10 +4,7 @@
   import EditableDiv from "./EditableDiv.svelte";
 
   export let item;
-
-  async function removeFromList() {
-    await pb.collection("categories_gear");
-  }
+  export let handleRemove = () => undefined;
 
   async function updateGear() {
     try {
@@ -26,16 +23,27 @@
     <img src={item.image_url} alt="" />
   </td>
   <td class="w-1/6">
-    <EditableDiv bind:content={item.name} handleBlur={updateGear} />
+    <EditableDiv
+      bind:content={item.name}
+      handleBlur={updateGear}
+      placeholder="Name"
+    />
   </td>
   <td class="text-gray-500">
-    <EditableDiv bind:content={item.description} handleBlur={updateGear} />
+    <EditableDiv
+      bind:content={item.description}
+      handleBlur={updateGear}
+      placeholder="Description"
+    />
   </td>
   <td class="w-8">
-    <i class="hide hover:text-gray-500 transition-colors fa-solid fa-camera" />
+    <button title="Add Image" class="hide">
+      <i class="hover:text-gray-500 transition-colors fa-solid fa-camera" />
+    </button>
   </td>
   <td class="w-8">
     <button
+      title="Consumable Weight"
       class:hide={!item.cons_weight}
       class:text-sky-500={item.cons_weight}
       on:click={() => {
@@ -48,6 +56,7 @@
   </td>
   <td class="w-8">
     <button
+      title="Worn Weight"
       class:hide={!item.worn_weight}
       class:text-sky-500={item.worn_weight}
       on:click={() => {
@@ -58,13 +67,15 @@
       <i class="hover:text-gray-500 transition-colors fa-solid fa-utensils" />
     </button>
   </td>
-  <td class="text-center">{item.weight_g}</td>
+  <td class="text-center">
+    <EditableDiv bind:content={item.weight_g} handleBlur={updateGear} />
+  </td>
   <td class="text-center">{1}</td>
-  <td class="text-center"
-    ><div class="hide">
-      <DeleteButton onClick={removeFromList} />
-    </div></td
-  >
+  <td class="text-center">
+    <div class="hide">
+      <DeleteButton onClick={handleRemove} />
+    </div>
+  </td>
 </tr>
 
 <style>
