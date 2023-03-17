@@ -4,8 +4,8 @@
   import { currentUser, pb } from "./lib/pocketbase";
 
   import Login from "./components/Login.svelte";
-  import Lists from "./components/Lists.svelte";
-  import Items from "./components/Items.svelte";
+  import ListsList from "./components/ListsList.svelte";
+  import GearList from "./components/GearList.svelte";
   import PackingList from "./components/PackingList.svelte";
   import CurrentList from "./components/CurrentList.svelte";
 </script>
@@ -17,18 +17,25 @@
         class="w-1/5 h-screen bg-slate-800 text-gray-200 p-4 flex flex-col gap-2"
       >
         <section>
-          <h1 class="text-2xl font-bold">PackLighter</h1>
+          <h1 class="text-4xl font-bold">PackLighter</h1>
           <p>
-            Inspired by <a class="text-sky-500" href="https://lighterpack.com/">LighterPack.com</a>
+            Inspired by <a class="text-sky-500" href="https://lighterpack.com/"
+              >LighterPack.com</a
+            >
           </p>
         </section>
 
         <h2 class="text-xl font-bold">LISTS</h2>
-        <Lists />
+        <ListsList />
         <br />
 
-        <h2 class="text-xl font-bold">ITEMS</h2>
-        <Items />
+        <h2 class="text-xl font-bold">GEAR</h2>
+        <GearList />
+        <p>
+          Built by <a href="https://rileypaul.ca" class="text-sky-500"
+            >Riley Paul</a
+          >
+        </p>
       </div>
 
       <div class="flex-1 px-4 py-2">

@@ -39,7 +39,7 @@
 />
 <EditableDiv
   bind:content={selectedList.description}
-  classes="text-gray-300"
+  classes="text-gray-700"
   placeholder="List Description"
   handleBlur={editList}
 />

@@ -61,6 +61,7 @@
       await pb.collection("lists").delete(id);
       getLists();
     } catch (err) {
+      alert("Could not delete list")
       console.log("Could not delete list");
       console.error(err);
     }
@@ -70,9 +71,9 @@
 <button class="px-4 py-1 rounded bg-slate-500 w-full" on:click={addList}
   ><i class="fa-regular fa-plus" /> Add List</button
 >
-<ul class="flex flex-col gap-1.5 bg-slate-700 p-2 overflow-y-scroll rounded">
+<ul class="bg-slate-700 px-2 overflow-y-scroll rounded divide-y">
   {#each lists as list (list.id)}
-    <li class="flex justify-between items-center">
+    <li class="flex justify-between items-center py-2">
       <button
         class="text-lg flex-1 text-left"
         class:text-red-500={list.id === $currentUser.selected_list}
