@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { pb, currentUser } from "../lib/pocketbase";
-  import DeleteButton from "./DeleteButton.svelte";
+  import DeleteButton from "./buttons/DeleteButton.svelte";
 
   export let lists = [];
   export let getLists = () => undefined;

@@ -9,6 +9,7 @@
   import PackingList from "./components/PackingList.svelte";
   import CurrentList from "./components/CurrentList.svelte";
   import Logo from "./components/Logo.svelte";
+  import Modal from "./components/Modal.svelte";
 
   let lists = [];
   let gear = [];
@@ -53,9 +54,9 @@
         </div>
       </header>
       <main class="p-4">
-        <CurrentList {getLists}/>
+        <CurrentList {getLists} />
         <br />
-        <PackingList {getGear}/>
+        <PackingList {getGear} />
       </main>
     </div>
   </div>

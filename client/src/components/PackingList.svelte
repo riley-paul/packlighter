@@ -4,7 +4,8 @@
 
   import Gear from "./Gear.svelte";
   import Category from "./Category.svelte";
-  import CreateButton from "./CreateButton.svelte";
+  import CreateButton from "./buttons/CreateButton.svelte";
+  import Modal from "./Modal.svelte";
 
   export let getGear = () => undefined;
   let categories = [];

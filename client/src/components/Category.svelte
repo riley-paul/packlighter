@@ -1,8 +1,8 @@
 <script lang="ts">
   import { pb } from "./../lib/pocketbase";
-  import CreateButton from "./CreateButton.svelte";
-  import DeleteButton from "./DeleteButton.svelte";
-  import EditableDiv from "./EditableDiv.svelte";
+  import CreateButton from "./buttons/CreateButton.svelte";
+  import DeleteButton from "./buttons/DeleteButton.svelte";
+  import EditableDiv from "./buttons/EditableDiv.svelte";
 
   export let category;
   export let handleRemove = () => undefined;

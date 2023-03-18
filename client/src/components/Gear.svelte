@@ -1,12 +1,15 @@
 <script lang="ts">
   import { pb } from "../lib/pocketbase";
-  import DeleteButton from "./DeleteButton.svelte";
-  import EditableDiv from "./EditableDiv.svelte";
+  import DeleteButton from "./buttons/DeleteButton.svelte";
+  import EditableDiv from "./buttons/EditableDiv.svelte";
+  import Modal from "./Modal.svelte";
 
   export let item;
   export let categoryItem;
   export let handleRemove = () => undefined;
   export let getGear = () => undefined;
+
+  let showImageModal = false;
 
   async function updateGear() {
     try {
@@ -62,7 +65,11 @@
 
   <!-- add image -->
   <td class="w-8">
-    <button title="Add Image" class="hide">
+    <button
+      title="Add Image"
+      class="hide"
+      on:click={() => (showImageModal = true)}
+    >
       <i class="hover:text-gray-500 transition-colors fa-solid fa-camera" />
     </button>
   </td>
@@ -121,6 +128,10 @@
     </div>
   </td>
 </tr>
+
+<Modal bind:show={showImageModal}>
+  <input type="text" />
+</Modal>
 
 <style>
   .hide {

@@ -1,8 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import { pb } from "../lib/pocketbase";
-  import DeleteButton from "./DeleteButton.svelte";
-  import DragHandle from "./DragHandle.svelte";
+  import DeleteButton from "./buttons/DeleteButton.svelte";
+  import DragHandle from "./buttons/DragHandle.svelte";
 
   export let gear = [];
   export let getGear = () => undefined;
@@ -30,7 +30,7 @@
 </script>
 
 <input
-  type="text"
+  type="search"
   class="px-4 py-1 rounded bg-slate-500 w-full text-white placeholder:text-gray-200"
   placeholder="Search..."
   bind:value={searchTerm}

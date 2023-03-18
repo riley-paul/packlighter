@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { pb, currentUser } from "../lib/pocketbase";
-  import EditableDiv from "./EditableDiv.svelte";
+  import EditableDiv from "./buttons/EditableDiv.svelte";
 
   // state
   export let getLists = () => undefined;
