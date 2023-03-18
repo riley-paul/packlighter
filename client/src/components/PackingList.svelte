@@ -49,6 +49,26 @@
     }
   }
 
+  async function addItem(itemID: string, categoryID: string) {
+    try {
+      await pb
+        .collection("categories_gear")
+        .create({ category: categoryID, gear: itemID });
+      console.log("Item created");
+      getList();
+      getGear();
+    } catch (err) {
+      alert("Could not add item");
+      console.log("Could not add item");
+      console.error(err);
+    }
+  }
+
+  function handleDrop(e, categoryID: string) {
+    const itemID = e.dataTransfer.getData("text/plain");
+    addItem(itemID, categoryID);
+  }
+
   async function removeCategory(id) {
     try {
       await pb.collection("list_categories").delete(id);
@@ -87,6 +107,7 @@
       {category}
       handleRemove={() => removeCategory(category.id)}
       handleCreate={() => createItem(category.id)}
+      handleDrop={(e) => handleDrop(e, category.id)}
     >
       {#each category.expand["categories_gear(category)"] || [] as gear (gear.id)}
         <Gear

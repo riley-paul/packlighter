@@ -37,7 +37,11 @@
 
 <ul class="divide-y px-2 py-1 overflow-y-scroll bg-slate-700 rounded">
   {#each filteredGear as item}
-    <li class="py-2">
+    <li
+      class="py-2"
+      draggable={true}
+      on:dragstart={(e) => e.dataTransfer.setData("text/plain", item.id)}
+    >
       <div class="flex gap-2 items-center">
         <i class="fa-regular fa-grip-vertical text-xl cursor-grab" />
         <div class="flex-1">

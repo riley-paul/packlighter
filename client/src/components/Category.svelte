@@ -7,6 +7,7 @@
   export let category;
   export let handleRemove = () => undefined;
   export let handleCreate = () => undefined;
+  export let handleDrop = () => undefined;
 
   async function updateCategory() {
     try {
@@ -21,7 +22,7 @@
   }
 </script>
 
-<table class="table-fixed">
+<table class="table-fixed" on:drop|preventDefault={handleDrop}>
   <thead class="text-lg border-b-2">
     <tr>
       <th colspan="6" class="text-left">
