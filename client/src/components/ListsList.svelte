@@ -56,9 +56,9 @@
 <ul class="bg-slate-700 px-2 overflow-y-scroll rounded divide-y">
   {#each lists as list (list.id)}
     <li class="flex gap-2 items-center py-2">
-      <i class="fa-solid fa-grip-vertical text-xl cursor-grab" />
+      <i class="hide fa-solid fa-grip-vertical text-xl cursor-grab" />
       <button
-        class="text-lg flex-1 text-left"
+        class="flex-1 text-left"
         class:text-orange-500={list.id === $currentUser.selected_list}
         on:click={() => selectList(list.id)}
       >

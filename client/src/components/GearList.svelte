@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { pb } from "../lib/pocketbase";
   import DeleteButton from "./DeleteButton.svelte";
+  import DragHandle from "./DragHandle.svelte";
 
   export let gear = [];
   export let getGear = () => undefined;
@@ -43,7 +44,7 @@
       on:dragstart={(e) => e.dataTransfer.setData("text/plain", item.id)}
     >
       <div class="flex gap-2 items-center">
-        <i class="fa-regular fa-grip-vertical text-xl cursor-grab" />
+        <DragHandle />
         <div class="flex-1">
           {item.name}
           <p class="text-slate-500">{item.description}</p>
@@ -58,11 +59,11 @@
 </ul>
 
 <style>
-  .hide {
+  :global(.hide) {
     visibility: hidden;
   }
 
-  *:hover > * > .hide {
+  *:hover > * > :global(.hide) {
     visibility: visible;
   }
 </style>

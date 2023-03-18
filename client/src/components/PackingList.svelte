@@ -64,7 +64,7 @@
     }
   }
 
-  function handleDrop(e, categoryID: string) {
+  function handleDrop(e: DragEvent, categoryID: string) {
     const itemID = e.dataTransfer.getData("text/plain");
     addItem(itemID, categoryID);
   }
@@ -112,6 +112,7 @@
       {#each category.expand["categories_gear(category)"] || [] as gear (gear.id)}
         <Gear
           item={gear.expand.gear}
+          categoryItem={gear}
           handleRemove={() => removeItem(gear.id, gear.expand.gear)}
           {getGear}
         />

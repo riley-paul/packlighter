@@ -27,6 +27,8 @@
     }
   }
 
+  $: $currentUser, getList()
+
 </script>
 
 <div class="flex flex-col gap-2">

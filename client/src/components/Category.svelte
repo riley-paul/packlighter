@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { currentUser, pb } from "./../lib/pocketbase";
+  import { pb } from "./../lib/pocketbase";
   import CreateButton from "./CreateButton.svelte";
   import DeleteButton from "./DeleteButton.svelte";
   import EditableDiv from "./EditableDiv.svelte";
@@ -7,7 +7,7 @@
   export let category;
   export let handleRemove = () => undefined;
   export let handleCreate = () => undefined;
-  export let handleDrop = () => undefined;
+  export let handleDrop = (e: DragEvent) => undefined;
 
   async function updateCategory() {
     try {
@@ -22,7 +22,7 @@
   }
 </script>
 
-<table class="table-fixed" on:drop|preventDefault={handleDrop}>
+<table class="table-fixed border-b-2" on:drop|preventDefault={handleDrop}>
   <thead class="text-lg border-b-2">
     <tr>
       <th colspan="6" class="text-left">
