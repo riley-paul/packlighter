@@ -2,7 +2,7 @@
   import { pb } from "../lib/pocketbase";
   import DeleteButton from "./buttons/DeleteButton.svelte";
   import EditableDiv from "./buttons/EditableDiv.svelte";
-  import Modal from "./Modal.svelte";
+  import Modal from "./buttons/Modal.svelte";
 
   export let item;
   export let categoryItem;
@@ -42,7 +42,11 @@
 <tr class="border-y hover:bg-gray-50">
   <!-- image -->
   <td class="w-[100px]">
-    <img src={item.image_url} alt="" />
+    {#if item.image_url}
+      <a href={item.image_url}>
+        <img class="h-[100px] object-contain" src={item.image_url} alt="" />
+      </a>
+    {/if}
   </td>
 
   <!-- name -->
@@ -130,7 +134,20 @@
 </tr>
 
 <Modal bind:show={showImageModal}>
-  <input type="text" />
+  <h1 class="font-bold text-lg pb-2">Add Image URL</h1>
+  <input
+    class="rounded px-2 py-1 text-gray-800"
+    type="text"
+    placeholder="Image URL"
+    bind:value={item.image_url}
+  />
+  <button
+    class="bg-slate-500 rounded px-2 py-1 ml-2"
+    on:click={() => {
+      updateGear();
+      showImageModal = false;
+    }}>Save</button
+  >
 </Modal>
 
 <style>

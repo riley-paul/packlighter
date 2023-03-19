@@ -9,7 +9,7 @@
   import PackingList from "./components/PackingList.svelte";
   import CurrentList from "./components/CurrentList.svelte";
   import Logo from "./components/Logo.svelte";
-  import Modal from "./components/Modal.svelte";
+  import Modal from "./components/buttons/Modal.svelte";
 
   let lists = [];
   let gear = [];

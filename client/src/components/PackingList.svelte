@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { currentUser, pb } from "./../lib/pocketbase";
 
   import Gear from "./Gear.svelte";
   import Category from "./Category.svelte";
   import CreateButton from "./buttons/CreateButton.svelte";
-  import Modal from "./Modal.svelte";
+  import Modal from "./buttons/Modal.svelte";
 
   export let getGear = () => undefined;
   let categories = [];
@@ -39,7 +38,7 @@
         .create({ user: $currentUser.id });
       await pb
         .collection("categories_gear")
-        .create({ category: categoryID, gear: newItem.id });
+        .create({ category: categoryID, gear: newItem.id, quantity: 1 });
       console.log("Item created");
       getList();
       getGear();
@@ -95,8 +94,6 @@
   }
 
   $: $currentUser, getList();
-
-  onMount(getList);
 
   // debug
   $: console.log(categories);

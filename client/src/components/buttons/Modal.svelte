@@ -19,7 +19,7 @@
     on:keypress={handleKeypress}
   >
     <div
-      class="bg-slate-700 p-4"
+      class="bg-slate-700 text-gray-50 rounded p-4"
       on:click|stopPropagation
       on:keypress|stopPropagation
     >
