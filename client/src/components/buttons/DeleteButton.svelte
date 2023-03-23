@@ -14,7 +14,7 @@
 
 <button
   on:click={askConfirm ? onClickConfirm : onClick}
-  class="hover:bg-orange-500 hover:text-white w-8 h-8 rounded-full transition-colors"
+  class="hover:bg-orange-500 hover:text-white w-8 h-8 rounded-full text-gray-500 transition-colors"
 >
   <i class="fa-solid fa-trash text-base" />
 </button>

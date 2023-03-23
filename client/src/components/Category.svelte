@@ -36,7 +36,7 @@
       <th class="w-1/12">Qty</th>
       <th class="w-10">
         <div class="hide">
-          <DeleteButton onClick={handleRemove} />
+          <DeleteButton onClick={handleRemove} name={category.name} />
         </div>
       </th>
     </tr>

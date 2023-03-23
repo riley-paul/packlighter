@@ -146,8 +146,16 @@
     on:click={() => {
       updateGear();
       showImageModal = false;
-    }}>Save</button
+    }}
   >
+    Save
+  </button>
+  <button
+    class="bg-slate-500 rounded px-2 py-1 ml-1"
+    on:click={() => (item.image_url = null)}
+  >
+    Clear
+  </button>
 </Modal>
 
 <style>

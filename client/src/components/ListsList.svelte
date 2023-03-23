@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { pb, currentUser } from "../lib/pocketbase";
   import DeleteButton from "./buttons/DeleteButton.svelte";
+  import DragHandle from "./buttons/DragHandle.svelte";
 
   export let lists = [];
   export let getLists = () => undefined;
@@ -56,7 +57,9 @@
 <ul class="bg-slate-700 px-2 overflow-y-scroll rounded divide-y">
   {#each lists as list (list.id)}
     <li class="flex gap-2 items-center py-2">
-      <i class="hide fa-solid fa-grip-vertical text-xl cursor-grab" />
+      <div class="hide">
+        <DragHandle />
+      </div>
       <button
         class="flex-1 text-left"
         class:text-orange-500={list.id === $currentUser.selected_list}

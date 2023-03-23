@@ -26,7 +26,7 @@
 {#if $currentUser}
   <div class="flex">
     <aside
-      class="w-1/5 h-screen bg-slate-800 text-gray-200 p-4 flex flex-col gap-2"
+      class="w-1/5  sticky top-0 left-0 h-screen bg-slate-800 text-gray-200 p-4 flex flex-col gap-2"
     >
       <Logo />
 

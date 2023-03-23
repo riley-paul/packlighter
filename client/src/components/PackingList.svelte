@@ -53,7 +53,7 @@
     try {
       await pb
         .collection("categories_gear")
-        .create({ category: categoryID, gear: itemID });
+        .create({ category: categoryID, gear: itemID, quantity: 1 });
       console.log("Item created");
       getList();
       getGear();

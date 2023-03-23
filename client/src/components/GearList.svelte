@@ -44,7 +44,7 @@
       on:dragstart={(e) => e.dataTransfer.setData("text/plain", item.id)}
     >
       <div class="flex gap-2 items-center">
-        <DragHandle />
+        <div class="hide"><DragHandle /></div>
         <div class="flex-1">
           {item.name}
           <p class="text-slate-500">{item.description}</p>
@@ -59,11 +59,11 @@
 </ul>
 
 <style>
-  :global(.hide) {
+  .hide {
     visibility: hidden;
   }
 
-  *:hover > * > :global(.hide) {
+  *:hover > * > .hide {
     visibility: visible;
   }
 </style>
