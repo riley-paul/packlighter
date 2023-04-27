@@ -2,39 +2,50 @@
   import CreateButton from "$lib/components/buttons/CreateButton.svelte";
   import type { PageData } from "./$types";
 
-  import Category from "$lib/components/Category.svelte";
-  import Gear from "$lib/components/Category.svelte";
-  import UpdateableText from "$lib/components/buttons/UpdateableText.svelte";
+  import CategoryItem from "$lib/components/CategoryItem.svelte";
+  import GearItem from "$lib/components/GearItem.svelte";
+  import EditableDiv from "$lib/components/buttons/EditableDiv.svelte";
+
+  import type { Gear, ListCategory } from "@prisma/client";
 
   export let data: PageData;
-  console.log(data);
+
+  const updateList = async () => {
+    const response = await fetch("/api/list", {
+      method: "POST",
+      body: JSON.stringify(data.list),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+  };
+
+  console.log(data.list);
 </script>
 
 {#if !data.list}
   Could not find that list
 {:else}
-  <UpdateableText
-    value={data.list.name}
-    action="?/updateList"
-    name="name"
+  <EditableDiv
+    bind:content={data.list.name}
     classes="flex-1 text-orange-500 text-3xl font-bold"
     placeholder="List Name"
+    handleBlur={updateList}
   />
-  <UpdateableText
-    value={data.list.description}
-    action="?/updateList"
-    name="description"
+  <EditableDiv
+    bind:content={data.list.description}
     classes="text-gray-700"
     placeholder="List Description"
+    handleBlur={updateList}
   />
   <br />
   <div class="flex flex-col gap-4">
-    {#each data.list.categories as category (category.id)}
-      <Category {category}>
-        {#each category.gear as gear (gear.id)}
-          <Gear {gear} />
+    {#each data.list.categories as category}
+      <CategoryItem bind:category {updateList}>
+        {#each category.gear as gearEntry}
+          <GearItem bind:gearEntry {updateList} />
         {/each}
-      </Category>
+      </CategoryItem>
     {/each}
     <CreateButton action="?/addCategory" entity="category" />
   </div>

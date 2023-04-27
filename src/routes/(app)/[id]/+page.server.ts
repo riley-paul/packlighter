@@ -3,11 +3,9 @@ import { to_number } from "svelte/internal";
 
 import type { Actions, PageServerLoad } from "./$types";
 
-export const load: PageServerLoad = async ({ params }) => {
-  const list = await prisma.list.findUnique({
-    where: { id: to_number(params.id) },
-    include: { categories: { include: { gear: true } } },
-  });
+export const load: PageServerLoad = async ({ params, fetch }) => {
+  const response = await fetch(`/api/list/${params.id}`);
+  const list = await response.json();
   return { list };
 };
 

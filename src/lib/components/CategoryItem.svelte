@@ -7,18 +7,17 @@
   import type { ListCategory } from "@prisma/client";
 
   export let category: ListCategory;
+  export let updateList: () => void;
 </script>
 
 <table class="table-fixed border-b-2">
   <thead class="border-b-2">
     <tr>
       <th colspan="6" class="text-left text-lg">
-        <UpdateableText
-          action={`/${category.listId}?/updateListCategory`}
-          value={category.name}
-          name="name"
-          auxiliaryData={{ categoryId: category.id }}
+        <EditableDiv
+          bind:content={category.name}
           placeholder="Category Name"
+          handleBlur={updateList}
         />
       </th>
       <th class="w-1/12">Weight</th>

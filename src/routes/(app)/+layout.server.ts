@@ -1,10 +1,11 @@
-import prisma from "../../lib/prisma";
-import type { PageServerLoad, Actions } from "./$types";
+import type { PageServerLoad } from "./$types";
 
+export const load: PageServerLoad = async ({ fetch }) => {
+  const listsResponse = await fetch("/api/list");
+  const lists = await listsResponse.json();
 
-export const load = async () => {
-  const lists = await prisma.list.findMany();
-  const gear = await prisma.gear.findMany();
+  const gearResponse = await fetch("/api/gear");
+  const gear = await gearResponse.json();
+
   return { lists, gear };
 };
-
