@@ -11,15 +11,18 @@
 {:else}
   <form method="post" action="?/updateList" class="flex flex-col gap-2">
     <input
+      name="name"
       bind:value={data.list.name}
       class="bg-inherit cursor-text focus:bg-gray-50 focus:text-gray-900 flex-1 text-orange-500 text-3xl font-bold"
       placeholder="List Name"
     />
     <input
+      name="description"
       bind:value={data.list.description}
       class="bg-inherit cursor-text focus:bg-gray-50 focus:text-gray-900 text-gray-700"
       placeholder="List Description"
     />
+    <input type="submit" class="hidden" />
   </form>
   <br />
   <div class="flex flex-col gap-4">
@@ -41,6 +44,6 @@
       {/each}
     </Category> -->
     {/each}
-    <CreateButton entity="category" />
+    <CreateButton action="?/addCategory" entity="category" />
   </div>
 {/if}

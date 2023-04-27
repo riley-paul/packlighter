@@ -6,7 +6,7 @@ import type { Actions, PageServerLoad } from "./$types";
 export const load: PageServerLoad = async ({ params }) => {
   const list = await prisma.list.findUnique({
     where: { id: to_number(params.id) },
-    include: { categories: true },
+    include: { categories: { include: { gear: true } } },
   });
   return { list };
 };
@@ -14,12 +14,17 @@ export const load: PageServerLoad = async ({ params }) => {
 export const actions: Actions = {
   updateList: async ({ request, params }) => {
     const data = await request.formData();
-    const newList = await prisma.list.update({
+    await prisma.list.update({
       where: { id: to_number(params.id) },
       data: {
         name: data.get("name")?.toString(),
         description: data.get("description")?.toString(),
       },
+    });
+  },
+  addCategory: async ({ params }) => {
+    await prisma.listCategory.create({
+      data: { listId: to_number(params.id) },
     });
   },
 };

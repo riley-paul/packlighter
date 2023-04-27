@@ -1,7 +1,9 @@
 <script lang="ts">
-  import Logo from "../../lib/components/Logo.svelte";
-  import GearList from "../../lib/components/GearList.svelte";
-  import DragHandle from "../../lib/components/buttons/DragHandle.svelte";
+  import Logo from "$lib/components/Logo.svelte";
+  import GearList from "$lib/components/GearList.svelte";
+  import DragHandle from "$lib/components/buttons/DragHandle.svelte";
+  import DeleteButton from "$lib/components/buttons/DeleteButton.svelte";
+  import { page } from "$app/stores";
 
   import type { PageData } from "./$types";
   export let data: PageData;
@@ -28,9 +30,24 @@
           <div class="hide">
             <DragHandle />
           </div>
-          <a href={`/${list.id}`} class="flex-1 text-left">
+          <a
+            href={`/${list.id}`}
+            class:text-orange-500={$page.url.pathname.includes(`/${list.id}`)}
+            class:font-={$page.url.pathname.includes(`/${list.id}`)}
+            class="flex-1 text-left"
+          >
             {list.name || "Unnamed List"}
           </a>
+          <div
+            class:hidden={$page.url.pathname.includes(`/${list.id}`)}
+            class="hide"
+          >
+            <DeleteButton
+              action="/?/deleteList"
+              itemId={list.id}
+              name={list.name}
+            />
+          </div>
         </li>
       {/each}
     </ul>
@@ -57,3 +74,13 @@
     </main>
   </div>
 </div>
+
+<style>
+  .hide {
+    visibility: hidden;
+  }
+
+  *:hover > .hide {
+    visibility: visible;
+  }
+</style>
