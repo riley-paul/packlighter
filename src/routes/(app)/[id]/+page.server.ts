@@ -27,4 +27,19 @@ export const actions: Actions = {
       data: { listId: to_number(params.id) },
     });
   },
+  addGear: async ({ params }) => {
+    await prisma.listCategory.create({
+      data: { listId: to_number(params.id) },
+    });
+  },
+  updateListCategory: async ({ request, params }) => {
+    const data = await request.formData();
+    const categoryId = data.get("categoryId");
+    await prisma.listCategory.update({
+      where: { id: to_number(categoryId) },
+      data: {
+        name: data.get("name")?.toString(),
+      },
+    });
+  },
 };

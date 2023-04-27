@@ -71,6 +71,8 @@ model ListCategory {
   listId Int
 
   gear CategoryGear[]
+
+  @@map("list_categories")
 }
 
 model CategoryGear {
@@ -88,4 +90,5 @@ model CategoryGear {
   consumable_weight Boolean
 
   @@id([categoryId, gearId])
+  @@map("category_gear")
 }

@@ -1,50 +1,23 @@
 <script lang="ts">
-  import { pb } from "../lib/pocketbase";
   import DeleteButton from "./buttons/DeleteButton.svelte";
   import EditableDiv from "./buttons/EditableDiv.svelte";
   import Modal from "./buttons/Modal.svelte";
 
-  export let item;
-  export let categoryItem;
-  export let handleRemove = () => undefined;
-  export let getGear = () => undefined;
+  import type { Gear, CategoryGear } from "@prisma/client";
+
+  export let gear: Gear;
+  export let categoryGear: CategoryGear;
 
   let showImageModal = false;
 
-  async function updateGear() {
-    try {
-      await pb.collection("gear").update(item.id, { ...item });
-      console.log("Gear updated");
-      getGear();
-    } catch (err) {
-      alert("Could not update gear");
-      console.log("Could not update gear");
-      console.error(err);
-    }
-  }
-
-  async function updateCategoryGear() {
-    try {
-      const { quantity, cons_weight, worn_weight } = categoryItem;
-      await pb
-        .collection("categories_gear")
-        .update(categoryItem.id, { quantity, cons_weight, worn_weight });
-      console.log("Gear category relation updated");
-      getGear();
-    } catch (err) {
-      alert("Could not update category gear relation");
-      console.log("Could not update category gear relation");
-      console.error(err);
-    }
-  }
 </script>
 
 <tr class="border-y hover:bg-gray-50">
   <!-- image -->
   <td class="w-[100px]">
-    {#if item.image_url}
-      <a href={item.image_url}>
-        <img class="h-[100px] object-contain" src={item.image_url} alt="" />
+    {#if gear.image_url}
+      <a href={gear.image_url}>
+        <img class="h-[100px] object-contain" src={gear.image_url} alt="" />
       </a>
     {/if}
   </td>
@@ -52,7 +25,7 @@
   <!-- name -->
   <td class="w-1/6">
     <EditableDiv
-      bind:content={item.name}
+      bind:content={gear.name}
       handleBlur={updateGear}
       placeholder="Name"
     />
@@ -61,7 +34,7 @@
   <!-- description -->
   <td class="text-gray-500">
     <EditableDiv
-      bind:content={item.description}
+      bind:content={gear.description}
       handleBlur={updateGear}
       placeholder="Description"
     />
@@ -82,10 +55,10 @@
   <td class="w-8">
     <button
       title="Consumable Weight"
-      class:hide={!categoryItem.cons_weight}
-      class:text-sky-500={categoryItem.cons_weight}
+      class:hide={!categoryGear.consumable_weight}
+      class:text-sky-500={categoryGear.consumable_weight}
       on:click={() => {
-        categoryItem.cons_weight = !categoryItem.cons_weight;
+        categoryGear.consumable_weight = !categoryGear.consumable_weight;
         updateCategoryGear();
       }}
     >
@@ -97,10 +70,10 @@
   <td class="w-8">
     <button
       title="Worn Weight"
-      class:hide={!categoryItem.worn_weight}
-      class:text-sky-500={categoryItem.worn_weight}
+      class:hide={!categoryGear.worn_weight}
+      class:text-sky-500={categoryGear.worn_weight}
       on:click={() => {
-        categoryItem.worn_weight = !categoryItem.worn_weight;
+        categoryGear.worn_weight = !categoryGear.worn_weight;
         updateCategoryGear();
       }}
     >
@@ -110,7 +83,7 @@
 
   <!-- weight -->
   <td class="text-center">
-    <EditableDiv bind:content={item.weight_g} handleBlur={updateGear} />
+    <EditableDiv bind:content={gear.weight_g} handleBlur={updateGear} />
   </td>
 
   <!-- quantity -->
@@ -119,7 +92,7 @@
       type="number"
       min="1"
       size="2"
-      bind:value={categoryItem.quantity}
+      bind:value={categoryGear.quantity}
       on:change={updateCategoryGear}
       class="text-center w-12"
     />
@@ -139,7 +112,7 @@
     class="rounded px-2 py-1 text-gray-800"
     type="text"
     placeholder="Image URL"
-    bind:value={item.image_url}
+    bind:value={gear.image_url}
   />
   <button
     class="bg-slate-500 rounded px-2 py-1 ml-2"
@@ -152,7 +125,7 @@
   </button>
   <button
     class="bg-slate-500 rounded px-2 py-1 ml-1"
-    on:click={() => (item.image_url = null)}
+    on:click={() => (gear.image_url = "")}
   >
     Clear
   </button>

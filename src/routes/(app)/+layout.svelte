@@ -26,14 +26,14 @@
 
     <ul class="bg-slate-700 px-2 overflow-y-scroll rounded divide-y">
       {#each data.lists as list (list.id)}
-        <li class="flex gap-2 items-center py-2">
+        <li class="flex gap-2 items-center h-12">
           <div class="hide">
             <DragHandle />
           </div>
           <a
             href={`/${list.id}`}
             class:text-orange-500={$page.url.pathname.includes(`/${list.id}`)}
-            class:font-={$page.url.pathname.includes(`/${list.id}`)}
+            class:font-bold={$page.url.pathname.includes(`/${list.id}`)}
             class="flex-1 text-left"
           >
             {list.name || "Unnamed List"}
@@ -74,13 +74,3 @@
     </main>
   </div>
 </div>
-
-<style>
-  .hide {
-    visibility: hidden;
-  }
-
-  *:hover > .hide {
-    visibility: visible;
-  }
-</style>

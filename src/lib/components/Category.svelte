@@ -1,34 +1,23 @@
 <script lang="ts">
-  import { pb } from "./../lib/pocketbase";
   import CreateButton from "./buttons/CreateButton.svelte";
   import DeleteButton from "./buttons/DeleteButton.svelte";
   import EditableDiv from "./buttons/EditableDiv.svelte";
+  import UpdateableText from "./buttons/UpdateableText.svelte";
 
-  export let category;
-  export let handleRemove = () => undefined;
-  export let handleCreate = () => undefined;
-  export let handleDrop = (e: DragEvent) => undefined;
+  import type { ListCategory } from "@prisma/client";
 
-  async function updateCategory() {
-    try {
-      const { name } = category;
-      await pb.collection("list_categories").update(category.id, { name });
-      console.log("Category updated");
-    } catch (err) {
-      alert("Could not update category");
-      console.log("Could not update category");
-      console.error(err);
-    }
-  }
+  export let category: ListCategory;
 </script>
 
-<table class="table-fixed border-b-2" on:drop|preventDefault={handleDrop}>
-  <thead class="text-lg border-b-2">
+<table class="table-fixed border-b-2">
+  <thead class="border-b-2">
     <tr>
-      <th colspan="6" class="text-left">
-        <EditableDiv
-          bind:content={category.name}
-          handleBlur={updateCategory}
+      <th colspan="6" class="text-left text-lg">
+        <UpdateableText
+          action={`/${category.listId}?/updateListCategory`}
+          value={category.name}
+          name="name"
+          auxiliaryData={{ categoryId: category.id }}
           placeholder="Category Name"
         />
       </th>
@@ -36,7 +25,7 @@
       <th class="w-1/12">Qty</th>
       <th class="w-10">
         <div class="hide">
-          <DeleteButton onClick={handleRemove} name={category.name} />
+          <DeleteButton action="" itemId={category.id} name={category.name} />
         </div>
       </th>
     </tr>
@@ -45,14 +34,4 @@
     <slot />
   </tbody>
 </table>
-<CreateButton entity="item" onClick={handleCreate} />
-
-<style>
-  .hide {
-    visibility: hidden;
-  }
-
-  *:hover > * > .hide {
-    visibility: visible;
-  }
-</style>
+<CreateButton action="" entity="item" />
