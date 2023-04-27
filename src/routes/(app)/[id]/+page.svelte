@@ -9,20 +9,19 @@
 {#if !data.list}
   Could not find that list
 {:else}
-  <div class="flex flex-col gap-2">
-    <EditableDiv
-      bind:content={data.list.name}
-      classes="flex-1 text-orange-500 text-3xl font-bold"
+  <form method="post" action="?/updateList" class="flex flex-col gap-2">
+    <input
+      bind:value={data.list.name}
+      class="bg-inherit cursor-text focus:bg-gray-50 focus:text-gray-900 flex-1 text-orange-500 text-3xl font-bold"
       placeholder="List Name"
-      handleBlur={editList}
     />
-    <EditableDiv
-      bind:content={data.list.description}
-      classes="text-gray-700"
+    <input
+      bind:value={data.list.description}
+      class="bg-inherit cursor-text focus:bg-gray-50 focus:text-gray-900 text-gray-700"
       placeholder="List Description"
-      handleBlur={editList}
     />
-  </div>
+  </form>
+  <br />
   <div class="flex flex-col gap-4">
     {#each data.list.categories as category (category.id)}
       {category.name}
@@ -42,6 +41,6 @@
       {/each}
     </Category> -->
     {/each}
-    <CreateButton entity="category" onClick={createCategory} />
+    <CreateButton entity="category" />
   </div>
 {/if}
