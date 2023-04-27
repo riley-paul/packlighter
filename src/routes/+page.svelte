@@ -1,2 +1,43 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+  import "./app.css";
+
+  import Login from "../components/Login.svelte";
+  import PackingList from "../components/PackingList.svelte";
+  import CurrentList from "../components/CurrentList.svelte";
+  import Modal from "../components/buttons/Modal.svelte";
+</script>
+
+<div class="flex">
+  <aside
+    class="w-1/5 sticky top-0 left-0 h-screen bg-slate-800 text-gray-200 p-4 flex flex-col gap-2"
+  >
+    <Logo />
+
+    <h2 class="text-xl font-bold">LISTS</h2>
+    <ListsList {lists} {getLists} />
+
+    <h2 class="text-xl font-bold">GEAR</h2>
+    <GearList {gear} {getGear} />
+    <p>
+      Built by <a href="https://rileypaul.ca" class="text-sky-500">Riley Paul</a
+      >
+    </p>
+  </aside>
+
+  <div class="flex-1">
+    <header class="px-4 py-2 bg-slate-700 text-gray-100">
+      <div class="flex justify-between items-center">
+        <p>Signed in as {$currentUser.username}</p>
+        <button
+          on:click={() => pb.authStore.clear()}
+          class="px-2 py-1 rounded bg-slate-200 text-gray-700">Sign Out</button
+        >
+      </div>
+    </header>
+    <main class="p-4">
+      <CurrentList {getLists} />
+      <br />
+      <PackingList {getGear} />
+    </main>
+  </div>
+</div>

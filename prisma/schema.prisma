@@ -1,0 +1,91 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email    String @unique
+  password String
+  username String @default("")
+
+  lists List[]
+  gear  Gear[]
+
+  @@map("users")
+}
+
+model List {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String @default("")
+  description String @default("")
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  categories ListCategory[]
+
+  @@map("lists")
+}
+
+model Gear {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String @default("")
+  description String @default("")
+
+  image_url String @default("")
+  weight_g  Int    @default(0)
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  categories CategoryGear[]
+
+  @@map("gear")
+}
+
+model ListCategory {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @default("")
+
+  list   List @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId Int
+
+  gear CategoryGear[]
+}
+
+model CategoryGear {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category   ListCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId Int
+
+  gear   Gear @relation(fields: [gearId], references: [id], onDelete: Cascade)
+  gearId Int
+
+  quantity          Int
+  worn_weight       Boolean
+  consumable_weight Boolean
+
+  @@id([categoryId, gearId])
+}
