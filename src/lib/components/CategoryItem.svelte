@@ -7,7 +7,7 @@
   import type { ListCategory } from "@prisma/client";
 
   export let category: ListCategory;
-  export let updateList: () => void;
+  export let updateList: () => Promise<void> = () => Promise.resolve();
 </script>
 
 <table class="table-fixed border-b-2">

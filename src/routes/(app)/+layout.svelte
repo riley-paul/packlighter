@@ -7,6 +7,7 @@
 
   import type { PageData } from "./$types";
   export let data: PageData;
+
 </script>
 
 <div class="flex">
@@ -31,14 +32,14 @@
           </div>
           <a
             href={`/${list.id}`}
-            class:text-orange-500={$page.url.pathname.includes(`/${list.id}`)}
-            class:font-bold={$page.url.pathname.includes(`/${list.id}`)}
+            class:text-orange-500={$page.url.pathname === `/${list.id}`}
+            class:font-bold={$page.url.pathname === `/${list.id}`}
             class="flex-1 text-left"
           >
             {list.name || "Unnamed List"}
           </a>
           <div
-            class:hidden={$page.url.pathname.includes(`/${list.id}`)}
+            class:hidden={$page.url.pathname === `/${list.id}`}
             class="hide"
           >
             <DeleteButton

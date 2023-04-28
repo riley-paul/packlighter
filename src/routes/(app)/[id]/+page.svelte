@@ -1,23 +1,23 @@
 <script lang="ts">
   import CreateButton from "$lib/components/buttons/CreateButton.svelte";
   import type { PageData } from "./$types";
+  import { invalidateAll } from "$app/navigation";
 
   import CategoryItem from "$lib/components/CategoryItem.svelte";
   import GearItem from "$lib/components/GearItem.svelte";
   import EditableDiv from "$lib/components/buttons/EditableDiv.svelte";
 
-  import type { Gear, ListCategory } from "@prisma/client";
+  import type { Gear, ListCategory, List } from "@prisma/client";
 
   export let data: PageData;
 
-  const updateList = async () => {
-    const response = await fetch("/api/list", {
-      method: "POST",
+  const updateList: () => Promise<void> = async () => {
+    await fetch(`/api/list/${data.list.id}`, {
+      method: "PATCH",
       body: JSON.stringify(data.list),
-      headers: {
-        "content-type": "application/json",
-      },
+      headers: { "content-type": "application/json" },
     });
+    await invalidateAll();
   };
 
   console.log(data.list);

@@ -3,10 +3,10 @@
   import EditableDiv from "./buttons/EditableDiv.svelte";
   import Modal from "./buttons/Modal.svelte";
 
-  import type { Gear, gearEntry } from "@prisma/client";
+  import type { Gear, CategoryGear } from "@prisma/client";
 
-  export let gearEntry: gearEntry;
-  export let updateList: () => void;
+  export let gearEntry: CategoryGear & { gear: Gear };
+  export let updateList: () => Promise<void> = () => Promise.resolve();
 
   let showImageModal = false;
 </script>
@@ -15,8 +15,12 @@
   <!-- image -->
   <td class="w-[100px]">
     {#if gearEntry.gear.image_url}
-      <a href={gearEntry.image_url}>
-        <img class="h-[100px] object-contain" src={gearEntry.image_url} alt="" />
+      <a href={gearEntry.gear.image_url}>
+        <img
+          class="h-[100px] object-contain"
+          src={gearEntry.gear.image_url}
+          alt=""
+        />
       </a>
     {/if}
   </td>
@@ -24,7 +28,7 @@
   <!-- name -->
   <td class="w-1/6">
     <EditableDiv
-      bind:content={gearEntry.name}
+      bind:content={gearEntry.gear.name}
       handleBlur={updateList}
       placeholder="Name"
     />
@@ -33,7 +37,7 @@
   <!-- description -->
   <td class="text-gray-500">
     <EditableDiv
-      bind:content={gearEntry.description}
+      bind:content={gearEntry.gear.description}
       handleBlur={updateList}
       placeholder="Description"
     />
@@ -82,7 +86,12 @@
 
   <!-- weight -->
   <td class="text-center">
-    <EditableDiv bind:content={gearEntry.weight_g} handleBlur={updateList} />
+    <input
+      type="number"
+      bind:value={gearEntry.gear.weight_g}
+      on:change={updateList}
+      class="text-center w-12 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+    />
   </td>
 
   <!-- quantity -->
@@ -111,7 +120,7 @@
     class="rounded px-2 py-1 text-gray-800"
     type="text"
     placeholder="Image URL"
-    bind:value={gearEntry.image_url}
+    bind:value={gearEntry.gear.image_url}
   />
   <button
     class="bg-slate-500 rounded px-2 py-1 ml-2"
@@ -124,7 +133,7 @@
   </button>
   <button
     class="bg-slate-500 rounded px-2 py-1 ml-1"
-    on:click={() => (gearEntry.image_url = "")}
+    on:click={() => (gearEntry.gear.image_url = "")}
   >
     Clear
   </button>

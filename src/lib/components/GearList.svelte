@@ -31,7 +31,7 @@
   bind:value={searchTerm}
 />
 
-<ul class="divide-y px-2 py-1 overflow-y-scroll bg-slate-700 rounded">
+<ul class="divide-y px-2 py-1 overflow-y-scroll bg-slate-700 rounded text-sm">
   {#each filteredGear as item}
     <li class="py-2" draggable={true}>
       <div class="flex gap-2 items-center">

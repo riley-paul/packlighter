@@ -16,8 +16,12 @@ export const GET: RequestHandler = async ({ params }) => {
 
 export const PATCH: RequestHandler = async ({ request, params }) => {
   const data = await request.json();
+  const { name, description } = data;
   return json(
-    await prisma.list.update({ where: { id: to_number(params.id) }, data })
+    await prisma.list.update({
+      where: { id: to_number(params.id) },
+      data: { name, description },
+    })
   );
 };
 
