@@ -3,11 +3,14 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas=["public","auth"]
 }
 
 model User {
@@ -23,6 +26,7 @@ model User {
   gear  Gear[]
 
   @@map("users")
+  @@schema("auth")
 }
 
 model List {
@@ -39,6 +43,7 @@ model List {
   categories ListCategory[]
 
   @@map("lists")
+  @@schema("auth")
 }
 
 model Gear {
@@ -58,6 +63,7 @@ model Gear {
   categories CategoryGear[]
 
   @@map("gear")
+  @@schema("auth")
 }
 
 model ListCategory {
@@ -73,6 +79,7 @@ model ListCategory {
   gear CategoryGear[]
 
   @@map("list_categories")
+  @@schema("auth")
 }
 
 model CategoryGear {
@@ -91,4 +98,5 @@ model CategoryGear {
 
   @@id([categoryId, gearId])
   @@map("category_gear")
+  @@schema("auth")
 }
