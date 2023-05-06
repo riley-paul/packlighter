@@ -3,51 +3,85 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
-  schemas=["public","auth"]
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  email    String @unique
-  password String
-  username String @default("")
-
-  lists List[]
-  gear  Gear[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  List          List[]
+  Gear          Gear[]
 
   @@map("users")
-  @@schema("auth")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
 }
 
 model List {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name        String @default("")
   description String @default("")
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   categories ListCategory[]
 
   @@map("lists")
-  @@schema("auth")
 }
 
 model Gear {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -56,30 +90,29 @@ model Gear {
 
   image_url String @default("")
   weight_g  Int    @default(0)
+  price     Int    @default(0)
 
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   categories CategoryGear[]
 
   @@map("gear")
-  @@schema("auth")
 }
 
 model ListCategory {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   name String @default("")
 
-  list   List @relation(fields: [listId], references: [id], onDelete: Cascade)
-  listId Int
+  list   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId String
 
   gear CategoryGear[]
 
   @@map("list_categories")
-  @@schema("auth")
 }
 
 model CategoryGear {
@@ -87,10 +120,10 @@ model CategoryGear {
   updatedAt DateTime @updatedAt
 
   category   ListCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId Int
+  categoryId String
 
-  gear   Gear @relation(fields: [gearId], references: [id], onDelete: Cascade)
-  gearId Int
+  gear   Gear   @relation(fields: [gearId], references: [id], onDelete: Cascade)
+  gearId String
 
   quantity          Int
   worn_weight       Boolean
@@ -98,5 +131,4 @@ model CategoryGear {
 
   @@id([categoryId, gearId])
   @@map("category_gear")
-  @@schema("auth")
 }
