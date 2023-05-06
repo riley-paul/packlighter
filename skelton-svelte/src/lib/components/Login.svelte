@@ -29,7 +29,7 @@
 <div class="flex justify-center items-center h-full">
   <form
     on:submit|preventDefault
-    class="flex flex-col p-8 gap-4 max-w-md m-8 rounded"
+    class="flex flex-col p-8 gap-4 max-w-md m-8 rounded bg-surface-50-900-token"
   >
     <div class="text-center">
       <div class="font-bold text-3xl">Welcome to PackLighter</div>

@@ -27,11 +27,14 @@
 </script>
 
 {#if $currentUser}
-  <Drawer width="w-56" rounded="rounded-none"><Navigation /></Drawer>
+  <Drawer width="w-56" rounded="rounded-none">
+    <Navigation lists={data.lists} items={data.gear} />
+  </Drawer>
   <AppShell
     regionPage="relative"
     slotPageHeader="sticky top-0 z-10"
     slotSidebarLeft="bg-surface-500/5 w-0 lg:w-56"
+    slotPageContent="p-4"
   >
     <svelte:fragment slot="pageHeader">
       <AppBar>
@@ -44,7 +47,7 @@
           </div>
         </svelte:fragment>
         <svelte:fragment slot="trail">
-          <span>{$currentUser.username}</span>
+          <strong>{$currentUser.username}</strong>
           <button
             class="btn variant-outline"
             on:click={() => pb.authStore.clear()}>Sign Out</button
@@ -54,7 +57,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="sidebarLeft">
-      <Navigation />
+      <Navigation lists={data.lists} items={data.gear} />
     </svelte:fragment>
 
     <svelte:fragment slot="default">

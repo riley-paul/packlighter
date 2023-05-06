@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"pocketbase": "^0.14.4"
+		"pocketbase": "^0.14.4",
+		"pocketbase-typegen": "^1.1.9"
 	}
 }
