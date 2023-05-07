@@ -2,8 +2,7 @@
   import { pb, currentUser } from "$lib/pocketbase";
   import { page } from "$app/stores";
 
-  $: classesActive = (href: string) =>
-    href === $page.url.pathname ? "!bg-primary-500" : "";
+  $: isActive = () => `/${list.id}` === $page.url.pathname;
 
   import type { Record } from "pocketbase";
   import { invalidateAll } from "$app/navigation";
@@ -27,14 +26,16 @@
 <li>
   <a
     class={[
-      classesActive(`/${list.id}`),
+      isActive() ? "!bg-primary-500" : "",
       list.name ? "" : "text-gray-500",
-      "flex",
+      "flex h-10",
     ].join(" ")}
     href={`/${list.id}`}
     data-sveltekit-preload-data
   >
     <span class="flex-1">{list.name || "Unnamed List"}</span>
-    <DeleteButton onClick={deleteList} />
+    <div class:hidden={isActive()} class="hide">
+      <DeleteButton onClick={deleteList} />
+    </div>
   </a>
 </li>

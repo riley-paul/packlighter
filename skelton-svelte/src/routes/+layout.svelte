@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Hamburger from "$lib/components/Hamburger.svelte";
+  import Hamburger from "$lib/components/buttons/Hamburger.svelte";
 
   // The ordering of these imports is critical to your app working properly
   import "../theme.css";

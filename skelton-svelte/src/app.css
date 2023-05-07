@@ -8,3 +8,11 @@ body {
 dd {
   @apply text-sm text-gray-500;
 }
+
+.hide {
+  visibility: hidden;
+}
+
+*:hover > .hide {
+  visibility: visible;
+}

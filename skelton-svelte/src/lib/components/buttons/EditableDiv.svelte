@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let content = "Empty";
+  export let content: string;
   export let classes = "";
   export let placeholder = "";
   export let handleBlur: () => Promise<void>;
@@ -21,7 +21,7 @@
 
 <div
   contenteditable="true"
-  class="bg-inherit cursor-text focus:bg-gray-50 focus:text-gray-900 {classes}"
+  class="bg-inherit cursor-text focus:bg-gray-50 focus:text-gray-900 focus:p-1 {classes}"
   data-ph={placeholder}
   bind:textContent={content}
   on:blur={handleBlur}

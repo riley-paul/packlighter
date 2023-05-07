@@ -4,7 +4,7 @@
 </script>
 
 <button
-  class="text-left text-gray-500 hover:underline w-fit"
+  class="text-left text-gray-500 hover:text-secondary-500 transition-colors w-fit"
   on:click={onClick}
 >
   <i class="fa-plus fa-solid" />

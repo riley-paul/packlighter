@@ -10,7 +10,7 @@
     href === $page.url.pathname ? "!bg-primary-500" : "";
 
   import type { Record } from "pocketbase";
-  import { invalidateAll } from "$app/navigation";
+  import { goto, invalidateAll } from "$app/navigation";
   import { redirect } from "@sveltejs/kit";
 
   export let lists: Record[];
@@ -23,7 +23,7 @@
         .collection("lists")
         .create({ user: $currentUser.id });
       await invalidateAll();
-      await redirect(303, `/${newList.id}`);
+      goto(`/${newList.id}`);
     } catch (err) {
       alert("Could not create a new list");
       console.log("could not create a new list");

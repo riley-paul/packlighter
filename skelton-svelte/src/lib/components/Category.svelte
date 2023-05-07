@@ -72,10 +72,13 @@
   }
 </script>
 
-<table class="table-fixed border-b-2" on:drop|preventDefault={handleDrop}>
-  <thead class="border-b-2">
+<table
+  class="table-fixed border-b-2 border-surface-500"
+  on:drop|preventDefault={handleDrop}
+>
+  <thead class="border-b-2 border-surface-500">
     <tr>
-      <th colspan="6" class="text-left text-lg">
+      <th colspan="6" class="text-left text-lg text-primary-500">
         <EditableDiv
           bind:content={category.name}
           handleBlur={updateCategory}

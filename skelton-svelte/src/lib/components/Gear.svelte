@@ -56,18 +56,27 @@
   }
 </script>
 
-<tr class="border-y">
+<tr
+  class="border-y border-surface-500 rounded hover:bg-primary-500/5"
+  draggable="true"
+  on:dragstart={(e) => {
+    if (e.dataTransfer) e.dataTransfer.setData("text/plain", item.id);
+    removeItem();
+  }}
+>
   <!-- image -->
   <td class="w-[100px]">
     {#if item.image_url}
-      <a href={item.image_url}>
-        <img class="h-[100px] object-contain" src={item.image_url} alt="" />
-      </a>
+      <div class="bg-white flex justify-center p-1">
+        <a href={item.image_url}>
+          <img class="h-[100px] object-contain" src={item.image_url} alt="" />
+        </a>
+      </div>
     {/if}
   </td>
 
   <!-- name -->
-  <td class="w-1/6">
+  <td class="w-1/6 px-2">
     <EditableDiv
       bind:content={item.name}
       handleBlur={updateGear}
@@ -76,7 +85,7 @@
   </td>
 
   <!-- description -->
-  <td class="text-gray-500">
+  <td class="text-gray-500 px-2">
     <EditableDiv
       bind:content={item.description}
       handleBlur={updateGear}
