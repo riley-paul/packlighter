@@ -45,7 +45,7 @@
         .collection("categories_gear")
         .create({ category: categoryID, gear: itemID, quantity: 1 });
       invalidateAll();
-      console.log("Item created");
+      console.log("Item added to category");
     } catch (err) {
       alert("Could not add item");
       console.log("Could not add item");
@@ -73,9 +73,9 @@
 </script>
 
 <table class="table-fixed border-b-2" on:drop|preventDefault={handleDrop}>
-  <thead class="text-lg border-b-2">
+  <thead class="border-b-2">
     <tr>
-      <th colspan="6" class="text-left">
+      <th colspan="6" class="text-left text-lg">
         <EditableDiv
           bind:content={category.name}
           handleBlur={updateCategory}

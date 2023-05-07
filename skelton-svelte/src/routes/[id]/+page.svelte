@@ -13,6 +13,8 @@
   export let data: PageData;
   console.log(data);
 
+  console.log(JSON.stringify(data.categories, undefined, 2));
+
   async function updateList() {
     try {
       await pb.collection("lists").update(data.list.id, data.list);
@@ -52,9 +54,11 @@
   <div class="flex flex-col gap-4">
     {#each data.categories as category (category.id)}
       <Category {category}>
-        {#if (typeof category["expand"]["categories_gear(category)"] == "array")}
-          {#each category["expand"]["categories_gear(category)"] as gear (gear.id)}
-            <Gear item={gear.expand.gear} categoryItem={gear} />
+        {#if category.expand && "categories_gear(category)" in category.expand && Array.isArray(category.expand["categories_gear(category)"])}
+          {#each category.expand["categories_gear(category)"] as categoryItem (categoryItem.id)}
+            {#if !Array.isArray(categoryItem.expand.gear)}
+              <Gear item={categoryItem.expand.gear} {categoryItem} />
+            {/if}
           {/each}
         {/if}
       </Category>
