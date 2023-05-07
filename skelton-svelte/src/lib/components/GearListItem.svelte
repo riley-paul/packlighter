@@ -34,10 +34,10 @@
 >
   <span class="badge bg-primary-500">▶︎</span>
   <span class="flex-1">
-    <dt>{item.name}</dt>
-    <dd>{item.description}</dd>
+    <dt class="whitespace-normal">{item.name}</dt>
+    <dd class="whitespace-normal">{item.description}</dd>
   </span>
-  <span>{item.weight_g}g</span>
+  <small>{item.weight_g}g</small>
   <span>
     <DeleteButton onClick={() => deleteGear(item.id)} name={item.name} />
   </span>

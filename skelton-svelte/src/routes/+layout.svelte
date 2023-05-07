@@ -27,13 +27,13 @@
 </script>
 
 {#if $currentUser}
-  <Drawer width="w-64" rounded="rounded-none">
+  <Drawer width="w-80" rounded="rounded-none">
     <Navigation lists={data.lists} items={data.gear} />
   </Drawer>
   <AppShell
     regionPage="relative"
     slotPageHeader="sticky top-0 z-10"
-    slotSidebarLeft="bg-surface-500/5 w-0 lg:w-64"
+    slotSidebarLeft="bg-surface-500/5 w-0 lg:w-80"
     slotPageContent="p-4"
   >
     <svelte:fragment slot="pageHeader">

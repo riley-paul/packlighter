@@ -1,6 +1,8 @@
 import type { LayoutLoad } from "./$types";
 import { pb } from "$lib/pocketbase";
 
+export const ssr = false;
+
 export const load: LayoutLoad = ({}) => {
   return {
     lists: pb.collection("lists").getFullList(),
