@@ -6,7 +6,7 @@
   // If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
   import "@skeletonlabs/skeleton/styles/all.css";
   // Most of your app wide CSS should be put in this file
-  import "../app.postcss";
+  import "../app.css";
 
   import { currentUser, pb } from "$lib/pocketbase";
   import type { LayoutData } from "./$types";
@@ -27,27 +27,26 @@
 </script>
 
 {#if $currentUser}
-  <Drawer width="w-56" rounded="rounded-none">
+  <Drawer width="w-64" rounded="rounded-none">
     <Navigation lists={data.lists} items={data.gear} />
   </Drawer>
   <AppShell
     regionPage="relative"
     slotPageHeader="sticky top-0 z-10"
-    slotSidebarLeft="bg-surface-500/5 w-0 lg:w-56"
+    slotSidebarLeft="bg-surface-500/5 w-0 lg:w-64"
     slotPageContent="p-4"
   >
     <svelte:fragment slot="pageHeader">
-      <AppBar>
+      <AppBar padding="py-2 px-4">
         <svelte:fragment slot="lead">
           <div class="flex items-center">
             <button class="lg:hidden btn btn-sm mr-4" on:click={drawerOpen}>
               <Hamburger />
             </button>
-            <strong class="text-xl uppercase">PackLighter</strong>
           </div>
         </svelte:fragment>
         <svelte:fragment slot="trail">
-          <strong>{$currentUser.username}</strong>
+          <span>Signed in as <strong>{$currentUser.username}</strong></span>
           <button
             class="btn variant-outline"
             on:click={() => pb.authStore.clear()}>Sign Out</button

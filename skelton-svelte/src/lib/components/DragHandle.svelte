@@ -1,0 +1,1 @@
+<i class="fa-regular fa-grip-vertical text-xl cursor-grab text-gray-500" />

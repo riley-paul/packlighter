@@ -2,4 +2,9 @@
 html,
 body {
   @apply h-full overflow-hidden;
+  font-size: 14px;
+}
+
+dd {
+  @apply text-sm text-gray-500;
 }
