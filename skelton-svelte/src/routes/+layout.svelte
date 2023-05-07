@@ -8,6 +8,9 @@
   // Most of your app wide CSS should be put in this file
   import "../app.css";
 
+  import { LightSwitch } from "@skeletonlabs/skeleton";
+  import { autoModeWatcher } from "@skeletonlabs/skeleton";
+
   import { currentUser, pb } from "$lib/pocketbase";
   import type { LayoutData } from "./$types";
   export let data: LayoutData;
@@ -26,6 +29,10 @@
   }
 </script>
 
+<svelte:head>
+  {@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
+</svelte:head>
+
 {#if $currentUser}
   <Drawer width="w-80" rounded="rounded-none">
     <Navigation lists={data.lists} items={data.gear} />
@@ -43,6 +50,7 @@
             <button class="lg:hidden btn btn-sm mr-4" on:click={drawerOpen}>
               <Hamburger />
             </button>
+            <LightSwitch />
           </div>
         </svelte:fragment>
         <svelte:fragment slot="trail">

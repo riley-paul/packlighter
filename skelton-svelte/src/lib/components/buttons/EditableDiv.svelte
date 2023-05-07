@@ -3,7 +3,6 @@
   export let classes = "";
   export let placeholder = "";
   export let handleBlur: () => Promise<void>;
-  export let handleFocus = () => undefined;
 
   function handleKeypress(event: KeyboardEvent) {
     let pressedKey = event.key;
@@ -26,7 +25,6 @@
   data-ph={placeholder}
   bind:textContent={content}
   on:blur={handleBlur}
-  on:focus={handleFocus}
   on:keypress={handleKeypress}
 />
 

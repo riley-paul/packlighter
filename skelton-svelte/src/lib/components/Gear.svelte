@@ -4,6 +4,7 @@
   import DeleteButton from "./buttons/DeleteButton.svelte";
   import EditableDiv from "./buttons/EditableDiv.svelte";
   import Modal from "./buttons/Modal.svelte";
+  import Counter from "./buttons/Counter.svelte";
 
   import type { Record } from "pocketbase";
 
@@ -55,7 +56,7 @@
   }
 </script>
 
-<tr class="border-y hover:bg-gray-50">
+<tr class="border-y">
   <!-- image -->
   <td class="w-[100px]">
     {#if item.image_url}
@@ -99,7 +100,7 @@
     <button
       title="Consumable Weight"
       class:hide={!categoryItem.cons_weight}
-      class:text-sky-500={categoryItem.cons_weight}
+      class:text-secondary-500={categoryItem.cons_weight}
       on:click={() => {
         categoryItem.cons_weight = !categoryItem.cons_weight;
         updateCategoryGear();
@@ -114,7 +115,7 @@
     <button
       title="Worn Weight"
       class:hide={!categoryItem.worn_weight}
-      class:text-sky-500={categoryItem.worn_weight}
+      class:text-secondary-500={categoryItem.worn_weight}
       on:click={() => {
         categoryItem.worn_weight = !categoryItem.worn_weight;
         updateCategoryGear();
@@ -131,14 +132,7 @@
 
   <!-- quantity -->
   <td class="text-center">
-    <input
-      type="number"
-      min="1"
-      size="2"
-      bind:value={categoryItem.quantity}
-      on:change={updateCategoryGear}
-      class="text-center w-12"
-    />
+    <Counter bind:value={categoryItem.quantity} onChange={updateCategoryGear} />
   </td>
 
   <!-- delete -->
