@@ -1,5 +1,5 @@
-<script>
-  export let onClick = () => undefined;
+<script lang="ts">
+  export let onClick: () => Promise<void>;
   export let name = "";
   export let askConfirm = true;
 

@@ -7,8 +7,8 @@
     href === $page.url.pathname ? "!bg-primary-500" : "";
 
   import type { Record } from "pocketbase";
-  import DeleteButton from "./DeleteButton.svelte";
-  import DragHandle from "./DragHandle.svelte";
+  import DeleteButton from "./buttons/DeleteButton.svelte";
+  import DragHandle from "./buttons/DragHandle.svelte";
 
   export let item: Record;
 
@@ -26,13 +26,12 @@
 </script>
 
 <div
-  class="flex"
+  class="flex hover:bg-primary-500/5"
   draggable={true}
   on:dragstart={(e) => {
     if (e.dataTransfer) e.dataTransfer.setData("text/plain", item.id);
   }}
 >
-  <span class="badge bg-primary-500">▶︎</span>
   <span class="flex-1">
     <dt class="whitespace-normal">{item.name}</dt>
     <dd class="whitespace-normal">{item.description}</dd>

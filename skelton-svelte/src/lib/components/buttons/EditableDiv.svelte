@@ -2,7 +2,7 @@
   export let content = "Empty";
   export let classes = "";
   export let placeholder = "";
-  export let handleBlur = () => undefined;
+  export let handleBlur: () => Promise<void>;
   export let handleFocus = () => undefined;
 
   function handleKeypress(event: KeyboardEvent) {
