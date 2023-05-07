@@ -13,8 +13,10 @@
 </script>
 
 <button
-  on:click={askConfirm ? onClickConfirm : onClick}
-  class="hover:bg-orange-500 hover:text-white w-8 h-8 rounded-full text-gray-500 transition-colors"
+  on:click|preventDefault|stopPropagation={askConfirm
+    ? onClickConfirm
+    : onClick}
+  class="hover:!bg-orange-500 hover:!text-white !w-8 !h-8 !rounded-full !text-gray-500 !transition-colors flex items-center justify-center"
 >
   <i class="fa-solid fa-trash text-base" />
 </button>

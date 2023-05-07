@@ -1,10 +1,6 @@
 <script lang="ts">
-  import { page } from "$app/stores";
   import { pb } from "$lib/pocketbase";
   import { invalidateAll } from "$app/navigation";
-
-  $: classesActive = (href: string) =>
-    href === $page.url.pathname ? "!bg-primary-500" : "";
 
   import type { Record } from "pocketbase";
   import DeleteButton from "./buttons/DeleteButton.svelte";
@@ -12,11 +8,11 @@
 
   export let item: Record;
 
-  async function deleteGear(id: string) {
+  async function deleteGear() {
     try {
-      await pb.collection("lists").delete(id);
+      await pb.collection("gear").delete(item.id);
       invalidateAll();
-      console.log("list updated");
+      console.log("gear deleted");
     } catch (err) {
       alert("Could not delete gear");
       console.log("Could not delete gear");
@@ -38,6 +34,6 @@
   </span>
   <small>{item.weight_g}g</small>
   <span>
-    <DeleteButton onClick={() => deleteGear(item.id)} name={item.name} />
+    <DeleteButton onClick={deleteGear} name={item.name} />
   </span>
 </div>
