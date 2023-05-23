@@ -3,15 +3,14 @@
   import { pb } from "$lib/pocketbase";
   import DeleteButton from "./buttons/DeleteButton.svelte";
   import EditableDiv from "./buttons/EditableDiv.svelte";
-  import Modal from "./buttons/Modal.svelte";
   import Counter from "./buttons/Counter.svelte";
+
+  import { modalStore, type ModalSettings } from "@skeletonlabs/skeleton";
 
   import type { Record } from "pocketbase";
 
   export let item: Record;
   export let categoryItem: Record;
-
-  let showImageModal = false;
 
   async function updateGear() {
     try {
@@ -54,6 +53,25 @@
       console.error(err);
     }
   }
+
+  const modal: ModalSettings = {
+    type: "prompt",
+    // Data
+    title: "Image URL",
+    body: "Enter the URL of your image",
+    // Populates the input value and attributes
+    valueAttr: {
+      type: "url",
+      placeholder: "https://example.com",
+      pattern: "https://.*",
+      required: true,
+    },
+    // Returns the updated response value
+    response: (r: string) => {
+      item.image_url = r || item.image_url;
+      updateGear();
+    },
+  };
 </script>
 
 <tr
@@ -98,7 +116,7 @@
     <button
       title="Add Image"
       class="hide"
-      on:click={() => (showImageModal = true)}
+      on:click={() => modalStore.trigger(modal)}
     >
       <i class="hover:text-gray-500 transition-colors fa-solid fa-camera" />
     </button>
@@ -151,31 +169,6 @@
     </div>
   </td>
 </tr>
-
-<Modal bind:show={showImageModal}>
-  <h1 class="font-bold text-lg pb-2">Add Image URL</h1>
-  <input
-    class="rounded px-2 py-1 text-gray-800"
-    type="text"
-    placeholder="Image URL"
-    bind:value={item.image_url}
-  />
-  <button
-    class="bg-slate-500 rounded px-2 py-1 ml-2"
-    on:click={() => {
-      updateGear();
-      showImageModal = false;
-    }}
-  >
-    Save
-  </button>
-  <button
-    class="bg-slate-500 rounded px-2 py-1 ml-1"
-    on:click={() => (item.image_url = null)}
-  >
-    Clear
-  </button>
-</Modal>
 
 <style>
   .hide {

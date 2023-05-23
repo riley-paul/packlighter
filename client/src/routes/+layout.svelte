@@ -8,7 +8,7 @@
   // Most of your app wide CSS should be put in this file
   import "../app.css";
 
-  import { LightSwitch } from "@skeletonlabs/skeleton";
+  import { LightSwitch, Modal } from "@skeletonlabs/skeleton";
   import { autoModeWatcher } from "@skeletonlabs/skeleton";
 
   import { currentUser, pb } from "$lib/pocketbase";
@@ -32,6 +32,8 @@
 <svelte:head>
   {@html `<script>${autoModeWatcher.toString()} autoModeWatcher();</script>`}
 </svelte:head>
+
+<Modal />
 
 {#if $currentUser}
   <Drawer width="w-80" rounded="rounded-none">
