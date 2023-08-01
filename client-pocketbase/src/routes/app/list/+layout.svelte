@@ -6,6 +6,7 @@
     CardHeader,
     CardTitle,
     CardDescription,
+    CardFooter,
   } from "$components/ui/card";
   import type { LayoutServerData } from "./$types";
   export let data: LayoutServerData;
@@ -18,9 +19,6 @@
   <div class="bg-card border-r">
     <CardHeader>
       <CardTitle>Lists</CardTitle>
-      <CardDescription>
-        <Button class="w-full">New List</Button>
-      </CardDescription>
     </CardHeader>
     <CardContent>
       {#each data.lists as list}
@@ -35,6 +33,11 @@
         </Button>
       {/each}
     </CardContent>
+    <CardFooter>
+      <form action="" method="POST" class="w-full">
+        <Button type="submit" class="w-full">New List</Button>
+      </form>
+    </CardFooter>
   </div>
 
   <slot />

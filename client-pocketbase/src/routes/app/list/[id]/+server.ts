@@ -5,8 +5,11 @@ export const GET: RequestHandler = async ({ locals, params }) => {
   const id = params.id || "";
 
   try {
-    const data = await locals.pb.collection("lists").getOne(id);
-    return json(data);
+    const list = await locals.pb.collection("lists").getOne(id);
+    const items = await locals.pb
+      .collection("list_item")
+      .getFullList({ filter: `list="${id}"`, expand: "item" });
+    return json({ list, items });
   } catch (err) {
     const pbError = err as ClientResponseError;
     console.error(pbError);

@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({locals, request}) => {
   const data = await request.json()
   
   try {
-    const created = await locals.pb.collection("lists").create(data);
+    const created = await locals.pb.collection("lists").create({data});
     return json(created);
   } catch (err) {
     const pbError = err as ClientResponseError;
