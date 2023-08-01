@@ -6,8 +6,8 @@
   export let data: LayoutData;
 </script>
 
-<div class="min-h-full">
-  <nav class="flex items-center justify-between p-4 border-b">
+<div class="h-full flex flex-col ">
+  <nav class="flex items-center justify-between py-2 px-6 border-b">
     <a href="/app" class="font-bold text-xl">PackLighter</a>
     {#if !data.user}
       <div class="flex gap-2">
@@ -20,5 +20,5 @@
       </form>
     {/if}
   </nav>
+  <slot />
 </div>
-<slot />
