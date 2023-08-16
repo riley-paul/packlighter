@@ -39,25 +39,26 @@
     <Table class="w-full">
       <TableHeader>
         <TableRow>
-          <TableHead>Packed</TableHead>
-          <TableHead class="w-[100px]">Image</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Weight</TableHead>
+          <TableHead class="w-8 text-base text-foreground" colspan="4" />
+          <TableHead class="w-8">Weight</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {#each data.items as item}
+        {#each data.listItems as item}
           <TableRow>
-            <TableCell class="text-center w-8">
+            <TableCell class="text-center">
               <Checkbox bind:value={item.packed} />
             </TableCell>
-            <TableCell>
+            <TableCell class="w-[100px]">
               <img src={item.expand.item.image_url} alt="" />
             </TableCell>
             <TableCell>{item.expand.item.name}</TableCell>
-            <TableCell>{item.expand.item.description}</TableCell>
-            <TableCell class="text-center w-8">{item.expand.item.weight_g}</TableCell>
+            <TableCell class="text-muted-foreground">
+              {item.expand.item.description}
+            </TableCell>
+            <TableCell class="text-center">
+              {item.expand.item.weight_g}
+            </TableCell>
           </TableRow>
         {/each}
       </TableBody>

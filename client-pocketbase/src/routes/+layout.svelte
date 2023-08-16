@@ -7,7 +7,7 @@
 </script>
 
 <div class="h-full flex flex-col ">
-  <nav class="flex items-center justify-between py-2 px-6 border-b">
+  <nav class="flex items-center justify-between py-4 px-6 border-b">
     <a href="/app" class="font-bold text-xl">PackLighter</a>
     {#if !data.user}
       <div class="flex gap-2">
@@ -16,7 +16,7 @@
       </div>
     {:else}
       <form action="/auth/sign-out" method="POST">
-        <Button type="submit">Logout</Button>
+        <Button variant="secondary" type="submit">Logout</Button>
       </form>
     {/if}
   </nav>

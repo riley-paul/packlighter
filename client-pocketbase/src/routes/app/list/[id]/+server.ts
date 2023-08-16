@@ -6,10 +6,10 @@ export const GET: RequestHandler = async ({ locals, params }) => {
 
   try {
     const list = await locals.pb.collection("lists").getOne(id);
-    const items = await locals.pb
+    const listItems = await locals.pb
       .collection("list_item")
       .getFullList({ filter: `list="${id}"`, expand: "item" });
-    return json({ list, items });
+    return json({ list, listItems });
   } catch (err) {
     const pbError = err as ClientResponseError;
     console.error(pbError);

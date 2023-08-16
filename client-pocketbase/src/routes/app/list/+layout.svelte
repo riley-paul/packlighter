@@ -16,7 +16,7 @@
 </script>
 
 <div class="flex h-full">
-  <div class="bg-card border-r">
+  <div class="bg-card border-r w-1/4 overflow-y-auto">
     <CardHeader>
       <CardTitle>Lists</CardTitle>
     </CardHeader>
@@ -38,6 +38,22 @@
         <Button type="submit" class="w-full">New List</Button>
       </form>
     </CardFooter>
+    <CardHeader>
+      <CardTitle>Items</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {#each data.items as item}
+        <Button
+          class="block w-full {item.name ? '' : 'text-muted-foreground'}"
+          variant={currentPage === `/app/item/${item.id}`
+            ? "secondary"
+            : "ghost"}
+          href={`/app/item/${item.id}`}
+        >
+          {item.name || "Unnamed List"}
+        </Button>
+      {/each}
+    </CardContent>
   </div>
 
   <slot />
