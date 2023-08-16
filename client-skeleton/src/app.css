@@ -1,0 +1,18 @@
+/*place global styles here */
+html,
+body {
+  @apply h-full overflow-hidden;
+  font-size: 14px;
+}
+
+dd {
+  @apply text-sm text-gray-500;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+*:hover > .hide {
+  visibility: visible;
+}

@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+datasource db {
+  provider          = "sqlite"
+  url      = env("DATABASE_URL")
+
+  // url               = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  // directUrl         = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  // shadowDatabaseUrl = env("POSTGRES_URL_NON_POOLING") // used for migrations
+}
+
+generator client {
+  provider        = "prisma-client-js"
+}
+
+model AuthUser {
+  id           String        @id @unique
+  email        String        @unique
+  firstName    String
+  lastName     String
+  role         String          @default("USER")
+  verified     Boolean       @default(false)
+  receiveEmail Boolean       @default(true)
+  token        String?       @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  auth_session AuthSession[]
+  auth_key     AuthKey[]
+
+  list List[]
+  gear Gear[]
+
+  @@map("auth_user")
+}
+
+model AuthSession {
+  id             String   @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  auth_user      AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("auth_session")
+}
+
+model AuthKey {
+  id              String   @id @unique
+  hashed_password String?
+  user_id         String
+  primary_key     Boolean
+  expires         BigInt?
+  auth_user       AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("auth_key")
+}
+
+// enum Role {
+//   USER
+//   PREMIUM
+//   ADMIN
+// }
+
+model List {
+  id      String   @id @default(uuid())
+  user_id String
+  user    AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  name        String @default("")
+  description String @default("")
+
+  date_beg    DateTime?
+  date_end    DateTime?
+  destination String?
+  weather     String?
+
+  list_gear ListGear[]
+
+  @@map("list")
+}
+
+// enum WeightUnit {
+//   GRAMS
+//   POUNDS
+//   OUNCES
+//   KILOGRAMS
+// }
+
+model Gear {
+  id      String   @id @default(uuid())
+  user_id String
+  user    AuthUser @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  name           String?
+  description    String?
+  weight         Float      @default(0)
+  weight_unit    String @default("GRAMS")
+  price          Int        @default(0)
+  price_currency String?
+  image_url      String?
+
+  list_gear ListGear[]
+
+  @@map("gear")
+}
+
+model ListGear {
+  list_id String
+  gear_id String
+
+  list List @relation(fields: [list_id], references: [id], onDelete: Cascade)
+  gear Gear @relation(fields: [gear_id], references: [id], onDelete: Cascade)
+
+  quantity Int     @default(1)
+  category String?
+  packed   Boolean @default(false)
+
+  @@id([list_id, gear_id])
+  @@map("list_gear")
+}
