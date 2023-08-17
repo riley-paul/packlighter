@@ -22,20 +22,14 @@ const list = await Astro.locals.pb
 
 <Layout>
   <div class="flex h-full">
-    <aside class="w-[300px] overflow-hidden border-r shadow">
+    <aside class="w-[300px] overflow-hidden border-r shadow flex flex-col">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Lists</span>
-          <form action="/api/lists" method="post">
-            <Button variant="ghost">
-              <i class="fa-solid fa-plus mr-2"></i>
-              New
-            </Button>
-          </form>
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <ScrollArea>
+      <CardContent className="">
+        <div class="overflow-auto">
           <ul class="grid gap-1">
             {
               lists.map((list) => {
@@ -49,9 +43,11 @@ const list = await Astro.locals.pb
                     <a href={href} class="w-full">
                       <Button
                         variant={currentList ? "secondary" : "ghost"}
-                        className="w-full justify-start"
+                        className={`w-full justify-start ${
+                          list.name ? "" : "opacity-50"
+                        }`}
                       >
-                        {list.name}
+                        {list.name || "Unnamed List"}
                       </Button>
                     </a>
                   </li>
@@ -59,11 +55,44 @@ const list = await Astro.locals.pb
               })
             }
           </ul>
-        </ScrollArea>
+        </div>
       </CardContent>
+      <CardFooter>
+        <form
+          action={`${Astro.url.origin}/api/lists`}
+          method="post"
+          class="w-full"
+        >
+          <Button className="w-full justify-start">
+            <i class="fa-solid fa-plus mr-2"></i>
+            New List
+          </Button>
+        </form>
+      </CardFooter>
     </aside>
     <main class="flex-1">
-      {list.name}
+      <div class="flex items-start justify-between gap-2">
+        <CardHeader>
+          <CardTitle className={`${list.name ? "" : "opacity-50"}`}>
+            {list.name || "Unnamed List"}
+          </CardTitle>
+          <CardDescription
+            className={`${list.description ? "" : "opacity-50"}`}
+          >
+            {list.description || "Description"}
+          </CardDescription>
+          <div class="flex gap-2">
+            <form
+              action={`${Astro.url.origin}/api/lists/${list.id}/delete`}
+              method="post"
+            >
+              <Button size="sm">Delete</Button>
+            </form>
+            <Button size="sm">Share</Button>
+          </div>
+        </CardHeader>
+      </div>
+      <CardContent>this is all the gear</CardContent>
     </main>
   </div>
 </Layout>

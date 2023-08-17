@@ -4,7 +4,9 @@ const { user } = Astro.locals;
 ---
 
 <header class="flex justify-between items-center px-6 py-3 border-b shadow">
-  <div>PackLighter</div>
+  <a href="/">
+    <div>PackLighter</div>
+  </a>
   <div class="flex gap-4 items-center">
     {
       user ? (
