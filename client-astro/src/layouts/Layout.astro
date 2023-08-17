@@ -10,10 +10,10 @@ import "@/globals.css";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PackLighter</title>
   </head>
-  <body>
-    <main class="w-full h-full overflow-hidden">
-      <Header />
+  <body class="h-screen overflow-hidden flex flex-col">
+    <Header />
+    <div class="flex-1 overflow-hidden">
       <slot />
-    </main>
+    </div>
   </body>
 </html>
