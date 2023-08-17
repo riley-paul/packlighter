@@ -1,11 +1,18 @@
 ---
+interface Props {
+  lists: Record[];
+}
+
+const { lists } = Astro.props;
 import { Button } from "@/components/ui/button";
-const lists = await Astro.locals.pb
-  .collection("lists")
-  .getFullList({ sort: "-created" });
+import type { Record } from "pocketbase";
+import { ScrollArea } from "./ui/scroll-area";
 ---
 
-<ul class="grid gap-1">
+<ScrollArea
+  client:load
+  className="grid gap-1 overflow-y-auto max-h-1/2 min-h-[200px] border rounded-md p-2"
+>
   {
     lists.map((list) => {
       const href = `/${list.id}`;
@@ -13,7 +20,7 @@ const lists = await Astro.locals.pb
         Astro.url.pathname === href || Astro.url.pathname === href + "/";
 
       return (
-        <li>
+        <div>
           <a href={href} class="w-full">
             <Button
               variant={currentList ? "secondary" : "ghost"}
@@ -24,8 +31,8 @@ const lists = await Astro.locals.pb
               {list.name || "Unnamed List"}
             </Button>
           </a>
-        </li>
+        </div>
       );
     })
   }
-</ul>
+</ScrollArea>
