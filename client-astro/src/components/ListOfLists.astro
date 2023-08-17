@@ -11,28 +11,29 @@ import { ScrollArea } from "./ui/scroll-area";
 
 <ScrollArea
   client:load
-  className="grid gap-1 overflow-y-auto max-h-1/2 min-h-[200px] border rounded-md p-2"
+  className="overflow-y-auto h-full max-h-[350px] min-h-[200px] border rounded-md p-2 pr-3"
 >
-  {
-    lists.map((list) => {
-      const href = `/${list.id}`;
-      const currentList =
-        Astro.url.pathname === href || Astro.url.pathname === href + "/";
-
-      return (
-        <div>
-          <a href={href} class="w-full">
-            <Button
-              variant={currentList ? "secondary" : "ghost"}
-              className={`w-full justify-start ${
-                list.name ? "" : "opacity-50"
-              }`}
-            >
-              {list.name || "Unnamed List"}
-            </Button>
-          </a>
-        </div>
-      );
-    })
-  }
+  <div class="grid gap-1">
+    {
+      lists.map((list) => {
+        const href = `/${list.id}`;
+        const currentList =
+          Astro.url.pathname === href || Astro.url.pathname === href + "/";
+        return (
+          <div>
+            <a href={href} class="w-full">
+              <Button
+                variant={currentList ? "secondary" : "ghost"}
+                className={`w-full justify-start ${
+                  list.name ? "" : "opacity-50"
+                }`}
+              >
+                {list.name || "Unnamed List"}
+              </Button>
+            </a>
+          </div>
+        );
+      })
+    }
+  </div>
 </ScrollArea>

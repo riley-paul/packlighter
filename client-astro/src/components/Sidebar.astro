@@ -29,6 +29,6 @@ const items = await Astro.locals.pb.collection("items").getFullList();
     </form>
   </div>
   <ListOfLists lists={lists} />
-  <CardTitle>Items</CardTitle>
+  <CardTitle className="mt-4">Items</CardTitle>
   <ListOfItems items={items} client:load />
 </aside>
