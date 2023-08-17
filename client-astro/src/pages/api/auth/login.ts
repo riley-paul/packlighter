@@ -9,7 +9,7 @@ export const post: APIRoute = async ({ locals, request, redirect }) => {
   try {
     await locals.pb
       .collection("users")
-      .authWithPassword(userData.email, userData.password);
+      .authWithPassword(String(userData.email), String(userData.password));
   } catch (err) {
     console.error("pocketbase error", err);
   }

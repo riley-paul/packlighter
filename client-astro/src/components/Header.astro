@@ -5,20 +5,25 @@ const { user } = Astro.locals;
 
 <header class="flex justify-between items-center px-8 py-3 border-b shadow">
   <div>PackLighter</div>
-  {
-    user ? (
-      <div class="flex gap-4 items-center">
-        <div>{user.name}</div>
-        <form action="/api/auth/logout" method="post">
-          <Button type="submit" variant="secondary">
-            Logout
-          </Button>
-        </form>
-      </div>
-    ) : (
-      <a href="/auth">
-        <Button>Login</Button>
-      </a>
-    )
-  }
+  <div class="flex gap-4 items-center">
+    {
+      user ? (
+        <>
+          <div>{user.name}</div>
+          <form action="/api/auth/logout" method="post">
+            <Button type="submit" variant="secondary">
+              Logout
+            </Button>
+          </form>
+        </>
+      ) : (
+        <>
+          <div class="text-muted-foreground">Guest</div>
+          <a href="/auth">
+            <Button>Login</Button>
+          </a>
+        </>
+      )
+    }
+  </div>
 </header>
