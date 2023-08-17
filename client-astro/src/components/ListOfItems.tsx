@@ -24,6 +24,7 @@ function Item(props: { item: Record }) {
       className="flex-col items-start h-auto text-left"
       variant="ghost"
       key={item.id}
+      draggable
     >
       <CardTitle className="flex justify-between w-full">
         <span>{item.name}</span>{" "}
@@ -42,8 +43,13 @@ export function ListOfItems(props: Props) {
   const { items } = props;
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filterSearch = (item: Record) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase());
+  const filterSearch = (item: Record) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(search) ||
+      item.description.toLowerCase().includes(search)
+    );
+  };
 
   return (
     <>
@@ -53,7 +59,7 @@ export function ListOfItems(props: Props) {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       ></Input>
-      <ScrollArea className="overflow-y-auto max-h-1/2 h-full border rounded-md p-2 pr-4">
+      <ScrollArea className="overflow-y-auto max-h-1/2 h-full border rounded-md p-2 pr-3">
         <div className="grid gap-1">
           {items.filter(filterSearch).map((item) => (
             <Item item={item} />
