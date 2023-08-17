@@ -13,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export type Props = {};
 
-export default function Auth(props: Props) {
+export default function AuthCard(props: Props) {
   return (
     <Tabs defaultValue="login">
       <TabsList className="grid w-full grid-cols-2">
