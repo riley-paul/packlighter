@@ -5,5 +5,6 @@ import PocketBase from "pocketbase";
 declare namespace App {
   interface Locals {
     pb: PocketBase;
+    user: PocketBase.authStore.model | undefined;
   }
 }

@@ -1,0 +1,30 @@
+---
+import Layout from "@/layouts/Layout.astro";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import CenteredCard from "@/layouts/CenteredCard.astro";
+---
+
+<CenteredCard>
+  <Card>
+    <CardHeader>
+      <CardTitle>Login</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <form action="/api/auth/login" method="post" class="grid gap-2">
+        <Input type="email" placeholder="email" name="email" />
+        <Input type="password" placeholder="password" name="password" />
+        <Button type="submit" className="w-full">Submit</Button>
+      </form>
+    </CardContent>
+  </Card>
+</CenteredCard>
