@@ -4,8 +4,6 @@ export const post: APIRoute = async ({ locals, request, redirect }) => {
   const formData = await request.formData();
   const userData = Object.fromEntries(formData);
 
-  console.log("attempting login");
-
   try {
     await locals.pb
       .collection("users")
