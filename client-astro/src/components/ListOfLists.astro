@@ -1,63 +1,31 @@
 ---
-import Layout from "@/layouts/Layout.astro";
 import { Button } from "@/components/ui/button";
-
-const user = Astro.locals.user;
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-const lists = await Astro.locals.pb.collection("lists").getFullList();
-const list = await Astro.locals.pb
+const lists = await Astro.locals.pb
   .collection("lists")
-  .getOne(Astro.params.id || "");
+  .getFullList({ sort: "-created" });
 ---
 
-<CardHeader>
-  <CardTitle className="flex justify-between items-center">
-    <span>Lists</span>
-  </CardTitle>
-</CardHeader>
-<CardContent className="">
-  <div class="overflow-auto">
-    <ul class="grid gap-1">
-      {
-        lists.map((list) => {
-          const href = `/${list.id}`;
-          const currentList =
-            Astro.url.pathname === href || Astro.url.pathname === href + "/";
+<ul class="grid gap-1">
+  {
+    lists.map((list) => {
+      const href = `/${list.id}`;
+      const currentList =
+        Astro.url.pathname === href || Astro.url.pathname === href + "/";
 
-          return (
-            <li>
-              <a href={href} class="w-full">
-                <Button
-                  variant={currentList ? "secondary" : "ghost"}
-                  className={`w-full justify-start ${
-                    list.name ? "" : "opacity-50"
-                  }`}
-                >
-                  {list.name || "Unnamed List"}
-                </Button>
-              </a>
-            </li>
-          );
-        })
-      }
-    </ul>
-  </div>
-</CardContent>
-<CardFooter>
-  <form action={`${Astro.url.origin}/api/lists`} method="post" class="w-full">
-    <Button className="w-full justify-start">
-      <i class="fa-solid fa-plus mr-2"></i>
-      New List
-    </Button>
-  </form>
-</CardFooter>
+      return (
+        <li>
+          <a href={href} class="w-full">
+            <Button
+              variant={currentList ? "secondary" : "ghost"}
+              className={`w-full justify-start ${
+                list.name ? "" : "opacity-50"
+              }`}
+            >
+              {list.name || "Unnamed List"}
+            </Button>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

@@ -1,0 +1,28 @@
+---
+import { Button } from "@/components/ui/button";
+
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import ListOfLists from "@/components/ListOfLists.astro";
+---
+
+
+<aside class="w-[300px] overflow-hidden border-r shadow flex flex-col p-6">
+  <div class="flex items-center justify-between mb-2">
+    <CardTitle>Packing Lists</CardTitle>
+    <form action={`${Astro.url.origin}/api/lists`} method="post">
+      <Button className="w-full" size="sm" variant="ghost">
+        <i class="fa-solid fa-plus mr-2"></i>
+        New List
+      </Button>
+    </form>
+  </div>
+  <ListOfLists />
+</aside>

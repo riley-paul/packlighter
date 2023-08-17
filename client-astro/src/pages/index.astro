@@ -13,37 +13,14 @@ import {
 import ListOfLists from "@/components/ListOfLists.astro";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Sidebar from "@/components/Sidebar.astro";
 
 const lists = await Astro.locals.pb.collection("lists").getFullList();
 ---
 
-<CenteredCard>
-  <Card>
-    <CardHeader>
-      <CardTitle>Welcome</CardTitle>
-      <CardDescription>Select a list to get started</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <div class="overflow-auto">
-      <ScrollArea className="overflow-auto h-[10.25rem] border rounded-md p-1">
-          {
-            lists.map((list) => (
-              <div>
-                <a href={`/${list.id}`}>
-                  <Button
-                    variant="ghost"
-                    className={`w-full justify-start ${
-                      list.name ? "" : "opacity-50"
-                    }`}
-                  >
-                    {list.name || "Unnamed List"}
-                  </Button>
-                </a>
-              </div>
-            ))
-          }
-      </ScrollArea>
-    </div>
-    </CardContent>
-  </Card>
-</CenteredCard>
+<Layout>
+  <div class="flex h-full">
+    <Sidebar />
+    <main class="flex-1">Welcome to the app</main>
+  </div>
+</Layout>
