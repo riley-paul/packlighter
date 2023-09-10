@@ -2,44 +2,44 @@
 import Layout from "@/layouts/Layout.astro";
 import { Button } from "@/components/ui/button";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Sidebar from "@/components/Sidebar.astro";
+import { cn } from "@/lib/utils";
 
 const list = await Astro.locals.pb
   .collection("lists")
   .getOne(Astro.params.id || "");
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faShare } from "@fortawesome/free-solid-svg-icons";
 ---
 
 <Layout>
-  <CardHeader>
-    <CardTitle className="flex justify-between items-center gap-4">
-      <span class={`${list.name ? "" : "opacity-50"}`}>
+  <div class="flex justify-between">
+    <div class="prose dark:prose-invert max-w-none">
+      <h1 class={cn("text-teal-500", { "opacity-50": !list.name })}>
         {list.name || "Unnamed List"}
-      </span>
-      <div class="flex flex-row gap-2">
-        <form
-          action={`${Astro.url.origin}/api/lists/${list.id}/delete`}
-          method="post"
-          onsubmit="
-          return confirm('Are you sure you want to delete this list?')
-          "
-        >
-          <Button size="sm" variant="destructive">Delete</Button>
-        </form>
-        <Button size="sm">Share</Button>
-      </div>
-    </CardTitle>
-    <CardDescription className={`mt-2 ${list.description ? "" : "opacity-50"}`}>
-      {list.description || "Description"}
-    </CardDescription>
-  </CardHeader>
+      </h1>
+      <p class={cn({ "opacity-50": !list.name })}>
+        {list.description || "Description"}
+      </p>
+    </div>
 
-  <CardContent>this is gear</CardContent>
+    <div class="flex flex-row gap-2">
+      <form
+        action={`${Astro.url.origin}/api/lists/${list.id}/delete`}
+        method="post"
+        onsubmit="
+        return confirm('Are you sure you want to delete this list?')
+        "
+      >
+        <Button size="sm" variant="destructive">
+          <FontAwesomeIcon icon={faTrash} className="h-3 w-3 mr-2" />
+          Delete
+        </Button>
+      </form>
+      <Button variant="secondary" size="sm">
+        <FontAwesomeIcon icon={faShare} className="h-3 w-3 mr-2" />
+        Share
+      </Button>
+    </div>
+  </div>
 </Layout>

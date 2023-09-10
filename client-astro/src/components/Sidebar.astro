@@ -23,7 +23,7 @@ const items = await Astro.locals.pb.collection("items").getFullList();
 
 <div class="flex flex-col gap-2 h-full overflow-hidden">
   <div class="flex items-center justify-between">
-    <CardTitle>Packing Lists</CardTitle>
+    <CardTitle>Lists</CardTitle>
     <form action={`${Astro.url.origin}/api/lists`} method="post">
       <Button className="w-full" size="sm" variant="ghost">
         <FontAwesomeIcon icon={faPlus} className="h-3 w-3 mr-2" />
@@ -32,6 +32,7 @@ const items = await Astro.locals.pb.collection("items").getFullList();
     </form>
   </div>
   <ListOfLists lists={lists} />
-  <CardTitle className="mt-4">Items</CardTitle>
+  <br />
+  <CardTitle className="mt-4">Gear</CardTitle>
   <ListOfItems items={items} client:load />
 </div>
