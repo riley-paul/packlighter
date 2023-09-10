@@ -1,17 +1,26 @@
 ---
 import { Button } from "./ui/button";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFeather } from "@fortawesome/free-solid-svg-icons";
+
 const { user } = Astro.locals;
+const imageUrl = Astro.locals.pb.files.getUrl(user, user.profile);
 ---
 
 <header class="flex justify-between items-center px-6 py-3 border-b shadow">
-  <a href="/">
-    <div>PackLighter</div>
+  <a href="/" class="flex items-center">
+    <FontAwesomeIcon icon={faFeather} className="h-5 mr-3 text-teal-500" />
+    <div class="font-medium">PackLighter</div>
   </a>
   <div class="flex gap-4 items-center">
     {
       user ? (
         <>
-          <div>{user.name}</div>
+          <div class="flex">
+            <img src={imageUrl} alt="profile" class="h-6 mr-2" />
+            <div>{user.name}</div>
+          </div>
           <form action="/api/auth/logout" method="post">
             <Button type="submit" variant="secondary">
               Logout

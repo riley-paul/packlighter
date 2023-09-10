@@ -12,23 +12,24 @@ import {
 import { ListOfItems } from "./ListOfItems.jsx";
 import ListOfLists from "./ListOfLists.astro";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 const lists = await Astro.locals.pb
   .collection("lists")
   .getFullList({ sort: "-created" });
 const items = await Astro.locals.pb.collection("items").getFullList();
 ---
 
-<aside class="w-[300px] border-r shadow flex flex-col gap-2 p-6 h-full">
-  <div class="flex items-center justify-between">
-    <CardTitle>Packing Lists</CardTitle>
-    <form action={`${Astro.url.origin}/api/lists`} method="post">
-      <Button className="w-full" size="sm" variant="ghost">
-        <i class="fa-solid fa-plus mr-2"></i>
-        New List
-      </Button>
-    </form>
-  </div>
-  <ListOfLists lists={lists} />
-  <CardTitle className="mt-4">Items</CardTitle>
-  <ListOfItems items={items} client:load />
-</aside>
+<div class="flex items-center justify-between mb-2">
+  <CardTitle>Packing Lists</CardTitle>
+  <form action={`${Astro.url.origin}/api/lists`} method="post">
+    <Button className="w-full" size="sm" variant="ghost">
+      <FontAwesomeIcon icon={faPlus} className="h-3 w-3 mr-2" />
+      New List
+    </Button>
+  </form>
+</div>
+<ListOfLists lists={lists} />
+<CardTitle className="mt-4">Items</CardTitle>
+<ListOfItems items={items} client:load />

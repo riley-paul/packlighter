@@ -35,6 +35,6 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.pb.authStore.exportToCookie({ secure: false })
   );
 
-  // carry on
+  // carryç on
   return response;
 };

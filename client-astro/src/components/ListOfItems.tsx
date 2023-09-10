@@ -13,10 +13,6 @@ import {
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
 
-interface Props {
-  items: Record[];
-}
-
 function Item(props: { item: Record }) {
   const { item } = props;
   return (
@@ -39,7 +35,7 @@ function Item(props: { item: Record }) {
   );
 }
 
-export function ListOfItems(props: Props) {
+export function ListOfItems(props: { items: Record[] }) {
   const { items } = props;
   const [searchTerm, setSearchTerm] = useState("");
 

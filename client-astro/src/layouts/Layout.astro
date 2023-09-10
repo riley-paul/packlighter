@@ -1,22 +1,21 @@
 ---
 import Header from "@/components/Header.astro";
-import "@/globals.css";
+import RootLayout from "./RootLayout.astro";
+import Sidebar from "@/components/Sidebar.astro";
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://kit.fontawesome.com/c961af0e55.js"
-      crossorigin="anonymous"></script>
-    <title>PackLighter</title>
-  </head>
-  <body class="h-screen overflow-hidden flex flex-col">
-    <Header />
-    <div class="flex-1 overflow-hidden">
-      <slot />
-    </div>
-  </body>
-</html>
+<RootLayout>
+  <div class="w-full h-full flex flex-col overflow-hidden">
+    <header class="z-50">
+      <Header />
+    </header>
+    <main class="flex flex-row flex-1 overflow-hidden">
+      <aside class="bg-card z-0 shadow border-r p-2 min-w-[300px]">
+        <Sidebar />
+      </aside>
+      <div class="flex-1 w-full overflow-auto">
+        <slot />
+      </div>
+    </main>
+  </div>
+</RootLayout>

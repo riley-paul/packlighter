@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-export const post: APIRoute = ({ locals, redirect }) => {
+export const POST: APIRoute = ({ locals, redirect }) => {
   locals.pb.authStore.clear();
   locals.user = undefined;
 

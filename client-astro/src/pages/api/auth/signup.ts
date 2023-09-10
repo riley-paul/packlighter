@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-export const post: APIRoute = async ({ locals, request, redirect }) => {
+export const POST: APIRoute = async ({ locals, request, redirect }) => {
   const formData = await request.formData();
   const userData = Object.fromEntries(formData);
 

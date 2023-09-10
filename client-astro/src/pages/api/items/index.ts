@@ -5,7 +5,7 @@ export const get: APIRoute = async ({ locals }) => {
   return new Response(JSON.stringify(data));
 };
 
-export const post: APIRoute = async ({ locals, redirect }) => {
+export const POST: APIRoute = async ({ locals, redirect }) => {
   try {
     const newItem = await locals.pb
       .collection("items")
