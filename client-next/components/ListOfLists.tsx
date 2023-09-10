@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import type { Record } from "pocketbase";
+import type { RecordModel } from "pocketbase";
 import { ScrollArea } from "./ui/scroll-area";
 
 interface Props {
-  lists: Record[];
+  lists: RecordModel[];
 }
 
 export default function ListOfLists(props: Props) {
