@@ -1,7 +1,5 @@
 import { Button } from "./components/ui/button";
 
-function App() {
+export const Component: React.FC = () => {
   return <Button>hello</Button>;
-}
-
-export default App;
+};
