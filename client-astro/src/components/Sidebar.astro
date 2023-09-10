@@ -21,15 +21,17 @@ const lists = await Astro.locals.pb
 const items = await Astro.locals.pb.collection("items").getFullList();
 ---
 
-<div class="flex items-center justify-between mb-2">
-  <CardTitle>Packing Lists</CardTitle>
-  <form action={`${Astro.url.origin}/api/lists`} method="post">
-    <Button className="w-full" size="sm" variant="ghost">
-      <FontAwesomeIcon icon={faPlus} className="h-3 w-3 mr-2" />
-      New List
-    </Button>
-  </form>
+<div class="flex flex-col gap-2 h-full overflow-hidden">
+  <div class="flex items-center justify-between">
+    <CardTitle>Packing Lists</CardTitle>
+    <form action={`${Astro.url.origin}/api/lists`} method="post">
+      <Button className="w-full" size="sm" variant="ghost">
+        <FontAwesomeIcon icon={faPlus} className="h-3 w-3 mr-2" />
+        New List
+      </Button>
+    </form>
+  </div>
+  <ListOfLists lists={lists} />
+  <CardTitle className="mt-4">Items</CardTitle>
+  <ListOfItems items={items} client:load />
 </div>
-<ListOfLists lists={lists} />
-<CardTitle className="mt-4">Items</CardTitle>
-<ListOfItems items={items} client:load />

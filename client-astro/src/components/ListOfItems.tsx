@@ -17,9 +17,8 @@ function Item(props: { item: Record }) {
   const { item } = props;
   return (
     <Button
-      className="flex-col items-start h-auto text-left"
+      className="flex-col items-start h-auto text-left w-[250px]"
       variant="ghost"
-      key={item.id}
       draggable
     >
       <CardTitle className="flex justify-between w-full">
@@ -28,7 +27,7 @@ function Item(props: { item: Record }) {
           {item.weight_g}g
         </span>
       </CardTitle>
-      <CardDescription className="text-xs mt-1">
+      <CardDescription className="text-xs w-[210px] mt-1 text-ellipsis whitespace-nowrap overflow-hidden">
         {item.description}
       </CardDescription>
     </Button>
@@ -48,20 +47,20 @@ export function ListOfItems(props: { items: Record[] }) {
   };
 
   return (
-    <>
+    <div className="flex flex-col gap-2 overflow-hidden">
       <Input
         type="search"
         placeholder="Search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-      ></Input>
-      <ScrollArea className="overflow-y-auto max-h-1/2 h-full border rounded-md p-2 pr-3">
+      />
+      <ScrollArea className="max-h-1/2 border rounded-md p-2 pr-3">
         <div className="grid gap-1">
           {items.filter(filterSearch).map((item) => (
-            <Item item={item} />
+            <Item key={item.id} item={item} />
           ))}
         </div>
       </ScrollArea>
-    </>
+    </div>
   );
 }
