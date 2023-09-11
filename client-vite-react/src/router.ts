@@ -6,8 +6,22 @@ const routes: RouteObject[] = [
     lazy: () => import("./pages/Welcome.tsx"),
   },
   {
-    path: "/auth",
-    lazy: () => import("./pages/Auth.tsx"),
+    lazy: () => import("./layouts/WithNavbar.tsx"),
+    children: [
+      {
+        path: "/auth",
+        lazy: () => import("./pages/Auth.tsx"),
+      },
+      {
+        lazy: () => import("./layouts/WithSidebar.tsx"),
+        children: [
+          {
+            path: "/:listId",
+            lazy: () => import("./pages/List.tsx"),
+          },
+        ],
+      },
+    ],
   },
 ];
 
