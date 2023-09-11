@@ -4,7 +4,12 @@ import { serializeNonPOJOs } from "./lib/utils";
 
 export const onRequest = defineMiddleware(
   async ({ locals, request, url, redirect }, next) => {
-    locals.pb = new PocketBase(import.meta.env.PB_URL);
+    try {
+      locals.pb = new PocketBase(import.meta.env.PB_URL);
+    } catch (err) {
+      console.error("could not connect to PocketBase");
+      return new Response("Could not connect to Pocketbase", { status: 500 });
+    }
 
     // grab cookie from browser if exists
     locals.pb.authStore.loadFromCookie(request.headers.get("cookie") || "");
