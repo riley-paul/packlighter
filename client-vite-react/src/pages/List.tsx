@@ -1,6 +1,9 @@
-import { useParams } from "react-router-dom";
+import Loading from "@/components/Loading";
+import { useNavigation, useParams } from "react-router-dom";
 
 export const Component: React.FC = () => {
   const { listId } = useParams();
-  return <div>{listId}</div>;
+  const navigation = useNavigation();
+
+  return navigation.state === "loading" ? <Loading /> : <div>{listId}</div>;
 };

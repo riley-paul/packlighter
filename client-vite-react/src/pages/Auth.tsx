@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-
+import { Form } from "react-router-dom";
 
 export const Component: React.FC = () => {
   return (
@@ -23,7 +23,7 @@ export const Component: React.FC = () => {
           <TabsTrigger value="signup">Sign Up</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
-          <form action="/api/auth/login" method="post">
+          <Form action="/api/auth/login" method="post">
             <Card>
               <CardHeader>
                 <CardTitle>Login</CardTitle>
@@ -40,10 +40,10 @@ export const Component: React.FC = () => {
                 </Button>
               </CardFooter>
             </Card>
-          </form>
+          </Form>
         </TabsContent>
         <TabsContent value="signup">
-          <form action="/api/auth/signup" method="post">
+          <Form action="/api/auth/signup" method="post">
             <Card>
               <CardHeader>
                 <CardTitle>Sign Up</CardTitle>
@@ -66,9 +66,9 @@ export const Component: React.FC = () => {
                 </Button>
               </CardFooter>
             </Card>
-          </form>
+          </Form>
         </TabsContent>
       </Tabs>
     </main>
   );
-}
+};
