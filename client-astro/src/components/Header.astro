@@ -7,6 +7,7 @@ import {
   faRightFromBracket,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { AccountDropdown } from "./AccountDropdown";
 
 const { user } = Astro.locals;
 const imageUrl = user ? Astro.locals.pb.files.getUrl(user, user.profile) : "";
@@ -17,38 +18,5 @@ const imageUrl = user ? Astro.locals.pb.files.getUrl(user, user.profile) : "";
     <FontAwesomeIcon icon={faFeather} className="h-5 mr-3 text-teal-500" />
     <div class="font-medium">PackLighter</div>
   </a>
-  <div class="flex gap-4 items-center">
-    {
-      user ? (
-        <>
-          <div class="flex">
-            <img src={imageUrl} alt="profile" class="h-6 mr-2" />
-            <div>{user.name}</div>
-          </div>
-          <form action="/api/auth/logout" method="post">
-            <Button type="submit" variant="secondary">
-              <FontAwesomeIcon
-                icon={faRightFromBracket}
-                className="h-4 mr-2"
-              />
-              Logout
-            </Button>
-          </form>
-        </>
-      ) : (
-        <>
-          <div class="text-muted-foreground">Guest</div>
-          <a href="/auth">
-            <Button>
-              <FontAwesomeIcon
-                icon={faRightToBracket}
-                className="h-4 mr-2"
-              />
-              Login
-            </Button>
-          </a>
-        </>
-      )
-    }
-  </div>
+  <AccountDropdown user={user} imageUrl={imageUrl} client:load />
 </header>

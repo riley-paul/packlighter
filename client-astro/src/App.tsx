@@ -1,11 +1,11 @@
 import PocketBase, { Record } from "pocketbase";
-import { Button } from "./ui/button";
+import { Button } from "./components/ui/button.tsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { ListOfItems } from "./ListOfItems.tsx";
-import { ListOfLists } from "./ListOfLists.tsx";
-import { List, ListPlaceholder } from "./List.tsx";
+import { ListOfItems } from "./components/ListOfItems.tsx";
+import { ListOfLists } from "./components/ListOfLists.tsx";
+import { List } from "./components/List.tsx";
 
 interface Props {
   pb_auth: string;
@@ -46,7 +46,7 @@ const App: React.FC<Props> = (props) => {
         </div>
       </aside>
       <div className="flex-1 w-full p-4 overflow-auto">
-        {list ? <List {...{ list }} /> : <ListPlaceholder />}
+        <List {...{ list }} />
       </div>
     </main>
   );
