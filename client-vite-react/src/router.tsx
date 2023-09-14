@@ -1,26 +1,34 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
+
 import { ErrorPage } from "./components/Error.tsx";
+
+import { WithNavbar } from "./layouts/WithNavbar.tsx";
+import { WithSidebar } from "./layouts/WithSidebar.tsx";
+
+import { Welcome } from "./pages/Welcome.tsx";
+import { Auth } from "./pages/Auth.tsx";
+import { List } from "./pages/List.tsx";
 
 const routes: RouteObject[] = [
   {
     path: "/",
     ErrorBoundary: ErrorPage,
-    lazy: () => import("./pages/Welcome.tsx"),
+    element: <Welcome />,
   },
   {
-    lazy: () => import("./layouts/WithNavbar.tsx"),
+    element: <WithNavbar />,
     ErrorBoundary: ErrorPage,
     children: [
       {
         path: "/auth",
-        lazy: () => import("./pages/Auth.tsx"),
+        element: <Auth />,
       },
       {
-        lazy: () => import("./layouts/WithSidebar.tsx"),
+        element: <WithSidebar />,
         children: [
           {
             path: "/:listId",
-            lazy: () => import("./pages/List.tsx"),
+            element: <List />,
           },
         ],
       },

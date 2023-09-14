@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ListOfItems } from "./components/ListOfItems.tsx";
 import { ListOfLists } from "./components/ListOfLists.tsx";
 import { List } from "./components/List.tsx";
+import { ListPicker } from "./components/ListPicker.tsx";
 
 interface Props {
   pb_auth: string;
@@ -23,10 +24,14 @@ const App: React.FC<Props> = (props) => {
   const [items, setItems] = useState(props.initialItems);
   const [list, setList] = useState(props.initialList);
 
+  console.log("hello from js")
+
   return (
     <main className="flex flex-row flex-1 overflow-hidden">
       <aside className="bg-card z-0 shadow border-r p-2 w-[250px]">
         <div className="flex flex-col gap-2 h-full overflow-hidden">
+          <ListPicker lists={props.lists} />
+
           <div className="flex items-center justify-between">
             <h2>Lists</h2>
             <form action={`/api/lists`} method="post">

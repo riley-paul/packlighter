@@ -1,7 +1,7 @@
 import Loading from "@/components/Loading";
 import { useNavigation, useParams } from "react-router-dom";
 
-export const Component: React.FC = () => {
+export const List: React.FC = () => {
   const { listId } = useParams();
   const navigation = useNavigation();
 

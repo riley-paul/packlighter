@@ -1,9 +1,8 @@
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeather } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "@/components/ui/button";
 
-export const Component: React.FC = () => {
+export const Welcome: React.FC = () => {
   return (
     <main className="w-full h-full py-16 overflow-auto">
       <div className="prose dark:prose-invert mx-auto max-w-xl text-center">

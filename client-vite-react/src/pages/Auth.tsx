@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { Form } from "react-router-dom";
 
-export const Component: React.FC = () => {
+export const Auth: React.FC = () => {
   return (
     <main className="flex justify-center h-full pt-24">
       <Tabs defaultValue="login">
