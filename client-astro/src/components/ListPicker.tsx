@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,36 +17,14 @@ import {
 } from "@/components/ui/popover";
 import type { Record } from "pocketbase";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
-
 interface Props {
   lists: Record[];
+  currentListId: string;
 }
 
 export const ListPicker: React.FC<Props> = (props) => {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const newListRef = React.useRef<HTMLFormElement>(null);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,34 +35,59 @@ export const ListPicker: React.FC<Props> = (props) => {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+          {props.lists.find((list) => list.id === props.currentListId)?.name ||
+            "Unnamed List"}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder="Search lists..." />
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
-            {frameworks.map((framework) => (
+            {props.lists.map((list) => (
               <CommandItem
-                key={framework.value}
+                key={list.id}
+                value={list.id}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
+                  window.location.href = `/${currentValue}`;
                   setOpen(false);
                 }}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === framework.value ? "opacity-100" : "opacity-0"
+                    list.id === props.currentListId
+                      ? "opacity-100"
+                      : "opacity-0"
                   )}
                 />
-                {framework.label}
+                <span
+                  className={cn({
+                    "opacity-50": !list.name,
+                  })}
+                >
+                  {list.name || "Unnamed List"}
+                </span>
               </CommandItem>
             ))}
+            <form
+              action={`/api/lists`}
+              id="createList"
+              method="post"
+              ref={newListRef}
+            >
+              <CommandItem
+                key="create"
+                onSelect={(currentValue) => {
+                  newListRef.current?.submit();
+                  setOpen(false);
+                }}
+              >
+                <Plus className={cn("mr-2 h-4 w-4")} />
+                New List...
+              </CommandItem>
+            </form>
           </CommandGroup>
         </Command>
       </PopoverContent>

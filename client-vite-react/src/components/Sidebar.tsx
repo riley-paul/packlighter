@@ -13,6 +13,7 @@ import ListOfLists from "./ListOfLists.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { ToastDemo } from "./ToastDemo.js";
 
 export default function Component() {
   return (
@@ -26,6 +27,7 @@ export default function Component() {
           </Button>
         </form>
       </div>
+      <ToastDemo />
       {/* <ListOfLists lists={lists} />
   <br />
   <CardTitle className="mt-4">Gear</CardTitle>
