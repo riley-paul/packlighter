@@ -34,6 +34,17 @@ export const onRequest = defineMiddleware(
       locals.pb.authStore.exportToCookie({ secure: false })
     );
 
+    // redirect if logged in
+    if (
+      locals.pb.authStore.isValid &&
+      (url.pathname.startsWith("/auth") || url.pathname === "/")
+    ) {
+      const items = await locals.pb
+        .collection("lists")
+        .getFullList({ sort: "-created" });
+      return redirect(`/${items[0].id}`);
+    }
+
     // redirect if not logged in
     if (
       !locals.user &&

@@ -1,0 +1,38 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { Button } from "@/components/ui/button";
+
+import { cn } from "@/lib/utils";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faShare } from "@fortawesome/free-solid-svg-icons";
+import App from "@/components/App";
+
+let lists;
+let initialItems;
+let initialList;
+
+try {
+  initialList = await Astro.locals.pb
+    .collection("lists")
+    .getOne(Astro.params.id ?? "");
+  lists = await Astro.locals.pb
+    .collection("lists")
+    .getFullList({ sort: "-created" });
+  initialItems = await Astro.locals.pb.collection("items").getFullList();
+} catch {
+  return new Response(null, { status: 404 });
+}
+---
+
+<Layout>
+  <App
+    pb_url={import.meta.env.PB_URL}
+    pb_auth={Astro.request.headers.get("cookie") || ""}
+    currentListId={Astro.params.id ?? ""}
+    lists={lists}
+    initialItems={initialItems}
+    initialList={initialList}
+    client:load
+  />
+</Layout>

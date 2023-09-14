@@ -10,37 +10,22 @@ import { List, ListPlaceholder } from "./List.tsx";
 interface Props {
   pb_auth: string;
   pb_url: string;
+  currentListId: string;
+  lists: Record[];
+  initialItems: Record[];
+  initialList: Record;
 }
 
 const App: React.FC<Props> = (props) => {
-  const { pb_auth, pb_url } = props;
+  const pb = new PocketBase(props.pb_url);
+  pb.authStore.loadFromCookie(props.pb_auth);
 
-  const pb = new PocketBase(pb_url);
-  pb.authStore.loadFromCookie(pb_auth);
-
-  const [lists, setLists] = useState([]);
-  const [items, setItems] = useState([]);
-  const [selectedList, setSelectedList] = useState<string>("");
-  const [list, setList] = useState<Record | undefined>(undefined);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setLists(await pb.collection("lists").getFullList({ sort: "-created" }));
-      setItems(await pb.collection("items").getFullList());
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setList(await pb.collection("lists").getOne(selectedList));
-    };
-    fetchData();
-  }, [selectedList]);
+  const [items, setItems] = useState(props.initialItems);
+  const [list, setList] = useState(props.initialList);
 
   return (
     <main className="flex flex-row flex-1 overflow-hidden">
-      <aside className="bg-card z-0 shadow border-r p-2 min-w-[250px] max-w-[300px]">
+      <aside className="bg-card z-0 shadow border-r p-2 w-[250px]">
         <div className="flex flex-col gap-2 h-full overflow-hidden">
           <div className="flex items-center justify-between">
             <h2>Lists</h2>
@@ -51,7 +36,10 @@ const App: React.FC<Props> = (props) => {
               </Button>
             </form>
           </div>
-          <ListOfLists {...{ lists, selectedList, setSelectedList }} />
+          <ListOfLists
+            lists={props.lists}
+            currentListId={props.currentListId}
+          />
           <br />
           <h2 className="mt-4">Gear</h2>
           <ListOfItems items={items} />
