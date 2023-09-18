@@ -40,11 +40,29 @@ export const ListPicker: React.FC<Props> = (props) => {
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent className="w-full p-1 bg-card">
         <Command>
           <CommandInput placeholder="Search lists..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandEmpty>No list found.</CommandEmpty>
           <CommandGroup>
+            <form
+              action={`/api/lists`}
+              id="createList"
+              className="font-medium"
+              method="post"
+              ref={newListRef}
+            >
+              <CommandItem
+                key="create"
+                onSelect={(currentValue) => {
+                  newListRef.current?.submit();
+                  setOpen(false);
+                }}
+              >
+                <Plus className={cn("mr-2 h-4 w-4")} />
+                New List...
+              </CommandItem>
+            </form>
             {props.lists.map((list) => (
               <CommandItem
                 key={list.id}
@@ -71,23 +89,6 @@ export const ListPicker: React.FC<Props> = (props) => {
                 </span>
               </CommandItem>
             ))}
-            <form
-              action={`/api/lists`}
-              id="createList"
-              method="post"
-              ref={newListRef}
-            >
-              <CommandItem
-                key="create"
-                onSelect={(currentValue) => {
-                  newListRef.current?.submit();
-                  setOpen(false);
-                }}
-              >
-                <Plus className={cn("mr-2 h-4 w-4")} />
-                New List...
-              </CommandItem>
-            </form>
           </CommandGroup>
         </Command>
       </PopoverContent>

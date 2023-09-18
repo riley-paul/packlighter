@@ -1,17 +1,13 @@
 ---
 import RootLayout from "@/layouts/RootLayout.astro";
 import { Button } from "@/components/ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFeather } from "@fortawesome/free-solid-svg-icons";
+import { Feather } from "lucide-react";
 ---
 
 <RootLayout>
   <div class="w-full h-full py-16 overflow-auto">
     <div class="prose dark:prose-invert mx-auto max-w-xl">
-      <FontAwesomeIcon
-        icon={faFeather}
-        className="h-20 text-teal-500 mx-auto mb-16"
-      />
+      <Feather className="h-20 w-20 text-teal-500 mx-auto mb-16" />
       <h1 class="text-center">PackLighter</h1>
       <p class="text-center">
         The best way to optimize your packing lists for weight and completeness

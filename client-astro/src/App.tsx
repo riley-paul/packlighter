@@ -1,7 +1,5 @@
 import PocketBase, { Record } from "pocketbase";
 import { Button } from "./components/ui/button.tsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { ListOfItems } from "./components/ListOfItems.tsx";
 import { ListOfLists } from "./components/ListOfLists.tsx";
@@ -32,38 +30,11 @@ const App: React.FC<Props> = (props) => {
 
   return (
     <main className="flex flex-row flex-1 overflow-hidden">
-      <aside className="bg-card z-0 shadow border-r p-2 w-[250px]">
+      <aside className="z-0 shadow border-r p-2 w-[250px]">
         <div className="flex flex-col gap-2 h-full overflow-hidden">
-          <div className="flex justify-between items-center">
-            <Label>List</Label>
-            {/* <form action={`/api/lists`} method="post">
-              <Button className="w-full" size="sm" variant="ghost">
-                <FontAwesomeIcon icon={faPlus} className="h-3 w-3 mr-2" />
-                New List
-              </Button>
-            </form> */}
-          </div>
+          <Label>Lists</Label>
           <ListPicker lists={props.lists} currentListId={props.currentListId} />
-
-          <Button
-            variant="outline"
-            onClick={() => {
-              toast({
-                description: "Your message has been sent.",
-              });
-            }}
-          >
-            Show Toast
-          </Button>
-          <div className="flex items-center justify-between">
-            <h2>Lists</h2>
-          </div>
-          <ListOfLists
-            lists={props.lists}
-            currentListId={props.currentListId}
-          />
-          <br />
-          <h2 className="mt-4">Gear</h2>
+          <Label className="mt-4">Gear</Label>
           <ListOfItems items={items} />
         </div>
       </aside>

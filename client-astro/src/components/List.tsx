@@ -1,8 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { Record } from "pocketbase";
 import { Button } from "./ui/button";
-import { faTrash, faShare } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Share, Trash, Trash2 } from "lucide-react";
 
 interface Props {
   list: Record;
@@ -27,12 +26,12 @@ export const List: React.FC<Props> = ({ list }) => {
           onSubmit={() => confirm("Are you sure you want to delete this list?")}
         >
           <Button size="sm" variant="destructive">
-            <FontAwesomeIcon icon={faTrash} className="h-3 w-3 mr-2" />
+            <Trash2 className="h-4 w-4 mr-2" />
             Delete
           </Button>
         </form>
         <Button variant="secondary" size="sm">
-          <FontAwesomeIcon icon={faShare} className="h-3 w-3 mr-2" />
+          <Share className="h-4 w-4 mr-2" />
           Share
         </Button>
       </div>

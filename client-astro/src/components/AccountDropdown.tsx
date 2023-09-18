@@ -16,12 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faRightFromBracket,
-  faRightToBracket,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { User } from "lucide-react";
 
 interface Props {
   user: PocketBase["authStore"]["model"] | undefined;
@@ -37,7 +32,7 @@ export const AccountDropdown: React.FC<Props> = (props) => {
           <Avatar className="h-6 w-6 ml-2">
             <AvatarImage src={props.imageUrl} alt="@shadcn" />
             <AvatarFallback>
-              <FontAwesomeIcon icon={faUser} />
+              <User className="h-4" />
             </AvatarFallback>
           </Avatar>
         </div>
