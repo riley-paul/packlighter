@@ -10,11 +10,11 @@ import { Auth } from "./pages/Auth.tsx";
 import { List } from "./pages/List.tsx";
 
 const routes: RouteObject[] = [
-  {
-    path: "/",
-    ErrorBoundary: ErrorPage,
-    element: <Welcome />,
-  },
+  // {
+  //   path: "/",
+  //   ErrorBoundary: ErrorPage,
+  //   element: <Welcome />,
+  // },
   {
     element: <WithNavbar />,
     ErrorBoundary: ErrorPage,
@@ -27,7 +27,7 @@ const routes: RouteObject[] = [
         element: <WithSidebar />,
         children: [
           {
-            path: "/:listId",
+            path: "/",
             element: <List />,
           },
         ],

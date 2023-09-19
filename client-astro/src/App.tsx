@@ -7,6 +7,7 @@ import { List } from "./components/List.tsx";
 import { ListPicker } from "./components/ListPicker.tsx";
 import { Label } from "./components/ui/label.tsx";
 import { useToast } from "./components/ui/use-toast.ts";
+import useList from "./hooks/useList.ts";
 
 interface Props {
   pb_auth: string;
@@ -23,8 +24,9 @@ const App: React.FC<Props> = (props) => {
 
   pb.authStore.loadFromCookie(props.pb_auth);
 
+  const { list } = useList(pb, props.initialList);
+
   const [items, setItems] = useState(props.initialItems);
-  const [list, setList] = useState(props.initialList);
 
   console.log("hello from js");
 
