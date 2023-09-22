@@ -1,0 +1,24 @@
+---
+import type { ToDo } from "@/store";
+import { Checkbox } from "./ui/checkbox";
+import { cn } from "@/lib/utils";
+
+export interface Props {
+  todo: ToDo;
+}
+
+const { todo } = Astro.props;
+---
+
+<form class="flex gap-2 items-center">
+  <input
+    hx-put={`/todos/${todo.id}`}
+    type="checkbox"
+    value={todo.completed.toString()}
+    name="completed"
+    id="completed"
+  />
+  <span class={cn("italic", { "line-through": todo.completed })}>
+    {todo.text}
+  </span>
+</form>

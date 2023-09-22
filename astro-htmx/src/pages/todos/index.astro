@@ -1,0 +1,31 @@
+---
+import { Checkbox } from "@/components/ui/checkbox";
+import { Loader } from "lucide-react";
+import { todos, type ToDo } from "@/store";
+import { v4 as uuid } from "uuid";
+import Todo from "@/components/Todo.astro";
+
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData();
+  const todoText = formData.get("todo")?.toString();
+
+  if (todoText) {
+    const todo: ToDo = {
+      id: uuid(),
+      text: todoText,
+      completed: false,
+    };
+    todos.push(todo);
+  }
+}
+---
+
+<div id="todos" class="italic flex flex-col-reverse gap-2">
+  {
+    todos.length > 0 ? (
+      todos.map((todo) => <Todo todo={todo} />)
+    ) : (
+      <div class="flex justify-center">No to-dos added yet</div>
+    )
+  }
+</div>
