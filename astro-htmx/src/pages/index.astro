@@ -10,12 +10,15 @@ import { Input } from "@/components/ui/input";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <script src="/htmx.js" is:inline></script>
     <title>Astro HTMX</title>
   </head>
-  <body>
-    <form action="" class="">
-			<Input/>
-			<Button>Hello</Button>
-		</form>
+  <body class="prose mx-auto p-4">
+    <h1>To-Do List</h1>
+    <form hx-post="/todos" hx-target="#todos" class="grid gap-2">
+      <Input name="todo" placeholder="Add To-Do..." />
+      <Button type="submit">Add</Button>
+    </form>
+    <div id="todos"></div>
   </body>
 </html>
