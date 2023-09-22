@@ -1,23 +1,18 @@
 ---
-import { Checkbox } from "@/components/ui/checkbox";
-import { Loader } from "lucide-react";
-import { todos, type ToDo } from "@/store";
-import { v4 as uuid } from "uuid";
 import Todo from "@/components/Todo.astro";
+import { db } from "@/db";
+import type { ToDo } from "@/store";
 
 if (Astro.request.method === "POST") {
   const formData = await Astro.request.formData();
   const todoText = formData.get("todo")?.toString();
-
   if (todoText) {
-    const todo: ToDo = {
-      id: uuid(),
-      text: todoText,
-      completed: false,
-    };
-    todos.push(todo);
+    db.prepare(`INSERT INTO todos (text) VALUES (?)`).run(todoText);
   }
 }
+
+const todos = db.prepare(`SELECT * FROM todos`).all() as ToDo[];
+console.log(todos);
 ---
 
 <div id="todos" class="italic flex flex-col-reverse gap-2">

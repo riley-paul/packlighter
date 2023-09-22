@@ -4,4 +4,4 @@ export interface ToDo {
   completed: boolean;
 }
 
-export const todos: ToDo[] = [];
+export let todos: ToDo[] = [];
