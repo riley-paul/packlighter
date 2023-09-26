@@ -1,7 +1,8 @@
 ---
 import type { ToDo } from "@/store";
-import { Checkbox } from "./ui/checkbox";
 import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { Delete } from "lucide-react";
 
 export interface Props {
   todo: ToDo;
@@ -10,10 +11,21 @@ export interface Props {
 const { todo } = Astro.props;
 ---
 
-<form class="flex gap-2 items-center">
-  <!-- <Checkbox checked={todo.completed} /> -->
-  <input type="checkbox" hx-put={`/todos/${todo.id}`} name="completed" />
-  <span class={cn("italic", { "line-through": todo.completed })}>
+<div
+  id={`todo-${todo.id}`}
+  class="flex gap-2 items-center justify-between px-3 py-1 group hover:bg-muted rounded-md transition-colors"
+>
+  <span class={"italic peer-checked:line-through"}>
     {todo.text}
   </span>
-</form>
+
+  <Button
+    hx-delete={`/todos/${todo.id}`}
+    hx-target="closest div"
+    hx-swap="outerHTML"
+    size="sm"
+    variant="link"
+  >
+    done
+  </Button>
+</div>

@@ -15,12 +15,10 @@ const todos = db.prepare(`SELECT * FROM todos`).all() as ToDo[];
 console.log(todos);
 ---
 
-<div id="todos" class="italic flex flex-col-reverse gap-2">
-  {
-    todos.length > 0 ? (
-      todos.map((todo) => <Todo todo={todo} />)
-    ) : (
-      <div class="flex justify-center">No to-dos added yet</div>
-    )
-  }
-</div>
+{
+  todos.length > 0 ? (
+    todos.map((todo) => <Todo todo={todo} />)
+  ) : (
+    <div class="flex justify-center">No to-dos added yet</div>
+  )
+}

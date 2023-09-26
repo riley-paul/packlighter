@@ -1,8 +1,10 @@
 ---
 import Todo from "@/components/Todo.astro";
 import { db } from "@/db";
-import { todos } from "@/store";
-const todo = todos.find((i) => i.id === Astro.params.id);
+
+if (Astro.request.method === "DELETE") {
+  db.prepare(`DELETE FROM todos WHERE id = ?`).run(Astro.params.id);
+}
 
 if (Astro.request.method === "PUT") {
   const formData = await Astro.request.formData();
@@ -12,4 +14,3 @@ if (Astro.request.method === "PUT") {
 }
 ---
 
-{todo && <Todo todo={todo} />}

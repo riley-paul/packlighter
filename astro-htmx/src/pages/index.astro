@@ -3,13 +3,17 @@ import "@/globals.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
     <meta name="generator" content={Astro.generator} />
     <script src="/htmx.js" is:inline></script>
     <title>Astro HTMX</title>
@@ -28,11 +32,6 @@ import { Loader } from "lucide-react";
       <Button type="submit">Add</Button>
     </form>
     <br />
-    <div id="todos" hx-get="/todos" hx-swap="outerHTML" hx-trigger="load">
-      <div class="htmx-indicator w-full flex items-center justify-center">
-        <Loader className="animate-spin mr-2" />
-         Loading...
-      </div>
-    </div>
+    <div id="todos" hx-get="/todos" hx-trigger="load"></div>
   </body>
 </html>
