@@ -8,7 +8,6 @@
   import { Button } from "$components/ui/button";
   import { Alert, AlertDescription, AlertTitle } from "$components/ui/alert";
   import { Input } from "$components/ui/input";
-  import { Label } from "$components/ui/label";
   import {
     Card,
     CardContent,
@@ -70,10 +69,6 @@
           data-invalid={$errors.password}
           bind:value={$form.password}
         />
-        <a
-          href="/auth/reset-password"
-          class="text-xs hover:underline text-sky-500">Forgot Password?</a
-        >
         {#if $errors.password}
           <small>{$errors.password}</small>
         {/if}

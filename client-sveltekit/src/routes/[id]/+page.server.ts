@@ -1,13 +1,13 @@
-import {
-  fail,
-  redirect,
-  type Actions,
-  type ServerLoad,
-  error,
-} from "@sveltejs/kit";
+import { redirect, type Actions, type ServerLoad } from "@sveltejs/kit";
 
-export const load: ServerLoad = async (event) => {
-  if (event.locals.pb.authStore.isValid) throw redirect(302, "/");
-  const form = await superValidate(event, signUpSchema);
-  return { form };
+export const load: ServerLoad = async ({ locals, params }) => {
+  const list = await locals.pb.collection("lists").getOne(params.id ?? "");
+  return { list };
+};
+
+export const actions: Actions = {
+  delete: async ({ locals, params }) => {
+    await locals.pb.collection("lists").delete(params.id ?? "");
+    throw redirect(303, "/");
+  },
 };

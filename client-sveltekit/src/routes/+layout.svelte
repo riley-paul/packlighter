@@ -7,6 +7,8 @@
   import * as Avatar from "$lib/components/ui/avatar";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 
+  import { SvelteToast } from "@zerodevx/svelte-toast";
+
   export let data: LayoutData;
 </script>
 
@@ -41,3 +43,5 @@
 <main class="p-4 overflow-auto">
   <slot />
 </main>
+
+<SvelteToast />

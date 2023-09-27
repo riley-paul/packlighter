@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@zerodevx/svelte-toast": "^0.9.5",
     "bits-ui": "^0.5.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

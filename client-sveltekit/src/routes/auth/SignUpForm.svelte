@@ -7,8 +7,6 @@
   import { Button } from "$components/ui/button";
   import { Alert, AlertDescription, AlertTitle } from "$components/ui/alert";
   import { Input } from "$components/ui/input";
-  import { Label } from "$components/ui/label";
-  import { Checkbox } from "$components/ui/checkbox";
   import {
     Card,
     CardContent,
@@ -43,12 +41,11 @@
   {/if}
   <Card>
     <CardHeader>
-      <CardTitle>Login</CardTitle>
-      <CardDescription>Enter your credentials</CardDescription>
+      <CardTitle>Sign Up</CardTitle>
+      <CardDescription>Create a new account</CardDescription>
     </CardHeader>
     <CardContent class="space-y-2">
       <div class="space-y-1">
-        <Label for="name">Name</Label>
         <Input
           id="name"
           name="name"
@@ -63,7 +60,6 @@
         {/if}
       </div>
       <div class="space-y-1">
-        <Label for="email">Email</Label>
         <Input
           id="email"
           name="email"
@@ -78,7 +74,6 @@
         {/if}
       </div>
       <div class="space-y-1">
-        <Label for="password">Password</Label>
         <Input
           id="password"
           name="password"
@@ -92,7 +87,6 @@
         {/if}
       </div>
       <div class="space-y-1">
-        <Label for="passwordConfirm">Confirm Password</Label>
         <Input
           id="passwordConfirm"
           name="passwordConfirm"
@@ -104,20 +98,6 @@
         {#if $errors.passwordConfirm}
           <small class="text-destructive">{$errors.passwordConfirm}</small>
         {/if}
-      </div>
-      <div class="flex items-center space-x-2 pt-4">
-        <Checkbox id="terms" bind:checked={$form.terms} />
-        <label
-          for="terms"
-          class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Accept the
-          <a href="/terms" class="text-primaryHover underline">terms</a>
-          and
-          <a href="/privacy" class="text-primaryHover underline"
-            >privacy policy</a
-          >
-        </label>
       </div>
     </CardContent>
     <CardFooter class="grid space-y-1">
