@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from "$components/ui/button";
+  import { Feather } from "lucide-svelte";
   import "../app.postcss";
   import type { LayoutData } from "./$types";
 
@@ -8,7 +9,12 @@
 
 <div class="min-h-full">
   <nav class="flex items-center justify-between p-4 border-b">
-    <a href="/app" class="font-bold text-xl">PackLighter</a>
+    <a href="/" class="font-medium text-xl">
+      <h1 class="flex gap-2 items-center">
+        <Feather class="text-teal-500" />PackLighter
+      </h1>
+    </a>
+    
     {#if !data.user}
       <div class="flex gap-2">
         <Button href="/auth/sign-in">Login</Button>

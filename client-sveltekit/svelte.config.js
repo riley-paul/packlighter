@@ -1,5 +1,5 @@
 import adapter from "@sveltejs/adapter-auto";
-import {vitePreprocess} from "@sveltejs/kit/vite";
+import { vitePreprocess } from "@sveltejs/kit/vite";
 /** @type {import('@sveltejs/kit').Config}*/
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -12,11 +12,11 @@ const config = {
     adapter: adapter(),
     alias: {
       $components: "src/lib/components",
-      "$components/*": "src/lib/components/*"
-    }
+      $lib: "src/lib",
+    },
   },
   shadcn: {
-    componentPath: './src/lib/components/ui'
-  }
+    componentPath: "./src/lib/components/ui",
+  },
 };
 export default config;
