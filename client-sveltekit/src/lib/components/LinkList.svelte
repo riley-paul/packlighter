@@ -12,17 +12,17 @@
   export let links: Link[] = [];
 </script>
 
-<ul class="grid border rounded-md px-4 py-2 bg-background">
+<ul class="grid border rounded-md px-4 bg-background">
   {#each links as link, idx}
     <li>
       <a class={cn({ "opacity-50": !link.name }, link.class)} href={link.link}>
-        <div class="text-sm flex w-full justify-between">
+        <div class="text-sm flex w-full justify-between items-center py-2">
           {link.name || "Unnamed List"}
           <ChevronRight />
         </div>
       </a>
       {#if idx < links.length - 1}
-        <Separator class="my-2" />
+        <Separator />
       {/if}
     </li>
   {/each}

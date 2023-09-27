@@ -29,7 +29,11 @@
         <DropdownMenu.Label>My Account</DropdownMenu.Label>
         <DropdownMenu.Separator />
         <DropdownMenu.Item>Account</DropdownMenu.Item>
-        <DropdownMenu.Item>Logout</DropdownMenu.Item>
+        <form action="?/logout">
+          <DropdownMenu.Item>
+            <Button type="submit">Logout</Button>
+          </DropdownMenu.Item>
+        </form>
       </DropdownMenu.Group>
     </DropdownMenu.Content>
   </DropdownMenu.Root>

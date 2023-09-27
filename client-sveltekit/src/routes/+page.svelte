@@ -17,9 +17,10 @@
 
 <div class="flex justify-between items-center mb-2">
   <h2 class="text-lg font-medium">Lists</h2>
-  <form action="/api/lists" method="post">
+  <form action="?/createList" method="post">
     <Button variant="secondary" size="sm">
-      <Plus className="mr-2" /> New List
+      <!-- <Plus className="mr-3" /> -->
+      Add List
     </Button>
   </form>
 </div>

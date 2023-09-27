@@ -1,4 +1,3 @@
-import { serializeNonPOJOs } from "$lib/utils";
 import { redirect, type Handle } from "@sveltejs/kit";
 import PocketBase from "pocketbase";
 
@@ -13,7 +12,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   try {
     if (event.locals.pb.authStore.isValid) {
       await event.locals.pb.collection("users").authRefresh();
-      const user = serializeNonPOJOs(event.locals.pb.authStore.model);
+      const user = structuredClone(event.locals.pb.authStore.model);
       event.locals.user = user;
     }
   } catch (_) {
@@ -21,9 +20,8 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.user = undefined;
   }
 
-  if (event.route.id?.startsWith("/app")) {
-    if (!event.locals.user) throw redirect(302, "/auth/sign-in");
-    if (!event.locals.user.verified) throw redirect(302, "/auth/verify-email");
+  if (!event.route.id?.startsWith("/auth") && !event.locals.user) {
+    throw redirect(302, "/auth");
   }
 
   // complete other actions
