@@ -1,30 +1,39 @@
 <script lang="ts">
   import { Button } from "$components/ui/button";
-  import { Feather } from "lucide-svelte";
+  import { Feather, User } from "lucide-svelte";
   import "../app.postcss";
   import type { LayoutData } from "./$types";
+
+  import * as Avatar from "$lib/components/ui/avatar";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 
   export let data: LayoutData;
 </script>
 
-<div class="min-h-full">
-  <nav class="flex items-center justify-between p-4 border-b">
-    <a href="/" class="font-medium text-xl">
-      <h1 class="flex gap-2 items-center">
-        <Feather class="text-teal-500" />PackLighter
-      </h1>
-    </a>
-    
-    {#if !data.user}
-      <div class="flex gap-2">
-        <Button href="/auth/sign-in">Login</Button>
-        <Button href="/auth/sign-up" variant="secondary">Register</Button>
-      </div>
-    {:else}
-      <form action="/auth/sign-out" method="POST">
-        <Button type="submit">Logout</Button>
-      </form>
-    {/if}
-  </nav>
-</div>
-<slot />
+<nav class="flex items-center justify-between px-4 h-16 border-b">
+  <a href="/" class="font-medium text-lg">
+    <h1 class="flex gap-2 items-center">
+      <Feather class="text-teal-500" />PackLighter
+    </h1>
+  </a>
+
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger>
+      <Avatar.Root>
+        <Avatar.Image src={data.avatarImageUrl} alt="@shadcn" />
+        <Avatar.Fallback><User /></Avatar.Fallback>
+      </Avatar.Root>
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Content>
+      <DropdownMenu.Group>
+        <DropdownMenu.Label>My Account</DropdownMenu.Label>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item>Account</DropdownMenu.Item>
+        <DropdownMenu.Item>Logout</DropdownMenu.Item>
+      </DropdownMenu.Group>
+    </DropdownMenu.Content>
+  </DropdownMenu.Root>
+</nav>
+<main class="p-4 overflow-auto">
+  <slot />
+</main>
