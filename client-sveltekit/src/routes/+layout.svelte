@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$components/ui/button";
-  import { Feather, LogOut, User } from "lucide-svelte";
+  import { Feather, LogOut, User, Wrench } from "lucide-svelte";
   import "../app.postcss";
   import type { LayoutData } from "./$types";
 
@@ -28,16 +28,21 @@
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <Avatar.Root>
-          <Avatar.Image src={data.avatarImageUrl} alt="@shadcn" />
+          <Avatar.Image
+            src={data.avatarImageUrl}
+            alt="@shadcn"
+            class="object-cover"
+          />
           <Avatar.Fallback><User /></Avatar.Fallback>
         </Avatar.Root>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <DropdownMenu.Group>
           <form class="grid" method="post">
-            <DropdownMenu.Label>My Account</DropdownMenu.Label>
-            <DropdownMenu.Separator />
-            <DropdownMenu.Item>Account</DropdownMenu.Item>
+            <Button href="/account" variant="ghost" class="justify-start">
+              <Wrench class="h-4 w-4 mr-2" />
+              Account
+            </Button>
             <Button
               type="submit"
               variant="ghost"

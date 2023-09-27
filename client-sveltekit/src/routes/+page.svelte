@@ -5,7 +5,6 @@
   import LinkList from "$components/LinkList.svelte";
 
   export let data: PageServerData;
-  console.log(data)
 
   const listsLinks = data.lists.map((list) => ({
     link: `/${list.id}`,
@@ -19,8 +18,8 @@
   <h2 class="text-lg font-medium">Lists</h2>
   <form action="?/createList" method="post">
     <Button variant="secondary" size="sm">
-      <!-- <Plus className="mr-3" /> -->
-      Add List
+      <Plus class="h-4 w-4 mr-2" />
+      New List
     </Button>
   </form>
 </div>

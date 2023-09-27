@@ -23,9 +23,6 @@ const userSchema = z.object({
     .min(8, { message: "Password must be at least 8 characters" })
     .max(72, { message: "Password must be less than 72 characters" })
     .trim(),
-  terms: z.boolean({
-    required_error: "You must accept the terms and privacy policy",
-  }),
 });
 
 export const updatePasswordSchema = userSchema

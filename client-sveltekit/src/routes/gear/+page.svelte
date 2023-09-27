@@ -5,10 +5,14 @@
   const { items } = data;
 </script>
 
-<h2>Gear</h2>
+<h2 class="text-lg font-medium">Gear</h2>
 
 <ul>
   {#each items as item}
-    <li>{item.name}</li>
+    <li>
+      <div class="flex justify-between">
+        <span>{item.name}</span><span>{item.weight_g}</span>
+      </div>
+    </li>
   {/each}
 </ul>

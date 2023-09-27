@@ -43,7 +43,7 @@ export const actions: Actions = {
       setError(form, "", pocketbaseError.response.message);
       return { form };
     }
-    throw redirect(303, "/app");
+    throw redirect(303, "/");
   },
   signUp: async (event) => {
     const form = await superValidate(event, signUpSchema);
@@ -59,10 +59,11 @@ export const actions: Actions = {
       await event.locals.pb
         .collection("users")
         .create({ username, ...form.data });
-      await event.locals.pb
-        .collection("users")
-        .requestVerification(form.data.email);
+      // await event.locals.pb
+      //   .collection("users")
+      //   .authWithPassword(form.data.email, form.data.password);
     } catch (err: any) {
+      console.log(err);
       const pocketbaseError = err as ClientResponseError;
       for (let fieldError of Object.keys(pocketbaseError.response.data)) {
         setError(
@@ -74,6 +75,6 @@ export const actions: Actions = {
       setError(form, "", pocketbaseError.response.message);
       return { form };
     }
-    throw redirect(303, "/app");
+    throw redirect(303, "/");
   },
 };

@@ -6,7 +6,6 @@
   import { AlertTriangle } from "lucide-svelte";
 
   import { Button } from "$components/ui/button";
-  import * as Alert from "$lib/components/ui/alert";
   import { Input } from "$components/ui/input";
   import {
     Card,
@@ -20,6 +19,8 @@
   import type { PageServerData } from "./$types";
   import { slide } from "svelte/transition";
 
+  import * as Alert from "$lib/components/ui/alert";
+
   export let data: PageServerData;
 
   const { form, errors, enhance, delayed } = superForm(data.loginForm, {
@@ -29,7 +30,7 @@
   });
 </script>
 
-<form method="POST" action="/auth/sign-in" use:enhance class="space-y-2">
+<form method="POST" action="?/login" use:enhance class="space-y-2">
   <!-- <SuperDebug data={$form} /> -->
   {#if $errors._errors}
     <div transition:slide>
