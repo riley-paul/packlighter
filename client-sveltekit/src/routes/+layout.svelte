@@ -19,26 +19,28 @@
     </h1>
   </a>
 
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger>
-      <Avatar.Root>
-        <Avatar.Image src={data.avatarImageUrl} alt="@shadcn" />
-        <Avatar.Fallback><User /></Avatar.Fallback>
-      </Avatar.Root>
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content>
-      <DropdownMenu.Group>
-        <DropdownMenu.Label>My Account</DropdownMenu.Label>
-        <DropdownMenu.Separator />
-        <DropdownMenu.Item>Account</DropdownMenu.Item>
-        <form action="?/logout">
-          <DropdownMenu.Item>
-            <Button type="submit">Logout</Button>
-          </DropdownMenu.Item>
-        </form>
-      </DropdownMenu.Group>
-    </DropdownMenu.Content>
-  </DropdownMenu.Root>
+  {#if data.user}
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Avatar.Root>
+          <Avatar.Image src={data.avatarImageUrl} alt="@shadcn" />
+          <Avatar.Fallback><User /></Avatar.Fallback>
+        </Avatar.Root>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Group>
+          <DropdownMenu.Label>My Account</DropdownMenu.Label>
+          <DropdownMenu.Separator />
+          <DropdownMenu.Item>Account</DropdownMenu.Item>
+          <form action="?/logout">
+            <DropdownMenu.Item>
+              <Button type="submit">Logout</Button>
+            </DropdownMenu.Item>
+          </form>
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  {/if}
 </nav>
 <main class="p-4 overflow-auto">
   <slot />

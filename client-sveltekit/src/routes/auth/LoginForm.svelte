@@ -57,7 +57,7 @@
           bind:value={$form.email}
         />
         {#if $errors.email}
-          <small>{$errors.email}</small>
+          <small class="text-destructive">{$errors.email}</small>
         {/if}
       </div>
       <div class="space-y-1">
@@ -70,7 +70,7 @@
           bind:value={$form.password}
         />
         {#if $errors.password}
-          <small>{$errors.password}</small>
+          <small class="text-destructive">{$errors.password}</small>
         {/if}
       </div>
     </CardContent>

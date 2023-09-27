@@ -20,8 +20,15 @@ export const handle: Handle = async ({ event, resolve }) => {
     event.locals.user = undefined;
   }
 
-  if (!event.route.id?.startsWith("/auth") && !event.locals.user) {
+  if (!event.locals.user && !event.route.id?.startsWith("/auth")) {
     throw redirect(302, "/auth");
+  }
+
+  if (
+    event.locals.pb.authStore.isValid &&
+    event.route.id?.startsWith("/auth")
+  ) {
+    throw redirect(302, "/");
   }
 
   // complete other actions
