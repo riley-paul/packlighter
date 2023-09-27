@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 
-export const get: APIRoute = async ({ locals }) => {
+export const PUT: APIRoute = async ({ locals }) => {
   const data = await locals.pb.collection("lists").getFullList();
   return new Response(JSON.stringify(data));
 };

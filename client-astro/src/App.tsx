@@ -24,8 +24,6 @@ const App: React.FC<Props> = (props) => {
 
   pb.authStore.loadFromCookie(props.pb_auth);
 
-  const { list } = useList(pb, props.initialList);
-
   const [items, setItems] = useState(props.initialItems);
 
   console.log("hello from js");
@@ -41,7 +39,6 @@ const App: React.FC<Props> = (props) => {
         </div>
       </aside>
       <div className="flex-1 w-full p-4 overflow-auto">
-        <List {...{ list }} />
       </div>
     </main>
   );

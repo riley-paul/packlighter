@@ -78,5 +78,5 @@
 html,
 body {
   @apply h-full overflow-hidden;
-  font-size: 16px;
+  font-size: 18px;
 }

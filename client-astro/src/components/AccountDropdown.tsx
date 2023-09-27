@@ -28,11 +28,10 @@ export const AccountDropdown: React.FC<Props> = (props) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="flex text-sm items-center hover:underline underline-offset-4 cursor-pointer">
-          Welcome, {props.user.name}
-          <Avatar className="h-6 w-6 ml-2">
+          <Avatar className="h-10 w-10 ml-2">
             <AvatarImage src={props.imageUrl} alt="@shadcn" />
             <AvatarFallback>
-              <User className="h-4" />
+              <User className="h-8" />
             </AvatarFallback>
           </Avatar>
         </div>
@@ -41,6 +40,9 @@ export const AccountDropdown: React.FC<Props> = (props) => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
+          <DropdownMenuItem className="text-muted-foreground">
+            {props.user.name}
+          </DropdownMenuItem>
           <a href="/account">
             <DropdownMenuItem>Account Settings</DropdownMenuItem>
           </a>

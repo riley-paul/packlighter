@@ -3,18 +3,6 @@ import { Button } from "./ui/button";
 import { AccountDropdown } from "./AccountDropdown";
 import { Feather } from "lucide-react";
 
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import SideSheet from "./SideSheet.astro";
-
 const { user } = Astro.locals;
 const imageUrl = user ? Astro.locals.pb.files.getUrl(user, user.profile) : "";
 ---
@@ -23,9 +11,9 @@ const imageUrl = user ? Astro.locals.pb.files.getUrl(user, user.profile) : "";
   class="bg-card text-foreground flex justify-between items-center px-6 h-16 border-b shadow"
 >
   <a href="/" class="flex items-center">
-    <Feather className="mr-3 text-teal-500" />
-    <div class="font-medium text-xl">PackLighter</div>
+    <Feather className="mr-3 h-8 w-8 text-teal-500" />
+    <h1 class="font-medium text-xl">PackLighter</h1>
   </a>
 
-  <SideSheet />
+  <AccountDropdown user={user} imageUrl={imageUrl} client:load />
 </header>

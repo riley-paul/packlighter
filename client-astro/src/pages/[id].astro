@@ -1,32 +1,17 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import App from "@/App";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
+import type { Record } from "pocketbase";
+import { List } from "@/components/List";
 
-let lists;
-let initialItems;
-let initialList;
+const id = Astro.params.id ?? "";
+const list = await Astro.locals.pb.collection("lists").getOne(id);
 
-try {
-  initialList = await Astro.locals.pb
-    .collection("lists")
-    .getOne(Astro.params.id ?? "");
-  lists = await Astro.locals.pb
-    .collection("lists")
-    .getFullList({ sort: "-created" });
-  initialItems = await Astro.locals.pb.collection("items").getFullList();
-} catch {
-  return new Response(null, { status: 404 });
-}
+console.log(list);
 ---
 
 <Layout>
-  <App
-    pb_url={import.meta.env.PB_URL}
-    pb_auth={Astro.request.headers.get("cookie") || ""}
-    currentListId={Astro.params.id ?? ""}
-    lists={lists}
-    initialItems={initialItems}
-    initialList={initialList}
-    client:load
-  />
-</Layout>@/App
+  <List list={list} client:load />
+</Layout>

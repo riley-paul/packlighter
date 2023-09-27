@@ -1,21 +1,43 @@
 ---
 import RootLayout from "@/layouts/RootLayout.astro";
 import { Button } from "@/components/ui/button";
-import { Feather } from "lucide-react";
+import {
+  ChevronRight,
+  Feather,
+  LucidePlusCircle,
+  Plus,
+  PlusCircle,
+  PlusCircleIcon,
+} from "lucide-react";
+import Layout from "@/layouts/Layout.astro";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
+import LinkList from "@/components/LinkList.astro";
+
+const lists = await Astro.locals.pb
+  .collection("lists")
+  .getFullList({ sort: "-created" });
+
+const listsLinks = lists.map((list) => ({
+  link: `/${list.id}`,
+  name: list.name,
+  class: list.name ? "" : "opacity-50",
+}));
+
+const gearLinks = [{ name: "All Gear", link: "/gear" }];
 ---
 
-<RootLayout>
-  <div class="w-full h-full py-16 overflow-auto">
-    <div class="prose dark:prose-invert mx-auto max-w-xl">
-      <Feather className="h-20 w-20 text-teal-500 mx-auto mb-16" />
-      <h1 class="text-center">PackLighter</h1>
-      <p class="text-center">
-        The best way to optimize your packing lists for weight and completeness
-      </p>
-      <div>
-        <a href="/auth"><Button className="w-full">Get Started</Button></a>
-      </div>
-      <br />
-    </div>
+<Layout>
+  <div class="flex justify-between items-center mb-2">
+    <h2 class="text-lg font-medium">Lists</h2>
+    <form action="/api/lists" method="post">
+      <Button variant="secondary" size="sm">
+        <Plus className="mr-2" /> New List
+      </Button>
+    </form>
   </div>
-</RootLayout>
+  <LinkList links={listsLinks} />
+  <br />
+  <h2 class="text-lg font-medium mb-2">Gear</h2>
+  <LinkList links={gearLinks} />
+</Layout>
