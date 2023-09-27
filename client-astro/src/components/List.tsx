@@ -9,16 +9,17 @@ import { Textarea } from "./ui/textarea";
 import useFetch from "@/hooks/useFetch";
 import { useToast } from "./ui/use-toast";
 
-interface Props {
-  list: Record;
-}
-
-export const List: React.FC<Props> = ({ list }) => {
-  const { data } = useFetch("/api/items");
+export const List: React.FC<{ listId: string }> = ({ listId }) => {
+  const { data: items, loading: itemsLoading } = useFetch("/api/items", {
+    credentials: "include",
+  });
+  const { data: list, loading: listLoading } = useFetch(`/api/list/${listId}`);
   const { toast } = useToast();
-  console.log(data);
+  console.log(items);
 
-  return (
+  return itemsLoading || listLoading ? (
+    "loading"
+  ) : (
     <>
       <h2
         contentEditable
@@ -59,7 +60,7 @@ export const List: React.FC<Props> = ({ list }) => {
             })
         }
       />
-      
+
       {/* <h2
         contentEditable
         className={cn("text-teal-500 font-medium text-xl mb-4", {

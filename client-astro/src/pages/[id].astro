@@ -5,13 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import type { Record } from "pocketbase";
 import { List } from "@/components/List";
-
-const id = Astro.params.id ?? "";
-const list = await Astro.locals.pb.collection("lists").getOne(id);
-
-console.log(list);
 ---
 
 <Layout>
-  <List list={list} client:load />
+  <List client:load />
 </Layout>
