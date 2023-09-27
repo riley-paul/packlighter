@@ -6,7 +6,7 @@
   import { AlertTriangle } from "lucide-svelte";
 
   import { Button } from "$components/ui/button";
-  import { Alert, AlertDescription, AlertTitle } from "$components/ui/alert";
+  import * as Alert from "$lib/components/ui/alert";
   import { Input } from "$components/ui/input";
   import {
     Card,
@@ -33,11 +33,11 @@
   <!-- <SuperDebug data={$form} /> -->
   {#if $errors._errors}
     <div transition:slide>
-      <Alert variant="destructive">
+      <Alert.Root variant="destructive">
         <AlertTriangle class="h-4 w-4" />
-        <AlertTitle>Sign In Issue</AlertTitle>
-        <AlertDescription>{$errors._errors}</AlertDescription>
-      </Alert>
+        <Alert.Title>Sign In Issue</Alert.Title>
+        <Alert.Description>{$errors._errors}</Alert.Description>
+      </Alert.Root>
     </div>
   {/if}
   <Card>

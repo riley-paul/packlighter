@@ -13,7 +13,7 @@ export const actions: Actions = {
   logout: async ({ locals }) => {
     locals.pb.authStore.clear();
     locals.user = undefined;
-    throw redirect(303, "/");
+    throw redirect(303, "/auth");
   },
   createList: async ({ locals }) => {
     const newList = await locals.pb

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$components/ui/button";
-  import { Feather, User } from "lucide-svelte";
+  import { Feather, LogOut, User } from "lucide-svelte";
   import "../app.postcss";
   import type { LayoutData } from "./$types";
 
@@ -11,6 +11,11 @@
 
   export let data: LayoutData;
 </script>
+
+<svelte:head>
+  <title>PackLighter</title>
+  <meta name="description" content="Packing tool" />
+</svelte:head>
 
 <nav class="flex items-center justify-between px-4 h-16 border-b">
   <a href="/" class="font-medium text-lg">
@@ -29,13 +34,19 @@
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
         <DropdownMenu.Group>
-          <DropdownMenu.Label>My Account</DropdownMenu.Label>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item>Account</DropdownMenu.Item>
-          <form action="?/logout">
-            <DropdownMenu.Item>
-              <Button type="submit">Logout</Button>
-            </DropdownMenu.Item>
+          <form class="grid" method="post">
+            <DropdownMenu.Label>My Account</DropdownMenu.Label>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item>Account</DropdownMenu.Item>
+            <Button
+              type="submit"
+              variant="ghost"
+              class="justify-start"
+              formaction="/?/logout"
+            >
+              <LogOut class="h-4 w-4 mr-2" />
+              Logout
+            </Button>
           </form>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
