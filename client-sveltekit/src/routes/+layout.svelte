@@ -12,7 +12,9 @@
   <meta name="description" content="Packing tool" />
 </svelte:head>
 
-<header class="flex items-center justify-between px-4 h-16 border-b">
+<header
+  class="flex items-center justify-between px-4 min-h-[4rem] border-b z-50 shadow"
+>
   <a href="/" class="font-medium text-lg">
     <h1 class="flex gap-2 items-center">
       <Feather class="text-teal-500" />PackLighter
@@ -23,7 +25,9 @@
   {/if}
 </header>
 <main class="p-4 overflow-y-auto">
-  <slot />
+  <div class="max-w-screen-md mx-auto">
+    <slot />
+  </div>
 </main>
 
 <!-- <SvelteToast /> -->
