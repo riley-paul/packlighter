@@ -24,12 +24,12 @@
   <DialogTrigger>
     <div
       class={cn(
-        "h-12 aspect-square rounded-sm flex justify-center items-center",
+        "h-12 p-0.5 aspect-square rounded-sm flex justify-center items-center",
         item.image_url ? "bg-white" : "bg-muted"
       )}
     >
       {#if item.image_url}
-        <img class="h-11" src={item.image_url} alt={item.name} />
+        <img class="h-full w-full object-contain" src={item.image_url} alt={item.name} />
       {/if}
     </div>
   </DialogTrigger>
@@ -47,9 +47,9 @@
         bind:value={url}
       />
       {#if url}
-        <div class="bg-white rounded-md p-2 flex items-center justify-center">
+        <div class="bg-white rounded-md p-2 flex items-center aspect-square justify-center">
           <img
-            class="block max-h-[50vh] w-auto h-auto"
+            class="object-contain h-full w-full"
             src={url}
             alt={item.name}
           />
