@@ -8,9 +8,13 @@
   import { fly, slide } from "svelte/transition";
 
   import * as Select from "$lib/components/ui/select";
+  import * as Table from "$lib/components/ui/table";
 
   import { Button } from "$components/ui/button";
   import { Input } from "$components/ui/input";
+  import Combobox from "$components/Combobox.svelte";
+  import ItemImage from "$components/ItemImage.svelte";
+  import ItemRow from "$components/ItemRow.svelte";
 
   export let form: ActionData;
   export let data: PageServerData;
@@ -23,37 +27,19 @@
 </div>
 <p class="text-muted-foreground">{list.description}</p>
 <br />
-<h3 class="font-medium text-lg">Gear</h3>
-<ul>
+<div class="grid divide-y">
   {#each listItems as listItem (listItem.id)}
-    {#if listItem.expand && "item" in listItem.expand}
-      <li in:fly={{ y: 20 }} out:slide>
-        <form
-          method="post"
-          action="?/removeItem"
-          class="flex items-center justify-between"
-          use:enhance
-        >
-          <input type="hidden" name="id" value={listItem.id} />
-          <span>{listItem.expand.item.name}</span>
-          <Button size="icon" variant="ghost">
-            <Delete class="h-4 w-4" />
-          </Button>
-        </form>
-      </li>
-    {/if}
+    <ItemRow {listItem} />
   {/each}
-</ul>
+</div>
 
 {#if form?.error}
   <p>{form.error}</p>
 {/if}
 
-<form action="?/addItem" method="post" class="flex gap-2">
-  <select name="item">
-    {#each itemOptions as item (item.id)}
-      <option value={item.id}>{item.name}</option>
-    {/each}
-  </select>
-  <Button><Plus class="h-4 w-4 mr-2" />Add</Button>
-</form>
+<br />
+
+<Combobox
+  placeholder="Add some gear..."
+  options={itemOptions.map((i) => i.name)}
+/>
