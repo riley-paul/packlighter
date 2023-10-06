@@ -3,11 +3,12 @@ import { immer } from "zustand/middleware/immer";
 import { persist } from "zustand/middleware";
 import {
   AppDataType,
-  // CategoryType,
+  CategoryType,
   ItemType,
   // ListIemType,
   ListType,
   initAppData,
+  initCategory,
   initItem,
   initList,
 } from "./schema";
@@ -22,9 +23,17 @@ type Actions = {
   getList: (id: string) => ListType | undefined;
   removeList: (id: string) => void;
   setLists: (lists: ListType[]) => void;
-  // addCategory: (listId: string, category: CategoryType) => void;
-  // removeCategory: (listId: string, id: string) => void;
-  // updateCategory: (listId: string, category: CategoryType) => void;
+  addCategory: (
+    listId: string,
+    category?: Partial<CategoryType>
+  ) => CategoryType;
+  removeCategory: (listId: string, id: string) => void;
+  updateCategory: (
+    listId: string,
+    id: string,
+    category: Partial<CategoryType>
+  ) => void;
+  setCategories: (listId: string, categories: CategoryType[]) => void;
   // addListItem: (listId: string, categoryId: string, item: ListIemType) => void;
   // removeListItem: (listId: string, categoryId: string, id: string) => void;
   // updateListItem: (
@@ -85,6 +94,41 @@ export const useAppStore = create<State>()(
       setLists: (lists) => {
         set((state) => {
           state.lists = lists;
+        });
+      },
+      addCategory: (listId, category) => {
+        const newCategory = initCategory(category);
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          state.lists[listIndex].categories.push(newCategory);
+        });
+        return newCategory;
+      },
+      removeCategory: (listId, id) => {
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          const prev = state.lists[listIndex].categories;
+          state.lists[listIndex].categories = prev.filter(
+            (category) => category.id !== id
+          );
+        });
+      },
+      updateCategory: (listId, id, category) => {
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          const categoryIndex = state.lists[listIndex].categories.findIndex(
+            (category) => category.id === id
+          );
+          Object.assign(
+            state.lists[listIndex].categories[categoryIndex],
+            category
+          );
+        });
+      },
+      setCategories(listId, categories) {
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          state.lists[listIndex].categories = categories;
         });
       },
     })),

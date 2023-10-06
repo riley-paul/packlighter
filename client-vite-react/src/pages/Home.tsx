@@ -13,7 +13,7 @@ export const Component: React.FC = () => {
     addList: state.addList,
   }));
 
-  const gearLinks = [{ name: "All Gear", link: "/gear" }];
+  const gearLinks = [{ name: "All Gear", link: "/gear", id: "gear" }];
 
   return (
     <div>
@@ -42,7 +42,11 @@ export const Component: React.FC = () => {
       />
       <br />
       <h2 className="text-lg font-medium mb-2">Gear</h2>
-      {/* <LinkList  links={gearLinks} /> */}
+      <LinkList
+        items={gearLinks}
+        setItems={() => {}}
+        createLink={(link) => link}
+      />
     </div>
   );
 };

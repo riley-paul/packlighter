@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ChevronRight, GripVertical } from "lucide-react";
-import { buttonVariants } from "./ui/button";
+import { ChevronRight } from "lucide-react";
 
 import {
   DndContext,
@@ -10,6 +9,7 @@ import {
   useSensors,
   MouseSensor,
   TouchSensor,
+  DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -19,6 +19,7 @@ import {
 } from "@dnd-kit/sortable";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Grabber } from "./Grabber";
 
 interface ILink {
   name: string;
@@ -48,17 +49,8 @@ function LinkItem<T>({ item, createLink, ...props }: ILinkItemProps<T>) {
       className="grid grid-cols-[auto_1fr] items-center gap-2"
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
     >
-      <div
-        className={cn(
-          buttonVariants({ variant: "ghost", size: "icon" }),
-          "h-8 w-6 justify-center"
-        )}
-      >
-        <GripVertical className="h-5 w-5 text-muted-foreground" />
-      </div>
+      <Grabber attributes={attributes} listeners={listeners} />
       <a
         className={cn({ "opacity-50": !link.name }, link.class)}
         href={link.link}
@@ -93,7 +85,7 @@ export function LinkList<T extends { id: string }>({
     useSensor(TouchSensor, {
       // Press delay of 250ms, with tolerance of 5px of movement
       activationConstraint: {
-        delay: 250,
+        delay: 100,
         tolerance: 5,
       },
     }),
@@ -102,11 +94,11 @@ export function LinkList<T extends { id: string }>({
     })
   );
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
+    if (active.id !== over?.id) {
       const oldIndex = items.findIndex((item) => item.id === active.id);
-      const newIndex = items.findIndex((item) => item.id === over.id);
+      const newIndex = items.findIndex((item) => item.id === over?.id);
       setItems(arrayMove(items, oldIndex, newIndex));
     }
   };
