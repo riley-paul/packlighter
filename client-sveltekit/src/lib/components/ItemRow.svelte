@@ -3,29 +3,16 @@
   import ItemImage from "./ItemImage.svelte";
   import Button from "./ui/button/button.svelte";
   import { Minus, Plus } from "lucide-svelte";
+  import Item from "./Item.svelte";
+  import Counter from "./Counter.svelte";
 
   export let listItem: RecordModel;
 </script>
 
-<div
-  class="grid grid-cols-[auto_1fr_2fr_3rem_3.5rem] items-center gap-3 py-2 text-sm"
->
+<div class="grid grid-cols-[1fr_auto] items-center gap-3">
   {#if listItem.expand && "item" in listItem.expand}
-    <ItemImage item={listItem.expand.item} />
-    <span>{listItem.expand.item.name}</span>
-    <span class="text-muted-foreground">
-      {listItem.expand.item.description}
-    </span>
-    <span class="">{listItem.expand.item.weight_g}g</span>
-    <span class="justify-self-end flex gap-1 items-center">
-      <Button variant="ghost" size="icon" class="h-5 w-5">
-        <Minus class="h-3 w-3" />
-      </Button>
-      {listItem.quantity}
-      <Button variant="ghost" size="icon" class="h-5 w-5">
-        <Plus class="h-3 w-3" />
-      </Button>
-    </span>
+    <Item item={listItem.expand.item} />
+    <Counter value={listItem.quantity} />
   {:else}
     No item information
   {/if}

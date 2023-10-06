@@ -8,7 +8,9 @@
 
 <DropdownMenu.Root>
   <DropdownMenu.Trigger>
-    <Button size="icon" variant="ghost"><MoreHorizontal /></Button>
+    <Button size="icon" variant="ghost" type="button">
+      <MoreHorizontal />
+    </Button>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
@@ -26,7 +28,7 @@
           <Copy class="h-4 w-4 mr-2" />
           Duplicate
         </Button>
-        <Button class="justify-start" formaction="?/delete" variant="ghost">
+        <Button class="justify-start text-destructive" formaction="?/delete" variant="ghost">
           <Delete class="h-4 w-4 mr-2" />Delete
         </Button>
       </form>

@@ -28,6 +28,17 @@ export const actions: Actions = {
       .create({ name, description, categories, user: locals.user.id });
     throw redirect(303, `/${newList.id}`);
   },
+  update: async ({ locals, params, request }) => {
+    const formData = await request.formData();
+    formData.append("user", locals.user.id);
+
+    try {
+      await locals.pb.collection("lists").update(params.id ?? "", formData);
+    } catch (err) {
+      console.log("could not update list");
+      console.error(err);
+    }
+  },
   addItem: async ({ locals, params, request, url }) => {
     const formData = await request.formData();
     try {

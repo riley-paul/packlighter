@@ -29,12 +29,21 @@
       )}
     >
       {#if item.image_url}
-        <img class="h-full w-full object-contain" src={item.image_url} alt={item.name} />
+        <img
+          class="h-full w-full object-contain"
+          src={item.image_url}
+          alt={item.name}
+        />
       {/if}
     </div>
   </DialogTrigger>
   <DialogContent class="p-4">
-    <form action="/gear?/updateItem" method="post" class="grid gap-4">
+    <form
+      action="/gear?/updateItem"
+      method="post"
+      class="grid gap-4"
+      use:enhance
+    >
       <input type="hidden" name="id" value={item.id} />
       <DialogHeader class="text-left">
         <DialogTitle>Update Image</DialogTitle>
@@ -47,12 +56,10 @@
         bind:value={url}
       />
       {#if url}
-        <div class="bg-white rounded-md p-2 flex items-center aspect-square justify-center">
-          <img
-            class="object-contain h-full w-full"
-            src={url}
-            alt={item.name}
-          />
+        <div
+          class="bg-white rounded-md p-2 flex items-center aspect-square justify-center"
+        >
+          <img class="object-contain h-full w-full" src={url} alt={item.name} />
         </div>
       {:else}
         <div
