@@ -6,17 +6,13 @@ import { useNavigate } from "react-router-dom";
 
 export const Component: React.FC = () => {
   const navigate = useNavigate();
-  const { lists, addList } = useAppStore((state) => ({
+  const { lists, addList, setLists } = useAppStore((state) => ({
     items: state.items,
     lists: state.lists,
+    setLists: state.setLists,
     addList: state.addList,
   }));
 
-  const listLinks = lists.map((list) => ({
-    link: `/${list.id}`,
-    name: list.name || "Unnamed List",
-    class: list.name ? "" : "opacity-50",
-  }));
   const gearLinks = [{ name: "All Gear", link: "/gear" }];
 
   return (
@@ -35,10 +31,18 @@ export const Component: React.FC = () => {
           New List
         </Button>
       </span>
-      <LinkList links={listLinks} />
+      <LinkList
+        items={lists}
+        setItems={setLists}
+        createLink={(list) => ({
+          link: `/${list.id}`,
+          name: list.name || "Unnamed List",
+          class: list.name ? "" : "opacity-50",
+        })}
+      />
       <br />
       <h2 className="text-lg font-medium mb-2">Gear</h2>
-      <LinkList links={gearLinks} />
+      {/* <LinkList  links={gearLinks} /> */}
     </div>
   );
 };

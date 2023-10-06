@@ -21,6 +21,7 @@ type Actions = {
   updateList: (id: string, list: Partial<ListType>) => void;
   getList: (id: string) => ListType | undefined;
   removeList: (id: string) => void;
+  setLists: (lists: ListType[]) => void;
   // addCategory: (listId: string, category: CategoryType) => void;
   // removeCategory: (listId: string, id: string) => void;
   // updateCategory: (listId: string, category: CategoryType) => void;
@@ -80,6 +81,11 @@ export const useAppStore = create<State>()(
       },
       getList: (id) => {
         return get().lists.find((list) => list.id === id);
+      },
+      setLists: (lists) => {
+        set((state) => {
+          state.lists = lists;
+        });
       },
     })),
     { name: "packlighter-app-data" }

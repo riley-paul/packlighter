@@ -17,7 +17,9 @@ export const Component: React.FC = () => (
   </>
 );
 
-const errorSchema = z.object({ status: z.string(), data: z.string() });
+const errorSchema = z
+  .object({ status: z.string(), data: z.string() })
+  .partial();
 
 export const ErrorBoundary: React.FC = () => {
   const errorData = useRouteError();
