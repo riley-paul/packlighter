@@ -1,11 +1,20 @@
 import { Grabber } from "@/components/Grabber";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { listSchema } from "@/lib/schema";
 import { useAppStore } from "@/lib/store";
-import { Delete, Plus } from "lucide-react";
+import { Delete, MoreVertical, Plus } from "lucide-react";
 import { LoaderFunction, useLoaderData } from "react-router-dom";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 export const loader: LoaderFunction = ({ params }) => {
   const { getList } = useAppStore.getState();
@@ -35,7 +44,7 @@ export const Component: React.FC = () => {
     <div className="grid gap-6">
       <div className="grid gap-2">
         <Input
-          className="font-medium text-xl h-auto text-teal-500"
+          className="font-bold text-xl h-auto text-teal-500"
           value={list.name}
           placeholder="List Name"
           onChange={(e) => updateList(id, { name: e.target.value })}
@@ -49,29 +58,43 @@ export const Component: React.FC = () => {
       </div>
       {list.categories.map((category) => (
         <div className="grid">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2">
+          <div className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 border-b pb-2">
             <Grabber />
             <Input
+              type="text"
               value={category.name}
-              placeholder="Category Name"
-              className="h-auto text-md"
+              placeholder="Unnamed Category"
+              className="text-md border-none px-1 py-0.5 h-auto font-medium"
               onChange={(e) =>
                 updateCategory(list.id, category.id, { name: e.target.value })
               }
             />
-            <Button
-              variant="secondary"
-              size="sm"
-              className="h-full"
-              onClick={() => removeCategory(list.id, category.id)}
-            >
-              <Delete className="h-5 w-5" />
+            <Button size="icon" className="h-full w-7">
+              <Plus className="h-4 w-4" />
             </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "h-full w-7"
+                )}
+              >
+                <MoreVertical className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem
+                  onSelect={() => removeCategory(list.id, category.id)}
+                >
+                  Delete
+                  <DropdownMenuShortcut>
+                    <Delete className="h-4 w-4" />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           items
-          <Button variant="secondary" size="sm" className="justify-start">
-            <Plus className="h-4 w-4 mr-2" /> Add Gear
-          </Button>
         </div>
       ))}
       <Button
