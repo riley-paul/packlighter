@@ -1,7 +1,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Feather } from "lucide-react";
 import { Link, Outlet, useRouteError } from "react-router-dom";
-import {z} from "zod";
+import { z } from "zod";
 
 export const Component: React.FC = () => (
   <>
@@ -11,13 +11,13 @@ export const Component: React.FC = () => (
         <h1 className="font-medium text-lg">PackLighter</h1>
       </Link>
     </header>
-    <main>
+    <main className="p-4 overflow-auto">
       <Outlet />
     </main>
   </>
 );
 
-const errorSchema = z.object({status: z.string(), data: z.string()})
+const errorSchema = z.object({ status: z.string(), data: z.string() });
 
 export const ErrorBoundary: React.FC = () => {
   const errorData = useRouteError();

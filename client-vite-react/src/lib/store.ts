@@ -13,11 +13,11 @@ import {
 } from "./schema";
 
 type Actions = {
-  addItem: (item?: Partial<ItemType>) => void;
+  addItem: (item?: Partial<ItemType>) => ItemType;
   updateItem: (id: string, item: Partial<ItemType>) => void;
   getItem: (id: string) => ItemType | undefined;
   removeItem: (id: string) => void;
-  addList: (list: Partial<ListType>) => void;
+  addList: (list?: Partial<ListType>) => ListType;
   updateList: (id: string, list: Partial<ListType>) => void;
   getList: (id: string) => ListType | undefined;
   removeList: (id: string) => void;
@@ -40,9 +40,11 @@ export const useAppStore = create<State>()(
     immer((set, get) => ({
       ...initAppData(),
       addItem: (item) => {
+        const newItem = initItem(item);
         set((state) => {
-          state.items.push(initItem(item));
+          state.items.push(newItem);
         });
+        return newItem;
       },
       removeItem: (id) => {
         set((state) => {
@@ -59,9 +61,11 @@ export const useAppStore = create<State>()(
         return get().items.find((item) => item.id === id);
       },
       addList: (list) => {
+        const newList = initList(list);
         set((state) => {
-          state.lists.push(initList(list));
+          state.lists.push(newList);
         });
+        return newList;
       },
       removeList: (id) => {
         set((state) => {
