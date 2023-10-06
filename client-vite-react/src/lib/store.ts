@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { persist } from "zustand/middleware";
 import {
   AppDataType,
   // CategoryType,
@@ -10,8 +11,6 @@ import {
   initItem,
   initList,
 } from "./schema";
-
-type State = AppDataType;
 
 type Actions = {
   addItem: (item?: Partial<ItemType>) => void;
@@ -34,46 +33,51 @@ type Actions = {
   // ) => void;
 };
 
-export const useAppStore = create(
-  immer<State & Actions>((set, get) => ({
-    ...initAppData(),
-    addItem: (item) => {
-      set((state) => {
-        state.items.push(initItem(item));
-      });
-    },
-    removeItem: (id) => {
-      set((state) => {
-        state.items = state.items.filter((item) => item.id !== id);
-      });
-    },
-    updateItem: (id, item) => {
-      set((state) => {
-        const index = state.items.findIndex((i) => i.id === id);
-        Object.assign(state.items[index], item);
-      });
-    },
-    getItem: (id) => {
-      return get().items.find((item) => item.id === id);
-    },
-    addList: (list) => {
-      set((state) => {
-        state.lists.push(initList(list));
-      });
-    },
-    removeList: (id) => {
-      set((state) => {
-        state.lists = state.lists.filter((list) => list.id !== id);
-      });
-    },
-    updateList: (id, list) => {
-      set((state) => {
-        const index = state.lists.findIndex((i) => i.id === id);
-        Object.assign(state.lists[index], list);
-      });
-    },
-    getList: (id) => {
-      return get().lists.find((list) => list.id === id);
-    },
-  }))
+type State = AppDataType & Actions;
+
+export const useAppStore = create<State>()(
+  persist(
+    immer((set, get) => ({
+      ...initAppData(),
+      addItem: (item) => {
+        set((state) => {
+          state.items.push(initItem(item));
+        });
+      },
+      removeItem: (id) => {
+        set((state) => {
+          state.items = state.items.filter((item) => item.id !== id);
+        });
+      },
+      updateItem: (id, item) => {
+        set((state) => {
+          const index = state.items.findIndex((i) => i.id === id);
+          Object.assign(state.items[index], item);
+        });
+      },
+      getItem: (id) => {
+        return get().items.find((item) => item.id === id);
+      },
+      addList: (list) => {
+        set((state) => {
+          state.lists.push(initList(list));
+        });
+      },
+      removeList: (id) => {
+        set((state) => {
+          state.lists = state.lists.filter((list) => list.id !== id);
+        });
+      },
+      updateList: (id, list) => {
+        set((state) => {
+          const index = state.lists.findIndex((i) => i.id === id);
+          Object.assign(state.lists[index], list);
+        });
+      },
+      getList: (id) => {
+        return get().lists.find((list) => list.id === id);
+      },
+    })),
+    { name: "packlighter-app-data" }
+  )
 );
