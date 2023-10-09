@@ -1,21 +1,14 @@
 import { Grabber } from "@/components/Grabber";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CategoryType, ItemType, ListItemType } from "@/lib/schema";
 import { useAppStore } from "@/lib/store";
-import { Delete, MoreVertical } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { Delete } from "lucide-react";
 import { ItemPicker } from "./ItemPicker";
 import { ItemImage } from "./ItemImage";
 import { ItemParams } from "./ItemParams";
 import { Separator } from "./ui/separator";
+import { CategoryMenu } from "./CategoryMenu";
 
 type ListItemWithItem = ListItemType & { item: ItemType };
 
@@ -27,13 +20,11 @@ interface Props {
 export const Category: React.FC<Props> = (props) => {
   const { category, listId } = props;
 
-  const { getItem, removeCategory, updateCategory, removeListItem } =
-    useAppStore((state) => ({
-      getItem: state.getItem,
-      removeCategory: state.removeCategory,
-      updateCategory: state.updateCategory,
-      removeListItem: state.removeListItem,
-    }));
+  const { getItem, updateCategory, removeListItem } = useAppStore((state) => ({
+    getItem: state.getItem,
+    updateCategory: state.updateCategory,
+    removeListItem: state.removeListItem,
+  }));
 
   const categoryItems: ListItemWithItem[] = category.items
     .map((i) => ({ ...i, item: getItem(i.itemId) }))
@@ -41,44 +32,24 @@ export const Category: React.FC<Props> = (props) => {
 
   return (
     <div className="grid">
-      <div className="grid grid-cols-[auto_1fr_auto_auto] items-center gap-2 border-b-2 pb-2">
+      <div className="flex items-center gap-2 border-b-2 pb-2">
         <Grabber />
         <Input
           type="text"
           value={category.name}
           placeholder="Unnamed Category"
-          className="text-md border-none px-1 py-0.5 h-auto font-medium"
+          className="text-md border-none px-2 py-0 h-full font-medium hover:bg-muted transition-colors"
           onChange={(e) =>
             updateCategory(listId, category.id, { name: e.target.value })
           }
         />
         <ItemPicker listId={listId} categoryId={category.id} />
-
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className={cn(
-              buttonVariants({ variant: "ghost", size: "icon" }),
-              "h-full w-7"
-            )}
-          >
-            <MoreVertical className="h-4 w-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              onSelect={() => removeCategory(listId, category.id)}
-            >
-              Delete
-              <DropdownMenuShortcut>
-                <Delete className="h-4 w-4" />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <CategoryMenu listId={listId} category={category} />
       </div>
       {categoryItems.length > 0 ? (
         categoryItems.map((listItem) => (
-          <>
-            <div className="flex gap-2 items-center p-2">
+          <div key={listItem.id} className="hover:bg-muted/50">
+            <div className="flex gap-2 p-2 h-full">
               <ItemImage item={listItem.item} />
               <ItemParams item={listItem.item} />
               <Button
@@ -91,7 +62,7 @@ export const Category: React.FC<Props> = (props) => {
               </Button>
             </div>
             <Separator />
-          </>
+          </div>
         ))
       ) : (
         <div className="p-2 text-sm text-muted-foreground">No items yet</div>

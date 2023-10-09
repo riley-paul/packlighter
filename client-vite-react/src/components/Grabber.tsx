@@ -14,7 +14,7 @@ export const Grabber: React.FC<Props> = ({ attributes, listeners }) => (
   <div
     className={cn(
       buttonVariants({ variant: "ghost", size: "icon" }),
-      "h-full w-6 justify-center"
+      "h-full w-8 justify-center"
     )}
     {...attributes}
     {...listeners}

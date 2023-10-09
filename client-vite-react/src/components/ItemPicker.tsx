@@ -13,8 +13,9 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAppStore } from "@/lib/store";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Props {
   listId: string;
@@ -37,10 +38,13 @@ export const ItemPicker: React.FC<Props> = (props) => {
 
   return (
     <Popover>
-      <PopoverTrigger>
-        <Button variant="secondary" size="icon" className="h-8 w-8">
-          <Plus className="h-4 w-4" />
-        </Button>
+      <PopoverTrigger
+        className={cn(
+          buttonVariants({ variant: "secondary", size: "icon" }),
+          "h-8 w-10"
+        )}
+      >
+        <Plus className="h-4 w-4" />
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <Command>
