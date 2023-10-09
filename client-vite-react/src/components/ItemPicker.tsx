@@ -15,22 +15,25 @@ import {
 import { useAppStore } from "@/lib/store";
 import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
-import { CategoryType } from "@/lib/schema";
 
 interface Props {
   listId: string;
-  category: CategoryType;
+  categoryId: string;
 }
 
 export const ItemPicker: React.FC<Props> = (props) => {
-  const { listId, category } = props;
-  const { items, addListItem } = useAppStore((state) => ({
+  const { listId, categoryId } = props;
+  const { items, addListItem, getList } = useAppStore((state) => ({
+    getList: state.getList,
     items: state.items,
     addListItem: state.addListItem,
   }));
 
-  const categoryItemIds = category.items.map((i) => i.itemId);
-  const itemList = items.filter((i) => !categoryItemIds.includes(i.id));
+  const list = getList(listId)!;
+  const listItemIds = list.categories
+    .map((cat) => cat.items.map((i) => i.itemId))
+    .flat(2);
+  const itemList = items.filter((i) => !listItemIds.includes(i.id));
 
   return (
     <Popover>
@@ -54,7 +57,7 @@ export const ItemPicker: React.FC<Props> = (props) => {
                   key={item.id}
                   value={item.id}
                   onSelect={() => {
-                    addListItem(listId, category.id, item.id);
+                    addListItem(listId, categoryId, item.id);
                   }}
                 >
                   {item.name || "Unnamed Gear"}

@@ -52,7 +52,7 @@ export const Category: React.FC<Props> = (props) => {
             updateCategory(listId, category.id, { name: e.target.value })
           }
         />
-        <ItemPicker listId={listId} category={category} />
+        <ItemPicker listId={listId} categoryId={category.id} />
 
         <DropdownMenu>
           <DropdownMenuTrigger
