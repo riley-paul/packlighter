@@ -38,7 +38,7 @@ export const Category: React.FC<Props> = (props) => {
           type="text"
           value={category.name}
           placeholder="Unnamed Category"
-          className="text-md border-none px-2 py-0 h-full font-medium hover:bg-muted transition-colors"
+          className="text-md flex-1 border-none px-2 py-0 h-8 font-medium hover:bg-muted transition-colors"
           onChange={(e) =>
             updateCategory(listId, category.id, { name: e.target.value })
           }
@@ -55,7 +55,7 @@ export const Category: React.FC<Props> = (props) => {
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-full"
+                className="h-full w-6"
                 onClick={() => removeListItem(listId, category.id, listItem.id)}
               >
                 <Delete className="h-4 w-4" />

@@ -41,7 +41,7 @@ export const ItemPicker: React.FC<Props> = (props) => {
       <PopoverTrigger
         className={cn(
           buttonVariants({ variant: "secondary", size: "icon" }),
-          "h-8 w-10"
+          "h-8 w-8"
         )}
       >
         <Plus className="h-4 w-4" />
