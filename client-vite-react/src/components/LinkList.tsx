@@ -46,7 +46,7 @@ function LinkItem<T>({ item, createLink, ...props }: ILinkItemProps<T>) {
 
   return (
     <li
-      className="grid grid-cols-[auto_1fr] items-center gap-2"
+      className="grid grid-cols-[auto_1fr] items-center gap-2 py-2"
       ref={setNodeRef}
       style={style}
     >
@@ -55,7 +55,7 @@ function LinkItem<T>({ item, createLink, ...props }: ILinkItemProps<T>) {
         className={cn({ "opacity-50": !link.name }, link.class)}
         href={link.link}
       >
-        <div className="text-sm flex w-full justify-between items-center py-2">
+        <div className="text-sm flex w-full justify-between items-center">
           {link.name}
           <ChevronRight className="text-muted-foreground" />
         </div>
@@ -109,7 +109,7 @@ export function LinkList<T extends { id: string }>({
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}
     >
-      <ul className="grid border rounded-md px-4 bg-background divide-y">
+      <ul className="grid border rounded-md px-2 bg-background divide-y">
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
           {items.map((item) => (
             <LinkItem

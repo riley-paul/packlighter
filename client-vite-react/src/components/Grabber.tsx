@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
-import { GripVertical } from "lucide-react";
+import { Grip } from "lucide-react";
 import React from "react";
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
@@ -19,6 +19,6 @@ export const Grabber: React.FC<Props> = ({ attributes, listeners }) => (
     {...attributes}
     {...listeners}
   >
-    <GripVertical className="h-5 w-5 text-muted-foreground" />
+    <Grip className="h-4 w-4 text-muted-foreground" />
   </div>
 );
