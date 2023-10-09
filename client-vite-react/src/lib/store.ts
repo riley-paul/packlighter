@@ -5,12 +5,13 @@ import {
   AppDataType,
   CategoryType,
   ItemType,
-  // ListIemType,
+  ListItemType,
   ListType,
   initAppData,
   initCategory,
   initItem,
   initList,
+  initListItem,
 } from "./schema";
 
 type Actions = {
@@ -34,13 +35,14 @@ type Actions = {
     category: Partial<CategoryType>
   ) => void;
   setCategories: (listId: string, categories: CategoryType[]) => void;
-  // addListItem: (listId: string, categoryId: string, item: ListIemType) => void;
-  // removeListItem: (listId: string, categoryId: string, id: string) => void;
-  // updateListItem: (
-  //   listId: string,
-  //   categoryId: string,
-  //   item: ListIemType
-  // ) => void;
+  addListItem: (listId: string, categoryId: string, itemId: string) => void;
+  removeListItem: (listId: string, categoryId: string, itemId: string) => void;
+  updateListItem: (
+    listId: string,
+    categoryId: string,
+    id: string,
+    listItem?: Partial<ListItemType>
+  ) => void;
 };
 
 type State = AppDataType & Actions;
@@ -129,6 +131,46 @@ export const useAppStore = create<State>()(
         set((state) => {
           const listIndex = state.lists.findIndex((list) => list.id === listId);
           state.lists[listIndex].categories = categories;
+        });
+      },
+      addListItem: (listId, categoryId, itemId) => {
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          const categoryIndex = state.lists[listIndex].categories.findIndex(
+            (category) => category.id === categoryId
+          );
+          state.lists[listIndex].categories[categoryIndex].items.push(
+            initListItem(itemId)
+          );
+        });
+      },
+      removeListItem: (listId, categoryId, itemId) => {
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          const categoryIndex = state.lists[listIndex].categories.findIndex(
+            (category) => category.id === categoryId
+          );
+          const prev = state.lists[listIndex].categories[categoryIndex].items;
+          state.lists[listIndex].categories[categoryIndex].items = prev.filter(
+            (item) => item.id !== itemId
+          );
+        });
+      },
+      updateListItem: (listId, categoryId, id, listItem) => {
+        set((state) => {
+          const listIndex = state.lists.findIndex((list) => list.id === listId);
+          const categoryIndex = state.lists[listIndex].categories.findIndex(
+            (category) => category.id === categoryId
+          );
+          const listItemIndex = state.lists[listIndex].categories[
+            categoryIndex
+          ].items.findIndex((item) => item.id === id);
+          Object.assign(
+            state.lists[listIndex].categories[categoryIndex].items[
+              listItemIndex
+            ],
+            listItem
+          );
         });
       },
     })),

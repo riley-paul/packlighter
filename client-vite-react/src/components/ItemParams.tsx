@@ -20,8 +20,8 @@ export const ItemParams: React.FC<{ item: ItemType }> = ({ item }) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="h-full">
-        <div className="flex flex-col text-left h-full">
+      <DialogTrigger className="h-full w-full">
+        <div className="flex flex-col text-left h-full text-sm">
           <div className="flex w-full justify-between items-center gap-2">
             <span className={cn(!item.name && "opacity-50")}>
               {item.name || "Unnamed Gear"}

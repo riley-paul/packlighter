@@ -20,14 +20,14 @@ export const initItem = (data?: Partial<ItemType>): ItemType => ({
 
 export const listItemSchema = z.object({
   id: z.string(),
-  listId: z.string(),
+  itemId: z.string(),
   quantity: z.number(),
   packed: z.boolean(),
 });
-export type ListIemType = z.infer<typeof listItemSchema>;
-export const initListItem = (listId: string): ListIemType => ({
+export type ListItemType = z.infer<typeof listItemSchema>;
+export const initListItem = (itemId: string): ListItemType => ({
   id: uuidv4(),
-  listId,
+  itemId,
   quantity: 1,
   packed: false,
 });
