@@ -14,6 +14,7 @@ import {
 import { Input } from "./ui/input";
 import { ItemType } from "@/lib/schema";
 import { useAppStore } from "@/lib/store";
+import { toast } from "sonner";
 
 export const ItemImage: React.FC<{ item: ItemType }> = ({ item }) => {
   const [url, setUrl] = React.useState(item.image_url);
@@ -69,7 +70,10 @@ export const ItemImage: React.FC<{ item: ItemType }> = ({ item }) => {
             <DialogTrigger
               className={buttonVariants()}
               disabled={url === item.image_url}
-              onClick={() => updateItem(item.id, { image_url: url })}
+              onClick={() => {
+                updateItem(item.id, { image_url: url });
+                toast.success("Image updated!");
+              }}
             >
               <Save className="h-4 w-4 mr-2" />
               Save

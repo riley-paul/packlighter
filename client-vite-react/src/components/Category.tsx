@@ -9,6 +9,7 @@ import { ItemImage } from "./ItemImage";
 import { ItemParams } from "./ItemParams";
 import { Separator } from "./ui/separator";
 import { CategoryMenu } from "./CategoryMenu";
+import { ItemQuantity } from "./ItemQuantity";
 
 type ListItemWithItem = ListItemType & { item: ItemType };
 
@@ -20,11 +21,13 @@ interface Props {
 export const Category: React.FC<Props> = (props) => {
   const { category, listId } = props;
 
-  const { getItem, updateCategory, removeListItem } = useAppStore((state) => ({
-    getItem: state.getItem,
-    updateCategory: state.updateCategory,
-    removeListItem: state.removeListItem,
-  }));
+  const { getItem, updateCategory, removeListItem, updateListItem } =
+    useAppStore((state) => ({
+      getItem: state.getItem,
+      updateCategory: state.updateCategory,
+      removeListItem: state.removeListItem,
+      updateListItem: state.updateListItem,
+    }));
 
   const categoryItems: ListItemWithItem[] = category.items
     .map((i) => ({ ...i, item: getItem(i.itemId) }))
@@ -37,7 +40,7 @@ export const Category: React.FC<Props> = (props) => {
         <Input
           type="text"
           value={category.name}
-          placeholder="Unnamed Category"
+          placeholder="Category Name"
           className="text-md flex-1 border-none px-2 py-0 h-8 font-medium hover:bg-muted transition-colors"
           onChange={(e) =>
             updateCategory(listId, category.id, { name: e.target.value })
@@ -49,9 +52,18 @@ export const Category: React.FC<Props> = (props) => {
       {categoryItems.length > 0 ? (
         categoryItems.map((listItem) => (
           <div key={listItem.id} className="hover:bg-muted/50">
-            <div className="flex gap-2 p-2 h-full">
+            <div className="flex gap-2 py-2 h-full">
+              <Grabber />
               <ItemImage item={listItem.item} />
               <ItemParams item={listItem.item} />
+              <ItemQuantity
+                value={listItem.quantity}
+                updateValue={(value: number) =>
+                  updateListItem(listId, category.id, listItem.id, {
+                    quantity: value,
+                  })
+                }
+              />
               <Button
                 size="icon"
                 variant="ghost"
