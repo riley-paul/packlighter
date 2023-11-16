@@ -37,12 +37,9 @@ export const AccountDropdown: React.FC<Props> = (props) => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{props.user.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="text-muted-foreground">
-            {props.user.name}
-          </DropdownMenuItem>
           <a href="/account">
             <DropdownMenuItem>Account Settings</DropdownMenuItem>
           </a>

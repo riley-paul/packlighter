@@ -1,6 +1,12 @@
 ---
 import Header from "@/components/Header.astro";
 import RootLayout from "./RootLayout.astro";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+
+const lists = await Astro.locals.pb
+  .collection("lists")
+  .getFullList({ sort: "-created" });
 ---
 
 <RootLayout>
@@ -8,8 +14,30 @@ import RootLayout from "./RootLayout.astro";
     <header class="z-50">
       <Header />
     </header>
-    <main class="overflow-auto p-4">
-      <slot />
+    <main class="overflow-hidden container flex flex-1">
+      <aside class="border-r w-[250px] py-2 pr-2 overflow-hidden">
+        <h2 class="text-lg font-medium mb-2">Packing Lists</h2>
+        <div class="grid gap-1 overflow-auto">
+          {
+            lists.map((list) => (
+              <a
+                href={`/${list.id}`}
+                class={cn(
+                  "block w-full px-3 py-1 text-sm hover:border-l-4 hover:pl-2",
+                  !list.name && "italic text-muted-foreground",
+                  Astro.url.pathname === `/${list.id}` &&
+                    "border-l-4 border-emerald-500 pl-2"
+                )}
+              >
+                {list.name || "Unnamed List"}
+              </a>
+            ))
+          }
+        </div>
+      </aside>
+      <div>
+        <slot />
+      </div>
     </main>
   </div>
 </RootLayout>

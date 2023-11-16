@@ -12,7 +12,7 @@ interface Props {
 export const ListOfLists: React.FC<Props> = (props) => {
   const { lists, currentListId } = props;
   return (
-    <ScrollArea className="overflow-y-auto max-h-fit min-h-[200px] border rounded-md p-2 pr-3">
+    <ScrollArea className="p-2 pr-3">
       <div className="grid gap-1">
         {lists.map((list) => (
           <a key={list.id} href={`/${list.id}`}>

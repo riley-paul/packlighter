@@ -1,10 +1,14 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
 import type { Record } from "pocketbase";
-import { List } from "@/components/List";
+
+const list = await Astro.locals.pb
+  .collection("lists")
+  .getOne(Astro.params.id ?? "");
 ---
 
-<Layout>hello there</Layout>
+<Layout>
+  <div class="pl-4 py-4">
+    <h2 class="text-xl font-bold">{list.name}</h2>
+  </div>
+</Layout>
