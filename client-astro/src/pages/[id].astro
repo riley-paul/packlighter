@@ -1,14 +1,13 @@
 ---
+import { List } from "@/components/List";
 import Layout from "@/layouts/Layout.astro";
-import type { Record } from "pocketbase";
+import type { ListType } from "@/lib/schema";
 
-const list = await Astro.locals.pb
+const list = (await Astro.locals.pb
   .collection("lists")
-  .getOne(Astro.params.id ?? "");
+  .getOne(Astro.params.id ?? ""));
 ---
 
 <Layout>
-  <div class="pl-4 py-4">
-    <h2 class="text-xl font-bold">{list.name}</h2>
-  </div>
+  <List client:load initialList={list} />
 </Layout>

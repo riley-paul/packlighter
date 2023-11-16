@@ -1,94 +1,67 @@
+import type { BaseModel } from "pocketbase";
 import React from "react";
-import { cn } from "@/lib/utils";
-import type { Record } from "pocketbase";
-import { Button } from "./ui/button";
-import { Share, Trash, Trash2 } from "lucide-react";
-import { EditableDiv } from "./EditableDiv";
-import { Input } from "./ui/input";
+
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
 import { Textarea } from "./ui/textarea";
-import useFetch from "@/hooks/useFetch";
-import { useToast } from "./ui/use-toast";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Delete, Trash } from "lucide-react";
 
-export const List: React.FC<{ listId: string }> = ({ listId }) => {
-  const { data: items, loading: itemsLoading } = useFetch("/api/items", {
-    credentials: "include",
+interface Props {
+  initialList: BaseModel;
+}
+
+const schema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+});
+
+export const List: React.FC<Props> = (props) => {
+  const methods = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: props.initialList,
   });
-  const { data: list, loading: listLoading } = useFetch(`/api/list/${listId}`);
-  const { toast } = useToast();
-  console.log(items);
 
-  return itemsLoading || listLoading ? (
-    "loading"
-  ) : (
-    <>
-      <h2
-        contentEditable
-        content={list.name}
-        className="h-auto text-xl text-teal-500"
-        placeholder="List Name"
-        onBlur={(e) =>
-          fetch(`/api/lists/${list.id}`, {
-            method: "PUT",
-            body: JSON.stringify({ name: e.target.value }),
-          })
-            .then((response) => {
-              if (!response.ok) throw response;
-            })
-            .catch((err) => {
-              toast({ title: "Could not update list" });
-              console.error(err);
-            })
-        }
-      >
-        {list.name}
-      </h2>
-      <Textarea
-        defaultValue={list.description}
-        className="h-auto wrap text-muted-foreground mt-2"
-        placeholder="List Description"
-        onBlur={(e) =>
-          fetch(`/api/lists/${list.id}`, {
-            method: "PUT",
-            body: JSON.stringify({ description: e.target.value }),
-          })
-            .then((response) => {
-              if (!response.ok) throw response;
-            })
-            .catch((err) => {
-              toast({ title: "Could not update list" });
-              console.error(err);
-            })
-        }
-      />
+  const { handleSubmit, control, watch } = methods;
 
-      {/* <h2
-        contentEditable
-        className={cn("text-teal-500 font-medium text-xl mb-4", {
-          "opacity-50": !list.name,
-        })}
-      >
-        {list.name || "Unnamed List"}
-      </h2>
-      <p
-        contentEditable
-        className={cn("text-muted-foreground text-sm", {
-          "opacity-50": !list.name,
-        })}
-      >
-        {list.description || "Description"}
-      </p> */}
+  const saveList = (data: BaseModel) =>
+    fetch(`/api/lists/${props.initialList.id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    })
+      .then(() => console.log("list updated"))
+      .catch(() => console.log("list not updated"));
 
-      <form
-        className="flex justify-center mt-2"
-        action={`/api/lists/${list.id}/delete`}
-        onSubmit={() => confirm("Are you sure you want to delete?")}
-        method="post"
-      >
-        <Button variant="destructive" className="w-full">
-          <Trash2 className="h-4 w-4 mr-2" />
-          Delete
+  return (
+    <div className="flex gap-4">
+      <form onBlur={handleSubmit(saveList)} className="space-y-2 flex-1">
+        <Controller
+          control={control}
+          name="name"
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="Unnamed List"
+              className="font-bold text-teal-400 text-lg"
+            />
+          )}
+        />
+        <Controller
+          control={control}
+          name="description"
+          render={({ field }) => (
+            <Textarea {...field} placeholder="Description" />
+          )}
+        />
+      </form>
+      <form method="POST" action={`/api/lists/${props.initialList.id}/delete`}>
+        <Button size="icon" variant="destructive" className="h-full">
+          <Trash className="w-4" />
         </Button>
       </form>
-    </>
+    </div>
   );
 };
