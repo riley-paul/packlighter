@@ -1,7 +1,6 @@
 ---
 import { List } from "@/components/List";
 import Layout from "@/layouts/Layout.astro";
-import type { ListType } from "@/lib/schema";
 
 const list = (await Astro.locals.pb
   .collection("lists")

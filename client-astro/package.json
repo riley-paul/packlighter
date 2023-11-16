@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "pbtypes": "npx pocketbase-typegen --db ../server/pb_data/data.db -o ./src/lib/types.ts"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.2",
@@ -64,6 +65,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10"
+    "@tailwindcss/typography": "^0.5.10",
+    "pocketbase-typegen": "^1.2.1"
   }
 }
