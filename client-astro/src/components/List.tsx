@@ -9,6 +9,7 @@ import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Delete, Trash } from "lucide-react";
+import type { BaseSystemFields, ListsRecord } from "@/lib/types";
 
 interface Props {
   initialList: BaseModel;
@@ -21,7 +22,6 @@ const schema = z.object({
 
 export const List: React.FC<Props> = (props) => {
   const methods = useForm({
-    resolver: zodResolver(schema),
     defaultValues: props.initialList,
   });
 

@@ -1,10 +1,11 @@
 ---
 import { List } from "@/components/List";
 import Layout from "@/layouts/Layout.astro";
+import type { ListsResponse } from "@/lib/types";
 
-const list = (await Astro.locals.pb
+const list = await Astro.locals.pb
   .collection("lists")
-  .getOne(Astro.params.id ?? ""));
+  .getOne(Astro.params.id ?? "");
 ---
 
 <Layout>
