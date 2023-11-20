@@ -2,48 +2,43 @@ import { defineMiddleware } from "astro/middleware";
 import PocketBase from "pocketbase";
 import { serializeNonPOJOs } from "./lib/utils";
 
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./lib/database";
+
 export const onRequest = defineMiddleware(
-  async ({ locals, request, url, redirect }, next) => {
+  async ({ locals, request, url, redirect, cookies }, next) => {
     try {
-      locals.pb = new PocketBase(import.meta.env.PB_URL);
+      locals.sb = createClient<Database>(
+        import.meta.env.SUPABASE_URL,
+        import.meta.env.SUPABASE_URL
+      );
     } catch (err) {
-      console.error("could not connect to PocketBase");
-      return new Response("Could not connect to Pocketbase", { status: 500 });
+      console.error("could not connect to Supabase");
+      return new Response("Could not connect to Supabase", { status: 500 });
     }
 
-    // grab cookie from browser if exists
-    locals.pb.authStore.loadFromCookie(request.headers.get("cookie") || "");
+    const accessToken = cookies.get("sb-access-token")?.value ?? "";
+    const refreshToken = cookies.get("sb-refresh-token")?.value ?? "";
 
-    try {
-      if (locals.pb.authStore.isValid) {
-        await locals.pb.collection("users").authRefresh();
-        const user = serializeNonPOJOs(locals.pb.authStore.model);
-        locals.user = user;
-      }
-    } catch (_) {
-      locals.pb.authStore.clear();
-      locals.user = undefined;
+    const { data, error } = await locals.sb.auth.setSession({
+      refresh_token: refreshToken,
+      access_token: accessToken,
+    });
+
+    if (error) {
+      cookies.delete("sb-access-token", { path: "/" });
+      cookies.delete("sb-refresh-token", { path: "/" });
+    } else if (data.session) {
+      const { access_token, refresh_token } = data.session;
+      cookies.set("sb-access-token", access_token, { path: "/" });
+      cookies.set("sb-refresh-token", refresh_token, { path: "/" });
+      locals.user = data.user;
+      
+      console.log("user logged in", data.user);
     }
 
     // complete other actions
     const response = await next();
-
-    // set cookie to latest authstore
-    response.headers.set(
-      "set-cookie",
-      locals.pb.authStore.exportToCookie({ secure: false })
-    );
-
-    // redirect if logged in
-    // if (
-    //   locals.pb.authStore.isValid &&
-    //   (url.pathname.startsWith("/auth") || url.pathname === "/")
-    // ) {
-    //   const items = await locals.pb
-    //     .collection("lists")
-    //     .getFullList({ sort: "-created" });
-    //   return redirect(`/${items[0].id}`);
-    // }
 
     // redirect if not logged in
     if (

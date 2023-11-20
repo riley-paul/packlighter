@@ -1,5 +1,6 @@
 /// <reference path="../.astro/types.d.ts" />
-import PocketBase from "pocketbase";
+import type { SupabaseClient, User } from "@supabase/supabase-js";
+import type { Database } from "./lib/database";
 
 /// <reference types="vite/client" />
 /// <reference types="astro/client" />
@@ -7,12 +8,14 @@ import PocketBase from "pocketbase";
 declare global {
   namespace App {
     interface Locals {
-      pb: PocketBase;
-      user: PocketBase.authStore.model | undefined;
+      sb: SupabaseClient<Database>;
+      user: User | null;
     }
   }
   interface ImportMetaEnv {
     readonly PB_URL: string;
+    readonly SUPABASE_URL: string;
+    readonly SUPABASE_ANON_KEY: string;
     readonly PB_AUTH_EMAIL: string;
     readonly PB_AUTH_PASS: string;
   }
