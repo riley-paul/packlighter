@@ -1,3 +1,4 @@
+import { AccountDropdown } from "@/components/AccountDropdown";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Feather, Plus } from "lucide-react";
@@ -13,18 +14,19 @@ export const Component: React.FC = () => {
   return (
     <main className="overflow-hidden w-full h-screen flex flex-col">
       <header className="bg-card text-foreground h-14 border-b shadow">
-        <div className="flex justify-between items-center h-full">
+        <div className="flex px-4 justify-between items-center h-full">
           <Link
             to="/"
-            className="flex items-center px-4 w-[250px] border-r h-full"
+            className="flex items-center w-[250px] border-r h-full"
           >
             <Feather className="mr-3 w-6 text-teal-500" />
             <h1 className="font-medium text-lg">PackLighter</h1>
           </Link>
+          <AccountDropdown />
         </div>
       </header>
-      <div className="flex flex-1">
-        <aside className="border-r w-[250px] py-2 pr-2 pl-4 flex flex-col">
+      <div className="flex flex-1 px-4">
+        <aside className="border-r w-[250px] py-2 pr-2 flex flex-col">
           <div className="flex justify-between items-center">
             <h2 className="text-sm font-medium">Lists</h2>
             <Button variant="ghost" size="sm">
