@@ -79,3 +79,8 @@ html,
 body {
   @apply h-full overflow-hidden;
 }
+
+#root {
+  display: flex;
+  height: 100%;
+}

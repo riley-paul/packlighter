@@ -13,6 +13,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
+import { pb } from "@/lib/pocketbase";
+import { useToast } from "./ui/use-toast";
+import { useNavigate } from "react-router-dom";
+import { ClientResponseError } from "pocketbase";
+import { AlertTriangle } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
 // import { AlertTriangle } from "lucide-react";
 // import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
@@ -23,6 +29,9 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 export const LoginForm: React.FC = () => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
   const methods = useForm<Schema>({
     resolver: zodResolver(schema),
     defaultValues: { email: "", password: "" },
@@ -30,24 +39,29 @@ export const LoginForm: React.FC = () => {
   });
   const { control, handleSubmit } = methods;
 
+  const [error, setError] = React.useState<string | null>(null);
+
   const submitForm = async (data: Schema) => {
-    console.log(data);
+    try {
+      await pb.collection("users").authWithPassword(data.email, data.password);
+      toast({ title: "Successfully Logged in" });
+      navigate("/");
+    } catch (error) {
+      console.error((error as ClientResponseError).data);
+      setError((error as ClientResponseError).data.message);
+    }
   };
 
   return (
     <Form {...methods}>
-      <form
-        action="/api/auth/login"
-        method="post"
-        onSubmit={handleSubmit(submitForm)}
-      >
-        {/* {error && (
+      <form onSubmit={handleSubmit(submitForm)}>
+        {error && (
           <Alert variant="destructive" className="mb-1">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
-        )} */}
+        )}
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>

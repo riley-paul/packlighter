@@ -1,6 +1,5 @@
 ---
 import { Toaster } from "@/components/ui/toaster";
-import { QueryClientProvider } from "@tanstack/react-query";
 import "@/globals.css";
 ---
 
@@ -16,14 +15,12 @@ import "@/globals.css";
     <title>PackLighter</title>
   </head>
   <body>
-    <QueryClientProvider>
-      <div
-        style="display: contents;"
-        class="h-full overflow-hidden flex flex-col"
-      >
-        <Toaster client:load />
-        <slot />
-      </div>
-    </QueryClientProvider>
+    <div
+      style="display: contents;"
+      class="h-full overflow-hidden flex flex-col"
+    >
+      <Toaster client:load />
+      <slot />
+    </div>
   </body>
 </html>
