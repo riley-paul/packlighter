@@ -8,7 +8,16 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ path: "auth", lazy: () => import("./pages/Auth.tsx") }],
+    children: [
+      {
+        lazy: () => import("./layouts/AppLayout.tsx"),
+        children: [
+          { index: true, lazy: () => import("./pages/Home.tsx") },
+          { path: ":listId", lazy: () => import("./pages/List.tsx") },
+        ],
+      },
+      { path: "auth", lazy: () => import("./pages/Auth.tsx") },
+    ],
   },
 ]);
 
