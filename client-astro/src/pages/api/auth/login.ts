@@ -1,12 +1,12 @@
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ locals, request, redirect }) => {
-  const userData = await request.json();
+  const formData = await request.formData();
+  const email = String(formData.get("email"));
+  const password = String(formData.get("password"));
 
   try {
-    await locals.pb
-      .collection("users")
-      .authWithPassword(String(userData.email), String(userData.password));
+    await locals.pb.collection("users").authWithPassword(email, password);
     return redirect("/");
   } catch (err) {
     console.error("pocketbase error", err);

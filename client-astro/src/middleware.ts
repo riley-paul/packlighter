@@ -3,7 +3,7 @@ import PocketBase from "pocketbase";
 import { serializeNonPOJOs } from "./lib/utils";
 
 export const onRequest = defineMiddleware(
-  async ({ locals, request, url, redirect, cookies }, next) => {
+  async ({ locals, request, url, redirect }, next) => {
     try {
       locals.pb = new PocketBase(import.meta.env.PB_URL);
     } catch (err) {
@@ -12,8 +12,7 @@ export const onRequest = defineMiddleware(
     }
 
     // grab cookie from browser if exists
-    const authCookie = cookies.get("pb_auth");
-    locals.pb.authStore.loadFromCookie(authCookie?.value ?? "");
+    locals.pb.authStore.loadFromCookie(request.headers.get("cookie") || "");
 
     try {
       if (locals.pb.authStore.isValid) {
@@ -22,7 +21,6 @@ export const onRequest = defineMiddleware(
         locals.user = user;
       }
     } catch (_) {
-      console.log("invalid auth cookie");
       locals.pb.authStore.clear();
       locals.user = undefined;
     }
@@ -31,10 +29,12 @@ export const onRequest = defineMiddleware(
     const response = await next();
 
     // set cookie to latest authstore
-    cookies.set(
-      "pb_auth",
-      locals.pb.authStore.exportToCookie({ secure: false })
-    );
+    if (response.headers) {
+      response.headers.set(
+        "set-cookie",
+        locals.pb.authStore.exportToCookie({ secure: false })
+      );
+    }
 
     // redirect if not logged in
     if (

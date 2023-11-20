@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+console.log(Astro.locals.user)
+
 const lists = await Astro.locals.pb
   .collection("lists")
   .getFullList({ sort: "-created" });
@@ -26,7 +28,7 @@ const lists = await Astro.locals.pb
             </Button>
           </form>
         </div>
-        <ScrollArea client:load className="grid gap-1 overflow-auto flex-1">
+        <ScrollArea className="grid gap-1 overflow-auto flex-1">
           {
             lists.map((list) => (
               <a

@@ -34,7 +34,7 @@ export const LoginForm: React.FC = () => {
     defaultValues: { email: "", password: "" },
     mode: "onChange",
   });
-  const { control, handleSubmit, isValid } = methods;
+  const { control, handleSubmit } = methods;
 
   const [error, setError] = React.useState<string | null>(null);
 
@@ -59,7 +59,7 @@ export const LoginForm: React.FC = () => {
 
   return (
     <Form {...methods}>
-      <form onSubmit={handleSubmit(submitForm)}>
+      <form  action="/api/auth/login" method="post">
         {error && (
           <Alert variant="destructive" className="mb-1">
             <AlertTriangle className="h-4 w-4" />
