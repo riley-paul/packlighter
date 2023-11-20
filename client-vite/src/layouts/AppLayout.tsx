@@ -3,24 +3,29 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { pb } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Feather, Plus } from "lucide-react";
 import { RecordModel } from "pocketbase";
 import React from "react";
-import {
-  Link,
-  LoaderFunction,
-  NavLink,
-  Outlet,
-  useLoaderData,
-} from "react-router-dom";
-
-export const loader: LoaderFunction = async () => {
-  const lists = await pb.collection("lists").getFullList({ sort: "-created" });
-  return { lists };
-};
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 
 export const Component: React.FC = () => {
-  const { lists } = useLoaderData() as { lists: RecordModel[] };
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
+  const queryLists = useQuery({
+    queryKey: ["lists"],
+    queryFn: () => pb.collection("lists").getFullList({ sort: "-created" }),
+  });
+  
+  const createList = useMutation({
+    mutationFn: (list: Partial<RecordModel>) =>
+      pb.collection("lists").create(list),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
+      navigate(`/${data.id}`);
+    },
+  });
 
   return (
     <main className="overflow-hidden w-full h-screen flex flex-col">
@@ -37,14 +42,21 @@ export const Component: React.FC = () => {
         <aside className="border-r w-[250px] py-2 pr-2 flex flex-col">
           <div className="flex justify-between items-center">
             <h2 className="text-sm font-medium">Lists</h2>
-            <Button variant="ghost" size="sm">
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() =>
+                createList.mutate({ user: pb.authStore.model?.id })
+              }
+            >
               <Plus className="mr-2 w-4" /> New List
             </Button>
           </div>
           <ScrollArea>
             <div className="grid gap-1">
-              {lists.map((list) => (
+              {queryLists.data?.map((list) => (
                 <NavLink
+                  key={list.id}
                   to={`/${list.id}`}
                   className={({ isActive }) =>
                     cn(
