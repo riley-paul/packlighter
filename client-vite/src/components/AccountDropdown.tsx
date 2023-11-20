@@ -11,10 +11,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "lucide-react";
 import { pb } from "@/lib/pocketbase";
 import { useNavigate } from "react-router-dom";
+import { RecordModel } from "pocketbase";
 
 export const AccountDropdown: React.FC = () => {
-  const user = pb.authStore.model;
-  const imageUrl = user?.imageUrl;
+  const user = pb.authStore.model as RecordModel;
+  const imageUrl = pb.files.getUrl(user, user.avatar, { thumb: "100x100" });
 
   const navigate = useNavigate();
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { Feather } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LoginForm } from "@/components/loginForm";
-import { SignUpForm } from "@/components/signUpForm";
+import { LoginForm } from "@/components/LoginForm";
+import { SignUpForm } from "@/components/SignUpForm";
 
 export const Component: React.FC = () => (
   <div className="container max-w-sm py-12">

@@ -1,24 +1,32 @@
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { pb } from "@/lib/pocketbase";
+import { cn } from "@/lib/utils";
 import { Feather, Plus } from "lucide-react";
+import { RecordModel } from "pocketbase";
 import React from "react";
-import { Link, LoaderFunction, Outlet } from "react-router-dom";
+import {
+  Link,
+  LoaderFunction,
+  NavLink,
+  Outlet,
+  useLoaderData,
+} from "react-router-dom";
 
 export const loader: LoaderFunction = async () => {
-  console.log("AppLayout loader");
-  return null;
+  const lists = await pb.collection("lists").getFullList({ sort: "-created" });
+  return { lists };
 };
 
 export const Component: React.FC = () => {
+  const { lists } = useLoaderData() as { lists: RecordModel[] };
+
   return (
     <main className="overflow-hidden w-full h-screen flex flex-col">
       <header className="bg-card text-foreground h-14 border-b shadow">
         <div className="flex px-4 justify-between items-center h-full">
-          <Link
-            to="/"
-            className="flex items-center w-[250px] border-r h-full"
-          >
+          <Link to="/" className="flex items-center w-[250px] border-r h-full">
             <Feather className="mr-3 w-6 text-teal-500" />
             <h1 className="font-medium text-lg">PackLighter</h1>
           </Link>
@@ -35,21 +43,21 @@ export const Component: React.FC = () => {
           </div>
           <ScrollArea>
             <div className="grid gap-1">
-              {/* {
-              lists.map((list) => (
-                <a
-                href={`/${list.id}`}
-                className={cn(
-                  "block w-full px-4 py-1 hover:border-l-4 hover:pl-3 text-muted-foreground",
-                  !list.name && "italic",
-                  Astro.url.pathname === `/${list.id}` &&
-                  "border-l-4 border-teal-500 pl-3 text-foreground"
-                  )}
-                  >
+              {lists.map((list) => (
+                <NavLink
+                  to={`/${list.id}`}
+                  className={({ isActive }) =>
+                    cn(
+                      "block w-full px-4 py-1 hover:border-l-4 hover:pl-3 text-muted-foreground",
+                      !list.name && "italic",
+                      isActive &&
+                        "border-l-4 border-teal-500 pl-3 text-foreground"
+                    )
+                  }
+                >
                   {list.name || "Unnamed List"}
-                  </a>
-                  ))
-                } */}
+                </NavLink>
+              ))}
             </div>
           </ScrollArea>
         </aside>
