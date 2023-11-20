@@ -1,6 +1,8 @@
 ---
-import { List } from "@/components/List";
+import { ListHeader } from "@/components/ListHeader";
+import { ListBody } from "@/components/ListBody";
 import Layout from "@/layouts/Layout.astro";
+import type { RecordModel } from "pocketbase";
 
 const list = await Astro.locals.pb
   .collection("lists")
@@ -10,8 +12,25 @@ const items = await Astro.locals.pb
   .collection("list_items")
   .getFullList({ filter: `list = "${list.id}"`, expand: "item" });
 console.log(items);
+
+const categories = await Astro.locals.pb
+  .collection("list_categories")
+  .getFullList({
+    filter: `list = "${list.id}"`,
+    expand: "categories_items(category).item",
+  })
+  .then((results: RecordModel[]) =>
+    results.map((category: RecordModel) => ({
+      ...category,
+      items: category.expand
+        ? category.expand["categories_items(category)"]
+        : [],
+    }))
+  );
+console.log(categories);
 ---
 
 <Layout>
-  <List client:load initialList={list} />
+  <ListHeader client:load initialList={list} />
+  <ListBody client:load initialCategories={categories} />
 </Layout>

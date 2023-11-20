@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-console.log(Astro.locals.user)
-
 const lists = await Astro.locals.pb
   .collection("lists")
   .getFullList({ sort: "-created" });
@@ -21,29 +19,31 @@ const lists = await Astro.locals.pb
     <main class="overflow-hidden container flex flex-1">
       <aside class="border-r w-[250px] py-2 pr-2 flex flex-col">
         <div class="flex justify-between items-center">
-          <h2 class="text-lg font-medium">Lists</h2>
+          <h2 class="text-sm font-medium">Lists</h2>
           <form action="/api/lists" method="post">
             <Button variant="ghost" size="sm">
               <Plus className="mr-2 w-4" /> New List
             </Button>
           </form>
         </div>
-        <ScrollArea className="grid gap-1 overflow-auto flex-1">
-          {
-            lists.map((list) => (
-              <a
-                href={`/${list.id}`}
-                class={cn(
-                  "block w-full px-4 py-1 text-sm hover:border-l-4 hover:pl-3",
-                  !list.name && "italic text-muted-foreground",
-                  Astro.url.pathname === `/${list.id}` &&
-                    "border-l-4 border-teal-500 pl-3"
-                )}
-              >
-                {list.name || "Unnamed List"}
-              </a>
-            ))
-          }
+        <ScrollArea client:load>
+          <div class="grid gap-1">
+            {
+              lists.map((list) => (
+                <a
+                  href={`/${list.id}`}
+                  class={cn(
+                    "block w-full px-4 py-1 hover:border-l-4 hover:pl-3 text-muted-foreground",
+                    !list.name && "italic",
+                    Astro.url.pathname === `/${list.id}` &&
+                      "border-l-4 border-teal-500 pl-3 text-foreground"
+                  )}
+                >
+                  {list.name || "Unnamed List"}
+                </a>
+              ))
+            }
+          </div>
         </ScrollArea>
       </aside>
       <div class="flex-1 pl-4 py-4 overflow-auto">

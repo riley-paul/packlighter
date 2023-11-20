@@ -1,7 +1,4 @@
-import type { Category } from "@/lib/types";
 import type { APIRoute } from "astro";
-
-const defaultCategories: Category[] = [{ name: "", items: [] }];
 
 export const GET: APIRoute = async ({ locals, params }) => {
   const id = params.id || "";
