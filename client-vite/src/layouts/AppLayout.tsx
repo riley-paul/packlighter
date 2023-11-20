@@ -1,31 +1,15 @@
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useLists } from "@/hooks/useLists";
 import { pb } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Feather, Plus } from "lucide-react";
-import { RecordModel } from "pocketbase";
 import React from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 
 export const Component: React.FC = () => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
-
-  const queryLists = useQuery({
-    queryKey: ["lists"],
-    queryFn: () => pb.collection("lists").getFullList({ sort: "-created" }),
-  });
-  
-  const createList = useMutation({
-    mutationFn: (list: Partial<RecordModel>) =>
-      pb.collection("lists").create(list),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["lists"] });
-      navigate(`/${data.id}`);
-    },
-  });
+  const { queryLists, createList } = useLists();
 
   return (
     <main className="overflow-hidden w-full h-screen flex flex-col">
@@ -38,8 +22,8 @@ export const Component: React.FC = () => {
           <AccountDropdown />
         </div>
       </header>
-      <div className="flex flex-1 px-4">
-        <aside className="border-r w-[250px] py-2 pr-2 flex flex-col">
+      <div className="flex flex-1 px-4 overflow-hidden">
+        <aside className="border-r w-[250px] py-2 pr-2 flex flex-col overflow-hidden">
           <div className="flex justify-between items-center">
             <h2 className="text-sm font-medium">Lists</h2>
             <Button

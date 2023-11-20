@@ -9,26 +9,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoaderFunction, useLoaderData } from "react-router-dom";
-import { pb } from "@/lib/pocketbase";
+import { useParams } from "react-router-dom";
+import { useLists } from "@/hooks/useLists";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const schema = z.object({
   name: z.string().optional(),
   description: z.string().optional(),
 });
 
-export const loader: LoaderFunction = async ({ params }) => {
-  try {
-    const list = await pb.collection("lists").getOne(params.listId ?? "");
-    return { list };
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-};
-
 export const Component: React.FC = () => {
-  const { list } = useLoaderData() as { list: RecordModel };
+  const { listId } = useParams();
+  const { queryList, deleteList, updateList } = useLists(listId);
+
+  const list = queryList.data;
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -37,7 +31,18 @@ export const Component: React.FC = () => {
 
   const { handleSubmit, control } = methods;
 
-  const saveList = (data: RecordModel) => console.log(data);
+  const saveList = (data: RecordModel) =>
+    updateList.mutate({ id: listId ?? "", data });
+
+  if (queryList.isPending)
+    return (
+      <div className="grid gap-2">
+        <Skeleton className="w-full h-10" />
+        <Skeleton className="w-full h-14" />
+      </div>
+    );
+
+  if (queryList.isError) return <div>Error: {queryList.error.message}</div>;
 
   return (
     <div className="flex gap-4">
@@ -66,11 +71,16 @@ export const Component: React.FC = () => {
         />
         <input type="hidden" />
       </form>
-      <form method="POST" action={`/api/lists/${list.id}/delete`}>
-        <Button size="icon" variant="destructive" className="h-full">
+      <div>
+        <Button
+          size="icon"
+          variant="destructive"
+          className="h-full"
+          onClick={() => deleteList.mutate(listId ?? "")}
+        >
           <Trash className="w-4" />
         </Button>
-      </form>
+      </div>
     </div>
   );
 };
