@@ -66,6 +66,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
-    "pocketbase-typegen": "^1.2.1"
+    "pocketbase-typegen": "^1.2.1",
+    "supabase": "^1.112.0"
   }
 }

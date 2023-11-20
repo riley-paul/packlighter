@@ -6,6 +6,11 @@ import type { ListsResponse } from "@/lib/types";
 const list = await Astro.locals.pb
   .collection("lists")
   .getOne(Astro.params.id ?? "");
+
+const items = await Astro.locals.pb
+  .collection("list_items")
+  .getFullList({ filter: `list = "${list.id}"`, expand: "item" });
+console.log(items);
 ---
 
 <Layout>
