@@ -21,7 +21,7 @@
     </h1>
   </a>
   {#if data.user}
-    <UserDropdown avatar={data.avatarImageUrl || ""} />
+    <UserDropdown avatar={data.avatarImageUrl || ""} name={data.user.name} />
   {/if}
 </header>
 <main class="p-4 overflow-y-auto">
