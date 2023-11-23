@@ -23,17 +23,19 @@
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
     "vite": "^4.3.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "type": "module",
   "dependencies": {
     "@zerodevx/svelte-toast": "^0.9.5",
-    "bits-ui": "^0.5.7",
+    "bits-ui": "^0.9.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "cmdk-sv": "^0.0.12",
+    "formsnap": "^0.4.1",
     "lucide-svelte": "^0.260.0",
     "radix-icons-svelte": "^1.2.1",
-    "sveltekit-superforms": "^1.7.2",
+    "sveltekit-superforms": "^1.10.2",
     "tailwind-merge": "^1.14.0",
     "tailwind-variants": "^0.1.14",
     "tailwindcss-animate": "^1.0.6",

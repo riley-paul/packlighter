@@ -6,7 +6,7 @@ import {
   error,
 } from "@sveltejs/kit";
 import { setError, superValidate } from "sveltekit-superforms/server";
-import { signInSchema, signUpSchema } from "$lib/config/schemas";
+import { signInSchema, signUpSchema } from "../../lib/config/schemas";
 import { generateFromEmail } from "unique-username-generator";
 import type { ClientResponseError } from "pocketbase";
 
