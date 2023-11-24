@@ -9,8 +9,9 @@ import { setError, superValidate } from "sveltekit-superforms/server";
 import { signInSchema, signUpSchema } from "../../lib/config/schemas";
 import { generateFromEmail } from "unique-username-generator";
 import type { ClientResponseError } from "pocketbase";
+import type { PageServerLoad } from "./$types";
 
-export const load: ServerLoad = async (event) => {
+export const load: PageServerLoad = async (event) => {
   if (event.locals.pb.authStore.isValid) throw redirect(302, "/");
   const signUpForm = await superValidate(event, signUpSchema);
   const loginForm = await superValidate(event, signInSchema);
