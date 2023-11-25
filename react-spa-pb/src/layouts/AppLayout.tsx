@@ -12,18 +12,13 @@ export const Component: React.FC = () => {
   const { queryLists, createList, deleteList } = useDataQuery();
 
   return (
-    <main className="overflow-hidden w-full h-screen flex flex-col">
-      <header className="bg-card text-foreground h-14 border-b shadow">
-        <div className="flex px-4 justify-between items-center h-full">
-          <Link to="/" className="flex items-center w-[250px] border-r h-full">
-            <Feather className="mr-3 w-6 text-teal-500" />
-            <h1 className="font-medium text-lg">PackLighter</h1>
-          </Link>
-          <AccountDropdown />
-        </div>
-      </header>
-      <div className="flex flex-1 px-4 overflow-hidden">
-        <aside className="border-r w-[250px] py-2 pr-2 flex flex-col overflow-hidden">
+    <div className="overflow-hidden w-full h-screen flex">
+      <aside className="border-r w-[250px] flex flex-col overflow-hidden">
+        <Link to="/" className="flex items-center border-b h-14 p-4">
+          <Feather className="mr-3 w-6 text-teal-500" />
+          <h1 className="font-medium text-lg">PackLighter</h1>
+        </Link>
+        <div className="p-4 overflow-hidden">
           <div className="flex justify-between items-center">
             <h2 className="text-sm font-medium">Lists</h2>
             <Button
@@ -44,7 +39,7 @@ export const Component: React.FC = () => {
                   to={`/${list.id}`}
                   className={({ isActive }) =>
                     cn(
-                      "w-full px-4 h-8 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
+                      "w-full pl-4 h-8 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
                       !list.name && "italic",
                       isActive &&
                         "border-l-4 border-teal-500 pl-3 text-foreground"
@@ -55,7 +50,7 @@ export const Component: React.FC = () => {
                   <Button
                     size="icon"
                     variant="ghost"
-                    className="h-8 w-8 hidden group-hover:flex"
+                    className="h-8 w-8 opacity-0 group-hover:opacity-100"
                     onClick={(ev) => {
                       ev.preventDefault();
                       deleteList.mutate(list.id);
@@ -67,11 +62,16 @@ export const Component: React.FC = () => {
               ))}
             </div>
           </ScrollArea>
-        </aside>
-        <div className="flex-1 pl-4 py-4 overflow-auto">
+        </div>
+      </aside>
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <header className="bg-card text-foreground h-14 border-b shadow flex justify-end p-4 items-center">
+          <AccountDropdown />
+        </header>
+        <div className="flex-1 overflow-auto p-4">
           <Outlet />
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
   );
 };

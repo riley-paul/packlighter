@@ -37,7 +37,7 @@ export const useDataQuery = (listId?: string) => {
           .collection("list_categories")
           .getFullList({
             filter: `list = "${listId}"`,
-            sort: "-created",
+            sort: "created",
             expand: "categories_items(category).item",
           })
           .then((data) => data.map(expandCategories)),
@@ -75,8 +75,24 @@ export const useDataQuery = (listId?: string) => {
   const updateCategory = useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<RecordModel> }) =>
       pb.collection("list_categories").update(id, data),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["list", data.list] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
+  const deleteCategory = useMutation({
+    mutationFn: (categoryId: string) =>
+      pb.collection("list_categories").delete(categoryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
+  const createCategory = useMutation({
+    mutationFn: (category: Partial<RecordModel>) =>
+      pb.collection("list_categories").create({ ...category, list: listId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
     },
   });
 
@@ -88,5 +104,7 @@ export const useDataQuery = (listId?: string) => {
     updateList,
     deleteList,
     updateCategory,
+    deleteCategory,
+    createCategory,
   };
 };
