@@ -11,7 +11,7 @@
     Plus,
     Save,
   } from "lucide-svelte";
-  import type { ActionData, PageServerData } from "../../[id]/$types";
+  import type { ActionData, PageServerData } from "./$types";
 
   import { enhance } from "$app/forms";
   import { fly, slide } from "svelte/transition";
