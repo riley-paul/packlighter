@@ -4,12 +4,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useLists } from "@/hooks/useLists";
 import { pb } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
-import { Feather, Plus } from "lucide-react";
+import { Delete, Feather, Plus } from "lucide-react";
 import React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 export const Component: React.FC = () => {
-  const { queryLists, createList } = useLists();
+  const { queryLists, createList, deleteList } = useLists();
 
   return (
     <main className="overflow-hidden w-full h-screen flex flex-col">
@@ -44,7 +44,7 @@ export const Component: React.FC = () => {
                   to={`/${list.id}`}
                   className={({ isActive }) =>
                     cn(
-                      "block w-full px-4 py-1 hover:border-l-4 hover:pl-3 text-muted-foreground",
+                      "w-full px-4 h-8 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
                       !list.name && "italic",
                       isActive &&
                         "border-l-4 border-teal-500 pl-3 text-foreground"
@@ -52,6 +52,17 @@ export const Component: React.FC = () => {
                   }
                 >
                   {list.name || "Unnamed List"}
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-8 w-8 hidden group-hover:flex"
+                    onClick={(ev) => {
+                      ev.preventDefault();
+                      deleteList.mutate(list.id);
+                    }}
+                  >
+                    <Delete className="h-4 w-4" />
+                  </Button>
                 </NavLink>
               ))}
             </div>
