@@ -1,21 +1,22 @@
-import type { RecordModel } from "pocketbase";
 import React from "react";
-
-import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { Trash } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useParams } from "react-router-dom";
-import { useLists } from "@/hooks/useLists";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ListHeader } from "@/components/ListHeader";
+import { Category } from "@/components/Category";
+import { useDataQuery } from "@/hooks/useDataQuery";
 
 export const Component: React.FC = () => {
   const { listId = "" } = useParams();
+  const { queryList } = useDataQuery(listId);
 
-  return <ListHeader listId={listId} />;
+  if (queryList.isPending) return <div>Loading...</div>;
+  if (queryList.isError) return <div>Error: {queryList.error.message}</div>;
+
+  return (
+    <div className="flex flex-col gap-4">
+      <ListHeader list={queryList.data} listId={listId} />
+      {queryList.data.categories.map((c) => (
+        <Category key={c.id} category={c} listId={listId} />
+      ))}
+    </div>
+  );
 };

@@ -1,16 +1,13 @@
 import type { RecordModel } from "pocketbase";
 import React from "react";
-
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-
 import { Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLists } from "@/hooks/useLists";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ListWithCategories, useDataQuery } from "@/hooks/useDataQuery";
 
 const schema = z.object({
   name: z.string().optional(),
@@ -19,12 +16,12 @@ const schema = z.object({
 
 interface Props {
   listId: string;
+  list: ListWithCategories;
 }
 
-export const ListHeader: React.FC<Props> = ({ listId }) => {
-  const { queryList, deleteList, updateList } = useLists(listId);
-
-  const list = queryList.data;
+export const ListHeader: React.FC<Props> = (props) => {
+  const { listId, list } = props;
+  const { deleteList, updateList } = useDataQuery(listId);
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -35,16 +32,6 @@ export const ListHeader: React.FC<Props> = ({ listId }) => {
 
   const saveList = (data: RecordModel) =>
     updateList.mutate({ id: listId ?? "", data });
-
-  if (queryList.isPending)
-    return (
-      <div className="grid gap-2">
-        <Skeleton className="w-full h-10" />
-        <Skeleton className="w-full h-14" />
-      </div>
-    );
-
-  if (queryList.isError) return <div>Error: {queryList.error.message}</div>;
 
   return (
     <div className="flex gap-4">

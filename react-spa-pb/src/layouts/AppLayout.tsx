@@ -1,7 +1,7 @@
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useLists } from "@/hooks/useLists";
+import { useDataQuery } from "@/hooks/useDataQuery";
 import { pb } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
 import { Delete, Feather, Plus } from "lucide-react";
@@ -9,7 +9,7 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 export const Component: React.FC = () => {
-  const { queryLists, createList, deleteList } = useLists();
+  const { queryLists, createList, deleteList } = useDataQuery();
 
   return (
     <main className="overflow-hidden w-full h-screen flex flex-col">
