@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { pb } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
 
@@ -22,6 +22,7 @@ export type ListWithCategories = RecordModel & {
 export const useDataQuery = (listId?: string) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const params = useParams();
 
   const queryLists = useQuery({
     queryKey: ["lists"],
@@ -66,9 +67,9 @@ export const useDataQuery = (listId?: string) => {
 
   const deleteList = useMutation({
     mutationFn: (listId: string) => pb.collection("lists").delete(listId),
-    onSuccess: () => {
+    onSuccess: (_, deletedList) => {
       queryClient.invalidateQueries({ queryKey: ["lists"] });
-      navigate(`/`);
+      if (params.listId === deletedList) navigate(`/`);
     },
   });
 
