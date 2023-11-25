@@ -4,7 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Delete, GripHorizontal, Plus } from "lucide-react";
+import { Delete, GripVertical, Plus } from "lucide-react";
+import { CategoryItem } from "./CategoryItem";
 
 interface Props {
   listId: string;
@@ -31,11 +32,11 @@ export const Category: React.FC<Props> = (props) => {
   };
 
   return (
-    <div>
+    <article>
       <div className="border-b-2 py-1 flex gap-2 items-center group text-sm font-semibold">
-        <Button size="icon" variant="ghost" className="">
-          <GripHorizontal className="h-5 w-5" />
-        </Button>
+        <i className="px-1 cursor-grab">
+          <GripVertical className="h-5 w-5" />
+        </i>
         <form
           onBlur={handleSubmit(saveCategory)}
           onSubmit={handleSubmit(saveCategory)}
@@ -66,30 +67,12 @@ export const Category: React.FC<Props> = (props) => {
         </Button>
       </div>
       {category.items.map((item) => (
-        <div
-          key={item.id}
-          className="border-b text-sm py-1 flex gap-2 items-center hover:bg-muted transition-colors"
-        >
-          <Button size="icon" variant="ghost">
-            <GripHorizontal className="h-4 w-4" />
-          </Button>
-          <div className="flex-1">{item.itemData.name}</div>
-          <div className="flex-1 text-muted-foreground">
-            {item.itemData.description}
-          </div>
-          <div className="w-14 flex justify-center">
-            {item.itemData.weight_g}
-          </div>
-          <div className="w-14 flex justify-center">{item.quantity}</div>
-          <Button size="icon" variant="ghost">
-            <Delete className="h-4 w-4" />
-          </Button>
-        </div>
+        <CategoryItem key={item.id} item={item} listId={listId} />
       ))}
       <Button size="sm" variant="link" className="mt-2">
         <Plus className="h-4 w-4 mr-2" />
         Add Gear
       </Button>
-    </div>
+    </article>
   );
 };

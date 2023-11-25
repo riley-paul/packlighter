@@ -24,9 +24,7 @@ export const Component: React.FC = () => {
             <Button
               size="sm"
               variant="ghost"
-              onClick={() =>
-                createList.mutate({ user: pb.authStore.model?.id })
-              }
+              onClick={() => createList.mutate({})}
             >
               <Plus className="mr-2 w-4" /> New List
             </Button>

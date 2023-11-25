@@ -3,13 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { pb } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
 
-type ExpandedItem = RecordModel & { itemData: RecordModel };
-const expandItems = (record: RecordModel): ExpandedItem => ({
+export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
+const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
   ...record,
   itemData: record.expand?.item ?? {},
 });
 
-export type ExpandedCategory = RecordModel & { items: ExpandedItem[] };
+export type ExpandedCategory = RecordModel & { items: ExpandedCategoryItem[] };
 const expandCategories = (record: RecordModel): ExpandedCategory => ({
   ...record,
   items: record.expand?.["categories_items(category)"]?.map(expandItems) ?? [],
@@ -49,7 +49,7 @@ export const useDataQuery = (listId?: string) => {
 
   const createList = useMutation({
     mutationFn: (list: Partial<RecordModel>) =>
-      pb.collection("lists").create(list),
+      pb.collection("lists").create({ ...list, user: pb.authStore.model?.id }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["lists"] });
       navigate(`/${data.id}`);
@@ -97,6 +97,29 @@ export const useDataQuery = (listId?: string) => {
     },
   });
 
+  const updateCategoryItem = useMutation({
+    mutationFn: (input: {
+      id: string;
+      itemId: string;
+      data: Partial<ExpandedCategoryItem>;
+    }) =>
+      Promise.all([
+        pb.collection("categories_items").update(input.id, input.data),
+        pb.collection("items").update(input.itemId, input.data.itemData),
+      ]),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
+  const createCategoryItem = useMutation({
+    mutationFn: (data: { category: string; item: string }) =>
+      pb.collection("categories_items").create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
   return {
     queryClient,
     queryLists,
@@ -107,5 +130,7 @@ export const useDataQuery = (listId?: string) => {
     updateCategory,
     deleteCategory,
     createCategory,
+    createCategoryItem,
+    updateCategoryItem,
   };
 };
