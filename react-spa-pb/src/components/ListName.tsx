@@ -1,31 +1,29 @@
-import type { RecordModel } from "pocketbase";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { ListWithCategories, useDataQuery } from "@/hooks/useDataQuery";
+import { useDataQuery } from "@/hooks/useDataQuery";
 import { useParams } from "react-router-dom";
 
 interface Props {
-  list: ListWithCategories;
+  listName: string;
 }
 
-export const ListName: React.FC<Props> = (props) => {
-  const { list } = props;
+export const ListName: React.FC<Props> = ({ listName }) => {
   const { updateList } = useDataQuery();
   const { listId } = useParams();
 
   const methods = useForm({
-    values: list,
+    values: { name: listName },
   });
+
+  if (!listId) return <div />;
 
   const { handleSubmit, control } = methods;
 
-  const saveList = (data: RecordModel) => {
+  const saveList = (data: { name: string }) => {
     const { name } = data;
-    updateList.mutate({ id: list.id, data: { name } });
+    updateList.mutate({ id: listId, data: { name } });
   };
-
-  if (!listId ) return <div />;
 
   return (
     <form

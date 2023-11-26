@@ -1,5 +1,3 @@
-import { AccountDropdown } from "@/components/AccountDropdown";
-import { ListName } from "@/components/ListName";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDataQuery } from "@/hooks/useDataQuery";
@@ -9,7 +7,7 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 export const Component: React.FC = () => {
-  const { queryLists, queryList, createList, deleteList } = useDataQuery();
+  const { queryLists, createList, deleteList } = useDataQuery();
 
   return (
     <div className="overflow-hidden w-full h-screen flex">
@@ -63,13 +61,7 @@ export const Component: React.FC = () => {
         </div>
       </aside>
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-card text-foreground h-14 border-b flex justify-between p-4 items-center">
-          {queryList.data ? <ListName list={queryList.data} /> : <div />}
-          <AccountDropdown />
-        </header>
-        <div className="flex-1 overflow-auto p-4">
-          <Outlet />
-        </div>
+        <Outlet />
       </main>
     </div>
   );
