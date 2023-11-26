@@ -2,7 +2,6 @@ import { AccountDropdown } from "@/components/AccountDropdown";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDataQuery } from "@/hooks/useDataQuery";
-import { pb } from "@/lib/pocketbase";
 import { cn } from "@/lib/utils";
 import { Delete, Feather, Plus } from "lucide-react";
 import React from "react";
@@ -15,7 +14,7 @@ export const Component: React.FC = () => {
     <div className="overflow-hidden w-full h-screen flex">
       <aside className="border-r w-[250px] flex flex-col overflow-hidden">
         <Link to="/" className="flex items-center border-b h-14 p-4">
-          <Feather className="mr-3 w-6 text-teal-500" />
+          <Feather className="mr-3 w-6 text-accent-foreground" />
           <h1 className="font-medium text-lg">PackLighter</h1>
         </Link>
         <div className="p-4 overflow-hidden">
@@ -40,7 +39,7 @@ export const Component: React.FC = () => {
                       "w-full pl-4 h-8 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
                       !list.name && "italic",
                       isActive &&
-                        "border-l-4 border-teal-500 pl-3 text-foreground"
+                        "border-l-4 border-accent-foreground pl-3 text-foreground"
                     )
                   }
                 >

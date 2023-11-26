@@ -26,7 +26,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
 
   return (
     <form
-      className="border-b text-sm p-1 grid grid-cols-[1fr_3fr_6rem_4rem_auto] gap-2 items-center hover:bg-muted/50 transition-colors"
+      className="border-b text-sm p-1 grid grid-cols-[1fr_3fr_6rem_4rem_auto] gap-2 items-center hover:bg-muted/30 transition-colors"
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
     >
@@ -34,7 +34,11 @@ export const CategoryItem: React.FC<Props> = (props) => {
         control={control}
         name="itemData.name"
         render={({ field }) => (
-          <Input {...field} placeholder="Name" className="border-none" />
+          <Input
+            {...field}
+            placeholder="Name"
+            className="border-none shadow-none"
+          />
         )}
       />
       <Controller
@@ -44,7 +48,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
           <Input
             {...field}
             placeholder="Description"
-            className="text-muted-foreground border-none"
+            className="text-muted-foreground border-none shadow-none"
           />
         )}
       />
@@ -52,14 +56,24 @@ export const CategoryItem: React.FC<Props> = (props) => {
         control={control}
         name="itemData.weight_g"
         render={({ field }) => (
-          <Input {...field} type="number" min="0" className="border-none" />
+          <Input
+            {...field}
+            type="number"
+            min="0"
+            className="border-none shadow-none"
+          />
         )}
       />
       <Controller
         control={control}
         name="quantity"
         render={({ field }) => (
-          <Input {...field} type="number" min="1" className="border-none" />
+          <Input
+            {...field}
+            type="number"
+            min="1"
+            className="border-none shadow-none"
+          />
         )}
       />
       <Button
