@@ -21,7 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "./ui/use-toast";
 
 interface Props {
-  listId: string;
   item: RecordModel;
 }
 
@@ -30,8 +29,8 @@ const schema = z.object({
 });
 
 export const ItemImage: React.FC<Props> = (props) => {
-  const { listId, item } = props;
-  const { updateItem } = useDataQuery(listId);
+  const { item } = props;
+  const { updateItem } = useDataQuery();
   const { toast } = useToast();
 
   const methods = useForm({
@@ -43,7 +42,7 @@ export const ItemImage: React.FC<Props> = (props) => {
 
   const saveImage = (data: RecordModel) => {
     const { image_url } = data;
-    updateItem.mutate({ id: listId, data: { image_url } });
+    updateItem.mutate({ id: item.id, data: { image_url } });
     toast({ title: "🟢 Image Updated" });
   };
 

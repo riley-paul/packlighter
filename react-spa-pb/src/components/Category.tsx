@@ -8,7 +8,6 @@ import { Delete, Plus } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 
 interface Props {
-  listId: string;
   category: ExpandedCategory;
 }
 
@@ -17,8 +16,8 @@ const schema = z.object({
 });
 
 export const Category: React.FC<Props> = (props) => {
-  const { listId, category } = props;
-  const { updateCategory, deleteCategory } = useDataQuery(listId);
+  const { category } = props;
+  const { updateCategory, deleteCategory } = useDataQuery();
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -64,7 +63,7 @@ export const Category: React.FC<Props> = (props) => {
         </Button>
       </div>
       {category.items.map((item) => (
-        <CategoryItem key={item.id} item={item} listId={listId} />
+        <CategoryItem key={item.id} item={item} />
       ))}
       <Button size="sm" variant="linkMuted" className="mt-2">
         <Plus className="h-4 w-4 mr-2" />

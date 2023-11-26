@@ -19,7 +19,9 @@ export type ListWithCategories = RecordModel & {
   categories: ExpandedCategory[];
 };
 
-export const useDataQuery = (listId?: string) => {
+export const useDataQuery = () => {
+  const { listId = "" } = useParams();
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const params = useParams();

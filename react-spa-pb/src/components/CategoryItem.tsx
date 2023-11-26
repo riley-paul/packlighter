@@ -8,12 +8,11 @@ import { ItemImage } from "./ItemImage";
 
 interface Props {
   item: ExpandedCategoryItem;
-  listId: string;
 }
 
 export const CategoryItem: React.FC<Props> = (props) => {
-  const { item, listId } = props;
-  const { updateCategoryItem, deleteCategoryItem } = useDataQuery(listId);
+  const { item } = props;
+  const { updateCategoryItem, deleteCategoryItem } = useDataQuery();
 
   const methods = useForm({
     values: item,
@@ -31,7 +30,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
     >
-      <ItemImage listId={listId} item={item.itemData} />
+      <ItemImage item={item.itemData} />
       <Controller
         control={control}
         name="itemData.name"

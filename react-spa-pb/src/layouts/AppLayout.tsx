@@ -1,4 +1,5 @@
 import { AccountDropdown } from "@/components/AccountDropdown";
+import { ListName } from "@/components/ListName";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useDataQuery } from "@/hooks/useDataQuery";
@@ -8,7 +9,7 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 
 export const Component: React.FC = () => {
-  const { queryLists, createList, deleteList } = useDataQuery();
+  const { queryLists, queryList, createList, deleteList } = useDataQuery();
 
   return (
     <div className="overflow-hidden w-full h-screen flex">
@@ -36,7 +37,7 @@ export const Component: React.FC = () => {
                   to={`/${list.id}`}
                   className={({ isActive }) =>
                     cn(
-                      "w-full pl-4 h-8 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
+                      "w-full pl-4 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
                       !list.name && "italic",
                       isActive &&
                         "border-l-4 border-accent-foreground pl-3 text-foreground"
@@ -62,7 +63,8 @@ export const Component: React.FC = () => {
         </div>
       </aside>
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-card text-foreground h-14 border-b shadow flex justify-end p-4 items-center">
+        <header className="bg-card text-foreground h-14 border-b flex justify-between p-4 items-center">
+          {queryList.data ? <ListName list={queryList.data} /> : <div />}
           <AccountDropdown />
         </header>
         <div className="flex-1 overflow-auto p-4">
