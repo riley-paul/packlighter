@@ -132,6 +132,14 @@ export const useDataQuery = (listId?: string) => {
     },
   });
 
+  const updateItem = useMutation({
+    mutationFn: (input: { id: string; data: Partial<RecordModel> }) =>
+      pb.collection("items").update(input.id, input.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
   return {
     queryClient,
     queryLists,
@@ -146,5 +154,6 @@ export const useDataQuery = (listId?: string) => {
     createCategoryItem,
     updateCategoryItem,
     deleteCategoryItem,
+    updateItem,
   };
 };

@@ -44,7 +44,7 @@ export const LoginForm: React.FC = () => {
   const submitForm = async (data: Schema) => {
     try {
       await pb.collection("users").authWithPassword(data.email, data.password);
-      toast({ title: "Successfully Logged in" });
+      toast({ title: "🟢 Successfully Logged in" });
       navigate("/");
     } catch (error) {
       console.error((error as ClientResponseError).data);

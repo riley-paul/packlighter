@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "./ui/input";
+import { ItemImage } from "./ItemImage";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -26,10 +27,11 @@ export const CategoryItem: React.FC<Props> = (props) => {
 
   return (
     <form
-      className="border-b text-sm p-1 grid grid-cols-[1fr_3fr_6rem_4rem_auto] gap-2 items-center hover:bg-muted/30 transition-colors"
+      className="border-b text-sm p-1 grid grid-cols-[auto_1fr_3fr_6rem_4rem_auto] gap-2 items-center hover:bg-muted/30 transition-colors"
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
     >
+      <ItemImage listId={listId} item={item.itemData} />
       <Controller
         control={control}
         name="itemData.name"
