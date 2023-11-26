@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Delete, GripVertical, Plus } from "lucide-react";
+import { Delete, Plus } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 
 interface Props {
@@ -33,10 +33,7 @@ export const Category: React.FC<Props> = (props) => {
 
   return (
     <article>
-      <div className="border-b-2 py-1 grid grid-cols-[2rem_1fr_4rem_4rem_auto] gap-2 items-center group text-sm font-semibold">
-        <i className="px-1 cursor-grab">
-          <GripVertical className="h-5 w-5" />
-        </i>
+      <div className="border-b-2 py-1 grid grid-cols-[1fr_6rem_4rem_auto] gap-2 items-center group text-sm font-semibold">
         <form
           onBlur={handleSubmit(saveCategory)}
           onSubmit={handleSubmit(saveCategory)}
@@ -55,8 +52,8 @@ export const Category: React.FC<Props> = (props) => {
           />
           <input type="hidden" />
         </form>
-        <div className="w-14 flex justify-center">Weight</div>
-        <div className="w-14 flex justify-center">Qty</div>
+        <div>Weight</div>
+        <div>Qty</div>
         <Button
           size="icon"
           variant="ghost"
@@ -69,7 +66,7 @@ export const Category: React.FC<Props> = (props) => {
       {category.items.map((item) => (
         <CategoryItem key={item.id} item={item} listId={listId} />
       ))}
-      <Button size="sm" variant="link" className="mt-2">
+      <Button size="sm" variant="linkMuted" className="mt-2">
         <Plus className="h-4 w-4 mr-2" />
         Add Gear
       </Button>

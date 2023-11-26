@@ -1,5 +1,5 @@
 import { ExpandedCategoryItem, useDataQuery } from "@/hooks/useDataQuery";
-import { Delete, GripVertical } from "lucide-react";
+import { Delete } from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
 import { Controller, useForm } from "react-hook-form";
@@ -12,19 +12,13 @@ interface Props {
 
 export const CategoryItem: React.FC<Props> = (props) => {
   const { item, listId } = props;
-  const { updateCategoryItem } = useDataQuery(listId);
+  const { updateCategoryItem, deleteCategoryItem } = useDataQuery(listId);
 
   const methods = useForm({
     values: item,
   });
 
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = methods;
-
-  React.useEffect(() => console.log(errors), [errors]);
+  const { handleSubmit, control } = methods;
 
   const saveCategoryItem = (data: ExpandedCategoryItem) => {
     updateCategoryItem.mutate({ id: item.id, itemId: item.itemData.id, data });
@@ -32,13 +26,10 @@ export const CategoryItem: React.FC<Props> = (props) => {
 
   return (
     <form
-      className="border-b text-sm py-1 grid grid-cols-[2rem_1fr_3fr_4rem_4rem_auto] gap-2 items-center hover:bg-muted/50 transition-colors"
+      className="border-b text-sm p-1 grid grid-cols-[1fr_3fr_6rem_4rem_auto] gap-2 items-center hover:bg-muted/50 transition-colors"
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
     >
-      <i className="cursor-grab flex items-center">
-        <GripVertical className="h-4 w-4" />
-      </i>
       <Controller
         control={control}
         name="itemData.name"
@@ -71,7 +62,11 @@ export const CategoryItem: React.FC<Props> = (props) => {
           <Input {...field} type="number" min="1" className="border-none" />
         )}
       />
-      <Button size="icon" variant="ghost">
+      <Button
+        size="icon"
+        variant="linkMuted"
+        onClick={() => deleteCategoryItem.mutate(item.id)}
+      >
         <Delete className="h-4 w-4" />
       </Button>
       <input type="hidden" />

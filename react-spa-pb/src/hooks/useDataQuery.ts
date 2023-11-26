@@ -47,6 +47,11 @@ export const useDataQuery = (listId?: string) => {
     },
   });
 
+  const queryItems = useQuery({
+    queryKey: ["items"],
+    queryFn: () => pb.collection("items").getFullList({ sort: "created" }),
+  });
+
   const createList = useMutation({
     mutationFn: (list: Partial<RecordModel>) =>
       pb.collection("lists").create({ ...list, user: pb.authStore.model?.id }),
@@ -120,10 +125,18 @@ export const useDataQuery = (listId?: string) => {
     },
   });
 
+  const deleteCategoryItem = useMutation({
+    mutationFn: (id: string) => pb.collection("categories_items").delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
   return {
     queryClient,
     queryLists,
     queryList,
+    queryItems,
     createList,
     updateList,
     deleteList,
@@ -132,5 +145,6 @@ export const useDataQuery = (listId?: string) => {
     createCategory,
     createCategoryItem,
     updateCategoryItem,
+    deleteCategoryItem,
   };
 };

@@ -21,7 +21,7 @@ export const Component: React.FC = () => {
       ))}
       <div>
         <Button
-          variant="link"
+          variant="linkMuted"
           size="sm"
           onClick={() => createCategory.mutate({})}
         >
