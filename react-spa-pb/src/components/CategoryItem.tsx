@@ -2,10 +2,7 @@ import { ExpandedCategoryItem, useDataQuery } from "@/hooks/useDataQuery";
 import { Delete, GripVertical } from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 
 interface Props {
@@ -13,28 +10,21 @@ interface Props {
   listId: string;
 }
 
-const itemSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  weight_g: z.number(),
-});
-
-const categoryItemSchema = z.object({
-  quantity: z.number(),
-  packed: z.boolean(),
-  itemData: itemSchema,
-});
-
 export const CategoryItem: React.FC<Props> = (props) => {
   const { item, listId } = props;
   const { updateCategoryItem } = useDataQuery(listId);
 
   const methods = useForm({
-    resolver: zodResolver(categoryItemSchema),
     values: item,
   });
 
-  const { handleSubmit, control } = methods;
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = methods;
+
+  React.useEffect(() => console.log(errors), [errors]);
 
   const saveCategoryItem = (data: ExpandedCategoryItem) => {
     updateCategoryItem.mutate({ id: item.id, itemId: item.itemData.id, data });
@@ -42,14 +32,13 @@ export const CategoryItem: React.FC<Props> = (props) => {
 
   return (
     <form
-      className="border-b text-sm py-1 grid grid-cols-[2rem_2rem_1fr_3fr_4rem_4rem_auto] gap-2 items-center hover:bg-muted/50 transition-colors"
+      className="border-b text-sm py-1 grid grid-cols-[2rem_1fr_3fr_4rem_4rem_auto] gap-2 items-center hover:bg-muted/50 transition-colors"
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
     >
-      <i className="cursor-grab">
+      <i className="cursor-grab flex items-center">
         <GripVertical className="h-4 w-4" />
       </i>
-      <Checkbox />
       <Controller
         control={control}
         name="itemData.name"
@@ -68,8 +57,20 @@ export const CategoryItem: React.FC<Props> = (props) => {
           />
         )}
       />
-      <div className="flex justify-center">{item.itemData.weight_g}</div>
-      <div className="flex justify-center">{item.quantity}</div>
+      <Controller
+        control={control}
+        name="itemData.weight_g"
+        render={({ field }) => (
+          <Input {...field} type="number" min="0" className="border-none" />
+        )}
+      />
+      <Controller
+        control={control}
+        name="quantity"
+        render={({ field }) => (
+          <Input {...field} type="number" min="1" className="border-none" />
+        )}
+      />
       <Button size="icon" variant="ghost">
         <Delete className="h-4 w-4" />
       </Button>

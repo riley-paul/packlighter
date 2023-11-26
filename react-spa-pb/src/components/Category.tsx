@@ -33,7 +33,7 @@ export const Category: React.FC<Props> = (props) => {
 
   return (
     <article>
-      <div className="border-b-2 py-1 flex gap-2 items-center group text-sm font-semibold">
+      <div className="border-b-2 py-1 grid grid-cols-[2rem_1fr_4rem_4rem_auto] gap-2 items-center group text-sm font-semibold">
         <i className="px-1 cursor-grab">
           <GripVertical className="h-5 w-5" />
         </i>
