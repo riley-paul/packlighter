@@ -33,7 +33,7 @@ export const Category: React.FC<Props> = (props) => {
 
   return (
     <article>
-      <div className="border-b-2 py-1 grid grid-cols-[1fr_6rem_4rem_auto] gap-2 items-center group text-sm font-semibold">
+      <div className="border-b-2 py-1 pr-1 grid grid-cols-[1fr_6rem_4rem_auto] gap-2 items-center group text-sm font-semibold">
         <form
           onBlur={handleSubmit(saveCategory)}
           onSubmit={handleSubmit(saveCategory)}
