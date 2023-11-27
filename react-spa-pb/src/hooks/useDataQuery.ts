@@ -10,9 +10,15 @@ const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
 });
 
 export type ExpandedCategory = RecordModel & { items: ExpandedCategoryItem[] };
-const expandCategories = (record: RecordModel): ExpandedCategory => ({
+const expandCategory = (record: RecordModel): ExpandedCategory => ({
   ...record,
-  items: record.expand?.["categories_items(category)"]?.map(expandItems) ?? [],
+  items:
+    record.expand?.["categories_items(category)"]
+      ?.map(expandItems)
+      .sort(
+        (a: ExpandedCategoryItem, b: ExpandedCategoryItem) =>
+          a.sort_order - b.sort_order
+      ) ?? [],
 });
 
 export type ListWithCategories = RecordModel & {
@@ -43,7 +49,7 @@ export const useDataQuery = () => {
             sort: "created",
             expand: "categories_items(category).item",
           })
-          .then((data) => data.map(expandCategories)),
+          .then((data) => data.map(expandCategory)),
       ]);
       return { ...list, categories };
     },
@@ -123,7 +129,9 @@ export const useDataQuery = () => {
 
   const createCategoryItem = useMutation({
     mutationFn: (data: { category: string; item: string }) =>
-      pb.collection("categories_items").create({ ...data, quantity: 1 }),
+      pb
+        .collection("categories_items")
+        .create({ ...data, quantity: 1, sort_order: 999999 }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["list", listId] });
     },
