@@ -5,7 +5,7 @@ import { useDataQuery } from "@/hooks/useDataQuery";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ListName } from "@/components/ListName";
-import { AccountDropdown } from "@/components/AccountDropdown";
+import { AccountEditor } from "@/components/AccountEditor";
 import { LoadingPage } from "@/components/LoadingPage";
 import { ListSettings } from "@/components/ListSettings";
 
@@ -20,7 +20,7 @@ export const Component: React.FC = () => {
       <header className="bg-card text-foreground h-14 border-b flex gap-2 justify-between p-4 items-center">
         <ListName listName={queryList.data.name} />
         <ListSettings list={queryList.data} />
-        <AccountDropdown />
+        <AccountEditor />
       </header>
       <div className="flex-1 overflow-auto p-4">
         <div className="flex flex-col gap-4">

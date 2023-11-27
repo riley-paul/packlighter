@@ -6,7 +6,7 @@ import { RecordModel } from "pocketbase";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 
-export const AccountDropdown: React.FC = () => {
+export const AccountEditor: React.FC = () => {
   const user = pb.authStore.model as RecordModel;
   const imageUrl = pb.files.getUrl(user, user.avatar, { thumb: "100x100" });
 
