@@ -30,6 +30,14 @@ export const ListSettings: React.FC<Props> = (props) => {
         <DropdownMenuLabel>List Settings</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
+          checked={list.show_packed}
+          onCheckedChange={(checked) =>
+            updateList.mutate({ id: list.id, data: { show_packed: checked } })
+          }
+        >
+          Show Packed
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
           checked={list.show_images}
           onCheckedChange={(checked) =>
             updateList.mutate({ id: list.id, data: { show_images: checked } })

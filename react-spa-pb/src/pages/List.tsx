@@ -26,7 +26,7 @@ export const Component: React.FC = () => {
         <div className="flex flex-col gap-4">
           <ListHeader list={queryList.data} />
           {queryList.data.categories.map((c) => (
-            <Category key={c.id} category={c} />
+            <Category key={c.id} category={c} list={queryList.data} />
           ))}
           <div>
             <Button

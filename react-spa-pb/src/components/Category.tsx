@@ -6,8 +6,11 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Delete, Plus } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
+import { RecordModel } from "pocketbase";
+import { Checkbox } from "./ui/checkbox";
 
 interface Props {
+  list: RecordModel;
   category: ExpandedCategory;
 }
 
@@ -16,8 +19,8 @@ const schema = z.object({
 });
 
 export const Category: React.FC<Props> = (props) => {
-  const { category } = props;
-  const { updateCategory, deleteCategory } = useDataQuery();
+  const { category, list } = props;
+  const { updateCategory, deleteCategory, packCategoryItems } = useDataQuery();
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -30,9 +33,25 @@ export const Category: React.FC<Props> = (props) => {
     updateCategory.mutate({ id: category.id, data });
   };
 
+  const categoryPacked =
+    category.items.length > 0 && category.items.every((i) => i.packed);
+
   return (
     <article>
-      <div className="border-b-2 py-1 pr-1 grid grid-cols-[1fr_6rem_4rem_auto] gap-2 items-center group text-sm font-semibold">
+      <div
+        className="border-b-2 p-1 grid gap-2 items-center group text-sm font-semibold"
+        style={{
+          gridTemplateColumns: `${
+            list.show_packed ? "auto" : ""
+          } 1fr 6rem 4rem auto`,
+        }}
+      >
+        <Checkbox
+          checked={categoryPacked}
+          onCheckedChange={(checked) =>
+            packCategoryItems.mutate({ category, packed: Boolean(checked) })
+          }
+        />
         <form
           onBlur={handleSubmit(saveCategory)}
           onSubmit={handleSubmit(saveCategory)}
@@ -63,7 +82,7 @@ export const Category: React.FC<Props> = (props) => {
         </Button>
       </div>
       {category.items.map((item) => (
-        <CategoryItem key={item.id} item={item} />
+        <CategoryItem key={item.id} list={list} item={item} />
       ))}
       <Button size="sm" variant="linkMuted" className="mt-2">
         <Plus className="h-4 w-4 mr-2" />

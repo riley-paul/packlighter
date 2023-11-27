@@ -107,12 +107,14 @@ export const useDataQuery = () => {
   const updateCategoryItem = useMutation({
     mutationFn: (input: {
       id: string;
-      itemId: string;
+      itemId?: string;
       data: Partial<ExpandedCategoryItem>;
     }) =>
       Promise.all([
         pb.collection("categories_items").update(input.id, input.data),
-        pb.collection("items").update(input.itemId, input.data.itemData),
+        input.itemId
+          ? pb.collection("items").update(input.itemId, input.data.itemData)
+          : null,
       ]),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["list", listId] });
@@ -142,6 +144,35 @@ export const useDataQuery = () => {
     },
   });
 
+  const packCategoryItems = useMutation({
+    mutationFn: (data: { category: ExpandedCategory; packed: boolean }) => {
+      const { category, packed } = data;
+      return Promise.all(
+        category.items.map((i) =>
+          pb.collection("categories_items").update(i.id, { packed })
+        )
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
+  const packListItems = useMutation({
+    mutationFn: (data: { list: ListWithCategories; packed: boolean }) => {
+      const { list, packed } = data;
+      const itemIds = list.categories.flatMap((c) => c.items.map((i) => i.id));
+      return Promise.all(
+        itemIds.map((i) =>
+          pb.collection("categories_items").update(i, { packed })
+        )
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
   return {
     queryClient,
     queryLists,
@@ -157,5 +188,7 @@ export const useDataQuery = () => {
     updateCategoryItem,
     deleteCategoryItem,
     updateItem,
+    packCategoryItems,
+    packListItems,
   };
 };

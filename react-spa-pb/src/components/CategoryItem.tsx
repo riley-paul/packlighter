@@ -5,13 +5,16 @@ import { Button } from "./ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { ItemImage } from "./ItemImage";
+import { RecordModel } from "pocketbase";
+import { Checkbox } from "./ui/checkbox";
 
 interface Props {
+  list: RecordModel;
   item: ExpandedCategoryItem;
 }
 
 export const CategoryItem: React.FC<Props> = (props) => {
-  const { item } = props;
+  const { item, list } = props;
   const { updateCategoryItem, deleteCategoryItem } = useDataQuery();
 
   const methods = useForm({
@@ -21,16 +24,36 @@ export const CategoryItem: React.FC<Props> = (props) => {
   const { handleSubmit, control } = methods;
 
   const saveCategoryItem = (data: ExpandedCategoryItem) => {
-    updateCategoryItem.mutate({ id: item.id, itemId: item.itemData.id, data });
+    updateCategoryItem.mutate({
+      id: item.id,
+      itemId: item.itemData.id,
+      data,
+    });
   };
 
   return (
     <form
-      className="border-b text-sm p-1 grid grid-cols-[auto_1fr_3fr_6rem_4rem_auto] gap-2 items-center hover:bg-muted/30 transition-colors"
+      className="border-b text-sm p-1 grid gap-2 items-center hover:bg-muted/30 transition-colors"
+      style={{
+        gridTemplateColumns: `${list.show_packed ? "auto" : ""} ${
+          list.show_images ? "auto" : ""
+        } 1fr 3fr 6rem 4rem auto`,
+      }}
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
     >
-      <ItemImage item={item.itemData} />
+      {list.show_packed && (
+        <Checkbox
+          checked={item.packed}
+          onCheckedChange={(checked) =>
+            updateCategoryItem.mutate({
+              id: item.id,
+              data: { packed: checked },
+            })
+          }
+        />
+      )}
+      {list.show_images && <ItemImage item={item.itemData} />}
       <Controller
         control={control}
         name="itemData.name"
