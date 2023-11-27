@@ -123,7 +123,7 @@ export const useDataQuery = () => {
 
   const createCategoryItem = useMutation({
     mutationFn: (data: { category: string; item: string }) =>
-      pb.collection("categories_items").create(data),
+      pb.collection("categories_items").create({ ...data, quantity: 1 }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["list", listId] });
     },

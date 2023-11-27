@@ -4,10 +4,11 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Delete, Plus } from "lucide-react";
+import { Delete } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 import { RecordModel } from "pocketbase";
 import { Checkbox } from "./ui/checkbox";
+import { AddItem } from "./AddItem";
 
 interface Props {
   list: RecordModel;
@@ -86,10 +87,9 @@ export const Category: React.FC<Props> = (props) => {
       {category.items.map((item) => (
         <CategoryItem key={item.id} list={list} item={item} />
       ))}
-      <Button size="sm" variant="linkMuted" className="mt-2">
-        <Plus className="h-4 w-4 mr-2" />
-        Add Gear
-      </Button>
+      <div className="mt-2">
+        <AddItem category={category} />
+      </div>
     </article>
   );
 };
