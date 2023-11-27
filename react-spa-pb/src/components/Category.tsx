@@ -46,12 +46,14 @@ export const Category: React.FC<Props> = (props) => {
           } 1fr 6rem 4rem auto`,
         }}
       >
-        <Checkbox
-          checked={categoryPacked}
-          onCheckedChange={(checked) =>
-            packCategoryItems.mutate({ category, packed: Boolean(checked) })
-          }
-        />
+        {list.show_packed && (
+          <Checkbox
+            checked={categoryPacked}
+            onCheckedChange={(checked) =>
+              packCategoryItems.mutate({ category, packed: Boolean(checked) })
+            }
+          />
+        )}
         <form
           onBlur={handleSubmit(saveCategory)}
           onSubmit={handleSubmit(saveCategory)}
