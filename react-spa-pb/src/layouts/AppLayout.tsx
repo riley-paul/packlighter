@@ -1,3 +1,4 @@
+import { Item } from "@/components/Item";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useDataQuery } from "@/hooks/useDataQuery";
@@ -77,10 +78,7 @@ export const Component: React.FC = () => {
                   i.description.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((item) => (
-                <div className="text-sm">
-                  <h3 className="">{item.name}</h3>
-                  <p className="text-muted-foreground">{item.description}</p>
-                </div>
+                <Item key={item.id} item={item} />
               ))}
           </div>
         </section>

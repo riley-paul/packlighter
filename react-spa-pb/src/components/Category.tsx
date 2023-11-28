@@ -3,12 +3,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Delete } from "lucide-react";
+import { Button, buttonVariants } from "./ui/button";
+import { Delete, GripVertical, X } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 import { RecordModel } from "pocketbase";
 import { Checkbox } from "./ui/checkbox";
 import { AddItem } from "./AddItem";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { cn } from "@/lib/utils";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   list: RecordModel;
@@ -34,17 +41,26 @@ export const Category: React.FC<Props> = (props) => {
     updateCategory.mutate({ id: category.id, data });
   };
 
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: category.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const categoryPacked =
     category.items.length > 0 && category.items.every((i) => i.packed);
 
   return (
-    <article>
+    <article ref={setNodeRef} {...attributes}>
       <div
-        className="border-b-2 p-1 grid gap-2 items-center group text-sm font-semibold"
+        className="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold"
         style={{
+          ...style,
           gridTemplateColumns: `${
             list.show_packed ? "auto" : ""
-          } 1fr 6rem 4rem auto`,
+          } 1fr 6rem 4rem auto auto`,
         }}
       >
         {list.show_packed && (
@@ -78,15 +94,29 @@ export const Category: React.FC<Props> = (props) => {
         <Button
           size="icon"
           variant="ghost"
-          className=""
+          className="text-muted-foreground w-6 group"
           onClick={() => deleteCategory.mutate(category.id)}
         >
-          <Delete className="h-4 w-4" />
+          <X className="h-4 w-4 group-hover:text-destructive" />
         </Button>
+        <div
+          className={cn(
+            buttonVariants({ variant: "ghost", size: "icon" }),
+            "group text-muted-foreground w-6"
+          )}
+          {...listeners}
+        >
+          <GripVertical className="h-4 w-4 group-hover:text-foreground" />
+        </div>
       </div>
-      {category.items.map((item) => (
-        <CategoryItem key={item.id} list={list} item={item} />
-      ))}
+      <SortableContext
+        items={category.items}
+        strategy={verticalListSortingStrategy}
+      >
+        {category.items.map((item) => (
+          <CategoryItem key={item.id} list={list} item={item} />
+        ))}
+      </SortableContext>
       <div className="mt-2">
         <AddItem category={category} />
       </div>

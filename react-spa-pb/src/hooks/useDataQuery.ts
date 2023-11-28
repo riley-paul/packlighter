@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { pb } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
+import { UniqueIdentifier } from "@dnd-kit/core";
 
 export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
 const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
@@ -181,6 +182,21 @@ export const useDataQuery = () => {
     },
   });
 
+  const sortCategoryItems = useMutation({
+    mutationFn: (items: UniqueIdentifier[]) => {
+      return Promise.all(
+        items.map((i, index) =>
+          pb
+            .collection("categories_items")
+            .update(i as string, { sort_order: index })
+        )
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
   return {
     queryClient,
     queryLists,
@@ -198,5 +214,6 @@ export const useDataQuery = () => {
     updateItem,
     packCategoryItems,
     packListItems,
+    sortCategoryItems,
   };
 };

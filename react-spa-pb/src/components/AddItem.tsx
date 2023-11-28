@@ -20,6 +20,8 @@ export const AddItem: React.FC<Props> = (props) => {
   const { category } = props;
   const { queryItems, createCategoryItem } = useDataQuery();
 
+  const itemIds = category.items.map((i) => i.itemData.id);
+
   return (
     <Popover>
       <PopoverTrigger
@@ -33,20 +35,22 @@ export const AddItem: React.FC<Props> = (props) => {
           <CommandInput placeholder="Search items..." />
           <CommandEmpty>No item found</CommandEmpty>
           <CommandGroup className="overflow-auto">
-            {queryItems.data?.map((item) => (
-              <CommandItem
-                key={item.id}
-                value={item.id}
-                onSelect={(value) =>
-                  createCategoryItem.mutate({
-                    category: category.id,
-                    item: value,
-                  })
-                }
-              >
-                <Item item={item} />
-              </CommandItem>
-            ))}
+            {queryItems.data
+              ?.filter((i) => !itemIds.includes(i.id))
+              .map((item) => (
+                <CommandItem
+                  key={item.id}
+                  value={item.id}
+                  onSelect={(value) =>
+                    createCategoryItem.mutate({
+                      category: category.id,
+                      item: value,
+                    })
+                  }
+                >
+                  <Item item={item} />
+                </CommandItem>
+              ))}
           </CommandGroup>
         </Command>
       </PopoverContent>

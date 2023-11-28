@@ -1,12 +1,15 @@
 import { ExpandedCategoryItem, useDataQuery } from "@/hooks/useDataQuery";
-import { Delete } from "lucide-react";
+import { GripVertical, X } from "lucide-react";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { ItemImage } from "./ItemImage";
 import { RecordModel } from "pocketbase";
 import { Checkbox } from "./ui/checkbox";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { cn } from "@/lib/utils";
 
 interface Props {
   list: RecordModel;
@@ -31,16 +34,27 @@ export const CategoryItem: React.FC<Props> = (props) => {
     });
   };
 
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: item.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <form
-      className="border-b text-sm p-1 grid gap-2 items-center hover:bg-muted/30 transition-colors"
+      ref={setNodeRef}
+      className="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors"
       style={{
+        ...style,
         gridTemplateColumns: `${list.show_packed ? "auto" : ""} ${
           list.show_images ? "auto" : ""
-        } 1fr 3fr 6rem 4rem auto`,
+        } 1fr 3fr 6rem 4rem auto auto`,
       }}
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
+      {...attributes}
     >
       {list.show_packed && (
         <Checkbox
@@ -102,11 +116,21 @@ export const CategoryItem: React.FC<Props> = (props) => {
       />
       <Button
         size="icon"
-        variant="linkMuted"
+        variant="ghost"
+        className="text-muted-foreground w-6 group"
         onClick={() => deleteCategoryItem.mutate(item.id)}
       >
-        <Delete className="h-4 w-4" />
+        <X className="h-4 w-4 group-hover:text-destructive" />
       </Button>
+      <div
+        className={cn(
+          buttonVariants({ variant: "ghost", size: "icon" }),
+          "group text-muted-foreground w-6"
+        )}
+        {...listeners}
+      >
+        <GripVertical className="h-4 w-4 group-hover:text-foreground" />
+      </div>
       <input type="hidden" />
     </form>
   );
