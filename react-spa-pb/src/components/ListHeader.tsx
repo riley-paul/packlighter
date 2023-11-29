@@ -26,7 +26,7 @@ export const ListHeader: React.FC<Props> = (props) => {
     updateList.mutate({ id: list.id, data });
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-2">
       <form
         onBlur={handleSubmit(saveList)}
         onSubmit={handleSubmit(saveList)}
@@ -53,6 +53,7 @@ export const ListHeader: React.FC<Props> = (props) => {
         <input type="hidden" />
       </form>
       <div className="flex gap-2">
+        <ListSettings list={list} />
         <Button
           size="icon"
           variant="destructive"
@@ -61,7 +62,6 @@ export const ListHeader: React.FC<Props> = (props) => {
         >
           <Trash className="w-4" />
         </Button>
-        <ListSettings list={list} />
       </div>
     </div>
   );

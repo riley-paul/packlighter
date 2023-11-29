@@ -4,18 +4,15 @@ import { Category } from "@/components/Category";
 import { useDataQuery } from "@/hooks/useDataQuery";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ListName } from "@/components/ListName";
-import { AccountEditor } from "@/components/AccountEditor";
 import { LoadingPage } from "@/components/LoadingPage";
-import { ListSettings } from "@/components/ListSettings";
 import {
   DndContext,
-  DragEndEvent,
   DragOverEvent,
   DragStartEvent,
   UniqueIdentifier,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
+import { Card } from "@/components/ui/card";
 
 export const Component: React.FC = () => {
   const { queryList, createCategory, sortCategoryItems } = useDataQuery();
@@ -42,7 +39,7 @@ export const Component: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 overflow-auto p-4">
+    <Card className="flex-1 p-6 h-fit">
       <div className="flex flex-col gap-4">
         <ListHeader list={queryList.data} />
         <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver}>
@@ -61,6 +58,6 @@ export const Component: React.FC = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };

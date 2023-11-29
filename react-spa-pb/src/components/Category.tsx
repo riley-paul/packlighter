@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
 import { Button, buttonVariants } from "./ui/button";
-import { Delete, GripVertical, X } from "lucide-react";
+import {  GripVertical, X } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 import { RecordModel } from "pocketbase";
 import { Checkbox } from "./ui/checkbox";
@@ -94,19 +94,19 @@ export const Category: React.FC<Props> = (props) => {
         <Button
           size="icon"
           variant="ghost"
-          className="text-muted-foreground w-6 group"
+          className="text-muted-foreground w-6 hover:text-destructive"
           onClick={() => deleteCategory.mutate(category.id)}
         >
-          <X className="h-4 w-4 group-hover:text-destructive" />
+          <X className="h-4 w-4" />
         </Button>
         <div
           className={cn(
             buttonVariants({ variant: "ghost", size: "icon" }),
-            "group text-muted-foreground w-6"
+            "hover:text-foreground text-muted-foreground w-6"
           )}
           {...listeners}
         >
-          <GripVertical className="h-4 w-4 group-hover:text-foreground" />
+          <GripVertical className="h-4 w-4" />
         </div>
       </div>
       <SortableContext

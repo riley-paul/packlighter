@@ -1,6 +1,5 @@
 import { AccountEditor } from "@/components/AccountEditor";
 import { ListList } from "@/components/ListList";
-import { Card } from "@/components/ui/card";
 import { Feather } from "lucide-react";
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
@@ -19,9 +18,7 @@ export const Component: React.FC = () => {
       </header>
       <main className="flex-1 py-6 overflow-auto">
         <div className="container grid gap-4 grid-cols-[1fr_250px]">
-          <Card className="overflow-auto h-fit">
-            <Outlet />
-          </Card>
+          <Outlet />
           <aside className="h-fit">
             <ListList />
           </aside>
