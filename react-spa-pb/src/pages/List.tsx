@@ -11,6 +11,7 @@ import { ListSettings } from "@/components/ListSettings";
 import {
   DndContext,
   DragEndEvent,
+  DragOverEvent,
   DragStartEvent,
   UniqueIdentifier,
 } from "@dnd-kit/core";
@@ -26,7 +27,7 @@ export const Component: React.FC = () => {
     console.log("drag started", event);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragOver = (event: DragOverEvent) => {
     console.log("drag ended", event);
     const { active, over } = event;
     const { items }: { items: UniqueIdentifier[] } =
@@ -50,7 +51,7 @@ export const Component: React.FC = () => {
       <div className="flex-1 overflow-auto p-4">
         <div className="flex flex-col gap-4">
           <ListHeader list={queryList.data} />
-          <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver}>
             {queryList.data.categories.map((c) => (
               <Category key={c.id} category={c} list={queryList.data} />
             ))}
