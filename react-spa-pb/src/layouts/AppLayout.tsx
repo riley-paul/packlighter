@@ -14,7 +14,7 @@ export const Component: React.FC = () => {
     <div className="flex overflow-hidden h-screen">
       <aside
         className={cn(
-          "border-r bg-muted w-0 shadow-inner transition-all",
+          "border-r w-0 shadow-inner transition-all",
           isSidebarOpen && "w-[250px]",
           "flex flex-col overflow-hidden h-full"
         )}

@@ -11,7 +11,7 @@ export const ItemList: React.FC<Props> = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
   return (
     <>
-      <div className="px-4 py-2 border-b bg-card">
+      <div className="px-4 py-2 border-b">
         <div className="flex items-center gap-2 justify-between mb-2">
           <h2 className="text-sm font-medium">Gear</h2>
           <Button size="sm" variant="ghost">
@@ -22,6 +22,7 @@ export const ItemList: React.FC<Props> = () => {
         <Input
           type="search"
           placeholder="Search..."
+          className="bg-card"
           value={searchTerm}
           onChange={(ev) => setSearchTerm(ev.target.value)}
         />
