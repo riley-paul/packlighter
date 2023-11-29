@@ -42,32 +42,25 @@ export const Component: React.FC = () => {
   };
 
   return (
-    <>
-      <header className="bg-card text-foreground h-14 border-b flex gap-2 justify-between p-4 items-center">
-        <ListName listName={queryList.data.name} />
-        <ListSettings list={queryList.data} />
-        <AccountEditor />
-      </header>
-      <div className="flex-1 overflow-auto p-4">
-        <div className="flex flex-col gap-4">
-          <ListHeader list={queryList.data} />
-          <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver}>
-            {queryList.data.categories.map((c) => (
-              <Category key={c.id} category={c} list={queryList.data} />
-            ))}
-          </DndContext>
-          <div>
-            <Button
-              variant="linkMuted"
-              size="sm"
-              onClick={() => createCategory.mutate({})}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Category
-            </Button>
-          </div>
+    <div className="flex-1 overflow-auto p-4">
+      <div className="flex flex-col gap-4">
+        <ListHeader list={queryList.data} />
+        <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver}>
+          {queryList.data.categories.map((c) => (
+            <Category key={c.id} category={c} list={queryList.data} />
+          ))}
+        </DndContext>
+        <div>
+          <Button
+            variant="linkMuted"
+            size="sm"
+            onClick={() => createCategory.mutate({})}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Category
+          </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };

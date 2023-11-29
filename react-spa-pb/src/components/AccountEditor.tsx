@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { RecordModel } from "pocketbase";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
 
 export const AccountEditor: React.FC = () => {
   const user = pb.authStore.model as RecordModel;
@@ -24,8 +25,8 @@ export const AccountEditor: React.FC = () => {
           </Avatar>
         </div>
       </SheetTrigger>
-      <SheetContent className="p-0 flex flex-col">
-        <div className="flex gap-4 p-6 bg-muted">
+      <SheetContent className="flex flex-col">
+        <div className="flex gap-4">
           <Avatar className="h-20 w-20">
             <AvatarImage src={imageUrl} alt="@shadcn" />
             <AvatarFallback>
@@ -37,19 +38,18 @@ export const AccountEditor: React.FC = () => {
             <p className="text-muted-foreground text-sm">{user.email}</p>
           </div>
         </div>
+        <Separator className="my-4" />
         <div className="flex-1"></div>
-        <div className="p-6">
-          <Button
-            type="submit"
-            className="w-full"
-            onClick={() => {
-              pb.authStore.clear();
-              navigate("/auth");
-            }}
-          >
-            Logout
-          </Button>
-        </div>
+        <Button
+          type="submit"
+          className="w-full"
+          onClick={() => {
+            pb.authStore.clear();
+            navigate("/auth");
+          }}
+        >
+          Logout
+        </Button>
       </SheetContent>
     </Sheet>
   ) : null;

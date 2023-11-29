@@ -5,6 +5,8 @@ import { Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { ListWithCategories, useDataQuery } from "@/hooks/useDataQuery";
+import { Input } from "./ui/input";
+import { ListSettings } from "./ListSettings";
 
 interface Props {
   list: ListWithCategories;
@@ -32,6 +34,17 @@ export const ListHeader: React.FC<Props> = (props) => {
       >
         <Controller
           control={control}
+          name="name"
+          render={({ field }) => (
+            <Input
+              {...field}
+              className="h-auto text-3xl text-accent-foreground font-medium"
+              placeholder="List Name"
+            />
+          )}
+        />
+        <Controller
+          control={control}
           name="description"
           render={({ field }) => (
             <Textarea {...field} placeholder="Description" />
@@ -39,7 +52,7 @@ export const ListHeader: React.FC<Props> = (props) => {
         />
         <input type="hidden" />
       </form>
-      <div>
+      <div className="flex gap-2">
         <Button
           size="icon"
           variant="destructive"
@@ -48,6 +61,7 @@ export const ListHeader: React.FC<Props> = (props) => {
         >
           <Trash className="w-4" />
         </Button>
+        <ListSettings list={list} />
       </div>
     </div>
   );

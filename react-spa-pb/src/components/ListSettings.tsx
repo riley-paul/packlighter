@@ -11,6 +11,7 @@ import {
 } from "./ui/dropdown-menu";
 import { RecordModel } from "pocketbase";
 import { useDataQuery } from "@/hooks/useDataQuery";
+import { cn } from "@/lib/utils";
 
 interface Props {
   list: RecordModel;
@@ -22,9 +23,13 @@ export const ListSettings: React.FC<Props> = (props) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className={buttonVariants({ variant: "ghost" })}>
-        <Settings className="h-4 w-4 mr-2" />
-        Settings
+      <DropdownMenuTrigger
+        className={cn(
+          buttonVariants({ variant: "secondary", size: "icon" }),
+          "h-full"
+        )}
+      >
+        <Settings className="h-4 w-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuLabel>List Settings</DropdownMenuLabel>
