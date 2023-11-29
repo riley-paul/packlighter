@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
 import { Button, buttonVariants } from "./ui/button";
-import {  GripVertical, X } from "lucide-react";
+import { GripVertical, X } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 import { RecordModel } from "pocketbase";
 import { Checkbox } from "./ui/checkbox";
@@ -89,8 +89,8 @@ export const Category: React.FC<Props> = (props) => {
           />
           <input type="hidden" />
         </form>
-        <div>Weight</div>
-        <div>Qty</div>
+        <div className="text-foreground/70">Weight</div>
+        <div className="text-foreground/70">Qty</div>
         <Button
           size="icon"
           variant="ghost"
