@@ -83,7 +83,7 @@ export const Category: React.FC<Props> = (props) => {
               <Input
                 {...field}
                 placeholder="Category Name"
-                className="font-semibold text-accent-foreground border-none shadow-none text-base"
+                className="font-semibold text-primary border-none shadow-none text-base"
               />
             )}
           />

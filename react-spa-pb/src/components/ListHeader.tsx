@@ -38,7 +38,7 @@ export const ListHeader: React.FC<Props> = (props) => {
           render={({ field }) => (
             <Input
               {...field}
-              className="h-auto text-3xl text-accent-foreground font-bold"
+              className="h-auto text-3xl text-primary font-bold"
               placeholder="List Name"
             />
           )}

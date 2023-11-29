@@ -38,7 +38,7 @@ export const ListName: React.FC<Props> = ({ listName }) => {
           <Input
             {...field}
             placeholder="Unnamed List"
-            className="font-bold text-accent-foreground text-xl h-auto border-none shadow-none"
+            className="font-bold text-primary text-xl h-auto border-none shadow-none"
           />
         )}
       />

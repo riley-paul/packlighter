@@ -1,6 +1,7 @@
 import { AccountEditor } from "@/components/AccountEditor";
 import { ItemList } from "@/components/ItemList";
 import { ListList } from "@/components/ListList";
+import { ModeToggle } from "@/components/mode-toggle";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { Feather, MoreVertical } from "lucide-react";
@@ -33,11 +34,14 @@ export const Component: React.FC = () => {
                 <MoreVertical className="h-4 w-4" />
               </Toggle>
               <Link to="/" className="flex items-center">
-                <Feather className="mr-2 w-6 text-accent-foreground" />
+                <Feather className="mr-2 w-6 text-primary" />
                 <h1 className="font-medium text-lg">PackLighter</h1>
               </Link>
             </div>
-            <AccountEditor />
+            <div className="flex gap-4 items-center">
+              <AccountEditor />
+              <ModeToggle />
+            </div>
           </div>
         </header>
         <main className="flex-1 py-6 overflow-auto">

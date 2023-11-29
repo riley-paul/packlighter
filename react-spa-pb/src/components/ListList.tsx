@@ -28,7 +28,7 @@ export const ListList: React.FC<Props> = () => {
                 "w-full pl-4 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
                 !list.name && "italic",
                 isActive &&
-                  "border-l-4 border-accent-foreground pl-3 text-foreground"
+                  "border-l-4 border-primary pl-3 text-foreground"
               )
             }
           >
