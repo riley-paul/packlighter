@@ -43,7 +43,7 @@ export const ItemImage: React.FC<Props> = (props) => {
   const saveImage = (data: RecordModel) => {
     const { image_url } = data;
     updateItem.mutate({ id: item.id, data: { image_url } });
-    toast({ title: "🟢 Image Updated" });
+    toast({ title: "Image Updated" });
   };
 
   const watchedUrl: string | undefined = watch("image_url");

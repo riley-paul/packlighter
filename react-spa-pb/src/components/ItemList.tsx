@@ -35,7 +35,10 @@ export const ItemList: React.FC<Props> = () => {
               i.description.toLowerCase().includes(searchTerm.toLowerCase())
           )
           .map((item) => (
-            <div className="text-sm px-4 py-1 hover:bg-card transition-colors">
+            <div
+              key={item.id}
+              className="text-sm px-4 py-1 hover:bg-card transition-colors"
+            >
               <h3 className="">{item.name}</h3>
               <p className="text-muted-foreground">{item.description}</p>
             </div>

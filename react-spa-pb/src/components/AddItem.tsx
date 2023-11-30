@@ -18,7 +18,7 @@ type Props = {
 
 export const AddItem: React.FC<Props> = (props) => {
   const { category } = props;
-  const { queryItems, createCategoryItem } = useDataQuery();
+  const { queryItems, addItemToCategory: createCategoryItem } = useDataQuery();
 
   const itemIds = category.items.map((i) => i.itemData.id);
 

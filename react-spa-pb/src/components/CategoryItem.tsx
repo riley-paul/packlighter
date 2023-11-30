@@ -116,9 +116,11 @@ export const CategoryItem: React.FC<Props> = (props) => {
           />
         )}
       />
+      <input type="hidden" />
       <Button
         size="icon"
         variant="ghost"
+        type="button"
         className="w-6 text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={() => deleteCategoryItem.mutate(item.id)}
       >
@@ -133,7 +135,6 @@ export const CategoryItem: React.FC<Props> = (props) => {
       >
         <GripVertical className="h-4 w-4" />
       </div>
-      <input type="hidden" />
     </form>
   );
 };

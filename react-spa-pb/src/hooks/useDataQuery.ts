@@ -123,18 +123,38 @@ export const useDataQuery = () => {
           ? pb.collection("items").update(input.itemId, input.data.itemData)
           : null,
       ]),
-    onSuccess: () => {
+    onSuccess: (_, { itemId }) => {
       queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      if (itemId) queryClient.invalidateQueries({ queryKey: ["items"] });
     },
   });
 
-  const createCategoryItem = useMutation({
+  const addItemToCategory = useMutation({
     mutationFn: (data: { category: string; item: string }) =>
       pb
         .collection("categories_items")
         .create({ ...data, quantity: 1, sort_order: 999999 }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    },
+  });
+
+  const createCategoryItem = useMutation({
+    mutationFn: (categoryId: string) =>
+      pb
+        .collection("items")
+        .create({ user: pb.authStore.model?.id })
+        .then((item) =>
+          pb.collection("categories_items").create({
+            category: categoryId,
+            item: item.id,
+            quantity: 1,
+            sort_order: 999999,
+          })
+        ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      queryClient.invalidateQueries({ queryKey: ["items"] });
     },
   });
 
@@ -208,6 +228,7 @@ export const useDataQuery = () => {
     updateCategory,
     deleteCategory,
     createCategory,
+    addItemToCategory,
     createCategoryItem,
     updateCategoryItem,
     deleteCategoryItem,

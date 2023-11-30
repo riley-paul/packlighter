@@ -4,11 +4,10 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "./ui/input";
 import { Button, buttonVariants } from "./ui/button";
-import { GripVertical, X } from "lucide-react";
+import { GripVertical, Plus, X } from "lucide-react";
 import { CategoryItem } from "./CategoryItem";
 import { RecordModel } from "pocketbase";
 import { Checkbox } from "./ui/checkbox";
-import { AddItem } from "./AddItem";
 import {
   SortableContext,
   useSortable,
@@ -28,7 +27,12 @@ const schema = z.object({
 
 export const Category: React.FC<Props> = (props) => {
   const { category, list } = props;
-  const { updateCategory, deleteCategory, packCategoryItems } = useDataQuery();
+  const {
+    updateCategory,
+    deleteCategory,
+    packCategoryItems,
+    createCategoryItem,
+  } = useDataQuery();
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -118,7 +122,14 @@ export const Category: React.FC<Props> = (props) => {
         ))}
       </SortableContext>
       <div className="mt-2">
-        <AddItem category={category} />
+        <Button
+          variant="linkMuted"
+          size="sm"
+          onClick={() => createCategoryItem.mutate(category.id)}
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Add Item
+        </Button>
       </div>
     </article>
   );
