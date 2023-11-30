@@ -45,7 +45,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
   return (
     <form
       ref={setNodeRef}
-      className="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors"
+      className="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors group"
       style={{
         ...style,
         gridTemplateColumns: `${list.show_packed ? "auto" : ""} ${
@@ -119,19 +119,19 @@ export const CategoryItem: React.FC<Props> = (props) => {
       <Button
         size="icon"
         variant="ghost"
-        className="text-muted-foreground w-6 group"
+        className="w-6 text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={() => deleteCategoryItem.mutate(item.id)}
       >
-        <X className="h-4 w-4 group-hover:text-destructive" />
+        <X className="h-4 w-4" />
       </Button>
       <div
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "group text-muted-foreground w-6"
+          "text-muted-foreground w-6 hover:text-foreground"
         )}
         {...listeners}
       >
-        <GripVertical className="h-4 w-4 group-hover:text-foreground" />
+        <GripVertical className="h-4 w-4" />
       </div>
       <input type="hidden" />
     </form>

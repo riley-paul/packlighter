@@ -55,7 +55,7 @@ export const Category: React.FC<Props> = (props) => {
   return (
     <article ref={setNodeRef} {...attributes}>
       <div
-        className="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold"
+        className="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold group"
         style={{
           ...style,
           gridTemplateColumns: `${list.show_packed ? "auto" : ""} 1fr ${
@@ -94,7 +94,7 @@ export const Category: React.FC<Props> = (props) => {
         <Button
           size="icon"
           variant="ghost"
-          className="text-muted-foreground w-6 hover:text-destructive"
+          className="w-6 text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
           onClick={() => deleteCategory.mutate(category.id)}
         >
           <X className="h-4 w-4" />
