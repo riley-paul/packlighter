@@ -58,9 +58,9 @@ export const Category: React.FC<Props> = (props) => {
         className="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold"
         style={{
           ...style,
-          gridTemplateColumns: `${
-            list.show_packed ? "auto" : ""
-          } 1fr 6rem 4rem auto auto`,
+          gridTemplateColumns: `${list.show_packed ? "auto" : ""} 1fr ${
+            list.show_weights ? "6rem" : ""
+          } 4rem auto auto`,
         }}
       >
         {list.show_packed && (
@@ -89,7 +89,7 @@ export const Category: React.FC<Props> = (props) => {
           />
           <input type="hidden" />
         </form>
-        <div className="text-foreground/70">Weight</div>
+        {list.show_weights && <div className="text-foreground/70">Weight</div>}
         <div className="text-foreground/70">Qty</div>
         <Button
           size="icon"

@@ -50,7 +50,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
         ...style,
         gridTemplateColumns: `${list.show_packed ? "auto" : ""} ${
           list.show_images ? "auto" : ""
-        } 1fr 3fr 6rem 4rem auto auto`,
+        } 1fr 3fr ${list.show_weights ? "6rem" : ""} 4rem auto auto`,
       }}
       onSubmit={handleSubmit(saveCategoryItem)}
       onBlur={handleSubmit(saveCategoryItem)}
@@ -90,18 +90,20 @@ export const CategoryItem: React.FC<Props> = (props) => {
           />
         )}
       />
-      <Controller
-        control={control}
-        name="itemData.weight_g"
-        render={({ field }) => (
-          <Input
-            {...field}
-            type="number"
-            min="0"
-            className="border-none shadow-none"
-          />
-        )}
-      />
+      {list.show_weights && (
+        <Controller
+          control={control}
+          name="itemData.weight_g"
+          render={({ field }) => (
+            <Input
+              {...field}
+              type="number"
+              min="0"
+              className="border-none shadow-none"
+            />
+          )}
+        />
+      )}
       <Controller
         control={control}
         name="quantity"
