@@ -9,7 +9,7 @@ import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Card } from "@/components/ui/card";
 
-export const Component: React.FC = () => {
+export const ListPage: React.FC = () => {
   const { queryList, createCategory, sortCategoryItems } = useDataQuery();
 
   if (queryList.isPending) return <LoadingPage />;

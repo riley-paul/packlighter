@@ -9,7 +9,7 @@ import { Feather, MoreVertical } from "lucide-react";
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
 
-export const Component: React.FC = () => {
+export const AppLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   return (

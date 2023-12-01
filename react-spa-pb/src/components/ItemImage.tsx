@@ -18,7 +18,7 @@ import { RecordModel } from "pocketbase";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "./ui/use-toast";
+import { toast } from "sonner";
 
 interface Props {
   item: RecordModel;
@@ -31,7 +31,6 @@ const schema = z.object({
 export const ItemImage: React.FC<Props> = (props) => {
   const { item } = props;
   const { updateItem } = useDataQuery();
-  const { toast } = useToast();
 
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -43,7 +42,7 @@ export const ItemImage: React.FC<Props> = (props) => {
   const saveImage = (data: RecordModel) => {
     const { image_url } = data;
     updateItem.mutate({ id: item.id, data: { image_url } });
-    toast({ title: "Image Updated" });
+    toast.success("Image Updated");
   };
 
   const watchedUrl: string | undefined = watch("image_url");

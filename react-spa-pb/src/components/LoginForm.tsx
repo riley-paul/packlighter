@@ -13,12 +13,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { pb } from "@/lib/pocketbase";
-import { useToast } from "./ui/use-toast";
 import { useNavigate } from "react-router-dom";
 import { ClientResponseError } from "pocketbase";
 import { AlertTriangle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 // import { AlertTriangle } from "lucide-react";
 // import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
@@ -29,7 +29,6 @@ const schema = z.object({
 type Schema = z.infer<typeof schema>;
 
 export const LoginForm: React.FC = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   const methods = useForm<Schema>({
@@ -44,7 +43,7 @@ export const LoginForm: React.FC = () => {
   const submitForm = async (data: Schema) => {
     try {
       await pb.collection("users").authWithPassword(data.email, data.password);
-      toast({ title: "🟢 Successfully Logged in" });
+      toast.success("Successfully Logged in");
       navigate("/");
     } catch (error) {
       console.error((error as ClientResponseError).data);

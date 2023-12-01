@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LoginForm } from "@/components/LoginForm";
 import { SignUpForm } from "@/components/SignUpForm";
 
-export const Component: React.FC = () => (
+export const AuthPage: React.FC = () => (
   <div className="container max-w-sm py-12">
     <div className="flex flex-col mb-8 items-center">
       <Feather className="h-16 w-16 text-primary mb-4" />

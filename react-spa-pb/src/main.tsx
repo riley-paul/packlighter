@@ -1,30 +1,35 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./globals.css";
-import { Toaster } from "./components/ui/toaster.tsx";
+import { Toaster } from "sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "./components/theme-provider";
+import { AppLayout } from "./layouts/AppLayout.tsx";
+import { HomePage } from "./pages/Home.tsx";
+import { ListPage } from "./pages/List.tsx";
+import { AuthPage } from "./pages/Auth.tsx";
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    element: <AppLayout />,
     children: [
-      {
-        lazy: () => import("./layouts/AppLayout.tsx"),
-        children: [
-          { index: true, lazy: () => import("./pages/Home.tsx") },
-          { path: ":listId", lazy: () => import("./pages/List.tsx") },
-        ],
-      },
-      { path: "auth", lazy: () => import("./pages/Auth.tsx") },
+      { path: "/", element: <HomePage /> },
+      { path: "/:listId", element: <ListPage /> },
     ],
   },
+  { path: "/auth", element: <AuthPage /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    <Toaster />
+    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster />
+      </QueryClientProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );

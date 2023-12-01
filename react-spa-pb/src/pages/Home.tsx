@@ -1,7 +1,7 @@
 import { Home } from "lucide-react";
 import React from "react";
 
-export const Component: React.FC = () => (
+export const HomePage: React.FC = () => (
   <div className="h-full w-full flex items-center justify-center">
     <div className="flex flex-col items-center">
       <Home className="text-primary h-16 w-16 mb-4" />
