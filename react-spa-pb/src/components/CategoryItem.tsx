@@ -14,10 +14,11 @@ import { cn } from "@/lib/utils";
 interface Props {
   list: RecordModel;
   item: ExpandedCategoryItem;
+  sortDisabled?: boolean;
 }
 
 export const CategoryItem: React.FC<Props> = (props) => {
-  const { item, list } = props;
+  const { item, list, sortDisabled } = props;
   const { updateCategoryItem, deleteCategoryItem } = useDataQuery();
 
   const methods = useForm({
@@ -35,7 +36,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
   };
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+    useSortable({ id: item.id, disabled: sortDisabled });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -129,7 +130,7 @@ export const CategoryItem: React.FC<Props> = (props) => {
       <div
         className={cn(
           buttonVariants({ variant: "ghost", size: "icon" }),
-          "text-muted-foreground w-6 hover:text-foreground"
+          "text-muted-foreground w-6 hover:text-foreground",
         )}
         {...listeners}
       >

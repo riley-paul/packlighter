@@ -55,7 +55,12 @@ export const Component: React.FC = () => {
         <ListHeader list={queryList.data} />
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           {queryList.data.categories.map((c) => (
-            <Category key={c.id} category={c} list={queryList.data} />
+            <Category
+              key={c.id}
+              category={c}
+              list={queryList.data}
+              sortDisabled={sortCategoryItems.isPending}
+            />
           ))}
         </DndContext>
         <div>

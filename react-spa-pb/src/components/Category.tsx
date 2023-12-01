@@ -19,6 +19,7 @@ import { CSS } from "@dnd-kit/utilities";
 interface Props {
   list: RecordModel;
   category: ExpandedCategory;
+  sortDisabled?: boolean;
 }
 
 const schema = z.object({
@@ -26,7 +27,7 @@ const schema = z.object({
 });
 
 export const Category: React.FC<Props> = (props) => {
-  const { category, list } = props;
+  const { category, list, sortDisabled } = props;
   const {
     updateCategory,
     deleteCategory,
@@ -119,7 +120,12 @@ export const Category: React.FC<Props> = (props) => {
         strategy={verticalListSortingStrategy}
       >
         {category.items.map((item) => (
-          <CategoryItem key={item.id} list={list} item={item} />
+          <CategoryItem
+            key={item.id}
+            list={list}
+            item={item}
+            sortDisabled={sortDisabled}
+          />
         ))}
       </SortableContext>
       <div className="mt-2">
