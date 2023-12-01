@@ -133,6 +133,7 @@ export const Category: React.FC<Props> = (props) => {
           variant="linkMuted"
           size="sm"
           onClick={() => createCategoryItem.mutate(category.id)}
+          disabled={createCategoryItem.isPending}
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Item
