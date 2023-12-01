@@ -19,8 +19,6 @@ import { AlertTriangle } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "./ui/alert";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-// import { AlertTriangle } from "lucide-react";
-// import { Alert, AlertTitle, AlertDescription } from "../ui/alert";
 
 const schema = z.object({
   email: z.string().email(),
