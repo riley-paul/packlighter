@@ -2,6 +2,7 @@ import { AccountEditor } from "@/components/AccountEditor";
 import { ItemList } from "@/components/ItemList";
 import { ListList } from "@/components/ListList";
 import { ModeToggle } from "@/components/mode-toggle";
+import { buttonVariants } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { Feather, MoreVertical } from "lucide-react";
@@ -30,8 +31,12 @@ export const Component: React.FC = () => {
                 aria-label="Toggle sidebar"
                 aria-checked={isSidebarOpen}
                 onClick={() => setIsSidebarOpen((prev) => !prev)}
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "p-0"
+                )}
               >
-                <MoreVertical className="h-4 w-4" />
+                <MoreVertical className="w-4 h-4" />
               </Toggle>
               <Link to="/" className="flex items-center">
                 <Feather className="mr-2 w-6 text-primary" />
