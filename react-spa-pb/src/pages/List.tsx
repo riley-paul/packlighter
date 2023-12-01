@@ -5,12 +5,7 @@ import { useDataQuery } from "@/hooks/useDataQuery";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LoadingPage } from "@/components/LoadingPage";
-import {
-  DndContext,
-  DragOverEvent,
-  DragStartEvent,
-  UniqueIdentifier,
-} from "@dnd-kit/core";
+import { DndContext, DragEndEvent, DragStartEvent } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Card } from "@/components/ui/card";
 
@@ -24,17 +19,33 @@ export const Component: React.FC = () => {
     console.log("drag started", event);
   };
 
-  const handleDragOver = (event: DragOverEvent) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     console.log("drag ended", event);
     const { active, over } = event;
-    const { items }: { items: UniqueIdentifier[] } =
-      active.data.current?.sortable;
+    console.log(active, over);
 
-    if (active.id !== over?.id && over?.id) {
-      const oldIndex = items.indexOf(active.id);
-      const newIndex = items.indexOf(over.id);
-      const newItems = arrayMove(items, oldIndex, newIndex);
-      sortCategoryItems.mutate(newItems);
+    if (!over) return;
+
+    const activeContainerId = active.data.current?.sortable.containerId;
+    const overContainerId = over.data.current?.sortable.containerId;
+
+    if (activeContainerId === overContainerId) {
+      console.log("same container");
+      const items = queryList.data.categories.find(
+        (c) => c.id === activeContainerId
+      )?.items;
+
+      if (!items) return;
+
+      if (active.id !== over?.id && over?.id) {
+        const oldIndex = items.findIndex((i) => i.id === active.id);
+        const newIndex = items.findIndex((i) => i.id === over.id);
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        sortCategoryItems.mutate({
+          items: newItems,
+          categoryId: activeContainerId,
+        });
+      }
     }
   };
 
@@ -42,7 +53,7 @@ export const Component: React.FC = () => {
     <Card className="flex-1 p-6 h-fit">
       <div className="flex flex-col gap-4">
         <ListHeader list={queryList.data} />
-        <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver}>
+        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
           {queryList.data.categories.map((c) => (
             <Category key={c.id} category={c} list={queryList.data} />
           ))}

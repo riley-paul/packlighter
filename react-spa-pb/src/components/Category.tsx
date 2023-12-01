@@ -114,6 +114,7 @@ export const Category: React.FC<Props> = (props) => {
         </div>
       </div>
       <SortableContext
+        id={category.id}
         items={category.items}
         strategy={verticalListSortingStrategy}
       >

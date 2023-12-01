@@ -2,7 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import { pb } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
-import { UniqueIdentifier } from "@dnd-kit/core";
 
 export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
 const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
@@ -203,16 +202,53 @@ export const useDataQuery = () => {
   });
 
   const sortCategoryItems = useMutation({
-    mutationFn: (items: UniqueIdentifier[]) => {
+    mutationFn: (variables: {
+      items: ExpandedCategoryItem[];
+      categoryId: string;
+    }) => {
+      const { items } = variables;
       return Promise.all(
         items.map((i, index) =>
-          pb
-            .collection("categories_items")
-            .update(i as string, { sort_order: index })
+          pb.collection("categories_items").update(i.id, { sort_order: index })
         )
       );
     },
-    onSuccess: () => {
+    onMutate: async (variables) => {
+      const { items, categoryId } = variables;
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: ["list", listId] });
+
+      // Snapshot the previous value
+      const previousList = queryClient.getQueryData<ListWithCategories>([
+        "list",
+        listId,
+      ]);
+
+      // Optimistically update to the new value
+      queryClient.setQueryData<ListWithCategories>(["list", listId], (prev) =>
+        prev
+          ? {
+              ...prev,
+              categories: prev?.categories.map((c) =>
+                c.id === categoryId ? { ...c, items } : c
+              ),
+            }
+          : undefined
+      );
+
+      // Return a context object with the snapshotted value
+      return { previousList };
+    },
+    onError: (err, _, context) => {
+      // Rollback to the previous value
+      console.log("could not update order", err);
+      queryClient.setQueryData<ListWithCategories>(
+        ["list", listId],
+        context?.previousList
+      );
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["list", listId] });
     },
   });
