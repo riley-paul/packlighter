@@ -1,4 +1,5 @@
 <script>
+	import ModeToggle from '$components/ModeToggle.svelte';
 	import { buttonVariants } from '$components/ui/button';
 	import Toggle from '$components/ui/toggle/toggle.svelte';
 	import { cn } from '$lib/utils';
@@ -15,7 +16,7 @@
 			'flex flex-col overflow-hidden h-full'
 		)}
 	>
-		<ItemList />
+		<!-- <ItemList /> -->
 	</aside>
 	<div class="flex-1 overflow-hidden flex flex-col">
 		<header class="w-full border-b h-14 flex items-center bg-card shadow z-50">
@@ -35,7 +36,7 @@
 					</a>
 				</div>
 				<div class="flex gap-4 items-center">
-					<AccountEditor />
+					<!-- <AccountEditor /> -->
 					<ModeToggle />
 				</div>
 			</div>
@@ -44,7 +45,7 @@
 			<div class="container grid gap-4 grid-cols-[1fr_250px]">
 				<slot />
 				<aside class="h-fit">
-					<ListList />
+					<!-- <ListList /> -->
 				</aside>
 			</div>
 		</main>

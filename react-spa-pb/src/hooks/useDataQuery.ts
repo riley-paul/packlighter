@@ -30,11 +30,13 @@ export const useDataQuery = () => {
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const params = useParams();
 
   const queryLists = useQuery({
     queryKey: ["lists"],
-    queryFn: () => pb.collection("lists").getFullList({ sort: "-created" }),
+    queryFn: () =>
+      pb
+        .collection("lists")
+        .getFullList({ sort: "-created", requestKey: null }),
   });
 
   const queryList = useQuery({
@@ -82,7 +84,7 @@ export const useDataQuery = () => {
     mutationFn: (listId: string) => pb.collection("lists").delete(listId),
     onSuccess: (_, deletedList) => {
       queryClient.invalidateQueries({ queryKey: ["lists"] });
-      if (params.listId === deletedList) navigate(`/`);
+      if (listId === deletedList) navigate(`/`);
     },
   });
 
