@@ -1,4 +1,5 @@
 <script>
+	import AccountEditor from '$components/AccountEditor.svelte';
 	import ModeToggle from '$components/ModeToggle.svelte';
 	import { buttonVariants } from '$components/ui/button';
 	import Toggle from '$components/ui/toggle/toggle.svelte';
@@ -36,7 +37,7 @@
 					</a>
 				</div>
 				<div class="flex gap-4 items-center">
-					<!-- <AccountEditor /> -->
+					<AccountEditor />
 					<ModeToggle />
 				</div>
 			</div>
