@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import AccountEditor from '$components/AccountEditor.svelte';
 	import ListList from '$components/ListList.svelte';
 	import ModeToggle from '$components/ModeToggle.svelte';
@@ -6,8 +6,12 @@
 	import Toggle from '$components/ui/toggle/toggle.svelte';
 	import { cn } from '$lib/utils';
 	import { Feather, MoreVertical } from 'lucide-svelte';
+	import type { LayoutData } from './$types';
 
 	let isSidebarOpen = false;
+
+	export let data: LayoutData;
+	const { lists } = data;
 </script>
 
 <div class="flex overflow-hidden h-screen">
@@ -47,7 +51,7 @@
 			<div class="container grid gap-4 grid-cols-[1fr_250px]">
 				<slot />
 				<aside class="h-fit">
-					<ListList />
+					<ListList {lists} />
 				</aside>
 			</div>
 		</main>

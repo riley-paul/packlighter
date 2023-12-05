@@ -1,9 +1,7 @@
 import type { RecordModel } from "pocketbase";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Trash } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { ListWithCategories, useDataQuery } from "@/hooks/useDataQuery";
 import { Input } from "./ui/input";
 import { ListSettings } from "./ListSettings";
@@ -14,7 +12,7 @@ interface Props {
 
 export const ListHeader: React.FC<Props> = (props) => {
   const { list } = props;
-  const { deleteList, updateList } = useDataQuery();
+  const { updateList } = useDataQuery();
 
   const methods = useForm({
     values: list,
@@ -54,14 +52,6 @@ export const ListHeader: React.FC<Props> = (props) => {
       </form>
       <div className="flex gap-2">
         <ListSettings list={list} />
-        <Button
-          size="icon"
-          variant="destructive"
-          className="h-full"
-          onClick={() => deleteList.mutate(list.id)}
-        >
-          <Trash className="w-4" />
-        </Button>
       </div>
     </div>
   );

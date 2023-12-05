@@ -1,9 +1,11 @@
 import { AccountEditor } from "@/components/AccountEditor";
 import { ItemList } from "@/components/ItemList";
 import { ListList } from "@/components/ListList";
+import { ListListDrawer } from "@/components/ListListDrawer";
 import { ModeToggle } from "@/components/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { cn } from "@/lib/utils";
 import { Feather, MoreVertical } from "lucide-react";
 import React from "react";
@@ -11,6 +13,8 @@ import { Link, Outlet } from "react-router-dom";
 
 export const AppLayout: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const { width } = useWindowDimensions();
+  const isMobile = width < 1024;
 
   return (
     <div className="flex overflow-hidden h-screen">
@@ -44,17 +48,25 @@ export const AppLayout: React.FC = () => {
               </Link>
             </div>
             <div className="flex gap-4 items-center">
+              {isMobile && <ListListDrawer />}
               <AccountEditor />
               <ModeToggle />
             </div>
           </div>
         </header>
         <main className="flex-1 py-6 overflow-auto">
-          <div className="container grid gap-4 grid-cols-[1fr_250px]">
+          <div
+            className={cn(
+              "container",
+              !isMobile && "gap-4 grid grid-cols-[1fr_250px]"
+            )}
+          >
             <Outlet />
-            <aside className="h-fit">
-              <ListList />
-            </aside>
+            {!isMobile && (
+              <aside className="h-fit">
+                <ListList />
+              </aside>
+            )}
           </div>
         </main>
       </div>
