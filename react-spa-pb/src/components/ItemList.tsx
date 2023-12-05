@@ -2,12 +2,13 @@ import React from "react";
 import { Input } from "./ui/input";
 import { useDataQuery } from "@/hooks/useDataQuery";
 import { Button } from "./ui/button";
-import { GripVertical, Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
+import { ItemListItem } from "./ItemListItem";
 
 interface Props {}
 
 export const ItemList: React.FC<Props> = () => {
-  const { queryItems, deleteItem } = useDataQuery();
+  const { queryItems } = useDataQuery();
   const [searchTerm, setSearchTerm] = React.useState("");
   return (
     <>
@@ -35,28 +36,7 @@ export const ItemList: React.FC<Props> = () => {
               i.description.toLowerCase().includes(searchTerm.toLowerCase())
           )
           .map((item) => (
-            <div
-              key={item.id}
-              className="text-sm pr-2 py-1 hover:bg-card transition-colors flex items-center gap-1"
-            >
-              <div>
-                <GripVertical className="h-4 w-4 text-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <h3 className="">{item.name}</h3>
-                <p className="text-muted-foreground text-xs">
-                  {item.description}
-                </p>
-              </div>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-6 w-6"
-                onClick={() => deleteItem.mutate(item.id)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
+            <ItemListItem key={item.id} item={item} />
           ))}
       </div>
     </>

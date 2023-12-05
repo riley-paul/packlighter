@@ -15,7 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { cn } from "@/lib/utils";
 import { CSS } from "@dnd-kit/utilities";
-import { DragOverlay } from "@dnd-kit/core";
+import { DragOverlay, useDroppable } from "@dnd-kit/core";
 
 interface Props {
   list: RecordModel;
@@ -54,6 +54,10 @@ export const Category: React.FC<Props> = (props) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  const { setNodeRef: setDroppableNodeRef, isOver } = useDroppable({
+    id: category.id,
+  });
 
   const categoryPacked =
     category.items.length > 0 && category.items.every((i) => i.packed);
@@ -115,27 +119,32 @@ export const Category: React.FC<Props> = (props) => {
           <GripVertical className="h-4 w-4" />
         </div>
       </div>
-      <SortableContext
-        id={category.id}
-        items={category.items}
-        strategy={verticalListSortingStrategy}
+      <div
+        ref={setDroppableNodeRef}
+        className={cn(isOver && "border-2 border-red-500")}
       >
-        {category.items.map((item) => (
-          <CategoryItem
-            key={item.id}
-            list={list}
-            item={item}
-            sortDisabled={sortDisabled}
-          />
-        ))}
-        <DragOverlay>
-          <CategoryItem
-            list={list}
-            item={category.items[0]}
-            sortDisabled={sortDisabled}
-          />
-        </DragOverlay>
-      </SortableContext>
+        <SortableContext
+          id={category.id}
+          items={category.items}
+          strategy={verticalListSortingStrategy}
+        >
+          {category.items.map((item) => (
+            <CategoryItem
+              key={item.id}
+              list={list}
+              item={item}
+              sortDisabled={sortDisabled}
+            />
+          ))}
+          <DragOverlay>
+            <CategoryItem
+              list={list}
+              item={category.items[0]}
+              sortDisabled={sortDisabled}
+            />
+          </DragOverlay>
+        </SortableContext>
+      </div>
       <div className="mt-2">
         <Button
           variant="linkMuted"
