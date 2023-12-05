@@ -1,5 +1,6 @@
 <script>
 	import AccountEditor from '$components/AccountEditor.svelte';
+	import ListList from '$components/ListList.svelte';
 	import ModeToggle from '$components/ModeToggle.svelte';
 	import { buttonVariants } from '$components/ui/button';
 	import Toggle from '$components/ui/toggle/toggle.svelte';
@@ -46,7 +47,7 @@
 			<div class="container grid gap-4 grid-cols-[1fr_250px]">
 				<slot />
 				<aside class="h-fit">
-					<!-- <ListList /> -->
+					<ListList />
 				</aside>
 			</div>
 		</main>

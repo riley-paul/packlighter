@@ -15,6 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { cn } from "@/lib/utils";
 import { CSS } from "@dnd-kit/utilities";
+import { DragOverlay } from "@dnd-kit/core";
 
 interface Props {
   list: RecordModel;
@@ -127,6 +128,13 @@ export const Category: React.FC<Props> = (props) => {
             sortDisabled={sortDisabled}
           />
         ))}
+        <DragOverlay>
+          <CategoryItem
+            list={list}
+            item={category.items[0]}
+            sortDisabled={sortDisabled}
+          />
+        </DragOverlay>
       </SortableContext>
       <div className="mt-2">
         <Button
