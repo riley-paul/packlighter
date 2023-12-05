@@ -9,9 +9,6 @@
 	import type { LayoutData } from './$types';
 
 	let isSidebarOpen = false;
-
-	export let data: LayoutData;
-	const { lists } = data;
 </script>
 
 <div class="flex overflow-hidden h-screen">
@@ -51,7 +48,7 @@
 			<div class="container grid gap-4 grid-cols-[1fr_250px]">
 				<slot />
 				<aside class="h-fit">
-					<ListList {lists} />
+					<ListList />
 				</aside>
 			</div>
 		</main>

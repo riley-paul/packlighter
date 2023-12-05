@@ -4,28 +4,45 @@
 	import { Button } from './ui/button';
 
 	import { page } from '$app/stores';
-	import { createQuery } from '@tanstack/svelte-query';
+	import { goto } from '$app/navigation';
+
 	import { pb } from '$lib/pocketbase';
 	import type { RecordModel } from 'pocketbase';
-	import { invalidate, invalidateAll } from '$app/navigation';
+	import { useMutation, useQuery, useQueryClient } from '@sveltestack/svelte-query';
 
-	export let lists: RecordModel[];
+	const lists: RecordModel[] = [];
 
-	const addList = async () => {
-		const newList = await pb.collection('lists').create({ user: pb.authStore.model?.id });
-		invalidate('/');
-		// window.location.href = `/${newList.id}`;
-	};
+	const queryClient = useQueryClient();
+	const listsQuery = useQuery('lists', () =>
+		pb.collection('lists').getFullList({ sort: '-created' })
+	);
+
+	const addList = useMutation(
+		() => pb.collection('lists').create({ user: pb.authStore.model?.id }),
+		{
+			onSuccess: (data) => {
+				goto(`/${data.id}`);
+				queryClient.invalidateQueries('lists');
+			}
+		}
+	);
+
+	const removeList = useMutation((id: string) => pb.collection('lists').delete(id), {
+		onSuccess: (data, variables) => {
+			if ($page.url.pathname.includes(variables)) goto('/');
+			queryClient.invalidateQueries('lists');
+		}
+	});
 </script>
 
 <div class="flex items-center justify-between">
 	<h2 class="text-sm font-medium">Lists</h2>
-	<Button size="sm" variant="ghost" on:click={addList}>
+	<Button size="sm" variant="ghost" on:click={() => $addList.mutate()}>
 		<Plus class="mr-2 w-4" /> New List
 	</Button>
 </div>
 <div class="overflow-auto">
-	{#each lists as list}
+	{#each $listsQuery.data ?? [] as list}
 		<a
 			href={`/${list.id}`}
 			class={cn(
@@ -35,7 +52,12 @@
 			)}
 		>
 			{list.name || 'Unnamed List'}
-			<Button size="icon" variant="ghost" class="h-8 w-8 opacity-0 group-hover:opacity-100">
+			<Button
+				size="icon"
+				variant="ghost"
+				class="h-8 w-8 opacity-0 group-hover:opacity-100"
+				on:click={() => $removeList.mutate(list.id)}
+			>
 				<Delete class="h-4 w-4" />
 			</Button>
 		</a>
