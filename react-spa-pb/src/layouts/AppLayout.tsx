@@ -48,9 +48,9 @@ export const AppLayout: React.FC = () => {
               </Link>
             </div>
             <div className="flex gap-4 items-center">
-              {isMobile && <ListListDrawer />}
-              <AccountEditor />
               <ModeToggle />
+              <AccountEditor />
+              {isMobile && <ListListDrawer />}
             </div>
           </div>
         </header>

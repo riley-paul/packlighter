@@ -174,6 +174,14 @@ export const useDataQuery = () => {
     },
   });
 
+  const deleteItem = useMutation({
+    mutationFn: (id: string) => pb.collection("items").delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+    },
+  });
+
   const packCategoryItems = useMutation({
     mutationFn: (data: { category: ExpandedCategory; packed: boolean }) => {
       const { category, packed } = data;
@@ -271,6 +279,7 @@ export const useDataQuery = () => {
     updateCategoryItem,
     deleteCategoryItem,
     updateItem,
+    deleteItem,
     packCategoryItems,
     packListItems,
     sortCategoryItems,

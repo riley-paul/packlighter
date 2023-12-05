@@ -21,10 +21,8 @@ export const ListListDrawer: React.FC = () => {
           Lists
         </Button>
       </SheetTrigger>
-      <SheetContent>
-        <SheetClose asChild>
-          <ListList />
-        </SheetClose>
+      <SheetContent className="pt-8">
+        <ListList />
       </SheetContent>
     </Sheet>
   );

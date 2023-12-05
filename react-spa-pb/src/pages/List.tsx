@@ -50,7 +50,7 @@ export const ListPage: React.FC = () => {
   };
 
   return (
-    <Card className="flex-1 p-6 h-fit">
+    <Card className="flex-1 p-6 h-fit @container">
       <div className="flex flex-col gap-4">
         <ListHeader list={queryList.data} />
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
