@@ -17,8 +17,8 @@
 
   const queryClient = useQueryClient();
 
-  $: updateCategoryItem = useUpdateCategoryItem(queryClient, list.id);
-  $: deleteCategoryItem = useDeleteCategoryItem(queryClient, list.id);
+  $: updateCategoryItem = useUpdateCategoryItem(queryClient);
+  $: deleteCategoryItem = useDeleteCategoryItem(queryClient);
 
   $: saveCategoryItem = () => $updateCategoryItem.mutate(categoryItem);
 </script>
@@ -40,7 +40,7 @@
   {/if}
 
   {#if list.show_images}
-    <ItemImage item={categoryItem.itemData} {list} />
+    <ItemImage item={categoryItem.itemData} />
   {/if}
 
   <Input

@@ -17,13 +17,12 @@
   import { Input } from "./ui/input";
 
   export let item: RecordModel;
-  export let list: RecordModel;
 
   let url = item.image_url;
   let isOpen = false;
 
   const queryClient = useQueryClient();
-  const updateItem = useUpdateItem(queryClient, list.id);
+  const updateItem = useUpdateItem(queryClient);
 
   $: saveItem = () => {
     $updateItem.mutate({ ...item, image_url: url });

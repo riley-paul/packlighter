@@ -6,7 +6,6 @@ import {
   type QueryClient,
 } from "@tanstack/svelte-query";
 import type { ClientResponseError, RecordModel } from "pocketbase";
-import { get } from "svelte/store";
 
 export const useItems = () =>
   createQuery<RecordModel[], ClientResponseError>({
@@ -18,17 +17,19 @@ export const useUpdateItem = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (item: RecordModel) =>
       pb.collection("items").update(item.id, item),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list", get(currentList)] });
-      queryClient.invalidateQueries({ queryKey: ["items"] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        queryClient.invalidateQueries({ queryKey: ["items"] });
+      }),
   });
 
 export const useDeleteItem = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (item: RecordModel) => pb.collection("items").delete(item.id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list", get(currentList)] });
-      queryClient.invalidateQueries({ queryKey: ["items"] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        queryClient.invalidateQueries({ queryKey: ["items"] });
+      }),
   });

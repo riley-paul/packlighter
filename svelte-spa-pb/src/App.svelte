@@ -5,12 +5,16 @@
 
   import { ModeWatcher } from "mode-watcher";
   import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
-  const queryClient = new QueryClient();
+  import { currentList } from "./lib/store";
 
-  const redirectAuth = () => replace("/auth");
+  const queryClient = new QueryClient();
 </script>
 
 <ModeWatcher />
 <QueryClientProvider client={queryClient}>
-  <Router {routes} on:conditionsFailed={redirectAuth} />
+  <Router
+    {routes}
+    on:conditionsFailed={() => replace("/auth")}
+    on:routeLoaded={(ev) => currentList.set(ev.detail.params?.listId || null)}
+  />
 </QueryClientProvider>

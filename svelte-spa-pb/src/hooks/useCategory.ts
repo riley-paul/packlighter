@@ -3,32 +3,36 @@ import { createMutation, type QueryClient } from "@tanstack/svelte-query";
 import type { RecordModel } from "pocketbase";
 import type { ExpandedCategory } from "./useList";
 import { isCategoryFullyPacked } from "@/lib/helpers";
+import { currentList } from "@/lib/store";
 
 export const useUpdateCategory = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (category: RecordModel) =>
       pb.collection("list_categories").update(category.id, category),
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["list", variables.list] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      }),
   });
 
 export const useDeleteCategory = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (category: RecordModel) =>
       pb.collection("list_categories").delete(category.id),
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["list", variables.list] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      }),
   });
 
 export const useCreateCategory = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (listId: string) =>
       pb.collection("list_categories").create({ list: listId }),
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["list", variables] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      }),
   });
 
 export const useToggleCategoryPacked = (queryClient: QueryClient) =>
@@ -43,7 +47,8 @@ export const useToggleCategoryPacked = (queryClient: QueryClient) =>
         )
       );
     },
-    onSuccess: (data, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["list", variables.list] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      }),
   });

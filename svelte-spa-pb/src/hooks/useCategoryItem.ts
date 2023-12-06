@@ -3,29 +3,23 @@ import type { ExpandedCategoryItem } from "./useList";
 import { pb } from "@/lib/pocketbase";
 import { isItemUntouched } from "@/lib/helpers";
 import type { RecordModel } from "pocketbase";
+import { currentList } from "@/lib/store";
 
-export const useUpdateCategoryItem = (
-  queryClient: QueryClient,
-  listId: string
-) =>
+export const useUpdateCategoryItem = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (categoryItem: ExpandedCategoryItem) =>
       Promise.all([
         pb.collection("categories_items").update(categoryItem.id, categoryItem),
-        pb
-          .collection("items")
-          .update(categoryItem.item, categoryItem.itemData),
+        pb.collection("items").update(categoryItem.item, categoryItem.itemData),
       ]),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list", listId] });
-      queryClient.invalidateQueries({ queryKey: ["items"] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        queryClient.invalidateQueries({ queryKey: ["items"] });
+      }),
   });
 
-export const useDeleteCategoryItem = (
-  queryClient: QueryClient,
-  listId: string
-) =>
+export const useDeleteCategoryItem = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (categoryItem: ExpandedCategoryItem) =>
       Promise.all([
@@ -34,16 +28,14 @@ export const useDeleteCategoryItem = (
           ? pb.collection("items").delete(categoryItem.itemData.id)
           : Promise.resolve(),
       ]),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list", listId] });
-      queryClient.invalidateQueries({ queryKey: ["items"] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        queryClient.invalidateQueries({ queryKey: ["items"] });
+      }),
   });
 
-export const useCreateCategoryItem = (
-  queryClient: QueryClient,
-  listId: string
-) =>
+export const useCreateCategoryItem = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (category: RecordModel) =>
       pb
@@ -54,8 +46,9 @@ export const useCreateCategoryItem = (
             .collection("categories_items")
             .create({ category: category.id, item: item.id, quantity: 1 })
         ),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["list", listId] });
-      queryClient.invalidateQueries({ queryKey: ["items"] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        queryClient.invalidateQueries({ queryKey: ["items"] });
+      }),
   });

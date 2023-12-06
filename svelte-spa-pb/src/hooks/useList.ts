@@ -1,4 +1,5 @@
 import { pb } from "@/lib/pocketbase";
+import { currentList } from "@/lib/store";
 import {
   QueryClient,
   createMutation,
@@ -6,6 +7,7 @@ import {
 } from "@tanstack/svelte-query";
 import type { ClientResponseError, RecordModel } from "pocketbase";
 import { push as goto } from "svelte-spa-router";
+import { get } from "svelte/store";
 
 export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
 const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
@@ -64,21 +66,23 @@ export const useCreateList = (queryClient: QueryClient) =>
     },
   });
 
-export const useRemoveList = (queryClient: QueryClient, location: string) =>
+export const useRemoveList = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (id: string) => pb.collection("lists").delete(id),
-    onSuccess: (data, variables) => {
-      if (location.includes(variables)) goto("/");
-      queryClient.invalidateQueries({ queryKey: ["lists"] });
-    },
+    onSuccess: (data, variables) =>
+      currentList.subscribe((listId) => {
+        if (listId === variables) goto("/");
+        queryClient.invalidateQueries({ queryKey: ["lists"] });
+      }),
   });
 
 export const useUpdateList = (queryClient: QueryClient) =>
   createMutation({
     mutationFn: (list: RecordModel) =>
       pb.collection("lists").update(list.id, list),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["list", data.id] });
-      queryClient.invalidateQueries({ queryKey: ["lists"] });
-    },
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        queryClient.invalidateQueries({ queryKey: ["lists"] });
+      }),
   });

@@ -3,7 +3,7 @@
   import { Delete, Plus } from "lucide-svelte";
   import { Button } from "./ui/button";
 
-  import { link, push as goto, location } from "svelte-spa-router";
+  import { link, location } from "svelte-spa-router";
   import { useCreateList, useLists, useRemoveList } from "@/hooks/useList";
   import { useQueryClient } from "@tanstack/svelte-query";
 
@@ -11,7 +11,7 @@
 
   $: lists = useLists();
   $: createList = useCreateList(queryClient);
-  $: removeList = useRemoveList(queryClient, $location);
+  $: removeList = useRemoveList(queryClient);
 </script>
 
 <div class="flex items-center justify-between">

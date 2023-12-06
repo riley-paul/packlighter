@@ -23,7 +23,7 @@
   $: updateCategory = useUpdateCategory(queryClient);
   $: deleteCategory = useDeleteCategory(queryClient);
   $: toggleCategoryPacked = useToggleCategoryPacked(queryClient);
-  $: createCategoryItem = useCreateCategoryItem(queryClient, list.id);
+  $: createCategoryItem = useCreateCategoryItem(queryClient);
 
   $: saveCategory = () => $updateCategory.mutate(category);
 </script>
