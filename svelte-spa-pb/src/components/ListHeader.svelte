@@ -26,7 +26,6 @@
       bind:value={list.description}
       on:blur={saveList}
       placeholder="Description"
-      class="bg-background"
     />
     <input type="hidden" />
   </form>

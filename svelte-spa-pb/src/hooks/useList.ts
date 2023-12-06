@@ -3,16 +3,49 @@ import {
   QueryClient,
   createMutation,
   createQuery,
-  useQueryClient,
 } from "@tanstack/svelte-query";
 import type { ClientResponseError, RecordModel } from "pocketbase";
-import { link, push as goto } from "svelte-spa-router";
-import type { Readable } from "svelte/store";
+import { push as goto } from "svelte-spa-router";
+
+export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
+const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
+  ...record,
+  itemData: record.expand?.item ?? {},
+});
+
+export type ExpandedCategory = RecordModel & { items: ExpandedCategoryItem[] };
+const expandCategory = (record: RecordModel): ExpandedCategory => ({
+  ...record,
+  items:
+    record.expand?.["categories_items(category)"]
+      ?.map(expandItems)
+      .sort(
+        (a: ExpandedCategoryItem, b: ExpandedCategoryItem) =>
+          a.sort_order - b.sort_order
+      ) ?? [],
+});
+
+export type ListWithCategories = RecordModel & {
+  categories: ExpandedCategory[];
+};
 
 export const useList = (listId: string) =>
-  createQuery<RecordModel, ClientResponseError>({
+  createQuery<ListWithCategories, ClientResponseError>({
     queryKey: ["list", listId],
-    queryFn: () => pb.collection("lists").getOne(listId),
+    queryFn: async () => {
+      const [list, categories] = await Promise.all([
+        pb.collection("lists").getOne(listId ?? "", { requestKey: null }),
+        pb
+          .collection("list_categories")
+          .getFullList({
+            filter: `list = "${listId}"`,
+            sort: "created",
+            expand: "categories_items(category).item",
+          })
+          .then((data) => data.map(expandCategory)),
+      ]);
+      return { ...list, categories };
+    },
   });
 
 export const useLists = () =>

@@ -6,10 +6,16 @@
   import { useList } from "@/hooks/useList";
   import { pb } from "@/lib/pocketbase";
   import ListHeader from "@/components/ListHeader.svelte";
+  import Category from "@/components/Category.svelte";
+  import { useQueryClient } from "@tanstack/svelte-query";
+  import { useCreateCategory } from "@/hooks/useCategory";
+
+  const queryClient = useQueryClient();
 
   export let params = { listId: "" };
 
   $: list = useList(params.listId);
+  $: createCategory = useCreateCategory(queryClient);
 </script>
 
 <LayoutApp>
@@ -21,20 +27,16 @@
     {:else if $list.data}
       <div class="flex flex-col gap-4">
         <ListHeader list={$list.data} />
-        <!-- <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        {queryList.data.categories.map((c) => (
-          <Category
-          key={c.id}
-          category={c}
-          list={queryList.data}
-          sortDisabled={sortCategoryItems.isPending}
-          />
-          ))}
-        </DndContext> -->
+        {#each $list.data.categories as category (category.id)}
+          <Category {category} list={$list.data} />
+        {/each}
         <div>
-          <Button variant="linkMuted" size="sm">
-            <!-- on:click={() => $createCategory.mutate()}
-            disabled={$createCategory.isLoading} -->
+          <Button
+            variant="linkMuted"
+            size="sm"
+            on:click={() => $createCategory.mutate(params.listId)}
+            disabled={$createCategory.isPending}
+          >
             <Plus class="h-4 w-4 mr-2" />
             Add Category
           </Button>
