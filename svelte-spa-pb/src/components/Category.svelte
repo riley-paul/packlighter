@@ -30,7 +30,10 @@
 
 <article>
   <div
-    class="border-b-2 p-1 flex gap-1 items-center text-sm font-semibold group"
+    class="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold group"
+    style="grid-template-columns: {list.show_packed
+      ? 'auto'
+      : ''} 1fr {list.show_weights ? '6rem' : ''} 4rem auto auto;"
   >
     {#if list.show_packed}
       <Checkbox

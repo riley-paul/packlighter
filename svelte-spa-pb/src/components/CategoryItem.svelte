@@ -10,6 +10,7 @@
   } from "@/hooks/useCategoryItem";
   import { Checkbox } from "./ui/checkbox";
   import { GripVertical, X } from "lucide-svelte";
+  import ItemImage from "./ItemImage.svelte";
 
   export let list: RecordModel;
   export let categoryItem: ExpandedCategoryItem;
@@ -23,7 +24,12 @@
 </script>
 
 <form
-  class="border-b text-sm p-1 flex gap-1 items-center hover:bg-muted/30 transition-colors group"
+  class="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors group"
+  style="grid-template-columns: {list.show_packed
+    ? 'auto'
+    : ''} {list.show_images ? 'auto' : ''} 1fr 3fr {list.show_weights
+    ? '6rem'
+    : ''} 4rem auto auto"
   on:submit|preventDefault={saveCategoryItem}
 >
   {#if list.show_packed}
@@ -33,7 +39,9 @@
     />
   {/if}
 
-  <!-- {list.show_images && <ItemImage item={item.itemData} />} -->
+  {#if list.show_images}
+    <ItemImage item={categoryItem.itemData} {list} />
+  {/if}
 
   <Input
     bind:value={categoryItem.itemData.name}
