@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { useDeleteCategory, useUpdateCategory } from "@/hooks/useCategory";
+  import {
+    useDeleteCategory,
+    useToggleCategoryPacked,
+    useUpdateCategory,
+  } from "@/hooks/useCategory";
   import { useQueryClient } from "@tanstack/svelte-query";
   import type { RecordModel } from "pocketbase";
   import { Checkbox } from "./ui/checkbox";
@@ -8,6 +12,7 @@
   import { GripVertical, Plus, X } from "lucide-svelte";
   import type { ExpandedCategory } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
+  import { isCategoryFullyPacked } from "@/lib/helpers";
 
   export let category: ExpandedCategory;
   export let list: RecordModel;
@@ -15,6 +20,7 @@
   const queryClient = useQueryClient();
   const updateCategory = useUpdateCategory(queryClient);
   const deleteCategory = useDeleteCategory(queryClient);
+  const toggleCategoryPacked = useToggleCategoryPacked(queryClient);
 
   $: saveCategory = () => $updateCategory.mutate(category);
 </script>
@@ -23,13 +29,12 @@
   <div
     class="border-b-2 p-1 flex gap-1 items-center text-sm font-semibold group"
   >
-    <!-- {#if list.show_packed}
+    {#if list.show_packed}
       <Checkbox
-        bind:checked={categoryPacked}
-        onCheckedChange={(checked) =>
-          packCategoryItems.mutate({ category, packed: Boolean(checked) })}
+        checked={isCategoryFullyPacked(category)}
+        onCheckedChange={() => $toggleCategoryPacked.mutate(category)}
       />
-    {/if} -->
+    {/if}
     <form on:submit|preventDefault={saveCategory} class="flex-1">
       <Input
         bind:value={category.name}
