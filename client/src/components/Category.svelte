@@ -64,7 +64,7 @@
       <X class="h-4 w-4" />
     </Button>
     <div>
-      <GripVertical class="h-4 w-4" />
+      <GripVertical class="h-4 w-4 text-muted-foreground" />
     </div>
   </div>
   {#each category.items as categoryItem}

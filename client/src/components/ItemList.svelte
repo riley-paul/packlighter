@@ -7,6 +7,13 @@
 
   let searchTerm = "";
   const items = useItems();
+
+  $: filteredItems =
+    $items.data?.filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+    ) ?? [];
 </script>
 
 <div class="p-2 border-b">
@@ -29,8 +36,8 @@
     <p>Error: {$items.error}</p>
   {:else if $items.isLoading}
     <p>Loading...</p>
-  {:else if $items.data !== undefined}
-    {#each $items.data as item (item.id)}
+  {:else}
+    {#each filteredItems as item (item.id)}
       <ItemListItem {item} />
     {/each}
   {/if}

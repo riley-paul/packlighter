@@ -14,6 +14,7 @@
 <QueryClientProvider client={queryClient}>
   <Router
     {routes}
+    restoreScrollState
     on:conditionsFailed={() => replace("/auth")}
     on:routeLoaded={(ev) => currentList.set(ev.detail.params?.listId || null)}
   />
