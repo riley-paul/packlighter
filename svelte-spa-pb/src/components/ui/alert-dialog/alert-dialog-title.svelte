@@ -1,6 +1,6 @@
 <script lang="ts">
   import { AlertDialog as AlertDialogPrimitive } from "bits-ui";
-  import { cn } from "@/utils";
+  import { cn } from "@/lib/utils";
 
   type $$Props = AlertDialogPrimitive.TitleProps;
 

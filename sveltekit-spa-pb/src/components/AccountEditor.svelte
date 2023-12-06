@@ -2,11 +2,11 @@
 	import { pb } from '$lib/pocketbase';
 	import type { RecordModel } from 'pocketbase';
 
-	import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-	import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+	import { Sheet, SheetContent, SheetTrigger } from '../../../sveltekit-spa-pb/src/components/ui/sheet';
+	import { Avatar, AvatarFallback, AvatarImage } from '../../../sveltekit-spa-pb/src/components/ui/avatar';
 	import { User } from 'lucide-svelte';
-	import { Separator } from './ui/separator';
-	import { Button } from './ui/button';
+	import { Separator } from '../../../sveltekit-spa-pb/src/components/ui/separator';
+	import { Button } from '../../../sveltekit-spa-pb/src/components/ui/button';
 	const user = pb.authStore.model as RecordModel;
 	const imageUrl = pb.files.getUrl(user, user.avatar, { thumb: '100x100' });
 </script>

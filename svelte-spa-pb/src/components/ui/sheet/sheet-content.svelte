@@ -8,7 +8,7 @@
     type Side,
   } from ".";
   import { Cross2 } from "radix-icons-svelte";
-  import { cn } from "@/utils";
+  import { cn } from "@/lib/utils";
   import { fly } from "svelte/transition";
 
   type $$Props = SheetPrimitive.ContentProps & {

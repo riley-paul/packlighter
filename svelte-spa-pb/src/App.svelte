@@ -1,9 +1,14 @@
 <script lang="ts">
-  import svelteLogo from "./assets/svelte.svg";
   import { Button } from "@/components/ui/button";
-  import viteLogo from "/vite.svg";
+  import { routes } from "./lib/routes";
+  import Router from "svelte-spa-router";
+
+  import { ModeWatcher } from "mode-watcher";
+  import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query";
+  const queryClient = new QueryClient();
 </script>
 
-<main>
-  <Button>hello</Button>
-</main>
+<ModeWatcher />
+<QueryClientProvider client={queryClient}>
+  <Router {routes} />
+</QueryClientProvider>

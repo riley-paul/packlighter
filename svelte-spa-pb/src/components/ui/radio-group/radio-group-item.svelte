@@ -1,7 +1,7 @@
 <script lang="ts">
   import { RadioGroup as RadioGroupPrimitive } from "bits-ui";
   import { Check } from "radix-icons-svelte";
-  import { cn } from "@/utils";
+  import { cn } from "@/lib/utils";
 
   type $$Props = RadioGroupPrimitive.ItemProps & {
     value: string;
