@@ -13,14 +13,17 @@
   import type { ExpandedCategory } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import { isCategoryFullyPacked } from "@/lib/helpers";
+  import { useCreateCategoryItem } from "@/hooks/useCategoryItem";
 
   export let category: ExpandedCategory;
   export let list: RecordModel;
 
   const queryClient = useQueryClient();
-  const updateCategory = useUpdateCategory(queryClient);
-  const deleteCategory = useDeleteCategory(queryClient);
-  const toggleCategoryPacked = useToggleCategoryPacked(queryClient);
+
+  $: updateCategory = useUpdateCategory(queryClient);
+  $: deleteCategory = useDeleteCategory(queryClient);
+  $: toggleCategoryPacked = useToggleCategoryPacked(queryClient);
+  $: createCategoryItem = useCreateCategoryItem(queryClient, list.id);
 
   $: saveCategory = () => $updateCategory.mutate(category);
 </script>
@@ -66,9 +69,12 @@
   {/each}
 
   <div class="mt-2">
-    <Button variant="linkMuted" size="sm">
-      <!-- on:click={() => createCategoryItem.mutate(category.id)}
-      disabled={createCategoryItem.isPending} -->
+    <Button
+      variant="linkMuted"
+      size="sm"
+      on:click={() => $createCategoryItem.mutate(category)}
+      disabled={$createCategoryItem.isPending}
+    >
       <Plus class="h-4 w-4 mr-2" />
       Add Item
     </Button>

@@ -57,3 +57,9 @@
     </main>
   </div>
 </div>
+
+<style>
+  main {
+    scrollbar-gutter: stable;
+  }
+</style>

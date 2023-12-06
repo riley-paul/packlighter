@@ -37,12 +37,16 @@
 
   <Input
     bind:value={categoryItem.itemData.name}
+    on:blur={saveCategoryItem}
+    name="name"
     placeholder="Name"
     class="border-none shadow-none"
   />
 
   <Input
     bind:value={categoryItem.itemData.description}
+    on:blur={saveCategoryItem}
+    name="description"
     placeholder="Description"
     class="text-muted-foreground border-none shadow-none"
   />
@@ -50,6 +54,8 @@
   {#if list.show_weights}
     <Input
       bind:value={categoryItem.itemData.weight_g}
+      on:blur={saveCategoryItem}
+      name="weight_g"
       type="number"
       min="0"
       class="border-none shadow-none"
@@ -58,6 +64,8 @@
 
   <Input
     bind:value={categoryItem.quantity}
+    on:change={saveCategoryItem}
+    name="quantity"
     type="number"
     min="1"
     class="border-none shadow-none"
