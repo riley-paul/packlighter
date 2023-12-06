@@ -1,0 +1,35 @@
+<script lang="ts">
+  import type { RecordModel } from "pocketbase";
+  import { Input } from "./ui/input";
+  import { Textarea } from "./ui/textarea";
+  import { useQueryClient } from "@tanstack/svelte-query";
+  import { useUpdateList } from "@/hooks/useList";
+
+  const queryClient = useQueryClient();
+
+  export let list: RecordModel;
+
+  $: updateList = useUpdateList(queryClient);
+  $: saveList = () => $updateList.mutate(list);
+</script>
+
+<div class="flex gap-2">
+  <form on:submit={saveList} class="space-y-2 flex-1">
+    <Input
+      bind:value={list.name}
+      on:blur={saveList}
+      class="h-auto text-3xl text-primary font-bold"
+      placeholder="List Name"
+    />
+    <Textarea
+      bind:value={list.description}
+      on:blur={saveList}
+      placeholder="Description"
+      class="bg-background"
+    />
+    <input type="hidden" />
+  </form>
+  <div class="flex gap-2">
+    <!-- <ListSettings {list} /> -->
+  </div>
+</div>

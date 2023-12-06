@@ -39,3 +39,13 @@ export const useRemoveList = (queryClient: QueryClient, location: string) =>
       queryClient.invalidateQueries({ queryKey: ["lists"] });
     },
   });
+
+export const useUpdateList = (queryClient: QueryClient) =>
+  createMutation({
+    mutationFn: (list: RecordModel) =>
+      pb.collection("lists").update(list.id, list),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["list", data.id] });
+      queryClient.invalidateQueries({ queryKey: ["lists"] });
+    },
+  });

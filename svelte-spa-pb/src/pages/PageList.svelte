@@ -5,6 +5,7 @@
   import { Plus } from "lucide-svelte";
   import { useList } from "@/hooks/useList";
   import { pb } from "@/lib/pocketbase";
+  import ListHeader from "@/components/ListHeader.svelte";
 
   export let params = { listId: "" };
 
@@ -17,10 +18,9 @@
       <p>Error: {$list.error}</p>
     {:else if $list.isLoading}
       <p>Loading...</p>
-    {:else}
+    {:else if $list.data}
       <div class="flex flex-col gap-4">
-        {$list.data?.name}
-        <!-- <ListHeader list={$queryList.data} /> -->
+        <ListHeader list={$list.data} />
         <!-- <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         {queryList.data.categories.map((c) => (
           <Category
