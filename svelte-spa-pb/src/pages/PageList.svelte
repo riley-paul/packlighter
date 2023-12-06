@@ -9,10 +9,15 @@
   import Category from "@/components/Category.svelte";
   import { useQueryClient } from "@tanstack/svelte-query";
   import { useCreateCategory } from "@/hooks/useCategory";
+  import { onDestroy, onMount } from "svelte";
+  import { currentList } from "@/lib/store";
 
   const queryClient = useQueryClient();
 
   export let params = { listId: "" };
+
+  onMount(() => currentList.set(params.listId));
+  onDestroy(() => currentList.set(null));
 
   $: list = useList(params.listId);
   $: createCategory = useCreateCategory(queryClient);

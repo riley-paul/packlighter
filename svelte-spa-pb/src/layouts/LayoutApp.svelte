@@ -1,5 +1,6 @@
 <script lang="ts">
   import AccountEditor from "@/components/AccountEditor.svelte";
+  import ItemList from "@/components/ItemList.svelte";
   import ListList from "@/components/ListList.svelte";
   import ModeToggle from "@/components/ModeToggle.svelte";
   import { buttonVariants } from "@/components/ui/button";
@@ -19,7 +20,7 @@
       "flex flex-col overflow-hidden h-full"
     )}
   >
-    <!-- <ItemList /> -->
+    <ItemList />
   </aside>
   <div class="flex-1 overflow-hidden flex flex-col">
     <header class="w-full border-b h-14 flex items-center bg-card shadow z-50">
