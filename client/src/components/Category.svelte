@@ -30,7 +30,7 @@
 
 <article>
   <div
-    class="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold group"
+    class="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold"
     style="grid-template-columns: {list.show_packed
       ? 'auto'
       : ''} 1fr {list.show_weights ? '6rem' : ''} 4rem auto auto;"
@@ -58,7 +58,7 @@
     <Button
       size="icon"
       variant="ghost"
-      class="w-6 text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+      class="w-6 h-6 rounded-full"
       on:click={() => $deleteCategory.mutate(category)}
     >
       <X class="h-4 w-4" />

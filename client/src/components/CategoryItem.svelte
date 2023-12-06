@@ -24,7 +24,7 @@
 </script>
 
 <form
-  class="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors group"
+  class="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors"
   style="grid-template-columns: {list.show_packed
     ? 'auto'
     : ''} {list.show_images ? 'auto' : ''} 1fr 3fr {list.show_weights
@@ -84,7 +84,7 @@
     size="icon"
     variant="ghost"
     type="button"
-    class="w-6 text-destructive hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+    class="h-6 w-6 rounded-full"
     on:click={() => $deleteCategoryItem.mutate(categoryItem)}
   >
     <X class="h-4 w-4" />

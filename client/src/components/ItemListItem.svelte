@@ -4,6 +4,7 @@
   import { Button } from "./ui/button";
   import { useDeleteItem } from "@/hooks/useItem";
   import { useQueryClient } from "@tanstack/svelte-query";
+  import { cn } from "@/lib/utils";
 
   export let item: RecordModel;
 
@@ -19,7 +20,9 @@
     <GripVertical class="h-4 w-4 text-muted-foreground" />
   </div>
   <div class="flex-1">
-    <h3 class="">{item.name}</h3>
+    <h3 class={cn(!item.name && "italic text-muted-foreground")}>
+      {item.name || "Unnamed Item"}
+    </h3>
     <p class="text-muted-foreground">{item.description}</p>
   </div>
   <Button
