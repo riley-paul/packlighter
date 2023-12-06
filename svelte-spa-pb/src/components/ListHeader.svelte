@@ -4,6 +4,7 @@
   import { Textarea } from "./ui/textarea";
   import { useQueryClient } from "@tanstack/svelte-query";
   import { useUpdateList } from "@/hooks/useList";
+  import ListSettings from "./ListSettings.svelte";
 
   const queryClient = useQueryClient();
 
@@ -30,6 +31,6 @@
     <input type="hidden" />
   </form>
   <div class="flex gap-2">
-    <!-- <ListSettings {list} /> -->
+    <ListSettings {list} />
   </div>
 </div>
