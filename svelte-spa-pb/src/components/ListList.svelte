@@ -3,40 +3,15 @@
   import { Delete, Plus } from "lucide-svelte";
   import { Button } from "./ui/button";
 
-  import { pb } from "@/lib/pocketbase";
-  import {
-    useMutation,
-    useQuery,
-    useQueryClient,
-  } from "@sveltestack/svelte-query";
-
   import { link, push as goto, location } from "svelte-spa-router";
-  import active from "svelte-spa-router/active";
+  import { useCreateList, useLists, useRemoveList } from "@/hooks/useList";
+  import { useQueryClient } from "@tanstack/svelte-query";
 
   const queryClient = useQueryClient();
-  const listsQuery = useQuery("lists", () =>
-    pb.collection("lists").getFullList({ sort: "-created" })
-  );
 
-  const createList = useMutation(
-    () => pb.collection("lists").create({ user: pb.authStore.model?.id }),
-    {
-      onSuccess: (data) => {
-        goto(`/${data.id}`);
-        queryClient.invalidateQueries("lists");
-      },
-    }
-  );
-
-  const removeList = useMutation(
-    (id: string) => pb.collection("lists").delete(id),
-    {
-      onSuccess: (data, variables) => {
-        if ($location.includes(variables)) goto("/");
-        queryClient.invalidateQueries("lists");
-      },
-    }
-  );
+  $: lists = useLists();
+  $: createList = useCreateList(queryClient);
+  $: removeList = useRemoveList(queryClient, $location);
 </script>
 
 <div class="flex items-center justify-between">
@@ -46,20 +21,18 @@
   </Button>
 </div>
 <div class="overflow-auto">
-  {#each $listsQuery.data ?? [] as list}
-    <a
-      use:link
-      use:active={{
-        path: `/${list.id}`,
-        className: "border-l-4 border-primary pl-3 text-foreground",
-      }}
-      href={`/${list.id}`}
+  {#each $lists.data ?? [] as list}
+    <div
       class={cn(
         "w-full pl-4 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
-        !list.name && "italic"
+        !list.name && "italic",
+        $location.includes(list.id) &&
+          "border-l-4 border-primary pl-3 text-foreground"
       )}
     >
-      {list.name || "Unnamed List"}
+      <a use:link href={`/${list.id}`} class="flex-1">
+        {list.name || "Unnamed List"}
+      </a>
       <Button
         size="icon"
         variant="ghost"
@@ -68,6 +41,6 @@
       >
         <Delete class="h-4 w-4" />
       </Button>
-    </a>
+    </div>
   {/each}
 </div>

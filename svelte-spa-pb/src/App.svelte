@@ -4,7 +4,7 @@
   import Router from "svelte-spa-router";
 
   import { ModeWatcher } from "mode-watcher";
-  import { QueryClient, QueryClientProvider } from "@sveltestack/svelte-query";
+  import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
   const queryClient = new QueryClient();
 </script>
 

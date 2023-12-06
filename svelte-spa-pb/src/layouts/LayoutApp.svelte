@@ -6,6 +6,7 @@
   import Toggle from "@/components/ui/toggle/toggle.svelte";
   import { cn } from "@/lib/utils";
   import { Feather, MoreVertical } from "lucide-svelte";
+  import { link } from "svelte-spa-router";
 
   let isSidebarOpen = false;
 </script>
@@ -35,7 +36,7 @@
           >
             <MoreVertical class="w-4 h-4" />
           </Toggle>
-          <a href="/" class="flex items-center">
+          <a href="/" use:link class="flex items-center">
             <Feather class="mr-2 w-6 text-primary" />
             <h1 class="font-medium text-lg">PackLighter</h1>
           </a>

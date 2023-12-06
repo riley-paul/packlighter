@@ -32,7 +32,7 @@
 		<p>Loading...</p>
 	{:else}
 		<div class="flex flex-col gap-4">
-			{$queryList.data.name}
+			{$queryList.data?.name}
 			<!-- <ListHeader list={$queryList.data} /> -->
 			<!-- <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
 			{queryList.data.categories.map((c) => (

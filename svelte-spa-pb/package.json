@@ -24,7 +24,7 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
-    "@sveltestack/svelte-query": "^1.6.0",
+    "@tanstack/svelte-query": "^5.13.2",
     "bits-ui": "^0.11.0",
     "clsx": "^2.0.0",
     "lucide-svelte": "^0.294.0",
