@@ -4,10 +4,10 @@
 </script>
 
 <LayoutApp>
-  <div class="h-min w-full flex items-center justify-center">
-    <div class="flex flex-col items-center my-24">
-      <Home class="text-primary h-16 w-16 mb-4" />
-      <h1 class="text-3xl font-bold mb-1">Home</h1>
+  <div class="flex h-min w-full items-center justify-center">
+    <div class="my-24 flex flex-col items-center">
+      <Home class="mb-4 h-16 w-16 text-primary" />
+      <h1 class="mb-1 text-3xl font-bold">Home</h1>
       <p class="text-sm text-muted-foreground">Select a list to get packing</p>
     </div>
   </div>

@@ -18,7 +18,7 @@
 <Sheet>
   <SheetTrigger>
     <div
-      class="flex text-sm items-center hover:underline underline-offset-4 cursor-pointer"
+      class="flex cursor-pointer items-center text-sm underline-offset-4 hover:underline"
     >
       <Avatar class="h-10 w-10">
         <AvatarImage src={imageUrl} alt="@shadcn" />
@@ -38,8 +38,8 @@
           </AvatarFallback>
         </Avatar>
         <div class="flex flex-col justify-center">
-          <h2 class="font-semibold text-lg">{user.name}</h2>
-          <p class="text-muted-foreground text-sm">{user.email}</p>
+          <h2 class="text-lg font-semibold">{user.name}</h2>
+          <p class="text-sm text-muted-foreground">{user.email}</p>
         </div>
       </div>
       <Separator class="my-4" />

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from "@/lib/utils";
-  import { Delete, Plus } from "lucide-svelte";
+  import { Delete, Plus, X } from "lucide-svelte";
   import { Button } from "./ui/button";
 
   import { link, location } from "svelte-spa-router";
@@ -24,10 +24,10 @@
   {#each $lists.data ?? [] as list}
     <div
       class={cn(
-        "w-full pl-4 group hover:border-l-4 hover:pl-3 text-muted-foreground flex items-center justify-between",
+        "flex h-8 w-full items-center justify-between pl-4 text-muted-foreground hover:border-l-4 hover:pl-3",
         !list.name && "italic",
         $location.includes(list.id) &&
-          "border-l-4 border-primary pl-3 text-foreground"
+          "border-l-4 border-primary pl-3 text-foreground",
       )}
     >
       <a use:link href={`/${list.id}`} class="flex-1">
@@ -36,10 +36,10 @@
       <Button
         size="icon"
         variant="ghost"
-        class="h-8 w-8 opacity-0 group-hover:opacity-100"
+        class="h-6 w-6 rounded-full"
         on:click={() => $removeList.mutate(list.id)}
       >
-        <Delete class="h-4 w-4" />
+        <X class="h-4 w-4" />
       </Button>
     </div>
   {/each}

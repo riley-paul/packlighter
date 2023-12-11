@@ -14,7 +14,7 @@
 </script>
 
 <div
-  class="text-sm p-2 pl-0 hover:bg-card transition-colors flex items-center gap-2"
+  class="flex items-center gap-2 p-2 pl-0 text-sm transition-colors hover:bg-card"
 >
   <div>
     <GripVertical class="h-4 w-4 text-muted-foreground" />

@@ -17,7 +17,7 @@
   class={cn(
     "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[highlighted]:bg-accent data-[state=open]:bg-accent",
     inset && "pl-8",
-    className
+    className,
   )}
   {...$$restProps}
   on:click

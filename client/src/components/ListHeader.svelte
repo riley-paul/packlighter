@@ -15,11 +15,11 @@
 </script>
 
 <div class="flex gap-2">
-  <form on:submit={saveList} class="space-y-2 flex-1">
+  <form on:submit={saveList} class="flex-1 space-y-2">
     <Input
       bind:value={list.name}
       on:blur={saveList}
-      class="h-auto text-3xl text-primary font-bold"
+      class="h-auto text-3xl font-bold text-primary"
       placeholder="List Name"
     />
     <Textarea

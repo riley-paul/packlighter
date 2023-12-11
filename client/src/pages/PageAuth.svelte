@@ -12,9 +12,9 @@
 
 <div class="h-screen overflow-auto">
   <div class="container max-w-sm py-12">
-    <div class="flex flex-col mb-8 items-center">
-      <Feather class="h-16 w-16 text-primary mb-4" />
-      <h1 class="text-3xl font-bold mb-1">PackLighter</h1>
+    <div class="mb-8 flex flex-col items-center">
+      <Feather class="mb-4 h-16 w-16 text-primary" />
+      <h1 class="mb-1 text-3xl font-bold">PackLighter</h1>
       <p class="text-sm text-muted-foreground">The packing tool of champions</p>
     </div>
     <Tabs value="login">

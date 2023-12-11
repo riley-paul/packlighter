@@ -19,7 +19,7 @@
 </script>
 
 <LayoutApp>
-  <Card class="flex-1 p-6 h-fit @container">
+  <Card class="@container h-fit flex-1 p-6">
     {#if $list.isError}
       <p>Error: {$list.error}</p>
     {:else if $list.isLoading}
@@ -37,7 +37,7 @@
             on:click={() => $createCategory.mutate(params.listId)}
             disabled={$createCategory.isPending}
           >
-            <Plus class="h-4 w-4 mr-2" />
+            <Plus class="mr-2 h-4 w-4" />
             Add Category
           </Button>
         </div>

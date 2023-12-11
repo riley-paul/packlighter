@@ -44,7 +44,7 @@ export const useCreateCategoryItem = (queryClient: QueryClient) =>
         .then((item) =>
           pb
             .collection("categories_items")
-            .create({ category: category.id, item: item.id, quantity: 1 })
+            .create({ category: category.id, item: item.id, quantity: 1 }),
         ),
     onSuccess: () =>
       currentList.subscribe((listId) => {

@@ -16,7 +16,7 @@
     class={cn(
       buttonVariants({ variant: "outline" }),
       "appearance-none bg-transparent font-normal",
-      className
+      className,
     )}
     {...$$restProps}
   >

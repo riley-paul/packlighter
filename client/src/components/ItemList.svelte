@@ -12,15 +12,15 @@
     $items.data?.filter(
       (item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase())
+        item.description.toLowerCase().includes(searchTerm.toLowerCase()),
     ) ?? [];
 </script>
 
-<div class="p-2 border-b">
-  <div class="flex items-center gap-2 justify-between mb-2">
+<div class="border-b p-2">
+  <div class="mb-2 flex items-center justify-between gap-2">
     <h2 class="text-sm font-medium">Gear</h2>
     <Button size="sm" variant="ghost">
-      <Plus class="h-4 w-4 mr-2" />
+      <Plus class="mr-2 h-4 w-4" />
       New Gear
     </Button>
   </div>

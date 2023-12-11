@@ -49,8 +49,8 @@ export const useToggleCategoryPacked = (queryClient: QueryClient) =>
         category.items.map((i) =>
           pb
             .collection("categories_items")
-            .update(i.id, { packed: !isFullyPacked })
-        )
+            .update(i.id, { packed: !isFullyPacked }),
+        ),
       );
     },
     onSuccess: () =>

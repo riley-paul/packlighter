@@ -12,11 +12,14 @@
   import { GripVertical, Plus, X } from "lucide-svelte";
   import type { ExpandedCategory } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
-  import { isCategoryFullyPacked } from "@/lib/helpers";
+  import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
   import { useCreateCategoryItem } from "@/hooks/useCategoryItem";
 
   export let category: ExpandedCategory;
   export let list: RecordModel;
+
+  import Sortable from "sortablejs";
+  import { onMount } from "svelte";
 
   const queryClient = useQueryClient();
 
@@ -26,14 +29,22 @@
   $: createCategoryItem = useCreateCategoryItem(queryClient);
 
   $: saveCategory = () => $updateCategory.mutate(category);
+
+  let categoryElement: HTMLElement;
+
+  onMount(() => {
+    Sortable.create(categoryElement, {
+      group: { name: "category", put: true },
+      animation: 200,
+      handle: ".handle",
+    });
+  });
 </script>
 
 <article>
   <div
-    class="border-b-2 p-1 grid gap-1 items-center text-sm font-semibold"
-    style="grid-template-columns: {list.show_packed
-      ? 'auto'
-      : ''} 1fr {list.show_weights ? '6rem' : ''} 4rem auto auto;"
+    class="grid items-center gap-2 border-b-2 p-1 text-sm font-semibold"
+    style="grid-template-columns: {createItemTemplateCols(list, false)}"
   >
     {#if list.show_packed}
       <Checkbox
@@ -42,23 +53,23 @@
       />
     {/if}
     <form on:submit|preventDefault={saveCategory} class="flex-1">
-      <Input
+      <input
         bind:value={category.name}
         on:blur={saveCategory}
         placeholder="Category Name"
-        class="font-semibold text-primary border-none shadow-none text-base"
+        class="w-full bg-inherit p-1 text-base font-semibold text-primary"
       />
       <input type="hidden" />
     </form>
     {#if list.show_weights}
-      <div class="text-foreground/70">Weight</div>
+      <div class="text-center text-foreground/70">Weight</div>
     {/if}
 
-    <div class="text-foreground/70">Qty</div>
+    <div class="text-center text-foreground/70">Qty</div>
     <Button
       size="icon"
       variant="ghost"
-      class="w-6 h-6 rounded-full"
+      class="h-6 w-6 rounded-full"
       on:click={() => $deleteCategory.mutate(category)}
     >
       <X class="h-4 w-4" />
@@ -67,9 +78,11 @@
       <GripVertical class="h-4 w-4 text-muted-foreground" />
     </div>
   </div>
-  {#each category.items as categoryItem}
-    <CategoryItem {list} {categoryItem} />
-  {/each}
+  <div bind:this={categoryElement}>
+    {#each category.items as categoryItem}
+      <CategoryItem {list} {categoryItem} />
+    {/each}
+  </div>
 
   <div class="mt-2">
     <Button
@@ -78,7 +91,7 @@
       on:click={() => $createCategoryItem.mutate(category)}
       disabled={$createCategoryItem.isPending}
     >
-      <Plus class="h-4 w-4 mr-2" />
+      <Plus class="mr-2 h-4 w-4" />
       Add Item
     </Button>
   </div>

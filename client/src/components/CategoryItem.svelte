@@ -11,25 +11,40 @@
   import { Checkbox } from "./ui/checkbox";
   import { GripVertical, X } from "lucide-svelte";
   import ItemImage from "./ItemImage.svelte";
+  import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "./ui/select";
+  import {
+    createItemTemplateCols,
+    getItemWeightInUnit,
+    massUnits,
+  } from "@/lib/helpers";
 
   export let list: RecordModel;
   export let categoryItem: ExpandedCategoryItem;
+
+  console.log(categoryItem);
 
   const queryClient = useQueryClient();
 
   $: updateCategoryItem = useUpdateCategoryItem(queryClient);
   $: deleteCategoryItem = useDeleteCategoryItem(queryClient);
 
-  $: saveCategoryItem = () => $updateCategoryItem.mutate(categoryItem);
+  $: saveCategoryItem = () => {
+    console.log(categoryItem);
+    $updateCategoryItem.mutate(categoryItem);
+  };
+
+  $: selectedWeightUnit = { value: categoryItem.itemData.weight_unit };
 </script>
 
 <form
-  class="border-b text-sm p-1 grid gap-1 items-center hover:bg-muted/30 transition-colors"
-  style="grid-template-columns: {list.show_packed
-    ? 'auto'
-    : ''} {list.show_images ? 'auto' : ''} 1fr 3fr {list.show_weights
-    ? '6rem'
-    : ''} 4rem auto auto"
+  class="@container grid items-center gap-1 border-b p-2 text-sm transition-colors hover:bg-muted/30"
+  style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >
   {#if list.show_packed}
@@ -43,40 +58,62 @@
     <ItemImage item={categoryItem.itemData} />
   {/if}
 
-  <Input
-    bind:value={categoryItem.itemData.name}
-    on:blur={saveCategoryItem}
-    name="name"
-    placeholder="Name"
-    class="border-none shadow-none"
-  />
+  <div>
+    <input
+      bind:value={categoryItem.itemData.name}
+      on:blur={saveCategoryItem}
+      name="name"
+      placeholder="Name"
+      class="w-full min-w-0 bg-inherit p-1"
+    />
 
-  <Input
-    bind:value={categoryItem.itemData.description}
-    on:blur={saveCategoryItem}
-    name="description"
-    placeholder="Description"
-    class="text-muted-foreground border-none shadow-none"
-  />
+    <input
+      bind:value={categoryItem.itemData.description}
+      on:blur={saveCategoryItem}
+      name="description"
+      placeholder="Description"
+      class="w-full min-w-0 bg-inherit p-1 text-muted-foreground"
+    />
+  </div>
 
   {#if list.show_weights}
-    <Input
-      bind:value={categoryItem.itemData.weight_g}
-      on:blur={saveCategoryItem}
-      name="weight_g"
-      type="number"
-      min="0"
-      class="border-none shadow-none"
-    />
+    <div class="flex">
+      <input
+        value={getItemWeightInUnit(categoryItem)}
+        on:blur={saveCategoryItem}
+        on:change={saveCategoryItem}
+        name="weight_g"
+        type="number"
+        min="0"
+        class="min-w-0 bg-inherit text-right"
+      />
+      <select
+        on:change={(ev) => {
+          console.log(ev);
+          categoryItem.itemData.weight_unit = ev.target?.value ?? "g";
+          saveCategoryItem();
+        }}
+        class="bg-inherit"
+      >
+        {#each massUnits as massUnit}
+          <option
+            value={massUnit}
+            selected={categoryItem.itemData.weight_unit === massUnit}
+          >
+            {massUnit}
+          </option>
+        {/each}
+      </select>
+    </div>
   {/if}
 
-  <Input
+  <input
     bind:value={categoryItem.quantity}
     on:change={saveCategoryItem}
     name="quantity"
     type="number"
     min="1"
-    class="border-none shadow-none"
+    class="bg-inherit text-center"
   />
 
   <input type="hidden" />
@@ -89,7 +126,7 @@
   >
     <X class="h-4 w-4" />
   </Button>
-  <div>
+  <div class="handle">
     <GripVertical class="h-4 w-4 text-muted-foreground" />
   </div>
 </form>

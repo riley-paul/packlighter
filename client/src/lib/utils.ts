@@ -13,14 +13,14 @@ type FlyAndScaleParams = {
 };
 export const flyAndScale = (
   node: Element,
-  params: FlyAndScaleParams = { y: -8, x: 0, start: 0.95, duration: 150 }
+  params: FlyAndScaleParams = { y: -8, x: 0, start: 0.95, duration: 150 },
 ): TransitionConfig => {
   const style = getComputedStyle(node);
   const transform = style.transform === "none" ? "" : style.transform;
   const scaleConversion = (
     valueA: number,
     scaleA: [number, number],
-    scaleB: [number, number]
+    scaleB: [number, number],
   ) => {
     const [minA, maxA] = scaleA;
     const [minB, maxB] = scaleB;
@@ -29,7 +29,7 @@ export const flyAndScale = (
     return valueB;
   };
   const styleToString = (
-    style: Record<string, number | string | undefined>
+    style: Record<string, number | string | undefined>,
   ): string => {
     return Object.keys(style).reduce((str, key) => {
       if (style[key] === undefined) return str;

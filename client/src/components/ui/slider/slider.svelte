@@ -13,7 +13,7 @@
   bind:value
   class={cn(
     "relative flex w-full touch-none select-none items-center",
-    className
+    className,
   )}
   {...$$restProps}
 >

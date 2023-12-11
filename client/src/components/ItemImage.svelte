@@ -34,8 +34,8 @@
   <DialogTrigger>
     <div
       class={cn(
-        "h-24 p-0.5 aspect-square rounded-sm flex justify-center items-center",
-        item.image_url ? "bg-white" : "bg-muted"
+        "flex aspect-square h-20 items-center justify-center rounded-sm p-0.5",
+        item.image_url ? "bg-white" : "bg-muted",
       )}
     >
       {#if item.image_url}
@@ -57,13 +57,13 @@
 
       {#if url}
         <div
-          class="bg-white rounded-md p-2 flex items-center aspect-square justify-center"
+          class="flex aspect-square items-center justify-center rounded-md bg-white p-2"
         >
-          <img class="object-contain h-full w-full" src={url} alt={item.name} />
+          <img class="h-full w-full object-contain" src={url} alt={item.name} />
         </div>
       {:else}
         <div
-          class="rounded-md bg-muted w-full p-4 flex items-center justify-center text-muted-foreground"
+          class="flex w-full items-center justify-center rounded-md bg-muted p-4 text-muted-foreground"
         >
           No Image
         </div>
@@ -74,9 +74,9 @@
           disabled={$updateItem.isPending || url === item.image_url}
         >
           {#if $updateItem.isPending}
-            <Loader2 class="h-4 w-4 mr-2 animate-spin" />
+            <Loader2 class="mr-2 h-4 w-4 animate-spin" />
           {:else}
-            <Save class="h-4 w-4 mr-2" />
+            <Save class="mr-2 h-4 w-4" />
           {/if}
           Save
         </Button>

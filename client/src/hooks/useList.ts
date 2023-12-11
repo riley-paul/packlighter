@@ -23,7 +23,7 @@ const expandCategory = (record: RecordModel): ExpandedCategory => ({
       ?.map(expandItems)
       .sort(
         (a: ExpandedCategoryItem, b: ExpandedCategoryItem) =>
-          a.sort_order - b.sort_order
+          a.sort_order - b.sort_order,
       ) ?? [],
 });
 
