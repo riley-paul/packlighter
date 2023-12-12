@@ -9,15 +9,12 @@
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "./ui/dropdown-menu";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import type { RecordModel } from "pocketbase";
   import { useUpdateList } from "@/hooks/useList";
 
-  const queryClient = useQueryClient();
-
   export let list: RecordModel;
 
-  $: updateList = useUpdateList(queryClient);
+  $: updateList = useUpdateList();
   $: saveList = () => $updateList.mutate(list);
 </script>
 

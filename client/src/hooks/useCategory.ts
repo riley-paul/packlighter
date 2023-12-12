@@ -4,8 +4,9 @@ import type { RecordModel } from "pocketbase";
 import type { ExpandedCategory } from "./useList";
 import { isCategoryFullyPacked, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
+import { queryClient } from "@/lib/query";
 
-export const useUpdateCategory = (queryClient: QueryClient) =>
+export const useUpdateCategory = () =>
   createMutation({
     mutationFn: (category: RecordModel) =>
       pb.collection("list_categories").update(category.id, category),
@@ -15,7 +16,7 @@ export const useUpdateCategory = (queryClient: QueryClient) =>
       }),
   });
 
-export const useDeleteCategory = (queryClient: QueryClient) =>
+export const useDeleteCategory = () =>
   createMutation({
     mutationFn: (category: ExpandedCategory) =>
       Promise.all([
@@ -31,7 +32,7 @@ export const useDeleteCategory = (queryClient: QueryClient) =>
       }),
   });
 
-export const useCreateCategory = (queryClient: QueryClient) =>
+export const useCreateCategory = () =>
   createMutation({
     mutationFn: (listId: string) =>
       pb.collection("list_categories").create({ list: listId }),
@@ -41,7 +42,7 @@ export const useCreateCategory = (queryClient: QueryClient) =>
       }),
   });
 
-export const useToggleCategoryPacked = (queryClient: QueryClient) =>
+export const useToggleCategoryPacked = () =>
   createMutation({
     mutationFn: (category: ExpandedCategory) => {
       const isFullyPacked = isCategoryFullyPacked(category);

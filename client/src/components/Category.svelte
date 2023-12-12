@@ -4,16 +4,17 @@
     useToggleCategoryPacked,
     useUpdateCategory,
   } from "@/hooks/useCategory";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import type { RecordModel } from "pocketbase";
   import { Checkbox } from "./ui/checkbox";
   import { Button } from "./ui/button";
-  import { Input } from "./ui/input";
   import { GripVertical, Plus, X } from "lucide-svelte";
   import type { ExpandedCategory } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
-  import { useCreateCategoryItem } from "@/hooks/useCategoryItem";
+  import {
+    useCreateCategoryItem,
+    useUpdateCategoryItem,
+  } from "@/hooks/useCategoryItem";
 
   export let category: ExpandedCategory;
   export let list: RecordModel;
@@ -21,12 +22,11 @@
   import Sortable from "sortablejs";
   import { onMount } from "svelte";
 
-  const queryClient = useQueryClient();
-
-  $: updateCategory = useUpdateCategory(queryClient);
-  $: deleteCategory = useDeleteCategory(queryClient);
-  $: toggleCategoryPacked = useToggleCategoryPacked(queryClient);
-  $: createCategoryItem = useCreateCategoryItem(queryClient);
+  $: updateCategory = useUpdateCategory();
+  $: deleteCategory = useDeleteCategory();
+  $: toggleCategoryPacked = useToggleCategoryPacked();
+  $: createCategoryItem = useCreateCategoryItem();
+  $: updateCategoryItem = useUpdateCategoryItem();
 
   $: saveCategory = () => $updateCategory.mutate(category);
 
@@ -35,8 +35,12 @@
   onMount(() => {
     Sortable.create(categoryElement, {
       group: { name: "category", put: true },
-      animation: 200,
+      animation: 100,
       handle: ".handle",
+      ghostClass: "opacity-50",
+      onAdd: (ev) => {
+        $updateCategoryItem.mutate({ id: ev.item.id, category: ev.to.id });
+      },
     });
   });
 </script>
@@ -78,7 +82,7 @@
       <GripVertical class="text-muted-foreground h-4 w-4" />
     </div>
   </div>
-  <div bind:this={categoryElement}>
+  <div id={category.id} bind:this={categoryElement}>
     {#each category.items as categoryItem}
       <CategoryItem {list} {categoryItem} />
     {/each}

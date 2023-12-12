@@ -1,13 +1,10 @@
 import { pb } from "@/lib/pocketbase";
 import { currentList } from "@/lib/store";
-import {
-  QueryClient,
-  createMutation,
-  createQuery,
-} from "@tanstack/svelte-query";
+import { createMutation, createQuery } from "@tanstack/svelte-query";
 import type { ClientResponseError, RecordModel } from "pocketbase";
 import { push as goto } from "svelte-spa-router";
-import { get } from "svelte/store";
+
+import { queryClient } from "@/lib/query";
 
 export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
 const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
@@ -56,7 +53,7 @@ export const useLists = () =>
     queryFn: () => pb.collection("lists").getFullList({ sort: "-created" }),
   });
 
-export const useCreateList = (queryClient: QueryClient) =>
+export const useCreateList = () =>
   createMutation({
     mutationFn: () =>
       pb.collection("lists").create({ user: pb.authStore.model?.id }),
@@ -66,7 +63,7 @@ export const useCreateList = (queryClient: QueryClient) =>
     },
   });
 
-export const useRemoveList = (queryClient: QueryClient) =>
+export const useRemoveList = () =>
   createMutation({
     mutationFn: (id: string) => pb.collection("lists").delete(id),
     onSuccess: (data, variables) =>
@@ -76,7 +73,7 @@ export const useRemoveList = (queryClient: QueryClient) =>
       }),
   });
 
-export const useUpdateList = (queryClient: QueryClient) =>
+export const useUpdateList = () =>
   createMutation({
     mutationFn: (list: RecordModel) =>
       pb.collection("lists").update(list.id, list),

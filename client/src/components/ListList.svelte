@@ -5,13 +5,10 @@
 
   import { link, location } from "svelte-spa-router";
   import { useCreateList, useLists, useRemoveList } from "@/hooks/useList";
-  import { useQueryClient } from "@tanstack/svelte-query";
-
-  const queryClient = useQueryClient();
 
   $: lists = useLists();
-  $: createList = useCreateList(queryClient);
-  $: removeList = useRemoveList(queryClient);
+  $: createList = useCreateList();
+  $: removeList = useRemoveList();
 </script>
 
 <div class="flex items-center justify-between">
@@ -24,10 +21,10 @@
   {#each $lists.data ?? [] as list}
     <div
       class={cn(
-        "flex h-8 w-full items-center justify-between pl-4 text-muted-foreground hover:border-l-4 hover:pl-3",
+        "text-muted-foreground flex h-8 w-full items-center justify-between pl-4 hover:border-l-4 hover:pl-3",
         !list.name && "italic",
         $location.includes(list.id) &&
-          "border-l-4 border-primary pl-3 text-foreground",
+          "border-primary text-foreground border-l-4 pl-3",
       )}
     >
       <a use:link href={`/${list.id}`} class="flex-1">

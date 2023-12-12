@@ -10,9 +10,8 @@
     DialogTrigger,
   } from "./ui/dialog";
   import { Loader2, Save } from "lucide-svelte";
-  import { Button, buttonVariants } from "./ui/button";
+  import { Button } from "./ui/button";
   import { cn } from "@/lib/utils";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import { useUpdateItem } from "@/hooks/useItem";
   import { Input } from "./ui/input";
 
@@ -21,8 +20,7 @@
   let url = item.image_url;
   let isOpen = false;
 
-  const queryClient = useQueryClient();
-  const updateItem = useUpdateItem(queryClient);
+  const updateItem = useUpdateItem();
 
   $: saveItem = () => {
     $updateItem.mutate({ ...item, image_url: url });
@@ -63,7 +61,7 @@
         </div>
       {:else}
         <div
-          class="flex w-full items-center justify-center rounded-md bg-muted p-4 text-muted-foreground"
+          class="bg-muted text-muted-foreground flex w-full items-center justify-center rounded-md p-4"
         >
           No Image
         </div>

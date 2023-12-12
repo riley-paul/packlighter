@@ -22,10 +22,8 @@
 
   console.log(categoryItem);
 
-  const queryClient = useQueryClient();
-
-  $: updateCategoryItem = useUpdateCategoryItem(queryClient);
-  $: deleteCategoryItem = useDeleteCategoryItem(queryClient);
+  $: updateCategoryItem = useUpdateCategoryItem();
+  $: deleteCategoryItem = useDeleteCategoryItem();
 
   let displayedWeight = getWeightInUnit(
     categoryItem.itemData.weight_g,
@@ -42,7 +40,8 @@
 </script>
 
 <form
-  class="@container hover:bg-muted/30 grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+  id={categoryItem.id}
+  class="@container hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >

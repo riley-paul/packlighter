@@ -1,16 +1,24 @@
-import { createMutation, type QueryClient } from "@tanstack/svelte-query";
+import { createMutation } from "@tanstack/svelte-query";
 import type { ExpandedCategoryItem } from "./useList";
 import { pb } from "@/lib/pocketbase";
 import { isItemUntouched } from "@/lib/helpers";
 import type { RecordModel } from "pocketbase";
 import { currentList } from "@/lib/store";
 
-export const useUpdateCategoryItem = (queryClient: QueryClient) =>
+import { queryClient } from "@/lib/query";
+
+export const useUpdateCategoryItem = () =>
   createMutation({
-    mutationFn: (categoryItem: ExpandedCategoryItem) =>
+    mutationFn: (categoryItem: Partial<ExpandedCategoryItem>) =>
       Promise.all([
-        pb.collection("categories_items").update(categoryItem.id, categoryItem),
-        pb.collection("items").update(categoryItem.item, categoryItem.itemData),
+        pb
+          .collection("categories_items")
+          .update(categoryItem.id || "", categoryItem),
+        categoryItem.item
+          ? pb
+              .collection("items")
+              .update(categoryItem.item, categoryItem.itemData)
+          : Promise.resolve(),
       ]),
     onSuccess: () =>
       currentList.subscribe((listId) => {
@@ -19,7 +27,7 @@ export const useUpdateCategoryItem = (queryClient: QueryClient) =>
       }),
   });
 
-export const useDeleteCategoryItem = (queryClient: QueryClient) =>
+export const useDeleteCategoryItem = () =>
   createMutation({
     mutationFn: (categoryItem: ExpandedCategoryItem) =>
       Promise.all([
@@ -35,7 +43,7 @@ export const useDeleteCategoryItem = (queryClient: QueryClient) =>
       }),
   });
 
-export const useCreateCategoryItem = (queryClient: QueryClient) =>
+export const useCreateCategoryItem = () =>
   createMutation({
     mutationFn: (category: RecordModel) =>
       pb

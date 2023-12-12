@@ -3,14 +3,11 @@
   import type { RecordModel } from "pocketbase";
   import { Button } from "./ui/button";
   import { useDeleteItem } from "@/hooks/useItem";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import { cn } from "@/lib/utils";
 
   export let item: RecordModel;
 
-  const queryClient = useQueryClient();
-
-  const deleteItem = useDeleteItem(queryClient);
+  const deleteItem = useDeleteItem();
 </script>
 
 <div

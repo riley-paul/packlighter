@@ -1,11 +1,8 @@
 import { pb } from "@/lib/pocketbase";
 import { currentList } from "@/lib/store";
-import {
-  createMutation,
-  createQuery,
-  type QueryClient,
-} from "@tanstack/svelte-query";
+import { createMutation, createQuery } from "@tanstack/svelte-query";
 import type { ClientResponseError, RecordModel } from "pocketbase";
+import { queryClient } from "@/lib/query";
 
 export const useItems = () =>
   createQuery<RecordModel[], ClientResponseError>({
@@ -13,7 +10,7 @@ export const useItems = () =>
     queryFn: () => pb.collection("items").getFullList({ sort: "-created" }),
   });
 
-export const useUpdateItem = (queryClient: QueryClient) =>
+export const useUpdateItem = () =>
   createMutation({
     mutationFn: (item: RecordModel) =>
       pb.collection("items").update(item.id, item),
@@ -24,7 +21,7 @@ export const useUpdateItem = (queryClient: QueryClient) =>
       }),
   });
 
-export const useDeleteItem = (queryClient: QueryClient) =>
+export const useDeleteItem = () =>
   createMutation({
     mutationFn: (item: RecordModel) => pb.collection("items").delete(item.id),
     onSuccess: () =>

@@ -2,15 +2,12 @@
   import type { RecordModel } from "pocketbase";
   import { Input } from "./ui/input";
   import { Textarea } from "./ui/textarea";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import { useUpdateList } from "@/hooks/useList";
   import ListSettings from "./ListSettings.svelte";
 
-  const queryClient = useQueryClient();
-
   export let list: RecordModel;
 
-  $: updateList = useUpdateList(queryClient);
+  $: updateList = useUpdateList();
   $: saveList = () => $updateList.mutate(list);
 </script>
 
