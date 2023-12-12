@@ -1,4 +1,7 @@
 import { fontFamily } from "tailwindcss/defaultTheme";
+
+import containerQueries from "@tailwindcss/container-queries";
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   darkMode: ["class"],
@@ -58,5 +61,6 @@ const config = {
       },
     },
   },
+  plugins: [containerQueries],
 };
 export default config;

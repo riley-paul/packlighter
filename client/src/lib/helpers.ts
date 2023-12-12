@@ -11,25 +11,22 @@ export const isItemUntouched = (item: ExpandedCategoryItem) =>
   item.quantity === 1 &&
   !item.packed;
 
-export const massUnits = ["g", "kg", "oz", "lb"];
+export const massUnits = ["g", "kg", "oz", "lb"] as const;
+type MassUnit = (typeof massUnits)[number];
 
-export const getItemWeightInGrams = (item: RecordModel) => {
-  const { weight, weight_unit } = item;
-  if (!weight) return 0;
-  if (weight_unit === "g") return weight;
-  if (weight_unit === "kg") return weight * 1000;
-  if (weight_unit === "oz") return weight * 28.3495;
-  if (weight_unit === "lb") return weight * 453.592;
+export const getWeightInGrams = (weight: number, unit: MassUnit) => {
+  if (unit === "g") return weight;
+  if (unit === "kg") return weight * 1000;
+  if (unit === "oz") return weight * 28.3495;
+  if (unit === "lb") return weight * 453.592;
   return 0;
 };
 
-export const getItemWeightInUnit = (item: RecordModel) => {
-  const { weight_g, weight_unit } = item;
-  if (!weight_g) return 0;
-  if (weight_unit === "g") return weight_g;
-  if (weight_unit === "kg") return weight_g / 1000;
-  if (weight_unit === "oz") return weight_g / 28.3495;
-  if (weight_unit === "lb") return weight_g / 453.592;
+export const getWeightInUnit = (weight: number, unit: MassUnit) => {
+  if (unit === "g") return weight;
+  if (unit === "kg") return weight / 1000;
+  if (unit === "oz") return weight / 28.3495;
+  if (unit === "lb") return weight / 453.592;
   return 0;
 };
 

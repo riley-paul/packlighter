@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { RecordModel } from "pocketbase";
   import { Button } from "./ui/button";
-  import { Input } from "./ui/input";
   import type { ExpandedCategoryItem } from "@/hooks/useList";
   import { useQueryClient } from "@tanstack/svelte-query";
   import {
@@ -12,15 +11,9 @@
   import { GripVertical, X } from "lucide-svelte";
   import ItemImage from "./ItemImage.svelte";
   import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "./ui/select";
-  import {
     createItemTemplateCols,
-    getItemWeightInUnit,
+    getWeightInGrams,
+    getWeightInUnit,
     massUnits,
   } from "@/lib/helpers";
 
@@ -34,16 +27,22 @@
   $: updateCategoryItem = useUpdateCategoryItem(queryClient);
   $: deleteCategoryItem = useDeleteCategoryItem(queryClient);
 
+  let displayedWeight = getWeightInUnit(
+    categoryItem.itemData.weight_g,
+    categoryItem.itemData.weight_unit,
+  );
+
   $: saveCategoryItem = () => {
-    console.log(categoryItem);
+    categoryItem.itemData.weight_g = getWeightInGrams(
+      displayedWeight,
+      categoryItem.itemData.weight_unit,
+    );
     $updateCategoryItem.mutate(categoryItem);
   };
-
-  $: selectedWeightUnit = { value: categoryItem.itemData.weight_unit };
 </script>
 
 <form
-  class="@container grid items-center gap-1 border-b p-2 text-sm transition-colors hover:bg-muted/30"
+  class="@container hover:bg-muted/30 grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >
@@ -58,29 +57,29 @@
     <ItemImage item={categoryItem.itemData} />
   {/if}
 
-  <div>
+  <div class="@lg:grid-cols-[1fr_2fr] grid grid-cols-1">
     <input
       bind:value={categoryItem.itemData.name}
       on:blur={saveCategoryItem}
       name="name"
       placeholder="Name"
-      class="w-full min-w-0 bg-inherit p-1"
+      class="w-full min-w-0 bg-inherit px-1 py-0.5"
     />
 
-    <input
+    <textarea
       bind:value={categoryItem.itemData.description}
       on:blur={saveCategoryItem}
+      rows={list.show_images ? 2 : 1}
       name="description"
       placeholder="Description"
-      class="w-full min-w-0 bg-inherit p-1 text-muted-foreground"
+      class="text-muted-foreground w-full min-w-0 resize-none overflow-hidden bg-inherit px-1 py-0.5"
     />
   </div>
 
   {#if list.show_weights}
     <div class="flex">
       <input
-        value={getItemWeightInUnit(categoryItem)}
-        on:blur={saveCategoryItem}
+        bind:value={displayedWeight}
         on:change={saveCategoryItem}
         name="weight_g"
         type="number"
@@ -88,18 +87,12 @@
         class="min-w-0 bg-inherit text-right"
       />
       <select
-        on:change={(ev) => {
-          console.log(ev);
-          categoryItem.itemData.weight_unit = ev.target?.value ?? "g";
-          saveCategoryItem();
-        }}
+        bind:value={categoryItem.itemData.weight_unit}
+        on:change={saveCategoryItem}
         class="bg-inherit"
       >
         {#each massUnits as massUnit}
-          <option
-            value={massUnit}
-            selected={categoryItem.itemData.weight_unit === massUnit}
-          >
+          <option value={massUnit}>
             {massUnit}
           </option>
         {/each}
@@ -127,6 +120,6 @@
     <X class="h-4 w-4" />
   </Button>
   <div class="handle">
-    <GripVertical class="h-4 w-4 text-muted-foreground" />
+    <GripVertical class="text-muted-foreground h-4 w-4" />
   </div>
 </form>

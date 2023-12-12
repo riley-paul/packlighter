@@ -43,7 +43,7 @@
 
 <article>
   <div
-    class="grid items-center gap-2 border-b-2 p-1 text-sm font-semibold"
+    class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"
   >
     {#if list.show_packed}
@@ -57,15 +57,15 @@
         bind:value={category.name}
         on:blur={saveCategory}
         placeholder="Category Name"
-        class="w-full bg-inherit p-1 text-base font-semibold text-primary"
+        class="text-primary w-full bg-inherit px-1 py-0.5 text-base font-semibold"
       />
       <input type="hidden" />
     </form>
     {#if list.show_weights}
-      <div class="text-center text-foreground/70">Weight</div>
+      <div class="text-foreground/70 text-center">Weight</div>
     {/if}
 
-    <div class="text-center text-foreground/70">Qty</div>
+    <div class="text-foreground/70 text-center">Qty</div>
     <Button
       size="icon"
       variant="ghost"
@@ -75,7 +75,7 @@
       <X class="h-4 w-4" />
     </Button>
     <div>
-      <GripVertical class="h-4 w-4 text-muted-foreground" />
+      <GripVertical class="text-muted-foreground h-4 w-4" />
     </div>
   </div>
   <div bind:this={categoryElement}>
