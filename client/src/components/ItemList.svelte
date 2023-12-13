@@ -16,18 +16,18 @@
     ) ?? [];
 </script>
 
-<div class="border-b p-2">
-  <div class="mb-2 flex items-center justify-between gap-2">
+<div>
+  <div class="mb-2 flex items-center justify-between gap-4">
     <h2 class="text-sm font-medium">Gear</h2>
+    <Input
+      type="search"
+      placeholder="Search..."
+      class="bg-card"
+      bind:value={searchTerm}
+    />
   </div>
-  <Input
-    type="search"
-    placeholder="Search..."
-    class="bg-card"
-    bind:value={searchTerm}
-  />
 </div>
-<div class="flex-1 overflow-auto">
+<div class="flex-1 overflow-auto border-y">
   {#if $items.isError}
     <p>Error: {$items.error}</p>
   {:else if $items.isLoading}

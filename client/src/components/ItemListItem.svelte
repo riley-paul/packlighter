@@ -11,7 +11,7 @@
 </script>
 
 <div
-  class="hover:bg-card flex items-center gap-2 p-2 pl-0 text-sm transition-colors"
+  class="hover:bg-card flex items-center gap-2 p-2 pr-4 pl-0 text-sm transition-colors"
 >
   <div>
     <GripVertical class="text-muted-foreground h-4 w-4" />
@@ -25,7 +25,7 @@
   <Button
     size="icon"
     variant="ghost"
-    class="h-6 w-6 rounded-full"
+    class="hover:text-foreground text-muted-foreground h-6 w-6 rounded-full"
     on:click={() => $deleteItem.mutate(item.id)}
   >
     <X class="h-4 w-4" />

@@ -24,21 +24,16 @@
       </div>
     </div>
   </header>
-  <main class="flex-1 overflow-hidden">
-    <div class="container grid grid-cols-[1fr_300px] overflow-hidden">
-      <div class="overflow-auto py-6 pr-4">
-        <slot />
-      </div>
-      <aside class="flex flex-col overflow-hidden border-l-2 py-6 pl-4">
-        <ListList />
-        <ItemList />
-      </aside>
+  <main
+    class="container grid h-full flex-1 grid-cols-[1fr_300px] overflow-hidden"
+  >
+    <div class="flex-1 overflow-auto py-6 pr-4">
+      <slot />
     </div>
+    <aside class="flex w-[300px] flex-col overflow-auto border-l-2 py-4 pl-4">
+      <ListList />
+      <br />
+      <ItemList />
+    </aside>
   </main>
 </div>
-
-<style>
-  main {
-    scrollbar-gutter: stable;
-  }
-</style>

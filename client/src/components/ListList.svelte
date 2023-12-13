@@ -9,21 +9,15 @@
   $: lists = useLists();
   $: createList = useCreateList();
   $: removeList = useRemoveList();
-
-  $: isOverflowing = ($lists.data?.length ?? 0 * 32) > 200;
 </script>
 
-<div class="flex items-center justify-between">
+<div class="mb-2 flex items-center justify-between">
   <h2 class="text-sm font-medium">Lists</h2>
-  <Button size="sm" variant="ghost" on:click={() => $createList.mutate()}>
+  <Button size="sm" variant="linkMuted" on:click={() => $createList.mutate()}>
     <Plus class="mr-2 w-4" /> New List
   </Button>
 </div>
-<div
-  id="list-container"
-  class="max-h-[200px] overflow-y-scroll pr-4"
-  class:border-b-2={isOverflowing}
->
+<div id="list-container" class="max-h-[200px] overflow-y-scroll border-y pr-4">
   {#each $lists.data ?? [] as list}
     <div
       class={cn(
