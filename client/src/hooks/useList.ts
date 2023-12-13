@@ -84,7 +84,7 @@ export const useLists = () =>
 export const useCreateList = () =>
   createMutation({
     mutationFn: () =>
-      pb.collection("lists").create({ user: pb.authStore.model?.id }),
+      pb.collection(Collections.Lists).create({ user: pb.authStore.model?.id }),
     onSuccess: (data) => {
       goto(`/${data.id}`);
       queryClient.invalidateQueries({ queryKey: ["lists"] });
@@ -93,7 +93,7 @@ export const useCreateList = () =>
 
 export const useRemoveList = () =>
   createMutation({
-    mutationFn: (id: string) => pb.collection("lists").delete(id),
+    mutationFn: (id: string) => pb.collection(Collections.Lists).delete(id),
     onSuccess: (_, variables) =>
       currentList.subscribe((listId) => {
         if (listId === variables) goto("/");
@@ -106,7 +106,7 @@ export const useUpdateList = () =>
     mutationFn: (variables: {
       id: string;
       list: Partial<ListWithCategories>;
-    }) => pb.collection("lists").update(variables.id, variables.list),
+    }) => pb.collection(Collections.Lists).update(variables.id, variables.list),
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });

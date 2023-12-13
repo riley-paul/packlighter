@@ -19,10 +19,6 @@
 <div class="border-b p-2">
   <div class="mb-2 flex items-center justify-between gap-2">
     <h2 class="text-sm font-medium">Gear</h2>
-    <Button size="sm" variant="ghost">
-      <Plus class="mr-2 h-4 w-4" />
-      New Gear
-    </Button>
   </div>
   <Input
     type="search"

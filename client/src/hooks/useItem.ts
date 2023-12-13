@@ -3,10 +3,10 @@ import { currentList } from "@/lib/store";
 import { createMutation, createQuery } from "@tanstack/svelte-query";
 import type { ClientResponseError, RecordModel } from "pocketbase";
 import { queryClient } from "@/lib/query";
-import { Collections, type ItemsRecord } from "@/lib/types";
+import { Collections, type ItemsRecord, type ItemsResponse } from "@/lib/types";
 
 export const useItems = () =>
-  createQuery<RecordModel[], ClientResponseError>({
+  createQuery<ItemsResponse[], ClientResponseError>({
     queryKey: ["items"],
     queryFn: () =>
       pb.collection(Collections.Items).getFullList({ sort: "-created" }),

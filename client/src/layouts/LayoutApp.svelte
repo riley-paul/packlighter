@@ -3,59 +3,38 @@
   import ItemList from "@/components/ItemList.svelte";
   import ListList from "@/components/ListList.svelte";
   import ModeToggle from "@/components/ModeToggle.svelte";
-  import { buttonVariants } from "@/components/ui/button";
-  import Toggle from "@/components/ui/toggle/toggle.svelte";
-  import { cn } from "@/lib/utils";
-  import { Feather, MoreVertical } from "lucide-svelte";
+  import { Feather } from "lucide-svelte";
   import { link } from "svelte-spa-router";
 
   let isSidebarOpen = true;
 </script>
 
-<div class="flex h-screen overflow-hidden">
-  <aside
-    class={cn(
-      "w-0 border-r shadow-inner transition-all",
-      isSidebarOpen && "w-[300px]",
-      "flex h-full flex-col overflow-hidden",
-    )}
-  >
-    <a href="/" use:link class="flex items-center">
-      <Feather class="text-primary mr-2 w-6" />
-      <h1 class="text-lg font-medium">PackLighter</h1>
-    </a>
-    <ListList />
-    <ItemList />
-  </aside>
-  <div class="flex flex-1 flex-col overflow-hidden">
-    <header class="bg-card z-50 flex h-14 w-full items-center border-b shadow">
-      <div class="container flex justify-between">
-        <div class="flex items-center gap-4">
-          <Toggle
-            aria-label="Toggle sidebar"
-            aria-checked={isSidebarOpen}
-            on:click={() => (isSidebarOpen = !isSidebarOpen)}
-            class={cn(
-              buttonVariants({ variant: "ghost", size: "icon" }),
-              "p-0",
-            )}
-          >
-            <MoreVertical class="h-4 w-4" />
-          </Toggle>
-          <slot name="title" />
-        </div>
-        <div class="flex items-center gap-4">
-          <AccountEditor />
-          <ModeToggle />
-        </div>
+<div class="flex h-screen flex-col overflow-hidden">
+  <header class="bg-card z-50 flex h-14 w-full items-center border-b shadow">
+    <div class="container flex justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" use:link class="flex items-center">
+          <Feather class="text-primary mr-2 w-6" />
+          <h1 class="text-lg font-medium">PackLighter</h1>
+        </a>
       </div>
-    </header>
-    <main class="flex-1 overflow-auto py-6">
-      <div class="container">
+      <div class="flex items-center gap-4">
+        <AccountEditor />
+        <ModeToggle />
+      </div>
+    </div>
+  </header>
+  <main class="flex-1 overflow-hidden">
+    <div class="container grid grid-cols-[1fr_300px] overflow-hidden">
+      <div class="overflow-auto py-6 pr-4">
         <slot />
       </div>
-    </main>
-  </div>
+      <aside class="flex flex-col overflow-hidden border-l-2 py-6 pl-4">
+        <ListList />
+        <ItemList />
+      </aside>
+    </div>
+  </main>
 </div>
 
 <style>

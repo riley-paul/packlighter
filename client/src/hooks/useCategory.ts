@@ -5,13 +5,13 @@ import type { ExpandedCategory } from "./useList";
 import { isCategoryFullyPacked, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
 import { queryClient } from "@/lib/query";
-import { Collections, type ListCategoriesRecord } from "@/lib/types";
+import { Collections } from "@/lib/types";
 
 export const useUpdateCategory = () =>
   createMutation({
     mutationFn: (variables: {
       id: string;
-      category: Partial<ListCategoriesRecord>;
+      category: Partial<ExpandedCategory>;
     }) =>
       pb
         .collection(Collections.ListCategories)

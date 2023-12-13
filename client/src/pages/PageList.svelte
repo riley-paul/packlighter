@@ -3,7 +3,7 @@
   import LayoutApp from "@/layouts/LayoutApp.svelte";
   import { Button } from "@/components/ui/button";
   import { Loader2, Plus } from "lucide-svelte";
-  import { useList, useUpdateList } from "@/hooks/useList";
+  import { useList } from "@/hooks/useList";
   import ListHeader from "@/components/ListHeader.svelte";
   import Category from "@/components/Category.svelte";
   import { useCreateCategory } from "@/hooks/useCategory";
@@ -12,18 +12,10 @@
   export let params = { listId: "" };
 
   $: list = useList(params.listId);
-  $: updateList = useUpdateList();
   $: createCategory = useCreateCategory();
-
-  // let name = $list.data?.name ?? "";
 </script>
 
 <LayoutApp>
-  <span slot="title">
-    {#if $list.data}
-      <Input bind:value={$list.data.name} />
-    {/if}
-  </span>
   <Card class="@container h-fit flex-1 p-6">
     {#if $list.isError}
       <p>Error: {$list.error}</p>

@@ -9,6 +9,8 @@
   $: lists = useLists();
   $: createList = useCreateList();
   $: removeList = useRemoveList();
+
+  $: isOverflowing = ($lists.data?.length ?? 0 * 32) > 200;
 </script>
 
 <div class="flex items-center justify-between">
@@ -17,7 +19,11 @@
     <Plus class="mr-2 w-4" /> New List
   </Button>
 </div>
-<div class="overflow-auto">
+<div
+  id="list-container"
+  class="max-h-[200px] overflow-y-scroll pr-4"
+  class:border-b-2={isOverflowing}
+>
   {#each $lists.data ?? [] as list}
     <div
       class={cn(
@@ -41,3 +47,9 @@
     </div>
   {/each}
 </div>
+
+<style>
+  #list-container {
+    scrollbar-gutter: stable;
+  }
+</style>
