@@ -8,7 +8,7 @@
   import { Checkbox } from "./ui/checkbox";
   import { Button } from "./ui/button";
   import { GripVertical, Plus, X } from "lucide-svelte";
-  import type { ExpandedCategory } from "@/hooks/useList";
+  import type { ExpandedCategory, ListWithCategories } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
   import {
@@ -17,7 +17,7 @@
   } from "@/hooks/useCategoryItem";
 
   export let category: ExpandedCategory;
-  export let list: RecordModel;
+  export let list: ListWithCategories;
 
   import Sortable from "sortablejs";
   import { onMount } from "svelte";
@@ -26,7 +26,7 @@
   $: deleteCategory = useDeleteCategory();
   $: toggleCategoryPacked = useToggleCategoryPacked();
   $: createCategoryItem = useCreateCategoryItem();
-  $: updateCategoryItem = useUpdateCategoryItem();
+  // $: moveCategoryItem = useMoveCategoryItem();
 
   $: saveCategory = () => $updateCategory.mutate(category);
 
@@ -38,9 +38,18 @@
       animation: 100,
       handle: ".handle",
       ghostClass: "opacity-50",
-      onAdd: (ev) => {
-        $updateCategoryItem.mutate({ id: ev.item.id, category: ev.to.id });
-      },
+      // onAdd: (ev) => {
+      //   $moveCategoryItem.mutate({ id: ev.item.id, newCategory: ev.to.id });
+      //   //remove category from old category
+      //   list.categories.forEach((cat) => {
+      //     cat.items = cat.items.filter((item) => item.id !== ev.item.id);
+      //   });
+      //   //add category to new category
+      //   const categoryItem = list.categories.flatMap((cat) =>
+      //     cat.items.filter((item) => item.id === ev.item.id),
+      //   )[0];
+      //   console.log(categoryItem);
+      // },
     });
   });
 </script>

@@ -20,8 +20,6 @@
   export let list: RecordModel;
   export let categoryItem: ExpandedCategoryItem;
 
-  console.log(categoryItem);
-
   $: updateCategoryItem = useUpdateCategoryItem();
   $: deleteCategoryItem = useDeleteCategoryItem();
 

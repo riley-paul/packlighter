@@ -4,18 +4,14 @@
   import { Button } from "@/components/ui/button";
   import { Plus } from "lucide-svelte";
   import { useList } from "@/hooks/useList";
-  import { pb } from "@/lib/pocketbase";
   import ListHeader from "@/components/ListHeader.svelte";
   import Category from "@/components/Category.svelte";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import { useCreateCategory } from "@/hooks/useCategory";
-
-  const queryClient = useQueryClient();
 
   export let params = { listId: "" };
 
   $: list = useList(params.listId);
-  $: createCategory = useCreateCategory(queryClient);
+  $: createCategory = useCreateCategory();
 </script>
 
 <LayoutApp>
@@ -28,7 +24,7 @@
       <div class="flex flex-col gap-4">
         <ListHeader list={$list.data} />
         {#each $list.data.categories as category (category.id)}
-          <Category {category} list={$list.data} />
+          <Category {category} bind:list={$list.data} />
         {/each}
         <div>
           <Button
