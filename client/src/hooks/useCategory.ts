@@ -5,11 +5,17 @@ import type { ExpandedCategory } from "./useList";
 import { isCategoryFullyPacked, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
 import { queryClient } from "@/lib/query";
+import { Collections, type ListCategoriesRecord } from "@/lib/types";
 
 export const useUpdateCategory = () =>
   createMutation({
-    mutationFn: (category: RecordModel) =>
-      pb.collection("list_categories").update(category.id, category),
+    mutationFn: (variables: {
+      id: string;
+      category: Partial<ListCategoriesRecord>;
+    }) =>
+      pb
+        .collection(Collections.ListCategories)
+        .update(variables.id, variables.category),
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });

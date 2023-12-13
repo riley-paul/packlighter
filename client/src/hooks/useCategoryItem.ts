@@ -6,20 +6,25 @@ import type { RecordModel } from "pocketbase";
 import { currentList } from "@/lib/store";
 
 import { queryClient } from "@/lib/query";
+import { Collections } from "@/lib/types";
 
 export const useUpdateCategoryItem = () =>
   createMutation({
-    mutationFn: (categoryItem: Partial<ExpandedCategoryItem>) =>
-      Promise.all([
-        pb
-          .collection("categories_items")
-          .update(categoryItem.id || "", categoryItem),
-        categoryItem.item
-          ? pb
-              .collection("items")
-              .update(categoryItem.item, categoryItem.itemData)
-          : Promise.resolve(),
-      ]),
+    mutationFn: (variables: {
+      id: string;
+      categoryItem: Partial<ExpandedCategoryItem>;
+    }) => {
+      const { categoryItem } = variables;
+      const p1 = pb
+        .collection(Collections.CategoriesItems)
+        .update(variables.id || "", variables.categoryItem);
+      const p2 = categoryItem.item
+        ? pb
+            .collection(Collections.Items)
+            .update(categoryItem.item, categoryItem.itemData)
+        : Promise.resolve();
+      return Promise.all([p1, p2]);
+    },
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });
@@ -31,9 +36,9 @@ export const useDeleteCategoryItem = () =>
   createMutation({
     mutationFn: (categoryItem: ExpandedCategoryItem) =>
       Promise.all([
-        pb.collection("categories_items").delete(categoryItem.id),
+        pb.collection(Collections.CategoriesItems).delete(categoryItem.id),
         isItemUntouched(categoryItem)
-          ? pb.collection("items").delete(categoryItem.itemData.id)
+          ? pb.collection(Collections.Items).delete(categoryItem.itemData.id)
           : Promise.resolve(),
       ]),
     onSuccess: () =>
@@ -47,11 +52,11 @@ export const useCreateCategoryItem = () =>
   createMutation({
     mutationFn: (category: RecordModel) =>
       pb
-        .collection("items")
+        .collection(Collections.Items)
         .create({ user: pb.authStore.model?.id })
         .then((item) =>
           pb
-            .collection("categories_items")
+            .collection(Collections.CategoriesItems)
             .create({ category: category.id, item: item.id, quantity: 1 }),
         ),
     onSuccess: () =>

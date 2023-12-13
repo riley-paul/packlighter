@@ -15,15 +15,18 @@
   $: updateList = useUpdateList();
   $: createCategory = useCreateCategory();
 
-  let name = $list.data?.name ?? "";
+  $: console.log($list.data);
+
+  // let name = $list.data?.name ?? "";
 </script>
 
-<LayoutApp>
+{JSON.stringify($list.data, undefined, 2)}
+
+<!-- <LayoutApp>
   {#if $list.data}
     <Input
       slot="title"
       bind:value={$list.data.name}
-      on:blur={() => $updateList.mutate($list.data)}
     />
   {/if}
   <Card class="@container h-fit flex-1 p-6">
@@ -53,4 +56,4 @@
       </div>
     {/if}
   </Card>
-</LayoutApp>
+</LayoutApp> -->

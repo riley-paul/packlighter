@@ -6,34 +6,48 @@ import { push as goto } from "svelte-spa-router";
 
 import { queryClient } from "@/lib/query";
 import {
-  Collections,
   type CategoriesItemsResponse,
   type ListCategoriesRecord,
   type ListCategoriesResponse,
   type ListsRecord,
-  type CategoriesItemsRecord,
+  type ItemsResponse,
+  Collections,
 } from "@/lib/types";
 
-export type ExpandedCategoryItem = CategoriesItemsRecord & {
-  itemData: RecordModel;
-};
-const expandItems = (record: ExpandedCategoryItem): ExpandedCategoryItem => ({
-  ...record,
-  itemData: record.expand?.item ?? {},
-});
+const CATEGORY_ITEM_EXPAND_KEY = "categories_items(category)";
 
-export type ExpandedCategory = ListCategoriesRecord & {
+type CategoriesItemsExpandItem = CategoriesItemsResponse<{
+  item: ItemsResponse;
+}>;
+
+type CategoriesExpandCategoriesItems = ListCategoriesResponse<{
+  [CATEGORY_ITEM_EXPAND_KEY]: CategoriesItemsExpandItem[];
+}>;
+
+export type ExpandedCategoryItem = CategoriesItemsExpandItem & {
+  itemData: ItemsResponse;
+};
+
+export type ExpandedCategory = CategoriesExpandCategoriesItems & {
   items: ExpandedCategoryItem[];
 };
-const expandCategory = (record: ListCategoriesRecord): ExpandedCategory => ({
+
+const expandItems = (
+  record: CategoriesItemsExpandItem,
+): ExpandedCategoryItem => ({
+  ...record,
+  itemData: record.expand?.item ?? ({} as ItemsResponse),
+});
+
+const expandCategory = (
+  record: CategoriesExpandCategoriesItems,
+): ExpandedCategory => ({
   ...record,
   items:
-    record.expand?.["categories_items(category)"]
-      ?.map(expandItems)
-      .sort(
-        (a: ExpandedCategoryItem, b: ExpandedCategoryItem) =>
-          a.sort_order - b.sort_order,
-      ) ?? [],
+    record.expand?.[CATEGORY_ITEM_EXPAND_KEY]?.map(expandItems).sort(
+      (a: ExpandedCategoryItem, b: ExpandedCategoryItem) =>
+        a.sort_order - b.sort_order,
+    ) ?? [],
 });
 
 export type ListWithCategories = ListsRecord & {
@@ -41,7 +55,7 @@ export type ListWithCategories = ListsRecord & {
 };
 
 export const useList = (listId: string) =>
-  createQuery<ListWithCategories, ClientResponseError>({
+  createQuery({
     queryKey: ["list", listId],
     queryFn: async () => {
       const [list, categories] = await Promise.all([
@@ -50,11 +64,7 @@ export const useList = (listId: string) =>
           .getOne(listId ?? "", { requestKey: null }),
         pb
           .collection(Collections.ListCategories)
-          .getFullList<
-            ListCategoriesResponse<{
-              "categories_items(category)": CategoriesItemsResponse;
-            }>
-          >({
+          .getFullList<CategoriesExpandCategoriesItems>({
             filter: `list = "${listId}"`,
             sort: "created",
             expand: "categories_items(category).item",
@@ -85,7 +95,7 @@ export const useCreateList = () =>
 export const useRemoveList = () =>
   createMutation({
     mutationFn: (id: string) => pb.collection("lists").delete(id),
-    onSuccess: (data, variables) =>
+    onSuccess: (_, variables) =>
       currentList.subscribe((listId) => {
         if (listId === variables) goto("/");
         queryClient.invalidateQueries({ queryKey: ["lists"] });
