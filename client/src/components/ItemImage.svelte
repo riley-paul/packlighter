@@ -14,8 +14,9 @@
   import { cn } from "@/lib/utils";
   import { useUpdateItem } from "@/hooks/useItem";
   import { Input } from "./ui/input";
+  import type { ItemsResponse } from "@/lib/types";
 
-  export let item: RecordModel;
+  export let item: ItemsResponse;
 
   let url = item.image_url;
   let isOpen = false;
@@ -23,7 +24,7 @@
   const updateItem = useUpdateItem();
 
   $: saveItem = () => {
-    $updateItem.mutate({ ...item, image_url: url });
+    $updateItem.mutate({ id: item.id, item: { image_url: url } });
     isOpen = false;
   };
 </script>

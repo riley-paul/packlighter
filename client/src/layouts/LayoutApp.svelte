@@ -27,10 +27,10 @@
   <main
     class="container grid h-full flex-1 grid-cols-[1fr_300px] overflow-hidden"
   >
-    <div class="flex-1 overflow-auto py-6 pr-4">
+    <div class="flex-1 overflow-auto py-6 pr-6">
       <slot />
     </div>
-    <aside class="flex w-[300px] flex-col overflow-auto border-l-2 py-4 pl-4">
+    <aside class="flex w-[300px] flex-col overflow-auto border-l py-4 pl-4">
       <ListList />
       <br />
       <ItemList />

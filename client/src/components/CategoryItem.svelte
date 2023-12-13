@@ -1,7 +1,10 @@
 <script lang="ts">
   import type { RecordModel } from "pocketbase";
   import { Button } from "./ui/button";
-  import type { ExpandedCategoryItem } from "@/hooks/useList";
+  import type {
+    ExpandedCategoryItem,
+    ListWithCategories,
+  } from "@/hooks/useList";
   import { useQueryClient } from "@tanstack/svelte-query";
   import {
     useDeleteCategoryItem,
@@ -15,9 +18,12 @@
     getWeightInGrams,
     getWeightInUnit,
     massUnits,
+    type MassUnit,
   } from "@/lib/helpers";
+  import { Textarea } from "./ui/textarea";
+  import { Input } from "./ui/input";
 
-  export let list: RecordModel;
+  export let list: ListWithCategories;
   export let categoryItem: ExpandedCategoryItem;
 
   $: updateCategoryItem = useUpdateCategoryItem();
@@ -25,21 +31,21 @@
 
   let displayedWeight = getWeightInUnit(
     categoryItem.itemData.weight_g,
-    categoryItem.itemData.weight_unit,
+    categoryItem.itemData.weight_unit as MassUnit,
   );
 
   $: saveCategoryItem = () => {
     categoryItem.itemData.weight_g = getWeightInGrams(
       displayedWeight,
-      categoryItem.itemData.weight_unit,
+      categoryItem.itemData.weight_unit as MassUnit,
     );
-    $updateCategoryItem.mutate(categoryItem);
+    $updateCategoryItem.mutate({ id: categoryItem.id, categoryItem });
   };
 </script>
 
 <form
   id={categoryItem.id}
-  class="@container hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+  class="hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >
@@ -54,23 +60,24 @@
     <ItemImage item={categoryItem.itemData} />
   {/if}
 
-  <div class="@lg:grid-cols-[1fr_2fr] grid grid-cols-1">
-    <input
-      bind:value={categoryItem.itemData.name}
-      on:blur={saveCategoryItem}
-      name="name"
-      placeholder="Name"
-      class="w-full min-w-0 bg-inherit px-1 py-0.5"
-    />
+  <div class="@container">
+    <div class="@md:grid-cols-[1fr_2fr] grid grid-cols-1 gap-x-2">
+      <Input
+        bind:value={categoryItem.itemData.name}
+        on:blur={saveCategoryItem}
+        name="name"
+        placeholder="Name"
+        class="h-auto w-full min-w-0 border-none bg-inherit py-0.5 shadow-none"
+      />
 
-    <textarea
-      bind:value={categoryItem.itemData.description}
-      on:blur={saveCategoryItem}
-      rows={list.show_images ? 2 : 1}
-      name="description"
-      placeholder="Description"
-      class="text-muted-foreground w-full min-w-0 resize-none overflow-hidden bg-inherit px-1 py-0.5"
-    />
+      <Input
+        bind:value={categoryItem.itemData.description}
+        on:blur={saveCategoryItem}
+        name="description"
+        placeholder="Description"
+        class="text-muted-foreground h-auto w-full min-w-0 resize-none overflow-hidden border-none bg-inherit py-0.5 shadow-none"
+      />
+    </div>
   </div>
 
   {#if list.show_weights}

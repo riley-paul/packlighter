@@ -21,14 +21,14 @@
 
   import Sortable from "sortablejs";
   import { onMount } from "svelte";
+  import { Input } from "./ui/input";
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
   $: toggleCategoryPacked = useToggleCategoryPacked();
   $: createCategoryItem = useCreateCategoryItem();
-  // $: moveCategoryItem = useMoveCategoryItem();
 
-  $: saveCategory = () => $updateCategory.mutate(category);
+  $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
   let categoryElement: HTMLElement;
 
@@ -66,11 +66,11 @@
       />
     {/if}
     <form on:submit|preventDefault={saveCategory} class="flex-1">
-      <input
+      <Input
         bind:value={category.name}
         on:blur={saveCategory}
         placeholder="Category Name"
-        class="text-primary w-full bg-inherit px-1 py-0.5 text-base font-semibold"
+        class="text-primary h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none"
       />
       <input type="hidden" />
     </form>

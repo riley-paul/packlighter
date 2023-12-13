@@ -1,4 +1,8 @@
-import type { ExpandedCategory, ExpandedCategoryItem } from "@/hooks/useList";
+import type {
+  ExpandedCategory,
+  ExpandedCategoryItem,
+  ListWithCategories,
+} from "@/hooks/useList";
 import type { RecordModel } from "pocketbase";
 
 export const isCategoryFullyPacked = (category: ExpandedCategory) =>
@@ -12,7 +16,7 @@ export const isItemUntouched = (item: ExpandedCategoryItem) =>
   !item.packed;
 
 export const massUnits = ["g", "kg", "oz", "lb"] as const;
-type MassUnit = (typeof massUnits)[number];
+export type MassUnit = (typeof massUnits)[number];
 
 export const getWeightInGrams = (weight: number, unit: MassUnit) => {
   if (unit === "g") return weight;
@@ -31,7 +35,7 @@ export const getWeightInUnit = (weight: number, unit: MassUnit) => {
 };
 
 export const createItemTemplateCols = (
-  list: RecordModel,
+  list: ListWithCategories,
   isItem: boolean,
 ): string => {
   const cols: string[] = [
