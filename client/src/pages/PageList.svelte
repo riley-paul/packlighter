@@ -15,20 +15,15 @@
   $: updateList = useUpdateList();
   $: createCategory = useCreateCategory();
 
-  $: console.log($list.data);
-
   // let name = $list.data?.name ?? "";
 </script>
 
-{JSON.stringify($list.data, undefined, 2)}
-
-<!-- <LayoutApp>
-  {#if $list.data}
-    <Input
-      slot="title"
-      bind:value={$list.data.name}
-    />
-  {/if}
+<LayoutApp>
+  <span slot="title">
+    {#if $list.data}
+      <Input bind:value={$list.data.name} />
+    {/if}
+  </span>
   <Card class="@container h-fit flex-1 p-6">
     {#if $list.isError}
       <p>Error: {$list.error}</p>
@@ -56,4 +51,4 @@
       </div>
     {/if}
   </Card>
-</LayoutApp> -->
+</LayoutApp>

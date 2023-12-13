@@ -1,17 +1,16 @@
 import { pb } from "@/lib/pocketbase";
 import { currentList } from "@/lib/store";
 import { createMutation, createQuery } from "@tanstack/svelte-query";
-import type { ClientResponseError, RecordModel } from "pocketbase";
+import type { ClientResponseError } from "pocketbase";
 import { push as goto } from "svelte-spa-router";
 
 import { queryClient } from "@/lib/query";
 import {
   type CategoriesItemsResponse,
-  type ListCategoriesRecord,
   type ListCategoriesResponse,
-  type ListsRecord,
   type ItemsResponse,
   Collections,
+  type ListsResponse,
 } from "@/lib/types";
 
 const CATEGORY_ITEM_EXPAND_KEY = "categories_items(category)";
@@ -32,6 +31,10 @@ export type ExpandedCategory = CategoriesExpandCategoriesItems & {
   items: ExpandedCategoryItem[];
 };
 
+export type ListWithCategories = ListsResponse & {
+  categories: ExpandedCategory[];
+};
+
 const expandItems = (
   record: CategoriesItemsExpandItem,
 ): ExpandedCategoryItem => ({
@@ -50,12 +53,8 @@ const expandCategory = (
     ) ?? [],
 });
 
-export type ListWithCategories = ListsRecord & {
-  categories: ExpandedCategory[];
-};
-
 export const useList = (listId: string) =>
-  createQuery({
+  createQuery<ListWithCategories, ClientResponseError>({
     queryKey: ["list", listId],
     queryFn: async () => {
       const [list, categories] = await Promise.all([
@@ -76,7 +75,7 @@ export const useList = (listId: string) =>
   });
 
 export const useLists = () =>
-  createQuery<ListsRecord[], ClientResponseError>({
+  createQuery<ListsResponse[], ClientResponseError>({
     queryKey: ["lists"],
     queryFn: () =>
       pb.collection(Collections.Lists).getFullList({ sort: "-created" }),
@@ -104,8 +103,10 @@ export const useRemoveList = () =>
 
 export const useUpdateList = () =>
   createMutation({
-    mutationFn: (variables: { id: string; list: Partial<RecordModel> }) =>
-      pb.collection("lists").update(variables.id, variables.list),
+    mutationFn: (variables: {
+      id: string;
+      list: Partial<ListWithCategories>;
+    }) => pb.collection("lists").update(variables.id, variables.list),
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });

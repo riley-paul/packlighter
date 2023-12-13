@@ -2,10 +2,10 @@
   import type { RecordModel } from "pocketbase";
   import { Input } from "./ui/input";
   import { Textarea } from "./ui/textarea";
-  import { useUpdateList } from "@/hooks/useList";
+  import { useUpdateList, type ListWithCategories } from "@/hooks/useList";
   import ListSettings from "./ListSettings.svelte";
 
-  export let list: RecordModel;
+  export let list: ListWithCategories;
 
   $: updateList = useUpdateList();
   $: saveList = () => $updateList.mutate({ id: list.id, list });

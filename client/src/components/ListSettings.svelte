@@ -10,12 +10,12 @@
     DropdownMenuTrigger,
   } from "./ui/dropdown-menu";
   import type { RecordModel } from "pocketbase";
-  import { useUpdateList } from "@/hooks/useList";
+  import { useUpdateList, type ListWithCategories } from "@/hooks/useList";
 
-  export let list: RecordModel;
+  export let list: ListWithCategories;
 
   $: updateList = useUpdateList();
-  $: saveList = () => $updateList.mutate(list);
+  $: saveList = () => $updateList.mutate({ id: list.id, list });
 </script>
 
 <DropdownMenu>
