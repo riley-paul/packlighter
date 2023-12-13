@@ -8,7 +8,7 @@
   export let list: RecordModel;
 
   $: updateList = useUpdateList();
-  $: saveList = () => $updateList.mutate(list);
+  $: saveList = () => $updateList.mutate({ id: list.id, list });
 </script>
 
 <div class="flex gap-2">
@@ -16,7 +16,7 @@
     <Input
       bind:value={list.name}
       on:blur={saveList}
-      class="h-auto text-3xl font-bold text-primary"
+      class="text-primary h-auto text-3xl font-bold"
       placeholder="List Name"
     />
     <Textarea

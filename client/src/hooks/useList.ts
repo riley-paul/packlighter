@@ -5,15 +5,27 @@ import type { ClientResponseError, RecordModel } from "pocketbase";
 import { push as goto } from "svelte-spa-router";
 
 import { queryClient } from "@/lib/query";
+import {
+  Collections,
+  type CategoriesItemsResponse,
+  type ListCategoriesRecord,
+  type ListCategoriesResponse,
+  type ListsRecord,
+  type CategoriesItemsRecord,
+} from "@/lib/types";
 
-export type ExpandedCategoryItem = RecordModel & { itemData: RecordModel };
-const expandItems = (record: RecordModel): ExpandedCategoryItem => ({
+export type ExpandedCategoryItem = CategoriesItemsRecord & {
+  itemData: RecordModel;
+};
+const expandItems = (record: ExpandedCategoryItem): ExpandedCategoryItem => ({
   ...record,
   itemData: record.expand?.item ?? {},
 });
 
-export type ExpandedCategory = RecordModel & { items: ExpandedCategoryItem[] };
-const expandCategory = (record: RecordModel): ExpandedCategory => ({
+export type ExpandedCategory = ListCategoriesRecord & {
+  items: ExpandedCategoryItem[];
+};
+const expandCategory = (record: ListCategoriesRecord): ExpandedCategory => ({
   ...record,
   items:
     record.expand?.["categories_items(category)"]
@@ -24,7 +36,7 @@ const expandCategory = (record: RecordModel): ExpandedCategory => ({
       ) ?? [],
 });
 
-export type ListWithCategories = RecordModel & {
+export type ListWithCategories = ListsRecord & {
   categories: ExpandedCategory[];
 };
 
@@ -33,10 +45,16 @@ export const useList = (listId: string) =>
     queryKey: ["list", listId],
     queryFn: async () => {
       const [list, categories] = await Promise.all([
-        pb.collection("lists").getOne(listId ?? "", { requestKey: null }),
         pb
-          .collection("list_categories")
-          .getFullList({
+          .collection(Collections.Lists)
+          .getOne(listId ?? "", { requestKey: null }),
+        pb
+          .collection(Collections.ListCategories)
+          .getFullList<
+            ListCategoriesResponse<{
+              "categories_items(category)": CategoriesItemsResponse;
+            }>
+          >({
             filter: `list = "${listId}"`,
             sort: "created",
             expand: "categories_items(category).item",
@@ -48,9 +66,10 @@ export const useList = (listId: string) =>
   });
 
 export const useLists = () =>
-  createQuery<RecordModel[], ClientResponseError>({
+  createQuery<ListsRecord[], ClientResponseError>({
     queryKey: ["lists"],
-    queryFn: () => pb.collection("lists").getFullList({ sort: "-created" }),
+    queryFn: () =>
+      pb.collection(Collections.Lists).getFullList({ sort: "-created" }),
   });
 
 export const useCreateList = () =>
@@ -75,8 +94,8 @@ export const useRemoveList = () =>
 
 export const useUpdateList = () =>
   createMutation({
-    mutationFn: (list: RecordModel) =>
-      pb.collection("lists").update(list.id, list),
+    mutationFn: (variables: { id: string; list: Partial<RecordModel> }) =>
+      pb.collection("lists").update(variables.id, variables.list),
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });

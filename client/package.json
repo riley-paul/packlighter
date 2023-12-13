@@ -7,13 +7,16 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "typegen": "pocketbase-typegen --db ../pocketbase/pb_data/data.db --out ./src/lib/types.ts"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.2",
+    "@sveltejs/vite-plugin-svelte": "^3.0.1",
     "@tsconfig/svelte": "^5.0.2",
     "@types/node": "^20.10.3",
+    "@types/sortablejs": "^1.15.7",
     "autoprefixer": "^10.4.14",
+    "pocketbase-typegen": "^1.2.1",
     "postcss": "^8.4.24",
     "postcss-load-config": "^4.0.1",
     "prettier": "^3.1.1",
@@ -24,12 +27,11 @@
     "tailwindcss": "^3.3.2",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2",
-    "vite": "^5.0.0"
+    "vite": "^5.0.8"
   },
   "dependencies": {
     "@tailwindcss/container-queries": "^0.1.1",
     "@tanstack/svelte-query": "^5.13.2",
-    "@types/sortablejs": "^1.15.7",
     "bits-ui": "^0.11.0",
     "clsx": "^2.0.0",
     "lucide-svelte": "^0.294.0",

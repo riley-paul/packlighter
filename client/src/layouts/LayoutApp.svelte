@@ -9,21 +9,26 @@
   import { Feather, MoreVertical } from "lucide-svelte";
   import { link } from "svelte-spa-router";
 
-  let isSidebarOpen = false;
+  let isSidebarOpen = true;
 </script>
 
 <div class="flex h-screen overflow-hidden">
   <aside
     class={cn(
       "w-0 border-r shadow-inner transition-all",
-      isSidebarOpen && "w-[250px]",
+      isSidebarOpen && "w-[300px]",
       "flex h-full flex-col overflow-hidden",
     )}
   >
+    <a href="/" use:link class="flex items-center">
+      <Feather class="text-primary mr-2 w-6" />
+      <h1 class="text-lg font-medium">PackLighter</h1>
+    </a>
+    <ListList />
     <ItemList />
   </aside>
   <div class="flex flex-1 flex-col overflow-hidden">
-    <header class="z-50 flex h-14 w-full items-center border-b bg-card shadow">
+    <header class="bg-card z-50 flex h-14 w-full items-center border-b shadow">
       <div class="container flex justify-between">
         <div class="flex items-center gap-4">
           <Toggle
@@ -37,10 +42,7 @@
           >
             <MoreVertical class="h-4 w-4" />
           </Toggle>
-          <a href="/" use:link class="flex items-center">
-            <Feather class="mr-2 w-6 text-primary" />
-            <h1 class="text-lg font-medium">PackLighter</h1>
-          </a>
+          <slot name="title" />
         </div>
         <div class="flex items-center gap-4">
           <AccountEditor />
@@ -49,11 +51,8 @@
       </div>
     </header>
     <main class="flex-1 overflow-auto py-6">
-      <div class="container grid grid-cols-[1fr_250px] gap-4">
+      <div class="container">
         <slot />
-        <aside class="h-fit">
-          <ListList />
-        </aside>
       </div>
     </main>
   </div>
