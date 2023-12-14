@@ -23,6 +23,7 @@
   import { Textarea } from "./ui/textarea";
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
+  import DragHandle from "./base/DragHandle.svelte";
 
   const test = "test";
 
@@ -122,7 +123,5 @@
     handleDelete={() => $deleteCategoryItem.mutate(categoryItem)}
     noConfirm
   />
-  <div class="handle">
-    <GripVertical class="text-muted-foreground h-4 w-4" />
-  </div>
+  <DragHandle />
 </form>

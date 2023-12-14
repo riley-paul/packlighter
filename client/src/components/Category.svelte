@@ -28,6 +28,7 @@
   import DeleteButton from "./base/DeleteButton.svelte";
   import { flip } from "svelte/animate";
   import { flipDurationMs } from "@/lib/constants";
+  import DragHandle from "./base/DragHandle.svelte";
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
@@ -51,7 +52,7 @@
   };
 </script>
 
-<article>
+<article class="bg-card/80">
   <div
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"
@@ -77,9 +78,7 @@
 
     <div class="text-foreground/70 text-center">Qty</div>
     <DeleteButton handleDelete={() => $deleteCategory.mutate(category)} />
-    <div>
-      <GripVertical class="text-muted-foreground h-4 w-4" />
-    </div>
+    <DragHandle />
   </div>
   <div
     class="min-h-[0.5rem]"

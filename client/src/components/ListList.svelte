@@ -15,6 +15,7 @@
   import type { ListsResponse } from "@/lib/types";
   import { flip } from "svelte/animate";
   import { flipDurationMs } from "@/lib/constants";
+  import DragHandle from "./base/DragHandle.svelte";
 
   $: lists = useLists();
   $: createList = useCreateList();
@@ -56,7 +57,7 @@
     <div
       animate:flip={{ duration: flipDurationMs }}
       class={cn(
-        "text-muted-foreground flex h-9 w-full items-center justify-between pl-4 hover:border-l-4 hover:pl-3",
+        "text-muted-foreground flex h-9 w-full items-center justify-between gap-2 pl-4 hover:border-l-4 hover:pl-3",
         !list.name && "italic",
         $location.includes(list.id) &&
           "border-primary text-foreground border-l-4 pl-3",
@@ -66,6 +67,7 @@
         {list.name || "Unnamed List"}
       </a>
       <DeleteButton handleDelete={() => $removeList.mutate(list.id)} />
+      <DragHandle />
     </div>
   {/each}
 </div>

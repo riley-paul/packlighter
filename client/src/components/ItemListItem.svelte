@@ -5,6 +5,7 @@
   import { cn } from "@/lib/utils";
   import type { ItemsResponse } from "@/lib/types";
   import DeleteButton from "./base/DeleteButton.svelte";
+  import DragHandle from "./base/DragHandle.svelte";
 
   export let item: ItemsResponse;
 
@@ -23,7 +24,5 @@
     <p class="text-muted-foreground">{item.description}</p>
   </div>
   <DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
-  <div>
-    <GripVertical class="text-muted-foreground h-4 w-4" />
-  </div>
+  <DragHandle />
 </div>
