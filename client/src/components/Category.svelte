@@ -52,7 +52,7 @@
   };
 </script>
 
-<article class="bg-card/80 rounded">
+<article class="bg-card/80 rounded category">
   <div
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"

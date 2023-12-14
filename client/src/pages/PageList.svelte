@@ -58,7 +58,7 @@
             type: "categories",
             dropTargetStyle: {},
             transformDraggedElement: (el) => {
-              el?.style.setProperty("background-color", "red");
+              el?.querySelector(".category")?.classList.add("border");
             },
           }}
           on:consider={handleConsider}
