@@ -22,6 +22,9 @@
   onMount(() => {
     Sortable.create(itemList, {
       group: { name: "items", pull: "clone" },
+      setData: (dataTransfer, dragEl) => {
+        dataTransfer.setData("text/plain", dragEl.id);
+      },
     });
   });
 </script>

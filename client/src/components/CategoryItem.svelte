@@ -49,7 +49,7 @@
 <form
   id={categoryItem.id}
   data-id={categoryItem.id}
-  class="grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+  class="hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >
@@ -86,13 +86,13 @@
 
   {#if list.show_weights}
     <div class="flex">
-      <input
+      <Input
         bind:value={displayedWeight}
         on:change={saveCategoryItem}
         name="weight_g"
         type="number"
         min="0"
-        class="min-w-0 bg-inherit text-right"
+        class="h-auto min-w-0 border-none px-1 py-0.5 shadow-none"
       />
       <select
         bind:value={categoryItem.itemData.weight_unit}
@@ -108,13 +108,13 @@
     </div>
   {/if}
 
-  <input
+  <Input
     bind:value={categoryItem.quantity}
     on:change={saveCategoryItem}
     name="quantity"
     type="number"
     min="1"
-    class="bg-inherit text-center"
+    class="h-auto min-w-0 border-none px-1 py-0.5 shadow-none"
   />
 
   <input type="hidden" />

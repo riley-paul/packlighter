@@ -12,8 +12,11 @@
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
   import {
     useCreateCategoryItem,
+    useUpdateCategoryItem,
     useUpdateCategoryItemsOrder,
   } from "@/hooks/useCategoryItem";
+
+  import { arrayMoveImmutable } from "array-move";
 
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
@@ -28,6 +31,7 @@
   $: toggleCategoryPacked = useToggleCategoryPacked();
   $: createCategoryItem = useCreateCategoryItem();
   $: updateCategoryItemsOrder = useUpdateCategoryItemsOrder();
+  $: updateCategoryItem = useUpdateCategoryItem();
 
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
@@ -40,14 +44,37 @@
       direction: "vertical",
       handle: ".handle",
       ghostClass: "opacity-50",
-      store: {
-        get: () => category.items.map((item) => item.id),
-        set: (sortable) => {
-          const order = sortable.toArray();
-          console.log(order);
-          $updateCategoryItemsOrder.mutate({ categoryItemIds: order });
-          console.log("order saved");
-        },
+      setData: (dataTransfer, dragEl) => {
+        dataTransfer.setData("text/plain", dragEl.id);
+      },
+      onUpdate: (ev) => {
+        console.log("onUpdate");
+        const ids = category.items.map((item) => item.id);
+        const order = arrayMoveImmutable(
+          ids,
+          ev.oldIndex ?? 0,
+          ev.newIndex ?? 0,
+        );
+        $updateCategoryItemsOrder.mutate({ categoryItemIds: order });
+        console.log("order saved");
+      },
+      onAdd: (ev) => {
+        console.log("onAdd");
+        if (ev.pullMode === "clone") {
+          console.log("create new category item");
+          $createCategoryItem.mutate({
+            category,
+            itemId: ev.item.dataset.id,
+          });
+        }
+
+        if (ev.pullMode === true) {
+          console.log("move category item");
+          $updateCategoryItem.mutate({
+            id: ev.item.id ?? "",
+            categoryItem: { category: ev.to.id },
+          });
+        }
       },
     });
   });
@@ -93,7 +120,7 @@
     <Button
       variant="linkMuted"
       size="sm"
-      on:click={() => $createCategoryItem.mutate(category)}
+      on:click={() => $createCategoryItem.mutate({ category })}
       disabled={$createCategoryItem.isPending}
     >
       <Plus class="mr-2 h-4 w-4" />

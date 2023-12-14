@@ -1,5 +1,9 @@
 import { createMutation } from "@tanstack/svelte-query";
-import type { ExpandedCategoryItem, ListWithCategories } from "./useList";
+import type {
+  ExpandedCategory,
+  ExpandedCategoryItem,
+  ListWithCategories,
+} from "./useList";
 import { pb } from "@/lib/pocketbase";
 import { isItemUntouched } from "@/lib/helpers";
 import type { RecordModel } from "pocketbase";
@@ -50,15 +54,25 @@ export const useDeleteCategoryItem = () =>
 
 export const useCreateCategoryItem = () =>
   createMutation({
-    mutationFn: (category: RecordModel) =>
-      pb
-        .collection(Collections.Items)
-        .create({ user: pb.authStore.model?.id })
-        .then((item) =>
-          pb
-            .collection(Collections.CategoriesItems)
-            .create({ category: category.id, item: item.id, quantity: 1 }),
-        ),
+    mutationFn: (variables: { category: ExpandedCategory; itemId?: string }) =>
+      variables.itemId
+        ? pb.collection(Collections.CategoriesItems).create({
+            category: variables.category.id,
+            item: variables.itemId,
+            quantity: 1,
+            sort_order: variables.category.items.length,
+          })
+        : pb
+            .collection(Collections.Items)
+            .create({ user: pb.authStore.model?.id })
+            .then((item) =>
+              pb.collection(Collections.CategoriesItems).create({
+                category: variables.category.id,
+                item: item.id,
+                quantity: 1,
+                sort_order: variables.category.items.length,
+              }),
+            ),
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });

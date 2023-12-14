@@ -12,7 +12,9 @@
 </script>
 
 <div
-  class="hover:bg-card flex items-center gap-2 p-2 pl-0 text-sm transition-colors"
+  id={item.id}
+  data-id={item.id}
+  class="hover:bg-muted flex items-center gap-2 p-2 text-sm transition-colors"
 >
   <div>
     <GripVertical class="text-muted-foreground h-4 w-4" />
