@@ -87,7 +87,7 @@
   </div>
   <div
     class="min-h-[1rem]"
-    use:dndzone={{ items: category.items, type: "items", flipDurationMs }}
+    use:dndzone={{ items: category.items, flipDurationMs }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >

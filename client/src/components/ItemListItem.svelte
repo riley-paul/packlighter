@@ -14,11 +14,8 @@
 <div
   id={item.id}
   data-id={item.id}
-  class="hover:bg-muted flex items-center gap-2 p-2 text-sm transition-colors"
+  class="hover:bg-muted flex items-center gap-2 p-2 pl-4 text-sm transition-colors"
 >
-  <div>
-    <GripVertical class="text-muted-foreground h-4 w-4" />
-  </div>
   <div class="flex-1">
     <h3 class={cn(!item.name && "text-muted-foreground italic")}>
       {item.name || "Unnamed Item"}
@@ -26,4 +23,7 @@
     <p class="text-muted-foreground">{item.description}</p>
   </div>
   <DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
+  <div>
+    <GripVertical class="text-muted-foreground h-4 w-4" />
+  </div>
 </div>

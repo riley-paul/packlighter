@@ -1,15 +1,16 @@
 <script lang="ts">
-  import { useItems } from "@/hooks/useItem";
+  import { useItems, useUpdateItemsOrder } from "@/hooks/useItem";
   import { Input } from "./ui/input";
-  import { Button } from "./ui/button";
-  import { Plus } from "lucide-svelte";
   import ItemListItem from "./ItemListItem.svelte";
-  import { onMount } from "svelte";
-  import Sortable from "sortablejs";
+
+  import { dndzone } from "svelte-dnd-action";
+  import { flip } from "svelte/animate";
+  import type { ItemsResponse } from "@/lib/types";
 
   let searchTerm = "";
-  const items = useItems();
+  const flipDurationMs = 200;
 
+  const items = useItems();
   $: filteredItems =
     $items.data?.filter(
       (item) =>
@@ -17,17 +18,15 @@
         item.description.toLowerCase().includes(searchTerm.toLowerCase()),
     ) ?? [];
 
-  let itemList: HTMLElement;
+  $: updateItemsOrder = useUpdateItemsOrder();
+  const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
+    filteredItems = ev.detail.items;
+  };
 
-  onMount(() => {
-    Sortable.create(itemList, {
-      group: { name: "items", pull: "clone" },
-      sort: false,
-      setData: (dataTransfer, dragEl) => {
-        dataTransfer.setData("text/plain", dragEl.id);
-      },
-    });
-  });
+  const handleFinalize = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
+    const ids = ev.detail.items.map((item) => item.id);
+    $updateItemsOrder.mutate({ itemIds: ids });
+  };
 </script>
 
 <div>
@@ -41,14 +40,25 @@
     />
   </div>
 </div>
-<div bind:this={itemList} class="flex-1 overflow-auto border-y bg-card">
-  {#if $items.isError}
-    <p>Error: {$items.error}</p>
-  {:else if $items.isLoading}
-    <p>Loading...</p>
-  {:else}
+{#if $items.isError}
+  <p>Error: {$items.error}</p>
+{:else if $items.isLoading}
+  <p>Loading...</p>
+{:else}
+  <div
+    class="bg-card flex-1 overflow-auto border-y"
+    use:dndzone={{
+      items: filteredItems,
+      dropFromOthersDisabled: true,
+      flipDurationMs,
+    }}
+    on:consider={handleConsider}
+    on:finalize={handleFinalize}
+  >
     {#each filteredItems as item (item.id)}
-      <ItemListItem {item} />
+      <div animate:flip={{ duration: flipDurationMs }}>
+        <ItemListItem {item} />
+      </div>
     {/each}
-  {/if}
-</div>
+  </div>
+{/if}

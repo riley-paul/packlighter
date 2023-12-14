@@ -78,7 +78,7 @@ export const useLists = () =>
   createQuery<ListsResponse[], ClientResponseError>({
     queryKey: ["lists"],
     queryFn: () =>
-      pb.collection(Collections.Lists).getFullList({ sort: "-created" }),
+      pb.collection(Collections.Lists).getFullList({ sort: "sort_order" }),
   });
 
 export const useCreateList = () =>
@@ -112,4 +112,15 @@ export const useUpdateList = () =>
         queryClient.invalidateQueries({ queryKey: ["list", listId] });
         queryClient.invalidateQueries({ queryKey: ["lists"] });
       }),
+  });
+
+export const useUpdateListsOrder = () =>
+  createMutation({
+    mutationFn: (variables: { listIds: string[] }) =>
+      Promise.all(
+        variables.listIds.map((id, index) =>
+          pb.collection(Collections.Lists).update(id, { sort_order: index }),
+        ),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["lists"] }),
   });

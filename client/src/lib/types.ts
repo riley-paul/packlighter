@@ -52,6 +52,7 @@ export type ItemsRecord = {
 	description?: string
 	image_url?: string
 	name?: string
+	sort_order?: number
 	user: RecordIdString
 	weight?: number
 	weight_g?: number
@@ -78,6 +79,7 @@ export type ListsRecord = {
 	show_packed?: boolean
 	show_prices?: boolean
 	show_weights?: boolean
+	sort_order?: number
 	user: RecordIdString
 }
 

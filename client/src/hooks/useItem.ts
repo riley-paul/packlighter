@@ -9,7 +9,7 @@ export const useItems = () =>
   createQuery<ItemsResponse[], ClientResponseError>({
     queryKey: ["items"],
     queryFn: () =>
-      pb.collection(Collections.Items).getFullList({ sort: "-created" }),
+      pb.collection(Collections.Items).getFullList({ sort: "sort_order" }),
   });
 
 export const useUpdateItem = () =>
@@ -31,4 +31,15 @@ export const useDeleteItem = () =>
         queryClient.invalidateQueries({ queryKey: ["list", listId] });
         queryClient.invalidateQueries({ queryKey: ["items"] });
       }),
+  });
+
+export const useUpdateItemsOrder = () =>
+  createMutation({
+    mutationFn: (variables: { itemIds: string[] }) =>
+      Promise.all(
+        variables.itemIds.map((id, index) =>
+          pb.collection(Collections.Items).update(id, { sort_order: index }),
+        ),
+      ),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["items"] }),
   });
