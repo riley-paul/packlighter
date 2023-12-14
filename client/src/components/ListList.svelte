@@ -18,11 +18,11 @@
     <Plus class="mr-2 w-4" /> New List
   </Button>
 </div>
-<div id="list-container" class="max-h-[200px] overflow-y-scroll border-y pr-4">
+<div class="max-h-[200px] overflow-y-auto border-y pr-2 bg-card">
   {#each $lists.data ?? [] as list}
     <div
       class={cn(
-        "text-muted-foreground flex h-8 w-full items-center justify-between pl-4 hover:border-l-4 hover:pl-3",
+        "text-muted-foreground flex h-9 w-full items-center justify-between pl-4 hover:border-l-4 hover:pl-3",
         !list.name && "italic",
         $location.includes(list.id) &&
           "border-primary text-foreground border-l-4 pl-3",
@@ -35,9 +35,3 @@
     </div>
   {/each}
 </div>
-
-<style>
-  #list-container {
-    scrollbar-gutter: stable;
-  }
-</style>

@@ -10,7 +10,10 @@
   import type { ExpandedCategory, ListWithCategories } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
-  import { useCreateCategoryItem } from "@/hooks/useCategoryItem";
+  import {
+    useCreateCategoryItem,
+    useUpdateCategoryItemsOrder,
+  } from "@/hooks/useCategoryItem";
 
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
@@ -24,6 +27,7 @@
   $: deleteCategory = useDeleteCategory();
   $: toggleCategoryPacked = useToggleCategoryPacked();
   $: createCategoryItem = useCreateCategoryItem();
+  $: updateCategoryItemsOrder = useUpdateCategoryItemsOrder();
 
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
@@ -31,22 +35,20 @@
 
   onMount(() => {
     Sortable.create(categoryElement, {
-      group: { name: "category", put: true },
-      animation: 100,
+      group: { name: "categories", put: true, pull: true },
+      sort: true,
+      direction: "vertical",
       handle: ".handle",
       ghostClass: "opacity-50",
-      // onAdd: (ev) => {
-      //   $moveCategoryItem.mutate({ id: ev.item.id, newCategory: ev.to.id });
-      //   //remove category from old category
-      //   list.categories.forEach((cat) => {
-      //     cat.items = cat.items.filter((item) => item.id !== ev.item.id);
-      //   });
-      //   //add category to new category
-      //   const categoryItem = list.categories.flatMap((cat) =>
-      //     cat.items.filter((item) => item.id === ev.item.id),
-      //   )[0];
-      //   console.log(categoryItem);
-      // },
+      store: {
+        get: () => category.items.map((item) => item.id),
+        set: (sortable) => {
+          const order = sortable.toArray();
+          console.log(order);
+          $updateCategoryItemsOrder.mutate({ categoryItemIds: order });
+          console.log("order saved");
+        },
+      },
     });
   });
 </script>

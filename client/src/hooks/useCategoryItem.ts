@@ -66,56 +66,18 @@ export const useCreateCategoryItem = () =>
       }),
   });
 
-// export const useMoveCategoryItem = () =>
-//   createMutation({
-//     mutationFn: (variables: { id: string; newCategory: string }) =>
-//       pb
-//         .collection("categories_items")
-//         .update(variables.id, { category: variables.newCategory }),
-//     onSuccess: () =>
-//       currentList.subscribe((listId) =>
-//         queryClient.invalidateQueries({ queryKey: ["list", listId] }),
-//       ),
-//     onMutate: (variables) =>
-//       currentList.subscribe(async (listId) => {
-//         // Cancel any outgoing refetches
-//         // (so they don't overwrite our optimistic update)
-//         await queryClient.cancelQueries({ queryKey: ["list", listId] });
-
-//         // Snapshot the previous value
-//         const previousList = queryClient.getQueryData(["list", listId]);
-
-//         // Optimistically update to the new value
-//         queryClient.setQueryData(
-//           ["list", listId],
-//           (old: ListWithCategories) => {
-//             const categoryItem = old.categories
-//               .flatMap((c) => c.items)
-//               .find((i) => i.id === variables.id);
-//             if (!categoryItem) return old;
-
-//             return {
-//               ...old,
-//               categories: old.categories.map((c) =>
-//                 c.id === variables.newCategory
-//                   ? { ...c, items: [...c.items, categoryItem] }
-//                   : c,
-//               ),
-//             };
-//           },
-//         );
-
-//         // Return a context object with the snapshotted value
-//         return { previousList };
-//       }),
-//     // If the mutation fails,
-//     // use the context returned from onMutate to roll back
-//     onError: (err, newTodo, context) =>
-//       currentList.subscribe((listId) => {
-//         queryClient.setQueryData(["list"], context.previousList);
-//       }),
-//     // Always refetch after error or success:
-//     onSettled: () => {
-//       queryClient.invalidateQueries({ queryKey: ["todos"] });
-//     },
-//   });
+export const useUpdateCategoryItemsOrder = () =>
+  createMutation({
+    mutationFn: (variables: { categoryItemIds: string[] }) =>
+      Promise.all(
+        variables.categoryItemIds.map((id, index) =>
+          pb
+            .collection(Collections.CategoriesItems)
+            .update(id, { sort_order: index }),
+        ),
+      ),
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      }),
+  });

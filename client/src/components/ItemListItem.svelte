@@ -12,7 +12,7 @@
 </script>
 
 <div
-  class="hover:bg-card flex items-center gap-2 p-2 pl-0 pr-4 text-sm transition-colors"
+  class="hover:bg-card flex items-center gap-2 p-2 pl-0 text-sm transition-colors"
 >
   <div>
     <GripVertical class="text-muted-foreground h-4 w-4" />

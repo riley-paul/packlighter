@@ -4,6 +4,8 @@
   import { Button } from "./ui/button";
   import { Plus } from "lucide-svelte";
   import ItemListItem from "./ItemListItem.svelte";
+  import { onMount } from "svelte";
+  import Sortable from "sortablejs";
 
   let searchTerm = "";
   const items = useItems();
@@ -14,6 +16,14 @@
         item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.description.toLowerCase().includes(searchTerm.toLowerCase()),
     ) ?? [];
+
+  let itemList: HTMLElement;
+
+  onMount(() => {
+    Sortable.create(itemList, {
+      group: { name: "items", pull: "clone" },
+    });
+  });
 </script>
 
 <div>
@@ -27,7 +37,7 @@
     />
   </div>
 </div>
-<div class="flex-1 overflow-auto border-y">
+<div bind:this={itemList} class="flex-1 overflow-auto border-y bg-card">
   {#if $items.isError}
     <p>Error: {$items.error}</p>
   {:else if $items.isLoading}

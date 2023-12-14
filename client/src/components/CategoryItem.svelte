@@ -48,7 +48,8 @@
 
 <form
   id={categoryItem.id}
-  class="hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+  data-id={categoryItem.id}
+  class="grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >

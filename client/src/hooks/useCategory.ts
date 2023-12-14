@@ -65,3 +65,4 @@ export const useToggleCategoryPacked = () =>
         queryClient.invalidateQueries({ queryKey: ["list", listId] });
       }),
   });
+
