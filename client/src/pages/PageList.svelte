@@ -65,7 +65,7 @@
           on:finalize={handleFinalize}
         >
           {#each categories as category (category.id)}
-            <div animate:flip={{ duration: flipDurationMs }} class="relative">
+            <div class="relative">
               <Category {category} list={$list.data} />
               {#if category[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
                 <div

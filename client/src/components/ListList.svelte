@@ -18,6 +18,7 @@
   import DragHandle from "./base/DragHandle.svelte";
   import { fade } from "svelte/transition";
   import { cubicIn } from "svelte/easing";
+  import ListListItem from "./ListListItem.svelte";
 
   type ListWithShadowItem = ListsResponse & {
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
@@ -54,31 +55,23 @@
     flipDurationMs,
     dropTargetStyle: {},
     dropTargetClasses: ["border-primary"],
+    transformDraggedElement: (el) => {
+      el?.querySelector(".list")?.classList.add(
+        "bg-border/50",
+        "rounded",
+        "border",
+      );
+    },
   }}
   on:consider={handleConsider}
   on:finalize={handleFinalize}
   class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 transition-colors"
 >
   {#each listData as list (list.id)}
-    <div
-      animate:flip={{ duration: flipDurationMs }}
-      class={cn(
-        "text-muted-foreground relative flex h-9 w-full items-center justify-between gap-2 pl-4 pr-2 hover:border-l-4 hover:pl-3",
-        !list.name && "italic",
-        $location.includes(list.id) &&
-          "border-primary text-foreground border-l-4 pl-3",
-      )}
-    >
-      <a use:link href={`/${list.id}`} class="flex-1">
-        {list.name || "Unnamed List"}
-      </a>
-      <DeleteButton handleDelete={() => $removeList.mutate(list.id)} />
-      <DragHandle />
+    <div animate:flip={{ duration: flipDurationMs }} class="relative">
+      <ListListItem {list} />
       {#if list[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-        <div
-          in:fade={{ duration: 200, easing: cubicIn }}
-          class="bg-secondary/50 visible absolute inset-0"
-        />
+        <div class="bg-secondary/50 visible absolute inset-0" />
       {/if}
     </div>
   {/each}

@@ -22,13 +22,21 @@
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
 
-  import { dndzone } from "svelte-dnd-action";
+  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
 
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
   import { flip } from "svelte/animate";
   import { flipDurationMs } from "@/lib/constants";
   import DragHandle from "./base/DragHandle.svelte";
+  import { fade } from "svelte/transition";
+  import { cubicIn } from "svelte/easing";
+
+  type CategorItemWithShadowItem = ExpandedCategoryItem & {
+    [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
+  };
+
+  $: categoryItems = (category.items ?? []) as CategorItemWithShadowItem[];
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
@@ -39,11 +47,11 @@
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
   const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
-    category.items = ev.detail.items;
+    categoryItems = ev.detail.items;
   };
 
   const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
-    category.items = ev.detail.items;
+    categoryItems = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateCategoryItemsOrder.mutate({
       categoryItemIds: ids,
@@ -52,7 +60,7 @@
   };
 </script>
 
-<article class="bg-card/80 rounded category">
+<article class="bg-card/80 category rounded">
   <div
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"
@@ -81,19 +89,32 @@
     <DragHandle />
   </div>
   <div
-    class="min-h-[0.5rem]"
+    class="min-h-[0.5rem] rounded"
     use:dndzone={{
-      items: category.items,
+      items: categoryItems,
+      type: "items",
       flipDurationMs,
       dropTargetStyle: {},
-      dropTargetClasses: ["outline", "outline-1", "outline-primary"],
+      transformDraggedElement: (el) => {
+        el?.querySelector(".category-item")?.classList.add(
+          "border",
+          "border-muted-foreground/50",
+          "rounded",
+        );
+      },
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
-    {#each category.items as categoryItem (categoryItem.id)}
-      <div animate:flip={{ duration: flipDurationMs }}>
+    {#each categoryItems as categoryItem (categoryItem.id)}
+      <div animate:flip={{ duration: flipDurationMs }} class="relative">
         <CategoryItem {list} {categoryItem} />
+        {#if categoryItem[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+          <div
+            in:fade={{ duration: 200, easing: cubicIn }}
+            class="border-muted-foreground/50 bg-muted/50 visible absolute inset-0 rounded border"
+          />
+        {/if}
       </div>
     {/each}
   </div>

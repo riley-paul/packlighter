@@ -50,7 +50,7 @@
 <form
   id={categoryItem.id}
   data-id={categoryItem.id}
-  class="hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+  class="hover:bg-muted category-item grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >

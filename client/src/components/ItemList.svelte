@@ -6,7 +6,7 @@
   import { dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
-    import { flipDurationMs } from "@/lib/constants";
+  import { flipDurationMs } from "@/lib/constants";
 
   let searchTerm = "";
 
@@ -50,6 +50,7 @@
     class="bg-card flex-1 overflow-auto rounded-md border"
     use:dndzone={{
       items: filteredItems,
+      type: "items",
       dropFromOthersDisabled: true,
       flipDurationMs,
       dropTargetStyle: {},
