@@ -7,7 +7,11 @@
   import { Checkbox } from "./ui/checkbox";
   import { Button } from "./ui/button";
   import { GripVertical, Plus, X } from "lucide-svelte";
-  import type { ExpandedCategory, ListWithCategories } from "@/hooks/useList";
+  import type {
+    ExpandedCategory,
+    ExpandedCategoryItem,
+    ListWithCategories,
+  } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
   import {
@@ -21,10 +25,11 @@
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
 
-  import Sortable from "sortablejs";
-  import { onMount } from "svelte";
+  import { dndzone } from "svelte-dnd-action";
+
   import { Input } from "./ui/input";
   import DeleteButton from "./DeleteButton.svelte";
+  import { flip } from "svelte/animate";
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
@@ -35,49 +40,19 @@
 
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
-  let categoryElement: HTMLElement;
+  const flipDurationMs = 200;
 
-  onMount(() => {
-    Sortable.create(categoryElement, {
-      group: { name: "categories", put: true, pull: true },
-      sort: true,
-      direction: "vertical",
-      handle: ".handle",
-      ghostClass: "opacity-50",
-      setData: (dataTransfer, dragEl) => {
-        dataTransfer.setData("text/plain", dragEl.id);
-      },
-      onUpdate: (ev) => {
-        console.log("onUpdate");
-        const ids = category.items.map((item) => item.id);
-        const order = arrayMoveImmutable(
-          ids,
-          ev.oldIndex ?? 0,
-          ev.newIndex ?? 0,
-        );
-        $updateCategoryItemsOrder.mutate({ categoryItemIds: order });
-        console.log("order saved");
-      },
-      onAdd: (ev) => {
-        console.log("onAdd");
-        if (ev.pullMode === "clone") {
-          console.log("create new category item");
-          $createCategoryItem.mutate({
-            category,
-            itemId: ev.item.dataset.id,
-          });
-        }
+  const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
+    category.items = ev.detail.items;
+  };
 
-        if (ev.pullMode === true) {
-          console.log("move category item");
-          $updateCategoryItem.mutate({
-            id: ev.item.id ?? "",
-            categoryItem: { category: ev.to.id },
-          });
-        }
-      },
+  const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
+    const ids = ev.detail.items.map((item) => item.id);
+    $updateCategoryItemsOrder.mutate({
+      categoryItemIds: ids,
+      categoryId: category.id,
     });
-  });
+  };
 </script>
 
 <article>
@@ -110,9 +85,16 @@
       <GripVertical class="text-muted-foreground h-4 w-4" />
     </div>
   </div>
-  <div id={category.id} bind:this={categoryElement}>
-    {#each category.items as categoryItem}
-      <CategoryItem {list} {categoryItem} />
+  <div
+    class="min-h-[1rem]"
+    use:dndzone={{ items: category.items, type: "items", flipDurationMs }}
+    on:consider={handleConsider}
+    on:finalize={handleFinalize}
+  >
+    {#each category.items as categoryItem (categoryItem.id)}
+      <div animate:flip={{ duration: flipDurationMs }}>
+        <CategoryItem {list} {categoryItem} />
+      </div>
     {/each}
   </div>
 

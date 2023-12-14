@@ -82,12 +82,15 @@ export const useCreateCategoryItem = () =>
 
 export const useUpdateCategoryItemsOrder = () =>
   createMutation({
-    mutationFn: (variables: { categoryItemIds: string[] }) =>
+    mutationFn: (variables: {
+      categoryItemIds: string[];
+      categoryId: string;
+    }) =>
       Promise.all(
         variables.categoryItemIds.map((id, index) =>
           pb
             .collection(Collections.CategoriesItems)
-            .update(id, { sort_order: index }),
+            .update(id, { sort_order: index, category: variables.categoryId }),
         ),
       ),
     onSuccess: () =>
