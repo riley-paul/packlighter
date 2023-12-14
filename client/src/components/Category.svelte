@@ -87,7 +87,12 @@
   </div>
   <div
     class="min-h-[1rem]"
-    use:dndzone={{ items: category.items, flipDurationMs }}
+    use:dndzone={{
+      items: category.items,
+      flipDurationMs,
+      dropTargetStyle: {},
+      dropTargetClasses: ["outline", "outline-1", "outline-muted"],
+    }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >

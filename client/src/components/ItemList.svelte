@@ -35,7 +35,7 @@
     <Input
       type="search"
       placeholder="Search..."
-      class="bg-card"
+      class="bg-card shadow-none"
       bind:value={searchTerm}
     />
   </div>
@@ -46,11 +46,13 @@
   <p>Loading...</p>
 {:else}
   <div
-    class="bg-card flex-1 overflow-auto border-y"
+    class="bg-card flex-1 overflow-auto rounded-md border"
     use:dndzone={{
       items: filteredItems,
       dropFromOthersDisabled: true,
       flipDurationMs,
+      dropTargetStyle: {},
+      dropTargetClasses: ["outline", "outline-1", "outline-primary"],
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
