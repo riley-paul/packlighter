@@ -13,7 +13,11 @@
     ListWithCategories,
   } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
-  import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
+  import {
+    createItemTemplateCols,
+    getListItemIds,
+    isCategoryFullyPacked,
+  } from "@/lib/helpers";
   import {
     useCreateCategoryItem,
     useUpdateCategoryItemsOrder,
@@ -22,7 +26,11 @@
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
 
-  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
+  import {
+    SHADOW_ITEM_MARKER_PROPERTY_NAME,
+    TRIGGERS,
+    dndzone,
+  } from "svelte-dnd-action";
 
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
@@ -46,11 +54,29 @@
 
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
+  $: allListItems = getListItemIds(list);
+
   const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
+    if (ev.detail.info.trigger === TRIGGERS.DRAGGED_ENTERED_ANOTHER) {
+      categoryItems = ev.detail.items.filter((i) => i.id !== ev.detail.info.id);
+      return;
+    }
+
+    if (!allListItems.includes(ev.detail.info.id)) {
+      console.log("not in list");
+      return;
+    }
+
     categoryItems = ev.detail.items;
   };
 
   const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
+    if (!allListItems.includes(ev.detail.info.id)) {
+      console.log("not in list");
+      
+      return;
+    }
+
     categoryItems = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateCategoryItemsOrder.mutate({
@@ -107,7 +133,7 @@
     on:finalize={handleFinalize}
   >
     {#each categoryItems as categoryItem (categoryItem.id)}
-      <div animate:flip={{ duration: flipDurationMs }} class="relative">
+      <div class="relative">
         <CategoryItem {list} {categoryItem} />
         {#if categoryItem[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
           <div

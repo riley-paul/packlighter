@@ -7,6 +7,9 @@
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
   import { flipDurationMs } from "@/lib/constants";
+  import { currentList } from "@/lib/store";
+  import { useList, type ListWithCategories } from "@/hooks/useList";
+  import { getListItemIds } from "@/lib/helpers";
 
   let searchTerm = "";
 
@@ -14,12 +17,17 @@
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
   };
 
+  $: list = useList($currentList ?? "");
+  $: allListItems = $list.data ? getListItemIds($list.data) : [];
+
   const items = useItems();
-  $: filteredItems = ($items.data?.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase()),
-  ) ?? []) as ItemWithShadowItem[];
+  $: filteredItems = ($items.data
+    ?.filter((i) => !allListItems.includes(i.id))
+    .filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.description.toLowerCase().includes(searchTerm.toLowerCase()),
+    ) ?? []) as ItemWithShadowItem[];
 
   $: updateItemsOrder = useUpdateItemsOrder();
   const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {

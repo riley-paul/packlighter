@@ -49,3 +49,6 @@ export const createItemTemplateCols = (
   ];
   return cols.join(" ");
 };
+
+export const getListItemIds = (list: ListWithCategories): string[] =>
+  list.categories.map((c) => c.items.map((i) => i.item)).flat();
