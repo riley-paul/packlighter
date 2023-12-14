@@ -65,7 +65,7 @@ export const useList = (listId: string) =>
           .collection(Collections.ListCategories)
           .getFullList<CategoriesExpandCategoriesItems>({
             filter: `list = "${listId}"`,
-            sort: "created",
+            sort: "sort_order",
             expand: "categories_items(category).item",
           })
           .then((data) => data.map(expandCategory)),

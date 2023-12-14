@@ -6,9 +6,9 @@
   import { dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
+    import { flipDurationMs } from "@/lib/constants";
 
   let searchTerm = "";
-  const flipDurationMs = 200;
 
   const items = useItems();
   $: filteredItems =
@@ -24,6 +24,7 @@
   };
 
   const handleFinalize = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
+    filteredItems = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateItemsOrder.mutate({ itemIds: ids });
   };

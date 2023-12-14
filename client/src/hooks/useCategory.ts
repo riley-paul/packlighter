@@ -25,7 +25,7 @@ export const useDeleteCategory = () =>
   createMutation({
     mutationFn: (category: ExpandedCategory) =>
       Promise.all([
-        pb.collection("list_categories").delete(category.id),
+        pb.collection(Collections.ListCategories).delete(category.id),
         ...category.items
           .filter(isItemUntouched)
           .map((i) => pb.collection("items").delete(i.itemData.id)),
@@ -40,7 +40,7 @@ export const useDeleteCategory = () =>
 export const useCreateCategory = () =>
   createMutation({
     mutationFn: (listId: string) =>
-      pb.collection("list_categories").create({
+      pb.collection(Collections.ListCategories).create({
         list: listId,
         sort_order:
           queryClient.getQueryData<ListWithCategories>(["list", listId])
@@ -59,7 +59,7 @@ export const useToggleCategoryPacked = () =>
       return Promise.all(
         category.items.map((i) =>
           pb
-            .collection("categories_items")
+            .collection(Collections.CategoriesItems)
             .update(i.id, { packed: !isFullyPacked }),
         ),
       );
@@ -75,7 +75,9 @@ export const useUpdateCategoriesOrder = () =>
     mutationFn: (variables: { categoryIds: string[] }) =>
       Promise.all(
         variables.categoryIds.map((id, index) =>
-          pb.collection("list_categories").update(id, { sort_order: index }),
+          pb
+            .collection(Collections.ListCategories)
+            .update(id, { sort_order: index }),
         ),
       ),
     onSuccess: () =>

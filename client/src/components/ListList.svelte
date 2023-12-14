@@ -1,6 +1,6 @@
 <script lang="ts">
   import { cn } from "@/lib/utils";
-  import { Delete, Plus, X } from "lucide-svelte";
+  import { Plus } from "lucide-svelte";
   import { Button } from "./ui/button";
 
   import { link, location } from "svelte-spa-router";
@@ -14,8 +14,7 @@
   import { dndzone } from "svelte-dnd-action";
   import type { ListsResponse } from "@/lib/types";
   import { flip } from "svelte/animate";
-
-  const flipDurationMs = 200;
+  import { flipDurationMs } from "@/lib/constants";
 
   $: lists = useLists();
   $: createList = useCreateList();
@@ -29,6 +28,7 @@
   };
 
   const handleFinalize = (ev: CustomEvent<DndEvent<ListsResponse>>) => {
+    listData = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateListOrder.mutate({ listIds: ids });
   };
@@ -50,7 +50,7 @@
   }}
   on:consider={handleConsider}
   on:finalize={handleFinalize}
-  class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 pr-2 scroll-gutter"
+  class="bg-card scroll-gutter max-h-[200px] overflow-y-auto rounded-md border py-2 pr-2"
 >
   {#each listData as list (list.id)}
     <div

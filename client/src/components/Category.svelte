@@ -16,11 +16,8 @@
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
   import {
     useCreateCategoryItem,
-    useUpdateCategoryItem,
     useUpdateCategoryItemsOrder,
   } from "@/hooks/useCategoryItem";
-
-  import { arrayMoveImmutable } from "array-move";
 
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
@@ -30,23 +27,22 @@
   import { Input } from "./ui/input";
   import DeleteButton from "./DeleteButton.svelte";
   import { flip } from "svelte/animate";
+    import { flipDurationMs } from "@/lib/constants";
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
   $: toggleCategoryPacked = useToggleCategoryPacked();
   $: createCategoryItem = useCreateCategoryItem();
   $: updateCategoryItemsOrder = useUpdateCategoryItemsOrder();
-  $: updateCategoryItem = useUpdateCategoryItem();
 
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
-
-  const flipDurationMs = 200;
 
   const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
     category.items = ev.detail.items;
   };
 
   const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
+    category.items = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateCategoryItemsOrder.mutate({
       categoryItemIds: ids,
