@@ -22,6 +22,9 @@
   } from "@/lib/helpers";
   import { Textarea } from "./ui/textarea";
   import { Input } from "./ui/input";
+  import DeleteButton from "./DeleteButton.svelte";
+
+  const test = "test";
 
   export let list: ListWithCategories;
   export let categoryItem: ExpandedCategoryItem;
@@ -114,15 +117,7 @@
   />
 
   <input type="hidden" />
-  <Button
-    size="icon"
-    variant="ghost"
-    type="button"
-    class="h-6 w-6 rounded-full"
-    on:click={() => $deleteCategoryItem.mutate(categoryItem)}
-  >
-    <X class="h-4 w-4" />
-  </Button>
+  <DeleteButton handleDelete={() => $deleteCategoryItem.mutate(categoryItem)} />
   <div class="handle">
     <GripVertical class="text-muted-foreground h-4 w-4" />
   </div>

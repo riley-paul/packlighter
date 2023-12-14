@@ -4,17 +4,13 @@
     useToggleCategoryPacked,
     useUpdateCategory,
   } from "@/hooks/useCategory";
-  import type { RecordModel } from "pocketbase";
   import { Checkbox } from "./ui/checkbox";
   import { Button } from "./ui/button";
   import { GripVertical, Plus, X } from "lucide-svelte";
   import type { ExpandedCategory, ListWithCategories } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import { createItemTemplateCols, isCategoryFullyPacked } from "@/lib/helpers";
-  import {
-    useCreateCategoryItem,
-    useUpdateCategoryItem,
-  } from "@/hooks/useCategoryItem";
+  import { useCreateCategoryItem } from "@/hooks/useCategoryItem";
 
   export let category: ExpandedCategory;
   export let list: ListWithCategories;
@@ -22,6 +18,7 @@
   import Sortable from "sortablejs";
   import { onMount } from "svelte";
   import { Input } from "./ui/input";
+  import DeleteButton from "./DeleteButton.svelte";
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
@@ -79,14 +76,7 @@
     {/if}
 
     <div class="text-foreground/70 text-center">Qty</div>
-    <Button
-      size="icon"
-      variant="ghost"
-      class="h-6 w-6 rounded-full"
-      on:click={() => $deleteCategory.mutate(category)}
-    >
-      <X class="h-4 w-4" />
-    </Button>
+    <DeleteButton handleDelete={() => $deleteCategory.mutate(category)} />
     <div>
       <GripVertical class="text-muted-foreground h-4 w-4" />
     </div>

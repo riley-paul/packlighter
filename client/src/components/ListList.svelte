@@ -5,6 +5,7 @@
 
   import { link, location } from "svelte-spa-router";
   import { useCreateList, useLists, useRemoveList } from "@/hooks/useList";
+  import DeleteButton from "./DeleteButton.svelte";
 
   $: lists = useLists();
   $: createList = useCreateList();
@@ -30,14 +31,7 @@
       <a use:link href={`/${list.id}`} class="flex-1">
         {list.name || "Unnamed List"}
       </a>
-      <Button
-        size="icon"
-        variant="ghost"
-        class="h-6 w-6 rounded-full"
-        on:click={() => $removeList.mutate(list.id)}
-      >
-        <X class="h-4 w-4" />
-      </Button>
+      <DeleteButton handleDelete={() => $removeList.mutate(list.id)} />
     </div>
   {/each}
 </div>
