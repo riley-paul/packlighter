@@ -118,7 +118,10 @@
   />
 
   <input type="hidden" />
-  <DeleteButton handleDelete={() => $deleteCategoryItem.mutate(categoryItem)} />
+  <DeleteButton
+    handleDelete={() => $deleteCategoryItem.mutate(categoryItem)}
+    noConfirm
+  />
   <div class="handle">
     <GripVertical class="text-muted-foreground h-4 w-4" />
   </div>

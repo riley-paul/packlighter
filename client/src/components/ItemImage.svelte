@@ -33,7 +33,7 @@
   <DialogTrigger>
     <div
       class={cn(
-        "flex aspect-square h-20 items-center justify-center rounded-sm p-0.5",
+        "flex aspect-square w-20 items-center justify-center rounded-sm p-0.5",
         item.image_url ? "bg-white" : "bg-muted",
       )}
     >
