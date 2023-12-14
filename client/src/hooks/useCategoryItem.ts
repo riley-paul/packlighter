@@ -10,7 +10,7 @@ import type { RecordModel } from "pocketbase";
 import { currentList } from "@/lib/store";
 
 import { queryClient } from "@/lib/query";
-import { Collections } from "@/lib/types";
+import { Collections, type ItemsResponse } from "@/lib/types";
 
 export const useUpdateCategoryItem = () =>
   createMutation({
@@ -64,7 +64,12 @@ export const useCreateCategoryItem = () =>
           })
         : pb
             .collection(Collections.Items)
-            .create({ user: pb.authStore.model?.id })
+            .create({
+              user: pb.authStore.model?.id,
+              sort_order:
+                queryClient.getQueryData<ItemsResponse[]>(["items"])?.length ??
+                0,
+            })
             .then((item) =>
               pb.collection(Collections.CategoriesItems).create({
                 category: variables.category.id,

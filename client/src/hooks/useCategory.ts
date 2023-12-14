@@ -1,7 +1,6 @@
 import { pb } from "@/lib/pocketbase";
-import { createMutation, type QueryClient } from "@tanstack/svelte-query";
-import type { RecordModel } from "pocketbase";
-import type { ExpandedCategory } from "./useList";
+import { createMutation } from "@tanstack/svelte-query";
+import { type ExpandedCategory, type ListWithCategories } from "./useList";
 import { isCategoryFullyPacked, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
 import { queryClient } from "@/lib/query";
@@ -41,7 +40,12 @@ export const useDeleteCategory = () =>
 export const useCreateCategory = () =>
   createMutation({
     mutationFn: (listId: string) =>
-      pb.collection("list_categories").create({ list: listId }),
+      pb.collection("list_categories").create({
+        list: listId,
+        sort_order:
+          queryClient.getQueryData<ListWithCategories>(["list", listId])
+            ?.categories.length ?? 0,
+      }),
     onSuccess: () =>
       currentList.subscribe((listId) => {
         queryClient.invalidateQueries({ queryKey: ["list", listId] });
@@ -66,3 +70,16 @@ export const useToggleCategoryPacked = () =>
       }),
   });
 
+export const useUpdateCategoriesOrder = () =>
+  createMutation({
+    mutationFn: (variables: { categoryIds: string[] }) =>
+      Promise.all(
+        variables.categoryIds.map((id, index) =>
+          pb.collection("list_categories").update(id, { sort_order: index }),
+        ),
+      ),
+    onSuccess: () =>
+      currentList.subscribe((listId) => {
+        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+      }),
+  });

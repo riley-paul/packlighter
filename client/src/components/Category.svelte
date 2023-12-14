@@ -91,7 +91,7 @@
       items: category.items,
       flipDurationMs,
       dropTargetStyle: {},
-      dropTargetClasses: ["outline", "outline-1", "outline-muted"],
+      dropTargetClasses: ["outline", "outline-1", "outline-primary"],
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}

@@ -62,6 +62,7 @@ export type ItemsRecord = {
 export type ListCategoriesRecord = {
 	list: RecordIdString
 	name?: string
+	sort_order?: number
 }
 
 export type ListItemsRecord = {
