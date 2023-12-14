@@ -2,7 +2,7 @@
   import AccountEditor from "@/components/AccountEditor.svelte";
   import ItemList from "@/components/ItemList.svelte";
   import ListList from "@/components/ListList.svelte";
-  import ModeToggle from "@/components/ModeToggle.svelte";
+  import ModeToggle from "@/components/base/ModeToggle.svelte";
   import { Feather } from "lucide-svelte";
   import { link } from "svelte-spa-router";
 

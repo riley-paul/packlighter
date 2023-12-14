@@ -22,7 +22,7 @@
   } from "@/lib/helpers";
   import { Textarea } from "./ui/textarea";
   import { Input } from "./ui/input";
-  import DeleteButton from "./DeleteButton.svelte";
+  import DeleteButton from "./base/DeleteButton.svelte";
 
   const test = "test";
 

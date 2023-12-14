@@ -10,7 +10,7 @@
     useRemoveList,
     useUpdateListsOrder,
   } from "@/hooks/useList";
-  import DeleteButton from "./DeleteButton.svelte";
+  import DeleteButton from "./base/DeleteButton.svelte";
   import { dndzone } from "svelte-dnd-action";
   import type { ListsResponse } from "@/lib/types";
   import { flip } from "svelte/animate";

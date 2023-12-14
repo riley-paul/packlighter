@@ -25,9 +25,9 @@
   import { dndzone } from "svelte-dnd-action";
 
   import { Input } from "./ui/input";
-  import DeleteButton from "./DeleteButton.svelte";
+  import DeleteButton from "./base/DeleteButton.svelte";
   import { flip } from "svelte/animate";
-    import { flipDurationMs } from "@/lib/constants";
+  import { flipDurationMs } from "@/lib/constants";
 
   $: updateCategory = useUpdateCategory();
   $: deleteCategory = useDeleteCategory();
@@ -67,7 +67,7 @@
         bind:value={category.name}
         on:blur={saveCategory}
         placeholder="Category Name"
-        class="text-primary h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none"
+        class="text-primary h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none placeholder:italic"
       />
       <input type="hidden" />
     </form>
@@ -82,7 +82,7 @@
     </div>
   </div>
   <div
-    class="min-h-[1rem]"
+    class="min-h-[0.5rem]"
     use:dndzone={{
       items: category.items,
       flipDurationMs,
@@ -98,8 +98,7 @@
       </div>
     {/each}
   </div>
-
-  <div class="mt-2">
+  <div>
     <Button
       variant="linkMuted"
       size="sm"

@@ -4,7 +4,7 @@
   import { useDeleteItem } from "@/hooks/useItem";
   import { cn } from "@/lib/utils";
   import type { ItemsResponse } from "@/lib/types";
-  import DeleteButton from "./DeleteButton.svelte";
+  import DeleteButton from "./base/DeleteButton.svelte";
 
   export let item: ItemsResponse;
 
