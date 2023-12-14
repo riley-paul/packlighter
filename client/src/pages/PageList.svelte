@@ -11,9 +11,11 @@
     useUpdateCategoriesOrder,
   } from "@/hooks/useCategory";
   import { Input } from "@/components/ui/input";
-  import { dndzone } from "svelte-dnd-action";
+  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
-    import { flipDurationMs } from "@/lib/constants";
+  import { flipDurationMs } from "@/lib/constants";
+  import { fade } from "svelte/transition";
+  import { cubicIn } from "svelte/easing";
 
   export let params = { listId: "" };
 
@@ -21,7 +23,11 @@
   $: createCategory = useCreateCategory();
   $: updateCategoriesOrder = useUpdateCategoriesOrder();
 
-  $: categories = $list.data?.categories ?? [];
+  type CategoryWithShadowItem = ExpandedCategory & {
+    [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
+  };
+
+  $: categories = ($list.data?.categories ?? []) as CategoryWithShadowItem[];
 
   const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategory>>) => {
     categories = ev.detail.items;
@@ -50,13 +56,23 @@
             items: categories,
             flipDurationMs,
             type: "categories",
+            dropTargetStyle: {},
+            transformDraggedElement: (el) => {
+              el?.style.setProperty("background-color", "red");
+            },
           }}
           on:consider={handleConsider}
           on:finalize={handleFinalize}
         >
           {#each categories as category (category.id)}
-            <div animate:flip={{ duration: flipDurationMs }}>
+            <div animate:flip={{ duration: flipDurationMs }} class="relative">
               <Category {category} list={$list.data} />
+              {#if category[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+                <div
+                  in:fade={{ duration: 200, easing: cubicIn }}
+                  class="border-secondary-foreground/50 bg-secondary/50 visible absolute inset-0 rounded border"
+                />
+              {/if}
             </div>
           {/each}
         </div>
