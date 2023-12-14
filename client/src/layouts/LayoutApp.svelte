@@ -27,7 +27,7 @@
   <main
     class="container grid h-full flex-1 grid-cols-[1fr_300px] overflow-hidden"
   >
-    <div class="flex-1 overflow-auto py-6 pr-6">
+    <div class="scroll-gutter flex-1 overflow-auto py-6 pr-2">
       <slot />
     </div>
     <aside class="flex w-[300px] flex-col overflow-auto border-l py-4 pl-4">
@@ -37,3 +37,9 @@
     </aside>
   </main>
 </div>
+
+<style global>
+  .scroll-gutter {
+    scrollbar-gutter: stable;
+  }
+</style>

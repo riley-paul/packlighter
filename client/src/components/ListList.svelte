@@ -50,7 +50,7 @@
   }}
   on:consider={handleConsider}
   on:finalize={handleFinalize}
-  class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 pr-2"
+  class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 pr-2 scroll-gutter"
 >
   {#each listData as list (list.id)}
     <div

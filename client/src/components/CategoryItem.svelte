@@ -71,7 +71,7 @@
         on:blur={saveCategoryItem}
         name="name"
         placeholder="Name"
-        class="h-auto w-full min-w-0 border-none bg-inherit py-0.5 shadow-none"
+        class="h-auto w-full min-w-0 border-none bg-inherit py-0.5 shadow-none placeholder:italic"
       />
 
       <Input
@@ -79,7 +79,7 @@
         on:blur={saveCategoryItem}
         name="description"
         placeholder="Description"
-        class="text-muted-foreground h-auto w-full min-w-0 resize-none overflow-hidden border-none bg-inherit py-0.5 shadow-none"
+        class="text-muted-foreground h-auto w-full min-w-0 resize-none overflow-hidden border-none bg-inherit py-0.5 shadow-none placeholder:italic"
       />
     </div>
   </div>

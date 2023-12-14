@@ -84,7 +84,11 @@ export const useLists = () =>
 export const useCreateList = () =>
   createMutation({
     mutationFn: () =>
-      pb.collection(Collections.Lists).create({ user: pb.authStore.model?.id }),
+      pb.collection(Collections.Lists).create({
+        user: pb.authStore.model?.id,
+        sort_order:
+          queryClient.getQueryData<ListsResponse[]>(["lists"])?.length ?? 0,
+      }),
     onSuccess: (data) => {
       goto(`/${data.id}`);
       queryClient.invalidateQueries({ queryKey: ["lists"] });
