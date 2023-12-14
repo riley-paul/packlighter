@@ -14,6 +14,8 @@ const buttonVariants = tv({
       secondary:
         "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
       ghost: "hover:bg-accent hover:text-accent-foreground",
+      ghostMuted:
+        "hover:bg-accent hover:text-accent-foreground text-muted-foreground transition-colors",
       link: "text-primary underline-offset-4 hover:underline",
       linkMuted:
         "text-muted-foreground underline-offset-4 hover:underline hover:text-primary transition-colors",

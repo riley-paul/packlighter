@@ -22,9 +22,8 @@
 
 <Button
   size="icon"
-  variant={isConfirming ? "destructive" : "ghost"}
-  class="{!isConfirming &&
-    'text-muted-foreground'} hover:text-foreground h-6 w-6 rounded-full transition-colors"
+  variant={isConfirming ? "destructive" : "ghostMuted"}
+  class="h-6 w-6 rounded-full"
   on:click={(ev) => {
     ev.stopPropagation();
     if (noConfirm) {
