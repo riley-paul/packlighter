@@ -3,20 +3,23 @@
   import { Input } from "./ui/input";
   import ItemListItem from "./ItemListItem.svelte";
 
-  import { dndzone } from "svelte-dnd-action";
+  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
   import { flipDurationMs } from "@/lib/constants";
 
   let searchTerm = "";
 
+  type ItemWithShadowItem = ItemsResponse & {
+    [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
+  };
+
   const items = useItems();
-  $: filteredItems =
-    $items.data?.filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase()),
-    ) ?? [];
+  $: filteredItems = ($items.data?.filter(
+    (item) =>
+      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchTerm.toLowerCase()),
+  ) ?? []) as ItemWithShadowItem[];
 
   $: updateItemsOrder = useUpdateItemsOrder();
   const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
@@ -54,14 +57,24 @@
       dropFromOthersDisabled: true,
       flipDurationMs,
       dropTargetStyle: {},
-      dropTargetClasses: ["outline", "outline-1", "outline-primary"],
+      dropTargetClasses: ["border-primary"],
+      transformDraggedElement: (el) => {
+        el?.querySelector(".item")?.classList.add(
+          "bg-secondary/50",
+          "rounded",
+          "border",
+        );
+      },
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
   >
     {#each filteredItems as item (item.id)}
-      <div animate:flip={{ duration: flipDurationMs }}>
+      <div animate:flip={{ duration: flipDurationMs }} class="relative">
         <ItemListItem {item} />
+        {#if item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+          <div class="bg-secondary/50 visible absolute inset-0" />
+        {/if}
       </div>
     {/each}
   </div>

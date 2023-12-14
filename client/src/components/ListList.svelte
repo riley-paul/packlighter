@@ -57,7 +57,7 @@
     dropTargetClasses: ["border-primary"],
     transformDraggedElement: (el) => {
       el?.querySelector(".list")?.classList.add(
-        "bg-border/50",
+        "bg-secondary/50",
         "rounded",
         "border",
       );

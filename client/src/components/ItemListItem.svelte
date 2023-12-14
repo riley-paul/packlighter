@@ -15,7 +15,7 @@
 <div
   id={item.id}
   data-id={item.id}
-  class="hover:bg-muted flex items-center gap-2 p-2 pl-4 text-sm transition-colors"
+  class="hover:bg-secondary/50 item flex items-center gap-2 p-2 pl-4 text-sm transition-colors"
 >
   <div class="flex-1">
     <h3 class={cn(!item.name && "text-muted-foreground italic")}>
