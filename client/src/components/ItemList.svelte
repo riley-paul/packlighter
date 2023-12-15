@@ -3,13 +3,17 @@
   import { Input } from "./ui/input";
   import ItemListItem from "./ItemListItem.svelte";
 
-  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
+  import {
+    SHADOW_ITEM_MARKER_PROPERTY_NAME,
+    TRIGGERS,
+    dndzone,
+  } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
   import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
-  import { currentList } from "@/lib/store";
+  import { currentList, isForeignItem } from "@/lib/store";
   import { useList } from "@/hooks/useList";
-  import { getListItemIds } from "@/lib/helpers";
+  import { createTempCategoryItem, getListItemIds } from "@/lib/helpers";
   import DragGhost from "./base/DragGhost.svelte";
 
   let searchTerm = "";
@@ -32,6 +36,7 @@
 
   $: updateItemsOrder = useUpdateItemsOrder();
   const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
+    $isForeignItem = true;
     filteredItems = ev.detail.items;
   };
 
@@ -39,6 +44,7 @@
     filteredItems = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateItemsOrder.mutate({ itemIds: ids });
+    $isForeignItem = false;
   };
 </script>
 
@@ -68,7 +74,6 @@
       dropTargetStyle: {},
       dropTargetClasses: ["border-primary"],
       transformDraggedElement: (el, data) => {
-        console.log("data", data);
         el?.querySelector(".item")?.classList.add(...isDraggingClasslist);
       },
     }}

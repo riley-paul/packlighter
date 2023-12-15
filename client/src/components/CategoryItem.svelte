@@ -23,24 +23,13 @@
   import DeleteButton from "./base/DeleteButton.svelte";
   import DragHandle from "./base/DragHandle.svelte";
 
-  const test = "test";
-
   export let list: ListWithCategories;
   export let categoryItem: ExpandedCategoryItem;
 
   $: updateCategoryItem = useUpdateCategoryItem();
   $: deleteCategoryItem = useDeleteCategoryItem();
 
-  let displayedWeight = getWeightInUnit(
-    categoryItem.itemData.weight_g,
-    categoryItem.itemData.weight_unit as MassUnit,
-  );
-
   $: saveCategoryItem = () => {
-    categoryItem.itemData.weight_g = getWeightInGrams(
-      displayedWeight,
-      categoryItem.itemData.weight_unit as MassUnit,
-    );
     $updateCategoryItem.mutate({ id: categoryItem.id, categoryItem });
   };
 </script>
@@ -86,7 +75,6 @@
   {#if list.show_weights}
     <div class="flex">
       <Input
-        bind:value={displayedWeight}
         on:change={saveCategoryItem}
         name="weight_g"
         type="number"

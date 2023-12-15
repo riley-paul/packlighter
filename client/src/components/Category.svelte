@@ -15,6 +15,7 @@
   import CategoryItem from "./CategoryItem.svelte";
   import {
     createItemTemplateCols,
+    createTempCategoryItem,
     getListItemIds,
     isCategoryFullyPacked,
   } from "@/lib/helpers";
@@ -28,6 +29,7 @@
 
   import {
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
+    SHADOW_PLACEHOLDER_ITEM_ID,
     TRIGGERS,
     dndzone,
     setDebugMode,
@@ -38,6 +40,8 @@
   import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
   import DragHandle from "./base/DragHandle.svelte";
   import DragGhost from "./base/DragGhost.svelte";
+  import { isForeignItem } from "@/lib/store";
+  import type { ItemsResponse } from "@/lib/types";
 
   type CategorItemWithShadowItem = ExpandedCategoryItem & {
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
@@ -57,15 +61,38 @@
 
   $: allListItems = getListItemIds(list);
 
-  let newCategoryItem;
-
   const handleConsider = async (
     ev: CustomEvent<DndEvent<ExpandedCategoryItem>>,
   ) => {
+    const { trigger, id } = ev.detail.info;
+    if ($isForeignItem) {
+      categoryItems = ev.detail.items.map((item) =>
+        item.id === SHADOW_PLACEHOLDER_ITEM_ID
+          ? {
+              ...item,
+              ...createTempCategoryItem(item as unknown as ItemsResponse),
+            }
+          : item,
+      );
+      console.table(categoryItems);
+      return;
+    }
     categoryItems = ev.detail.items;
   };
 
-  const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
+  const handleFinalize = async (
+    ev: CustomEvent<DndEvent<ExpandedCategoryItem>>,
+  ) => {
+    const { id } = ev.detail.info;
+
+    if ($isForeignItem) {
+      const newCategoryItem = await $createCategoryItem.mutate({
+        category,
+        itemId: id,
+      });
+      return;
+    }
+
     categoryItems = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateCategoryItemsOrder.mutate({

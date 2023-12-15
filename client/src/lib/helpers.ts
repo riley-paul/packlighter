@@ -4,6 +4,7 @@ import type {
   ListWithCategories,
 } from "@/hooks/useList";
 import type { RecordModel } from "pocketbase";
+import { Collections, type ItemsResponse } from "./types";
 
 export const isCategoryFullyPacked = (category: ExpandedCategory) =>
   category.items.length > 0 && category.items.every((i) => i.packed);
@@ -52,3 +53,23 @@ export const createItemTemplateCols = (
 
 export const getListItemIds = (list: ListWithCategories): string[] =>
   list.categories.map((c) => c.items.map((i) => i.item)).flat();
+
+export const createTempCategoryItem = (
+  item: ItemsResponse,
+): ExpandedCategoryItem => {
+  return {
+    id: "temp",
+    category: "temp",
+    collectionId: "sydktarhcp2ongv",
+    itemData: item,
+    quantity: 1,
+    packed: false,
+    item: item.id,
+    cons_weight: false,
+    sort_order: 0,
+    worn_weight: false,
+    created: new Date().toISOString(),
+    updated: new Date().toISOString(),
+    collectionName: Collections.CategoriesItems,
+  };
+};
