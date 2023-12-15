@@ -6,10 +6,20 @@
   import ListHeader from "@/components/ListHeader.svelte";
   import CategoryList from "@/components/CategoryList.svelte";
   import LayoutIconTitleSubtitle from "@/layouts/LayoutIconTitleSubtitle.svelte";
+  import { CATEGORY_NAME_CLASS } from "@/lib/constants";
 
   export let params = { listId: "" };
 
   $: list = useList(params.listId);
+
+  const handleCategoryCreated = (ev: CustomEvent<{ id: string }>) => {
+    try {
+      const selector = `#${ev.detail.id} input.${CATEGORY_NAME_CLASS}`;
+      const element = document.querySelector<HTMLInputElement>(selector);
+      element?.scrollIntoView({ behavior: "smooth" });
+      element?.focus();
+    } catch (_) {}
+  };
 </script>
 
 <LayoutApp>
@@ -25,7 +35,10 @@
     {:else if $list.data}
       <div class="flex flex-col gap-4">
         <ListHeader list={$list.data} />
-        <CategoryList list={$list.data} />
+        <CategoryList
+          list={$list.data}
+          on:categoryCreated={handleCategoryCreated}
+        />
       </div>
     {/if}
   </Card>
