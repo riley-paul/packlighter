@@ -10,12 +10,9 @@
     useCreateCategory,
     useUpdateCategoriesOrder,
   } from "@/hooks/useCategory";
-  import { Input } from "@/components/ui/input";
   import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
-  import { flip } from "svelte/animate";
-  import { flipDurationMs } from "@/lib/constants";
-  import { fade } from "svelte/transition";
-  import { cubicIn } from "svelte/easing";
+  import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
+  import DragGhost from "@/components/base/DragGhost.svelte";
 
   export let params = { listId: "" };
 
@@ -58,7 +55,9 @@
             type: "categories",
             dropTargetStyle: {},
             transformDraggedElement: (el) => {
-              el?.querySelector(".category")?.classList.add("border");
+              el?.querySelector(".category")?.classList.add(
+                ...isDraggingClasslist,
+              );
             },
           }}
           on:consider={handleConsider}
@@ -68,10 +67,7 @@
             <div class="relative">
               <Category {category} list={$list.data} />
               {#if category[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-                <div
-                  in:fade={{ duration: 200, easing: cubicIn }}
-                  class="border-secondary-foreground/50 bg-secondary/50 visible absolute inset-0 rounded border"
-                />
+                <DragGhost />
               {/if}
             </div>
           {/each}

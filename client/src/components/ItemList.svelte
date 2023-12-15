@@ -6,10 +6,11 @@
   import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
-  import { flipDurationMs } from "@/lib/constants";
+  import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
   import { currentList } from "@/lib/store";
-  import { useList, type ListWithCategories } from "@/hooks/useList";
+  import { useList } from "@/hooks/useList";
   import { getListItemIds } from "@/lib/helpers";
+  import DragGhost from "./base/DragGhost.svelte";
 
   let searchTerm = "";
 
@@ -68,11 +69,7 @@
       dropTargetClasses: ["border-primary"],
       transformDraggedElement: (el, data) => {
         console.log("data", data);
-        el?.querySelector(".item")?.classList.add(
-          "bg-secondary/50",
-          "rounded",
-          "border",
-        );
+        el?.querySelector(".item")?.classList.add(...isDraggingClasslist);
       },
     }}
     on:consider={handleConsider}
@@ -82,7 +79,7 @@
       <div animate:flip={{ duration: flipDurationMs }} class="relative">
         <ItemListItem {item} />
         {#if item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-          <div class="bg-secondary/50 visible absolute inset-0" />
+          <DragGhost fullWidth />
         {/if}
       </div>
     {/each}

@@ -6,7 +6,7 @@
   } from "@/hooks/useCategory";
   import { Checkbox } from "./ui/checkbox";
   import { Button } from "./ui/button";
-  import { GripVertical, Plus, X } from "lucide-svelte";
+  import { Plus } from "lucide-svelte";
   import type {
     ExpandedCategory,
     ExpandedCategoryItem,
@@ -35,11 +35,9 @@
 
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
-  import { flip } from "svelte/animate";
-  import { flipDurationMs } from "@/lib/constants";
+  import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
   import DragHandle from "./base/DragHandle.svelte";
-  import { fade } from "svelte/transition";
-  import { cubicIn } from "svelte/easing";
+  import DragGhost from "./base/DragGhost.svelte";
 
   type CategorItemWithShadowItem = ExpandedCategoryItem & {
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
@@ -77,7 +75,7 @@
   };
 </script>
 
-<article class="bg-card/80 category rounded">
+<article class="category">
   <div
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"
@@ -114,9 +112,7 @@
       dropTargetStyle: {},
       transformDraggedElement: (el) => {
         el?.querySelector(".category-item")?.classList.add(
-          "border",
-          "border-muted-foreground/50",
-          "rounded",
+          ...isDraggingClasslist,
         );
       },
     }}
@@ -127,10 +123,7 @@
       <div class="relative">
         <CategoryItem {list} {categoryItem} />
         {#if categoryItem[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-          <div
-            in:fade={{ duration: 200, easing: cubicIn }}
-            class="border-muted-foreground/50 bg-muted/50 visible absolute inset-0 rounded border"
-          />
+          <DragGhost />
         {/if}
       </div>
     {/each}
