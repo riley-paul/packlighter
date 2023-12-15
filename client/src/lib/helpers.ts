@@ -5,6 +5,7 @@ import type {
 } from "@/hooks/useList";
 import type { RecordModel } from "pocketbase";
 import { Collections, type ItemsResponse } from "./types";
+import { SHADOW_PLACEHOLDER_ITEM_ID } from "svelte-dnd-action";
 
 export const isCategoryFullyPacked = (category: ExpandedCategory) =>
   category.items.length > 0 && category.items.every((i) => i.packed);
@@ -58,8 +59,8 @@ export const createTempCategoryItem = (
   item: ItemsResponse,
 ): ExpandedCategoryItem => {
   return {
-    id: "temp",
-    category: "temp",
+    id: SHADOW_PLACEHOLDER_ITEM_ID,
+    category: SHADOW_PLACEHOLDER_ITEM_ID,
     collectionId: "sydktarhcp2ongv",
     itemData: item,
     quantity: 1,
@@ -72,4 +73,14 @@ export const createTempCategoryItem = (
     updated: new Date().toISOString(),
     collectionName: Collections.CategoriesItems,
   };
+};
+
+export const getSortOrderFromIndex = (
+  sortOrders: number[],
+  insertionIndex: number,
+): number => {
+  if (insertionIndex <= 0) return sortOrders[0] - 1;
+  if (insertionIndex >= sortOrders.length)
+    return sortOrders[sortOrders.length - 1] + 1;
+  return (sortOrders[insertionIndex - 1] + sortOrders[insertionIndex]) / 2;
 };

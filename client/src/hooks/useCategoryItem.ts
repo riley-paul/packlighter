@@ -1,7 +1,7 @@
 import { createMutation } from "@tanstack/svelte-query";
 import type { ExpandedCategory, ExpandedCategoryItem } from "./useList";
 import { pb } from "@/lib/pocketbase";
-import { isItemUntouched } from "@/lib/helpers";
+import { getSortOrderFromIndex, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
 
 import { queryClient } from "@/lib/query";
@@ -49,13 +49,23 @@ export const useDeleteCategoryItem = () =>
 
 export const useCreateCategoryItem = () =>
   createMutation({
-    mutationFn: (variables: { category: ExpandedCategory; itemId?: string }) =>
+    mutationFn: (variables: {
+      category: ExpandedCategory;
+      itemId?: string;
+      insertionIndex?: number;
+    }) =>
       variables.itemId
         ? pb.collection(Collections.CategoriesItems).create({
             category: variables.category.id,
             item: variables.itemId,
             quantity: 1,
-            sort_order: variables.category.items.length,
+            sort_order:
+              variables.insertionIndex !== undefined
+                ? getSortOrderFromIndex(
+                    variables.category.items.map((i) => i.sort_order),
+                    variables.insertionIndex,
+                  )
+                : variables.category.items.length,
           })
         : pb
             .collection(Collections.Items)

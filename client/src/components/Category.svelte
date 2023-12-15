@@ -59,8 +59,6 @@
 
   $: saveCategory = () => $updateCategory.mutate({ id: category.id, category });
 
-  $: allListItems = getListItemIds(list);
-
   const handleConsider = async (
     ev: CustomEvent<DndEvent<ExpandedCategoryItem>>,
   ) => {
@@ -74,7 +72,6 @@
             }
           : item,
       );
-      console.table(categoryItems);
       return;
     }
     categoryItems = ev.detail.items;
@@ -86,9 +83,15 @@
     const { id } = ev.detail.info;
 
     if ($isForeignItem) {
-      const newCategoryItem = await $createCategoryItem.mutate({
+      console.table(categoryItems);
+      const insertionIndex = categoryItems.findIndex(
+        (item) => item.id === SHADOW_PLACEHOLDER_ITEM_ID,
+      );
+      console.log(insertionIndex);
+      $createCategoryItem.mutate({
         category,
         itemId: id,
+        insertionIndex,
       });
       return;
     }
