@@ -11,6 +11,8 @@
   import { useList } from "@/hooks/useList";
   import { getListItemIds, transformDraggedElement } from "@/lib/helpers";
   import DragGhost from "./base/DragGhost.svelte";
+  import LayoutIconTitleSubtitle from "@/layouts/LayoutIconTitleSubtitle.svelte";
+  import { SearchX } from "lucide-svelte";
 
   let searchTerm = "";
 
@@ -59,7 +61,7 @@
   <p>Error: {$items.error}</p>
 {:else if $items.isLoading}
   <p>Loading...</p>
-{:else}
+{:else if filteredItems.length > 0}
   <div
     class="bg-card flex-1 overflow-auto rounded-md border transition-colors"
     use:dndzone={{
@@ -82,5 +84,13 @@
         {/if}
       </div>
     {/each}
+  </div>
+{:else}
+  <div class="bg-card flex-1 overflow-auto rounded-md border transition-colors">
+    <LayoutIconTitleSubtitle>
+      <SearchX class="h-10 w-10" />
+      <span slot="title">No items found</span>
+      <span slot="subtitle">Try searching for something else</span>
+    </LayoutIconTitleSubtitle>
   </div>
 {/if}

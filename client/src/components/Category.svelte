@@ -100,7 +100,7 @@
   };
 </script>
 
-<article class={DRAGGABLE_CLASS}>
+<article class={DRAGGABLE_CLASS} id={category.id}>
   <div
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"
