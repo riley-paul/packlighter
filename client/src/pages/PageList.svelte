@@ -42,8 +42,10 @@
     {#if $list.isError}
       <p>Error: {$list.error}</p>
     {:else if $list.isLoading}
-      <div class="flex w-full items-center justify-center py-24">
-        <Loader2 class="text-primary h-8 w-8 animate-spin" />
+      <div class="flex w-full flex-col items-center justify-center py-24">
+        <Loader2 class="text-primary h-10 w-10 animate-spin" />
+        <h2 class="mb-1 mt-8 font-semibold">Loading your list</h2>
+        <p class="text-muted-foreground text-sm">Please wait one moment...</p>
       </div>
     {:else if $list.data}
       <div class="flex flex-col gap-4">

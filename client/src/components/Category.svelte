@@ -129,7 +129,7 @@
       <div class="text-foreground/70 text-center">Weight</div>
     {/if}
 
-    <div class="text-foreground/70 text-center">Qty</div>
+    <div class="text-foreground/70">Qty</div>
     <DeleteButton handleDelete={() => $deleteCategory.mutate(category)} />
     <DragHandle />
   </div>
