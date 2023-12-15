@@ -5,6 +5,7 @@ import { isCategoryFullyPacked, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
+import { createEventDispatcher } from "svelte";
 
 export const useUpdateCategory = () =>
   createMutation({
@@ -37,8 +38,9 @@ export const useDeleteCategory = () =>
       }),
   });
 
-export const useCreateCategory = () =>
-  createMutation({
+export const useCreateCategory = () => {
+  const dispatch = createEventDispatcher();
+  return createMutation({
     mutationFn: (listId: string) =>
       pb.collection(Collections.ListCategories).create({
         list: listId,
@@ -46,11 +48,13 @@ export const useCreateCategory = () =>
           queryClient.getQueryData<ListWithCategories>(["list", listId])
             ?.categories.length ?? 0,
       }),
-    onSuccess: () =>
-      currentList.subscribe((listId) => {
-        queryClient.invalidateQueries({ queryKey: ["list", listId] });
+    onSuccess: (data) =>
+      currentList.subscribe(async (listId) => {
+        await queryClient.invalidateQueries({ queryKey: ["list", listId] });
+        dispatch("categoryCreated", { id: data.id });
       }),
   });
+};
 
 export const useToggleCategoryPacked = () =>
   createMutation({

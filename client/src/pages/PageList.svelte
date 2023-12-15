@@ -1,40 +1,19 @@
 <script lang="ts">
   import { Card } from "@/components/ui/card";
   import LayoutApp from "@/layouts/LayoutApp.svelte";
-  import { Button } from "@/components/ui/button";
-  import { Loader2, Plus } from "lucide-svelte";
-  import { useList, type ExpandedCategory } from "@/hooks/useList";
+  import { Loader2 } from "lucide-svelte";
+  import { useList } from "@/hooks/useList";
   import ListHeader from "@/components/ListHeader.svelte";
-  import Category from "@/components/Category.svelte";
-  import {
-    useCreateCategory,
-    useUpdateCategoriesOrder,
-  } from "@/hooks/useCategory";
-  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
-  import { flipDurationMs } from "@/lib/constants";
-  import DragGhost from "@/components/base/DragGhost.svelte";
-  import { transformDraggedElement } from "@/lib/helpers";
+  import CategoryList from "@/components/CategoryList.svelte";
+  import { CATEGORY_NAME_CLASS } from "@/lib/constants";
 
   export let params = { listId: "" };
 
   $: list = useList(params.listId);
-  $: createCategory = useCreateCategory();
-  $: updateCategoriesOrder = useUpdateCategoriesOrder();
 
-  type CategoryWithShadowItem = ExpandedCategory & {
-    [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
-  };
-
-  $: categories = ($list.data?.categories ?? []) as CategoryWithShadowItem[];
-
-  const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategory>>) => {
-    categories = ev.detail.items;
-  };
-
-  const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategory>>) => {
-    categories = ev.detail.items;
-    const ids = ev.detail.items.map((item) => item.id);
-    $updateCategoriesOrder.mutate({ categoryIds: ids });
+  const handleCreateCategory = () => {
+    const names = document.querySelectorAll(`input.${CATEGORY_NAME_CLASS}`);
+    (names[names.length - 1] as HTMLInputElement).focus();
   };
 </script>
 
@@ -51,37 +30,10 @@
     {:else if $list.data}
       <div class="flex flex-col gap-4">
         <ListHeader list={$list.data} />
-        <div
-          use:dndzone={{
-            items: categories,
-            flipDurationMs,
-            type: "categories",
-            dropTargetStyle: {},
-            transformDraggedElement,
-          }}
-          on:consider={handleConsider}
-          on:finalize={handleFinalize}
-        >
-          {#each categories as category (category.id)}
-            <div class="relative">
-              <Category {category} list={$list.data} />
-              {#if category[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-                <DragGhost />
-              {/if}
-            </div>
-          {/each}
-        </div>
-        <div>
-          <Button
-            variant="linkMuted"
-            size="sm"
-            on:click={() => $createCategory.mutate(params.listId)}
-            disabled={$createCategory.isPending}
-          >
-            <Plus class="mr-2 h-4 w-4" />
-            Add Category
-          </Button>
-        </div>
+        <CategoryList
+          list={$list.data}
+          on:categoryCreated={handleCreateCategory}
+        />
       </div>
     {/if}
   </Card>

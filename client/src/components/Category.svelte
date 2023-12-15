@@ -30,7 +30,11 @@
   } from "svelte-dnd-action";
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
-  import { DRAGGABLE_CLASS, flipDurationMs } from "@/lib/constants";
+  import {
+    CATEGORY_NAME_CLASS,
+    DRAGGABLE_CLASS,
+    flipDurationMs,
+  } from "@/lib/constants";
   import DragHandle from "./base/DragHandle.svelte";
   import DragGhost from "./base/DragGhost.svelte";
   import { isForeignItem } from "@/lib/store";
@@ -112,7 +116,7 @@
         bind:value={category.name}
         on:blur={saveCategory}
         placeholder="Category Name"
-        class="text-primary h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none placeholder:italic"
+        class="{CATEGORY_NAME_CLASS} text-primary h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none placeholder:italic"
       />
       <input type="hidden" />
     </form>
