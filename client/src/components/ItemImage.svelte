@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { RecordModel } from "pocketbase";
   import {
     Dialog,
     DialogContent,

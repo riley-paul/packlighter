@@ -3,17 +3,13 @@
   import { Input } from "./ui/input";
   import ItemListItem from "./ItemListItem.svelte";
 
-  import {
-    SHADOW_ITEM_MARKER_PROPERTY_NAME,
-    TRIGGERS,
-    dndzone,
-  } from "svelte-dnd-action";
+  import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
   import { flip } from "svelte/animate";
   import type { ItemsResponse } from "@/lib/types";
   import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
   import { currentList, isForeignItem } from "@/lib/store";
   import { useList } from "@/hooks/useList";
-  import { createTempCategoryItem, getListItemIds } from "@/lib/helpers";
+  import { getListItemIds } from "@/lib/helpers";
   import DragGhost from "./base/DragGhost.svelte";
 
   let searchTerm = "";

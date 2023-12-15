@@ -1,11 +1,8 @@
 <script lang="ts">
-  import type { RecordModel } from "pocketbase";
-  import { Button } from "./ui/button";
   import type {
     ExpandedCategoryItem,
     ListWithCategories,
   } from "@/hooks/useList";
-  import { useQueryClient } from "@tanstack/svelte-query";
   import {
     useDeleteCategoryItem,
     useUpdateCategoryItem,

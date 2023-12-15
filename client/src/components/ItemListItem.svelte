@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { GripVertical, X } from "lucide-svelte";
-  import { Button } from "./ui/button";
   import { useDeleteItem } from "@/hooks/useItem";
   import { cn } from "@/lib/utils";
   import type { ItemsResponse } from "@/lib/types";

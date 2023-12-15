@@ -9,7 +9,6 @@
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "./ui/dropdown-menu";
-  import type { RecordModel } from "pocketbase";
   import { useUpdateList, type ListWithCategories } from "@/hooks/useList";
 
   export let list: ListWithCategories;
@@ -20,7 +19,7 @@
 
 <DropdownMenu>
   <DropdownMenuTrigger asChild let:builder>
-    <Button builders={[builder]} size="icon" variant="secondary" class="h-full">
+    <Button builders={[builder]} size="icon" variant="outline" class="h-full">
       <Settings class="h-4 w-4" />
     </Button>
   </DropdownMenuTrigger>

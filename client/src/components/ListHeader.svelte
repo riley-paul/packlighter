@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { RecordModel } from "pocketbase";
   import { Input } from "./ui/input";
   import { Textarea } from "./ui/textarea";
   import { useUpdateList, type ListWithCategories } from "@/hooks/useList";

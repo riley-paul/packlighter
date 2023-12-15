@@ -16,7 +16,6 @@
   import {
     createItemTemplateCols,
     createTempCategoryItem,
-    getListItemIds,
     isCategoryFullyPacked,
   } from "@/lib/helpers";
   import {
@@ -30,7 +29,6 @@
   import {
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     SHADOW_PLACEHOLDER_ITEM_ID,
-    TRIGGERS,
     dndzone,
     setDebugMode,
   } from "svelte-dnd-action";
@@ -62,7 +60,6 @@
   const handleConsider = async (
     ev: CustomEvent<DndEvent<ExpandedCategoryItem>>,
   ) => {
-    const { trigger, id } = ev.detail.info;
     if ($isForeignItem) {
       categoryItems = ev.detail.items.map((item) =>
         item.id === SHADOW_PLACEHOLDER_ITEM_ID
@@ -83,11 +80,9 @@
     const { id } = ev.detail.info;
 
     if ($isForeignItem) {
-      console.table(categoryItems);
       const insertionIndex = categoryItems.findIndex(
         (item) => item.id === SHADOW_PLACEHOLDER_ITEM_ID,
       );
-      console.log(insertionIndex);
       $createCategoryItem.mutate({
         category,
         itemId: id,

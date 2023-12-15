@@ -1,7 +1,5 @@
 <script lang="ts">
   import { pb } from "@/lib/pocketbase";
-  import type { RecordModel } from "pocketbase";
-
   import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
   import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
   import { User } from "lucide-svelte";
