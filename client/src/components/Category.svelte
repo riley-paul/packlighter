@@ -23,17 +23,11 @@
     useCreateCategoryItem,
     useUpdateCategoryItemsOrder,
   } from "@/hooks/useCategoryItem";
-
-  export let category: ExpandedCategory;
-  export let list: ListWithCategories;
-
   import {
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     SHADOW_PLACEHOLDER_ITEM_ID,
     dndzone,
-    setDebugMode,
   } from "svelte-dnd-action";
-
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
   import { DRAGGABLE_CLASS, flipDurationMs } from "@/lib/constants";
@@ -42,11 +36,12 @@
   import { isForeignItem } from "@/lib/store";
   import type { ItemsResponse } from "@/lib/types";
 
+  export let category: ExpandedCategory;
+  export let list: ListWithCategories;
+
   type CategorItemWithShadowItem = ExpandedCategoryItem & {
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
   };
-
-  setDebugMode(true);
 
   $: categoryItems = (category.items ?? []) as CategorItemWithShadowItem[];
 

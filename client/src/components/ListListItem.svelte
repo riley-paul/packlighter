@@ -1,7 +1,6 @@
 <script lang="ts">
   import { useRemoveList } from "@/hooks/useList";
   import DeleteButton from "./base/DeleteButton.svelte";
-  import DragHandle from "./base/DragHandle.svelte";
   import type { ListsResponse } from "@/lib/types";
   import { cn } from "@/lib/utils";
   import { link, location } from "svelte-spa-router";
@@ -25,5 +24,4 @@
     {list.name || "Unnamed List"}
   </a>
   <DeleteButton handleDelete={() => $removeList.mutate(list.id)} />
-  <DragHandle />
 </div>
