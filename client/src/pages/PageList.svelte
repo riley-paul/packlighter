@@ -11,8 +11,9 @@
     useUpdateCategoriesOrder,
   } from "@/hooks/useCategory";
   import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
-  import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
+  import { flipDurationMs } from "@/lib/constants";
   import DragGhost from "@/components/base/DragGhost.svelte";
+  import { transformDraggedElement } from "@/lib/helpers";
 
   export let params = { listId: "" };
 
@@ -56,11 +57,7 @@
             flipDurationMs,
             type: "categories",
             dropTargetStyle: {},
-            transformDraggedElement: (el) => {
-              el?.querySelector(".category")?.classList.add(
-                ...isDraggingClasslist,
-              );
-            },
+            transformDraggedElement,
           }}
           on:consider={handleConsider}
           on:finalize={handleFinalize}

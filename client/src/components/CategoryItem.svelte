@@ -19,6 +19,7 @@
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
   import DragHandle from "./base/DragHandle.svelte";
+  import { DRAGGABLE_CLASS } from "@/lib/constants";
 
   export let list: ListWithCategories;
   export let categoryItem: ExpandedCategoryItem;
@@ -34,7 +35,7 @@
 <form
   id={categoryItem.id}
   data-id={categoryItem.id}
-  class="hover:bg-muted category-item grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+  class="{DRAGGABLE_CLASS} hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
   style="grid-template-columns: {createItemTemplateCols(list, true)}"
   on:submit|preventDefault={saveCategoryItem}
 >

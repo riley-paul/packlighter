@@ -1,20 +1,19 @@
 <script lang="ts">
-  import { cn } from "@/lib/utils";
   import { Plus } from "lucide-svelte";
   import { Button } from "./ui/button";
 
   import {
     useCreateList,
     useLists,
-    useRemoveList,
     useUpdateListsOrder,
   } from "@/hooks/useList";
   import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from "svelte-dnd-action";
   import type { ListsResponse } from "@/lib/types";
   import { flip } from "svelte/animate";
-  import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
+  import { flipDurationMs } from "@/lib/constants";
   import ListListItem from "./ListListItem.svelte";
   import DragGhost from "./base/DragGhost.svelte";
+  import { transformDraggedElement } from "@/lib/helpers";
 
   type ListWithShadowItem = ListsResponse & {
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
@@ -50,9 +49,7 @@
     flipDurationMs,
     dropTargetStyle: {},
     dropTargetClasses: ["border-primary"],
-    transformDraggedElement: (el) => {
-      el?.querySelector(".list")?.classList.add(...isDraggingClasslist);
-    },
+    transformDraggedElement,
   }}
   on:consider={handleConsider}
   on:finalize={handleFinalize}

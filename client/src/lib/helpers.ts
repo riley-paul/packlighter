@@ -5,7 +5,11 @@ import type {
 } from "@/hooks/useList";
 import type { RecordModel } from "pocketbase";
 import { Collections, type ItemsResponse } from "./types";
-import { SHADOW_PLACEHOLDER_ITEM_ID } from "svelte-dnd-action";
+import {
+  SHADOW_PLACEHOLDER_ITEM_ID,
+  type TransformDraggedElementFunction,
+} from "svelte-dnd-action";
+import { DRAGGABLE_CLASS, isDraggingClasslist } from "./constants";
 
 export const isCategoryFullyPacked = (category: ExpandedCategory) =>
   category.items.length > 0 && category.items.every((i) => i.packed);
@@ -84,3 +88,8 @@ export const getSortOrderFromIndex = (
     return sortOrders[sortOrders.length - 1] + 1;
   return (sortOrders[insertionIndex - 1] + sortOrders[insertionIndex]) / 2;
 };
+
+export const transformDraggedElement: TransformDraggedElementFunction = (el) =>
+  el
+    ?.querySelector(`.${DRAGGABLE_CLASS}`)
+    ?.classList.add(...isDraggingClasslist);

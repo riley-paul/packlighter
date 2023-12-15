@@ -9,7 +9,7 @@
   import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
   import { currentList, isForeignItem } from "@/lib/store";
   import { useList } from "@/hooks/useList";
-  import { getListItemIds } from "@/lib/helpers";
+  import { getListItemIds, transformDraggedElement } from "@/lib/helpers";
   import DragGhost from "./base/DragGhost.svelte";
 
   let searchTerm = "";
@@ -61,7 +61,7 @@
   <p>Loading...</p>
 {:else}
   <div
-    class="bg-card flex-1 overflow-auto rounded-md border"
+    class="bg-card flex-1 overflow-auto rounded-md border transition-colors"
     use:dndzone={{
       items: filteredItems,
       type: "items",
@@ -69,9 +69,7 @@
       flipDurationMs,
       dropTargetStyle: {},
       dropTargetClasses: ["border-primary"],
-      transformDraggedElement: (el, data) => {
-        el?.querySelector(".item")?.classList.add(...isDraggingClasslist);
-      },
+      transformDraggedElement,
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}

@@ -17,6 +17,7 @@
     createItemTemplateCols,
     createTempCategoryItem,
     isCategoryFullyPacked,
+    transformDraggedElement,
   } from "@/lib/helpers";
   import {
     useCreateCategoryItem,
@@ -35,7 +36,7 @@
 
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
-  import { flipDurationMs, isDraggingClasslist } from "@/lib/constants";
+  import { DRAGGABLE_CLASS, flipDurationMs } from "@/lib/constants";
   import DragHandle from "./base/DragHandle.svelte";
   import DragGhost from "./base/DragGhost.svelte";
   import { isForeignItem } from "@/lib/store";
@@ -100,7 +101,7 @@
   };
 </script>
 
-<article class="category">
+<article class={DRAGGABLE_CLASS}>
   <div
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
     style="grid-template-columns: {createItemTemplateCols(list, false)}"
@@ -133,13 +134,9 @@
     use:dndzone={{
       items: categoryItems,
       type: "items",
-      flipDurationMs,
       dropTargetStyle: {},
-      transformDraggedElement: (el) => {
-        el?.querySelector(".category-item")?.classList.add(
-          ...isDraggingClasslist,
-        );
-      },
+      flipDurationMs,
+      transformDraggedElement,
     }}
     on:consider={handleConsider}
     on:finalize={handleFinalize}
