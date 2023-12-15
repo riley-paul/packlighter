@@ -11,7 +11,6 @@
     useUpdateCategoryItem,
   } from "@/hooks/useCategoryItem";
   import { Checkbox } from "./ui/checkbox";
-  import { GripVertical, X } from "lucide-svelte";
   import ItemImage from "./ItemImage.svelte";
   import {
     createItemTemplateCols,
@@ -20,7 +19,6 @@
     massUnits,
     type MassUnit,
   } from "@/lib/helpers";
-  import { Textarea } from "./ui/textarea";
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
   import DragHandle from "./base/DragHandle.svelte";

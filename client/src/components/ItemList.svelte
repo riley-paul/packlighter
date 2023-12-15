@@ -66,7 +66,8 @@
       flipDurationMs,
       dropTargetStyle: {},
       dropTargetClasses: ["border-primary"],
-      transformDraggedElement: (el) => {
+      transformDraggedElement: (el, data) => {
+        console.log("data", data);
         el?.querySelector(".item")?.classList.add(
           "bg-secondary/50",
           "rounded",

@@ -30,6 +30,7 @@
     SHADOW_ITEM_MARKER_PROPERTY_NAME,
     TRIGGERS,
     dndzone,
+    setDebugMode,
   } from "svelte-dnd-action";
 
   import { Input } from "./ui/input";
@@ -44,6 +45,8 @@
     [SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
   };
 
+  setDebugMode(true);
+
   $: categoryItems = (category.items ?? []) as CategorItemWithShadowItem[];
 
   $: updateCategory = useUpdateCategory();
@@ -56,27 +59,15 @@
 
   $: allListItems = getListItemIds(list);
 
-  const handleConsider = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
-    if (ev.detail.info.trigger === TRIGGERS.DRAGGED_ENTERED_ANOTHER) {
-      categoryItems = ev.detail.items.filter((i) => i.id !== ev.detail.info.id);
-      return;
-    }
+  let newCategoryItem;
 
-    if (!allListItems.includes(ev.detail.info.id)) {
-      console.log("not in list");
-      return;
-    }
-
+  const handleConsider = async (
+    ev: CustomEvent<DndEvent<ExpandedCategoryItem>>,
+  ) => {
     categoryItems = ev.detail.items;
   };
 
   const handleFinalize = (ev: CustomEvent<DndEvent<ExpandedCategoryItem>>) => {
-    if (!allListItems.includes(ev.detail.info.id)) {
-      console.log("not in list");
-      
-      return;
-    }
-
     categoryItems = ev.detail.items;
     const ids = ev.detail.items.map((item) => item.id);
     $updateCategoryItemsOrder.mutate({

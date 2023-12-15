@@ -1,12 +1,7 @@
 import { createMutation } from "@tanstack/svelte-query";
-import type {
-  ExpandedCategory,
-  ExpandedCategoryItem,
-  ListWithCategories,
-} from "./useList";
+import type { ExpandedCategory, ExpandedCategoryItem } from "./useList";
 import { pb } from "@/lib/pocketbase";
 import { isItemUntouched } from "@/lib/helpers";
-import type { RecordModel } from "pocketbase";
 import { currentList } from "@/lib/store";
 
 import { queryClient } from "@/lib/query";
