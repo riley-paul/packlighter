@@ -51,7 +51,7 @@
 >
   {#each categories as category (category.id)}
     <div class="relative">
-      <Category {category} list={list} />
+      <Category {category} {list} />
       {#if category[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
         <DragGhost />
       {/if}

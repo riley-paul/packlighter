@@ -5,7 +5,7 @@ import { isCategoryFullyPacked, isItemUntouched } from "@/lib/helpers";
 import { currentList } from "@/lib/store";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
-import { createEventDispatcher, tick } from "svelte";
+import { createEventDispatcher } from "svelte";
 
 export const useUpdateCategory = () =>
   createMutation({
@@ -51,7 +51,6 @@ export const useCreateCategory = () => {
     onSuccess: (data) =>
       currentList.subscribe(async (listId) => {
         await queryClient.invalidateQueries({ queryKey: ["list", listId] });
-        await tick();
         dispatch("categoryCreated", { id: data.id });
       }),
   });
