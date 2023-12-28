@@ -12,6 +12,7 @@ import {
   Collections,
   type ListsResponse,
 } from "@/lib/types";
+import toast from "svelte-french-toast";
 
 const CATEGORY_ITEM_EXPAND_KEY = "categories_items(category)";
 
@@ -92,6 +93,7 @@ export const useCreateList = () =>
     onSuccess: (data) => {
       goto(`/${data.id}`);
       queryClient.invalidateQueries({ queryKey: ["lists"] });
+      toast.success("Created list");
     },
   });
 
