@@ -15,12 +15,13 @@
     <Input
       bind:value={list.name}
       on:blur={saveList}
-      class="text-primary h-auto text-3xl font-bold"
+      class="text-primary h-auto text-3xl font-bold placeholder:italic"
       placeholder="List Name"
     />
     <Textarea
       bind:value={list.description}
       on:blur={saveList}
+      class="placeholder:italic"
       placeholder="Description"
     />
     <input type="hidden" />

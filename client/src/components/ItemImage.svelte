@@ -32,8 +32,10 @@
   <DialogTrigger>
     <div
       class={cn(
-        "flex aspect-square w-20 items-center justify-center rounded-sm p-0.5",
-        item.image_url ? "bg-white" : "bg-muted",
+        "flex w-20 items-center justify-center rounded-sm p-0.5",
+        item.image_url ? "bg-white" : "bg-muted/50",
+        item.image_url ? "aspect-square" : "h-[1rem]",
+        "hover:outline outline-muted-foreground/50 transition-all"
       )}
     >
       {#if item.image_url}

@@ -9,7 +9,6 @@ export enum Collections {
 	CategoriesItems = "categories_items",
 	Items = "items",
 	ListCategories = "list_categories",
-	ListItems = "list_items",
 	Lists = "lists",
 	Users = "users",
 }
@@ -50,6 +49,7 @@ export type CategoriesItemsRecord = {
 
 export type ItemsRecord = {
 	description?: string
+	image?: string
 	image_url?: string
 	name?: string
 	sort_order?: number
@@ -63,14 +63,6 @@ export type ListCategoriesRecord = {
 	list: RecordIdString
 	name?: string
 	sort_order?: number
-}
-
-export type ListItemsRecord = {
-	category?: string
-	item: RecordIdString
-	list: RecordIdString
-	packed?: boolean
-	quantity?: number
 }
 
 export type ListsRecord = {
@@ -93,7 +85,6 @@ export type UsersRecord = {
 export type CategoriesItemsResponse<Texpand = unknown> = Required<CategoriesItemsRecord> & BaseSystemFields<Texpand>
 export type ItemsResponse<Texpand = unknown> = Required<ItemsRecord> & BaseSystemFields<Texpand>
 export type ListCategoriesResponse<Texpand = unknown> = Required<ListCategoriesRecord> & BaseSystemFields<Texpand>
-export type ListItemsResponse<Texpand = unknown> = Required<ListItemsRecord> & BaseSystemFields<Texpand>
 export type ListsResponse<Texpand = unknown> = Required<ListsRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
@@ -103,7 +94,6 @@ export type CollectionRecords = {
 	categories_items: CategoriesItemsRecord
 	items: ItemsRecord
 	list_categories: ListCategoriesRecord
-	list_items: ListItemsRecord
 	lists: ListsRecord
 	users: UsersRecord
 }
@@ -112,7 +102,6 @@ export type CollectionResponses = {
 	categories_items: CategoriesItemsResponse
 	items: ItemsResponse
 	list_categories: ListCategoriesResponse
-	list_items: ListItemsResponse
 	lists: ListsResponse
 	users: UsersResponse
 }
@@ -124,7 +113,6 @@ export type TypedPocketBase = PocketBase & {
 	collection(idOrName: 'categories_items'): RecordService<CategoriesItemsResponse>
 	collection(idOrName: 'items'): RecordService<ItemsResponse>
 	collection(idOrName: 'list_categories'): RecordService<ListCategoriesResponse>
-	collection(idOrName: 'list_items'): RecordService<ListItemsResponse>
 	collection(idOrName: 'lists'): RecordService<ListsResponse>
 	collection(idOrName: 'users'): RecordService<UsersResponse>
 }
