@@ -8,18 +8,21 @@
   import LayoutIconTitleSubtitle from "@/layouts/LayoutIconTitleSubtitle.svelte";
   import { CATEGORY_NAME_CLASS } from "@/lib/constants";
   import { waitForElm } from "@/lib/helpers";
+  import { tick } from "svelte";
 
   export let params = { listId: "" };
 
   $: list = useList(params.listId);
 
   const handleCategoryCreated = (ev: CustomEvent<{ id: string }>) =>
-    waitForElm<HTMLInputElement>(
-      `#${ev.detail.id} input.${CATEGORY_NAME_CLASS}`,
-    ).then((element) => {
-      element?.scrollIntoView({ behavior: "smooth" });
-      element?.focus();
-    });
+    tick().then(() =>
+      waitForElm<HTMLInputElement>(
+        `#${ev.detail.id} input.${CATEGORY_NAME_CLASS}`,
+      ).then((element) => {
+        element?.scrollIntoView({ behavior: "smooth" });
+        element?.focus();
+      }),
+    );
 </script>
 
 <LayoutApp>

@@ -45,8 +45,11 @@ export const useCreateCategory = () => {
       pb.collection(Collections.ListCategories).create({
         list: listId,
         sort_order:
-          queryClient.getQueryData<ListWithCategories>(["list", listId])
-            ?.categories.length ?? 0,
+          Math.max(
+            ...(queryClient
+              .getQueryData<ListWithCategories>(["list", listId])
+              ?.categories.map((c) => c.sort_order) ?? [-1]),
+          ) + 1,
       }),
     onSuccess: (data) =>
       currentList.subscribe(async (listId) => {
