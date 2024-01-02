@@ -71,6 +71,8 @@ export const useCreateCategoryItem = () =>
             .collection(Collections.Items)
             .create({
               user: pb.authStore.model?.id,
+              weight_g: 0,
+              weight_unit: "g",
               sort_order:
                 queryClient.getQueryData<ItemsResponse[]>(["items"])?.length ??
                 0,

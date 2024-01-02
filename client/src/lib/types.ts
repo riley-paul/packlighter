@@ -47,6 +47,12 @@ export type CategoriesItemsRecord = {
 	worn_weight?: boolean
 }
 
+export enum ItemsWeightUnitOptions {
+	"g" = "g",
+	"kg" = "kg",
+	"lb" = "lb",
+	"oz" = "oz",
+}
 export type ItemsRecord = {
 	description?: string
 	image?: string
@@ -56,7 +62,7 @@ export type ItemsRecord = {
 	user: RecordIdString
 	weight?: number
 	weight_g?: number
-	weight_unit?: string
+	weight_unit?: ItemsWeightUnitOptions
 }
 
 export type ListCategoriesRecord = {

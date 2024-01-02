@@ -9,17 +9,11 @@
   } from "@/hooks/useCategoryItem";
   import { Checkbox } from "./ui/checkbox";
   import ItemImage from "./ItemImage.svelte";
-  import {
-    createItemTemplateCols,
-    getWeightInGrams,
-    getWeightInUnit,
-    massUnits,
-    type MassUnit,
-  } from "@/lib/helpers";
+  import { createItemTemplateCols } from "@/lib/helpers";
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
   import DragHandle from "./base/DragHandle.svelte";
-  import { DRAGGABLE_CLASS } from "@/lib/constants";
+  import { DRAGGABLE_CLASS, MASS_UNIT_OPTIONS } from "@/lib/constants";
 
   export let list: ListWithCategories;
   export let categoryItem: ExpandedCategoryItem;
@@ -74,17 +68,18 @@
     <div class="flex">
       <Input
         on:change={saveCategoryItem}
-        name="weight_g"
+        bind:value={categoryItem.itemData.weight}
+        name="weight"
         type="number"
         min="0"
-        class="h-auto min-w-0 border-none px-1 py-0.5 shadow-none"
+        class="h-auto min-w-0 border-none px-1 py-0.5 text-right shadow-none"
       />
       <select
         bind:value={categoryItem.itemData.weight_unit}
         on:change={saveCategoryItem}
         class="bg-inherit"
       >
-        {#each massUnits as massUnit}
+        {#each MASS_UNIT_OPTIONS as massUnit}
           <option value={massUnit}>
             {massUnit}
           </option>

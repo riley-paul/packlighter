@@ -24,7 +24,7 @@
     <p class="text-muted-foreground">{item.description}</p>
   </div>
   <div class="text-muted-foreground">
-    {item.weight_g}{item.weight_unit || "g"}
+    {item.weight}{item.weight_unit || "g"}
   </div>
   <DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
 </div>

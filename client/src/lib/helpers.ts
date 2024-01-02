@@ -4,7 +4,11 @@ import type {
   ListWithCategories,
 } from "@/hooks/useList";
 import type { RecordModel } from "pocketbase";
-import { Collections, type ItemsResponse } from "./types";
+import {
+  Collections,
+  ItemsWeightUnitOptions,
+  type ItemsResponse,
+} from "./types";
 import {
   SHADOW_PLACEHOLDER_ITEM_ID,
   type TransformDraggedElementFunction,
@@ -21,10 +25,10 @@ export const isItemUntouched = (item: ExpandedCategoryItem) =>
   item.quantity === 1 &&
   !item.packed;
 
-export const massUnits = ["g", "kg", "oz", "lb"] as const;
-export type MassUnit = (typeof massUnits)[number];
-
-export const getWeightInGrams = (weight: number, unit: MassUnit) => {
+export const getWeightInGrams = (
+  weight: number,
+  unit: ItemsWeightUnitOptions,
+) => {
   if (unit === "g") return weight;
   if (unit === "kg") return weight * 1000;
   if (unit === "oz") return weight * 28.3495;
@@ -32,7 +36,10 @@ export const getWeightInGrams = (weight: number, unit: MassUnit) => {
   return 0;
 };
 
-export const getWeightInUnit = (weight: number, unit: MassUnit) => {
+export const getWeightInUnit = (
+  weight: number,
+  unit: ItemsWeightUnitOptions,
+) => {
   if (unit === "g") return weight;
   if (unit === "kg") return weight / 1000;
   if (unit === "oz") return weight / 28.3495;
