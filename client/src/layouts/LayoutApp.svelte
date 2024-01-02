@@ -3,32 +3,26 @@
   import ItemList from "@/components/ItemList.svelte";
   import ListList from "@/components/ListList.svelte";
   import ModeToggle from "@/components/base/ModeToggle.svelte";
-  import { useList } from "@/hooks/useList";
-  import { currentList } from "@/lib/store";
   import { Feather } from "lucide-svelte";
   import { link } from "svelte-spa-router";
 
-  let isSidebarOpen = true;
-
-  $: list = useList($currentList ?? "");
+  export let pageTitle = "";
 </script>
 
 <div class="flex h-screen flex-col overflow-hidden">
   <header class="bg-card z-50 flex h-14 w-full items-center border-b shadow">
     <div class="container flex justify-between">
-      <div class="flex items-center">
-        <div class="flex items-end gap-2">
-          <a href="/" use:link class="flex items-center">
-            <Feather class="text-primary mr-2 w-6" />
-            <h1 class="text-lg font-medium">PackLighter</h1>
-          </a>
-          {#if $list.data?.name}
-            <span class="text-muted-foreground flex gap-2">
-              <div>•</div>
-              <div>{$list.data.name}</div>
-            </span>
-          {/if}
-        </div>
+      <div class="flex items-center gap-2 text-lg">
+        <a href="/" use:link class="flex items-center">
+          <Feather class="text-primary mr-2 w-6" />
+          <h1 class="font-medium">PackLighter</h1>
+        </a>
+        {#if pageTitle}
+          <span class="text-muted-foreground flex gap-2">
+            <div>•</div>
+            <div>{pageTitle}</div>
+          </span>
+        {/if}
       </div>
       <div class="flex items-center gap-4">
         <AccountEditor />

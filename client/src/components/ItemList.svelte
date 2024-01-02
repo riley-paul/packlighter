@@ -12,7 +12,9 @@
   import { getListItemIds, transformDraggedElement } from "@/lib/helpers";
   import DragGhost from "./base/DragGhost.svelte";
   import LayoutIconTitleSubtitle from "@/layouts/LayoutIconTitleSubtitle.svelte";
-  import { SearchX } from "lucide-svelte";
+  import { SearchX, Table } from "lucide-svelte";
+  import { Button, buttonVariants } from "./ui/button";
+  import { link } from "svelte-spa-router";
 
   let searchTerm = "";
 
@@ -46,16 +48,23 @@
   };
 </script>
 
-<div>
-  <div class="mb-2 flex items-center justify-between gap-4">
+<div class="mb-2">
+  <div class="flex items-center justify-between gap-4">
     <h2 class="text-sm font-medium">Gear</h2>
-    <Input
-      type="search"
-      placeholder="Search..."
-      class="bg-card shadow-none"
-      bind:value={searchTerm}
-    />
+    <a
+      class={buttonVariants({ size: "sm", variant: "linkMuted" })}
+      href="/gear"
+      use:link
+    >
+      <Table class="mr-2 w-4" /> All gear
+    </a>
   </div>
+  <Input
+    type="search"
+    placeholder="Filter..."
+    class="bg-card shadow-none"
+    bind:value={searchTerm}
+  />
 </div>
 {#if $items.isError}
   <p>Error: {$items.error}</p>

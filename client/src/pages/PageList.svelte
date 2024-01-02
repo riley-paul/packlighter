@@ -25,7 +25,7 @@
     );
 </script>
 
-<LayoutApp>
+<LayoutApp pageTitle={$list.data?.name}>
   <Card class="@container h-fit flex-1 p-6">
     {#if $list.isError}
       <p>Error: {$list.error}</p>
