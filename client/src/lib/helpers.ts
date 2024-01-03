@@ -50,7 +50,7 @@ export const createCategoryTemplateCols = (props: {
     ...(type === "body" && list.show_images ? ["auto"] : []),
     "1fr", // name and description
     ...(list.show_weights ? ["6rem"] : []),
-    "3rem", // quantity
+    "2rem", // quantity
     "1.5rem", // delete button
     "1rem", // gripper
   ];

@@ -184,7 +184,7 @@
         <p>{list.weight_unit}</p>
       </div>
     {/if}
-    <div class="pr-5 text-right font-semibold">
+    <div class="pr-0.5 text-right font-semibold">
       {category.items.reduce((acc, val) => acc + val.quantity, 0)}
     </div>
   </footer>

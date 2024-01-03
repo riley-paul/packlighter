@@ -82,6 +82,7 @@
         on:focus={selectContentOnFocus}
         name="weight"
         type="number"
+        autocomplete="off"
         min="0"
         class="h-auto min-w-0 border-none px-1 py-0.5 text-right shadow-none"
       />
@@ -106,14 +107,15 @@
       on:focus={selectContentOnFocus}
       name="quantity"
       type="number"
+      autocomplete="off"
       min="1"
       class="h-auto min-w-0 border-none px-1 py-0.5 text-right shadow-none"
     />
-    <SpinBox
+    <!-- <SpinBox
       bind:value={categoryItem.quantity}
       handleChange={saveCategoryItem}
       min={1}
-    />
+    /> -->
   </div>
 
   <input type="hidden" />
