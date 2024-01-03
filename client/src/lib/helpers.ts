@@ -8,6 +8,7 @@ import {
   Collections,
   ItemsWeightUnitOptions,
   type ItemsResponse,
+  ListsWeightUnitOptions,
 } from "./types";
 import {
   SHADOW_PLACEHOLDER_ITEM_ID,
@@ -25,40 +26,33 @@ export const isItemUntouched = (item: ExpandedCategoryItem) =>
   item.quantity === 1 &&
   !item.packed;
 
-export const getWeightInGrams = (
-  weight: number,
-  unit: ItemsWeightUnitOptions,
+export const getItemWeightInUnit = (
+  item: ItemsResponse,
+  unit: ListsWeightUnitOptions,
 ) => {
-  if (unit === "g") return weight;
-  if (unit === "kg") return weight * 1000;
-  if (unit === "oz") return weight * 28.3495;
-  if (unit === "lb") return weight * 453.592;
-  return 0;
+  const gramsConversions: Record<ItemsWeightUnitOptions, number> = {
+    oz: 28.3495,
+    lb: 453.592,
+    kg: 1000,
+    g: 1,
+  };
+  const weight_g = item.weight * gramsConversions[item.weight_unit];
+  return weight_g / gramsConversions[unit];
 };
 
-export const getWeightInUnit = (
-  weight: number,
-  unit: ItemsWeightUnitOptions,
-) => {
-  if (unit === "g") return weight;
-  if (unit === "kg") return weight / 1000;
-  if (unit === "oz") return weight / 28.3495;
-  if (unit === "lb") return weight / 453.592;
-  return 0;
-};
-
-export const createItemTemplateCols = (
-  list: ListWithCategories,
-  isItem: boolean,
-): string => {
+export const createCategoryTemplateCols = (props: {
+  list: ListWithCategories;
+  type?: "header" | "body" | "footer";
+}): string => {
+  const { list, type = "body" } = props;
   const cols: string[] = [
-    ...(list.show_packed ? ["auto"] : []),
-    ...(isItem && list.show_images ? ["auto"] : []),
+    ...(type !== "footer" && list.show_packed ? ["auto"] : []),
+    ...(type === "body" && list.show_images ? ["auto"] : []),
     "1fr", // name and description
     ...(list.show_weights ? ["6rem"] : []),
-    "2.5rem", // quantity
-    "auto", // delete button
-    "auto", // gripper
+    "3rem", // quantity
+    "1.5rem", // delete button
+    "1rem", // gripper
   ];
   return cols.join(" ");
 };
@@ -122,3 +116,8 @@ export function waitForElm<T extends Element>(
     });
   });
 }
+
+export const selectContentOnFocus = (event: FocusEvent) => {
+  const target = event.target as HTMLInputElement;
+  target.select();
+};

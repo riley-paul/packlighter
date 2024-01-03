@@ -9,11 +9,18 @@
   } from "@/hooks/useCategoryItem";
   import { Checkbox } from "./ui/checkbox";
   import ItemImage from "./ItemImage.svelte";
-  import { createItemTemplateCols } from "@/lib/helpers";
+  import {
+    createCategoryTemplateCols,
+    selectContentOnFocus,
+  } from "@/lib/helpers";
   import { Input } from "./ui/input";
   import DeleteButton from "./base/DeleteButton.svelte";
   import DragHandle from "./base/DragHandle.svelte";
-  import { DRAGGABLE_CLASS, MASS_UNIT_OPTIONS } from "@/lib/constants";
+  import { DRAGGABLE_CLASS } from "@/lib/constants";
+  import { ItemsWeightUnitOptions } from "@/lib/types";
+  import { ChevronDown, ChevronUp } from "lucide-svelte";
+  import { Button } from "./ui/button";
+  import SpinBox from "./base/SpinBox.svelte";
 
   export let list: ListWithCategories;
   export let categoryItem: ExpandedCategoryItem;
@@ -30,7 +37,10 @@
   id={categoryItem.id}
   data-id={categoryItem.id}
   class="{DRAGGABLE_CLASS} hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
-  style="grid-template-columns: {createItemTemplateCols(list, true)}"
+  style="grid-template-columns: {createCategoryTemplateCols({
+    list,
+    type: 'body',
+  })}"
   on:submit|preventDefault={saveCategoryItem}
 >
   {#if list.show_packed}
@@ -67,8 +77,9 @@
   {#if list.show_weights}
     <div class="flex">
       <Input
-        on:change={saveCategoryItem}
+        on:blur={saveCategoryItem}
         bind:value={categoryItem.itemData.weight}
+        on:focus={selectContentOnFocus}
         name="weight"
         type="number"
         min="0"
@@ -79,7 +90,7 @@
         on:change={saveCategoryItem}
         class="bg-inherit"
       >
-        {#each MASS_UNIT_OPTIONS as massUnit}
+        {#each Object.values(ItemsWeightUnitOptions) as massUnit}
           <option value={massUnit}>
             {massUnit}
           </option>
@@ -88,14 +99,22 @@
     </div>
   {/if}
 
-  <Input
-    bind:value={categoryItem.quantity}
-    on:change={saveCategoryItem}
-    name="quantity"
-    type="number"
-    min="1"
-    class="h-auto min-w-0 border-none px-1 py-0.5 shadow-none"
-  />
+  <div class="flex gap-0.5">
+    <Input
+      bind:value={categoryItem.quantity}
+      on:change={saveCategoryItem}
+      on:focus={selectContentOnFocus}
+      name="quantity"
+      type="number"
+      min="1"
+      class="h-auto min-w-0 border-none px-1 py-0.5 text-right shadow-none"
+    />
+    <SpinBox
+      bind:value={categoryItem.quantity}
+      handleChange={saveCategoryItem}
+      min={1}
+    />
+  </div>
 
   <input type="hidden" />
   <DeleteButton

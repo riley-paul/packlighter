@@ -71,6 +71,12 @@ export type ListCategoriesRecord = {
 	sort_order?: number
 }
 
+export enum ListsWeightUnitOptions {
+	"g" = "g",
+	"kg" = "kg",
+	"oz" = "oz",
+	"lb" = "lb",
+}
 export type ListsRecord = {
 	description?: string
 	name?: string
@@ -80,6 +86,7 @@ export type ListsRecord = {
 	show_weights?: boolean
 	sort_order?: number
 	user: RecordIdString
+	weight_unit?: ListsWeightUnitOptions
 }
 
 export type UsersRecord = {

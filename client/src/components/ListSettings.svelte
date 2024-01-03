@@ -6,10 +6,21 @@
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
     DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
   } from "./ui/dropdown-menu";
   import { useUpdateList, type ListWithCategories } from "@/hooks/useList";
+  import { ItemsWeightUnitOptions } from "@/lib/types";
+
+  let bookmarks = false;
+  let fullUrls = true;
+
+  const profileRadioValue = "benoit";
 
   export let list: ListWithCategories;
 
@@ -23,7 +34,7 @@
       <Settings class="h-4 w-4" />
     </Button>
   </DropdownMenuTrigger>
-  <DropdownMenuContent>
+  <DropdownMenuContent class="w-52">
     <DropdownMenuLabel>List Settings</DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuCheckboxItem
@@ -50,5 +61,21 @@
     >
       Show Prices
     </DropdownMenuCheckboxItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuSub>
+      <DropdownMenuSubTrigger>Default unit of mass</DropdownMenuSubTrigger>
+      <DropdownMenuSubContent>
+        <DropdownMenuRadioGroup
+          bind:value={list.weight_unit}
+          onValueChange={saveList}
+        >
+          {#each Object.values(ItemsWeightUnitOptions) as massUnit}
+            <DropdownMenuRadioItem value={massUnit}>
+              {massUnit}
+            </DropdownMenuRadioItem>
+          {/each}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuSubContent>
+    </DropdownMenuSub>
   </DropdownMenuContent>
 </DropdownMenu>

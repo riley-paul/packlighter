@@ -14,8 +14,9 @@
   } from "@/hooks/useList";
   import CategoryItem from "./CategoryItem.svelte";
   import {
-    createItemTemplateCols,
+    createCategoryTemplateCols,
     createTempCategoryItem,
+    getItemWeightInUnit,
     isCategoryFullyPacked,
     transformDraggedElement,
   } from "@/lib/helpers";
@@ -101,9 +102,12 @@
 </script>
 
 <article class={DRAGGABLE_CLASS} id={category.id}>
-  <div
+  <header
     class="grid items-center gap-2 border-b-2 px-2 py-1 text-sm font-semibold"
-    style="grid-template-columns: {createItemTemplateCols(list, false)}"
+    style="grid-template-columns: {createCategoryTemplateCols({
+      list,
+      type: 'header',
+    })}"
   >
     {#if list.show_packed}
       <Checkbox
@@ -124,10 +128,10 @@
       <div class="text-foreground/70 text-center">Weight</div>
     {/if}
 
-    <div class="text-foreground/70">Qty</div>
+    <div class="text-foreground/70 text-center">Qty</div>
     <DeleteButton handleDelete={() => $deleteCategory.mutate(category)} />
     <DragHandle />
-  </div>
+  </header>
   <div
     class="min-h-[0.5rem] rounded"
     use:dndzone={{
@@ -149,15 +153,39 @@
       </div>
     {/each}
   </div>
-  <div>
+  <footer
+    class="grid items-center gap-2 border-t px-2 text-sm"
+    style="grid-template-columns: {createCategoryTemplateCols({
+      list,
+      type: 'footer',
+    })};"
+  >
     <Button
-      variant="linkMuted"
       size="sm"
+      class="w-min"
+      variant="linkMuted"
       on:click={() => $createCategoryItem.mutate({ category })}
       disabled={$createCategoryItem.isPending}
     >
       <Plus class="mr-2 h-4 w-4" />
       Add Item
     </Button>
-  </div>
+    {#if list.show_weights}
+      <div class="flex gap-2 justify-self-end pr-6 font-semibold">
+        <p>
+          {Math.round(
+            category.items.reduce(
+              (acc, val) =>
+                acc + getItemWeightInUnit(val.itemData, list.weight_unit),
+              0,
+            ),
+          )}
+        </p>
+        <p>{list.weight_unit}</p>
+      </div>
+    {/if}
+    <div class="pr-5 text-right font-semibold">
+      {category.items.reduce((acc, val) => acc + val.quantity, 0)}
+    </div>
+  </footer>
 </article>
