@@ -72,15 +72,18 @@ export const useCreateCategoryItem = () =>
 					sort_order
 				});
 
+			const currentList = queryClient.getQueryData<ListWithCategories>([
+				Collections.Lists,
+				variables.listId
+			]);
+
 			// adding new item to category
 			return pb
 				.collection(Collections.Items)
 				.create({
 					user: pb.authStore.model?.id,
 					weight: 0,
-					weight_unit:
-						queryClient.getQueryData<ListWithCategories>([Collections.Lists, variables.listId])
-							?.weight_unit ?? 'g',
+					weight_unit: currentList?.weight_unit ?? 'g',
 					sort_order: queryClient.getQueryData<ItemsResponse[]>([Collections.Items])?.length ?? 0
 				})
 				.then((item) =>

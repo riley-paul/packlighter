@@ -126,6 +126,7 @@
 			items: categoryItems,
 			type: 'items',
 			dropTargetStyle: {},
+			dragDisabled: categoryItems.length === 0,
 			flipDurationMs,
 			transformDraggedElement
 		}}
@@ -140,6 +141,14 @@
 				{/if}
 			</div>
 		{/each}
+		{#if categoryItems.length === 0}
+			<p
+				class="text-muted-foreground flex w-full items-center justify-center border-b p-4 text-xs"
+				draggable="false"
+			>
+				No items
+			</p>
+		{/if}
 	</div>
 	<footer
 		class="grid items-center gap-2 border-t px-2 text-sm"
