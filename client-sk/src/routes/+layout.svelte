@@ -1,6 +1,11 @@
 <script>
+	import { QueryClientProvider } from '@tanstack/svelte-query';
 	import '../app.pcss';
-	export const ssr = false;
+	import { ModeWatcher } from 'mode-watcher';
+	import { queryClient } from '@/lib/query';
 </script>
 
-<slot />
+<ModeWatcher />
+<QueryClientProvider client={queryClient}>
+	<slot />
+</QueryClientProvider>

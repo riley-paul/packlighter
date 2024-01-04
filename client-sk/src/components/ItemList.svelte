@@ -11,10 +11,9 @@
   import { useList } from "@/hooks/useList";
   import { getListItemIds, transformDraggedElement } from "@/lib/helpers";
   import DragGhost from "./base/DragGhost.svelte";
-  import LayoutIconTitleSubtitle from "@/layouts/LayoutIconTitleSubtitle.svelte";
+  import IconTitleSubtitle from "@/components/base/IconTitleSubtitle.svelte";
   import { SearchX, Table } from "lucide-svelte";
   import { Button, buttonVariants } from "./ui/button";
-  import { link } from "svelte-spa-router";
 
   let searchTerm = "";
 
@@ -54,7 +53,6 @@
     <a
       class={buttonVariants({ size: "sm", variant: "linkMuted" })}
       href="/gear"
-      use:link
     >
       <Table class="mr-2 w-4" /> All gear
     </a>
@@ -96,10 +94,10 @@
   </div>
 {:else}
   <div class="bg-card flex-1 overflow-auto rounded-md border transition-colors">
-    <LayoutIconTitleSubtitle>
+    <IconTitleSubtitle>
       <SearchX class="h-10 w-10" />
       <span slot="title">No items found</span>
       <span slot="subtitle">Try searching for something else</span>
-    </LayoutIconTitleSubtitle>
+    </IconTitleSubtitle>
   </div>
 {/if}

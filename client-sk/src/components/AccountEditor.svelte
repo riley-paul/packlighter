@@ -5,7 +5,7 @@
   import { User } from "lucide-svelte";
   import { Separator } from "@/components/ui/separator";
   import { Button } from "@/components/ui/button";
-  import { push } from "svelte-spa-router";
+	import { goto } from "$app/navigation";
 
   const user = pb.authStore.model;
   const imageUrl = user
@@ -47,7 +47,7 @@
         class="w-full"
         on:click={() => {
           pb.authStore.clear();
-          push("/auth");
+          goto("/auth");
         }}
       >
         Logout
