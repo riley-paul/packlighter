@@ -9,6 +9,8 @@
   import { CATEGORY_NAME_CLASS } from "@/lib/constants";
   import { waitForElm } from "@/lib/helpers";
   import { tick } from "svelte";
+  import WeightChart from "@/components/WeightChart.svelte";
+  import WeightTable from "@/components/WeightTable.svelte";
 
   export let params = { listId: "" };
 
@@ -37,6 +39,14 @@
       </LayoutIconTitleSubtitle>
     {:else if $list.data}
       <div class="flex flex-col gap-4">
+        {#if $list.data.show_weights}
+          <div class="flex justify-center">
+            <div class="flex items-center gap-8">
+              <WeightChart list={$list.data} />
+              <WeightTable list={$list.data} />
+            </div>
+          </div>
+        {/if}
         <ListHeader list={$list.data} />
         <CategoryList
           list={$list.data}

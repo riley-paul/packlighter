@@ -16,6 +16,8 @@
   import {
     createCategoryTemplateCols,
     createTempCategoryItem,
+    formatWeight,
+    getCategoryWeight,
     getItemWeightInUnit,
     isCategoryFullyPacked,
     transformDraggedElement,
@@ -99,12 +101,6 @@
       categoryId: category.id,
     });
   };
-
-  $: totalWeight = category.items.reduce(
-    (acc, val) =>
-      acc + getItemWeightInUnit(val.itemData, list.weight_unit) * val.quantity,
-    0,
-  );
 </script>
 
 <article class={DRAGGABLE_CLASS} id={category.id}>
@@ -179,7 +175,7 @@
     {#if list.show_weights}
       <div class="flex gap-2 justify-self-end pr-6 font-semibold">
         <p>
-          {Math.round(totalWeight)}
+          {formatWeight(getCategoryWeight(category, list.weight_unit))}
         </p>
         <p>{list.weight_unit}</p>
       </div>

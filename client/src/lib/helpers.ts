@@ -121,3 +121,18 @@ export const selectContentOnFocus = (event: FocusEvent) => {
   const target = event.target as HTMLInputElement;
   target.select();
 };
+
+export const getCategoryWeight = (
+  category: ExpandedCategory,
+  unit: ListsWeightUnitOptions,
+) =>
+  category.items.reduce((acc, item) => {
+    const itemWeight = getItemWeightInUnit(item.itemData, unit);
+    return acc + itemWeight * item.quantity;
+  }, 0);
+
+export const formatWeight = (value: number): string => {
+  if (value < 10) return (Math.round(value * 100) / 100).toLocaleString("en");
+  if (value < 100) return (Math.round(value * 10) / 10).toLocaleString("en");
+  return Math.round(value).toLocaleString("en");
+};
