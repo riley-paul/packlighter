@@ -11,7 +11,7 @@
 <div class="flex flex-col items-center justify-center">
   <Button
     size="sm"
-    variant="outline"
+    variant="ghost"
     class="h-auto w-4 rounded-none rounded-t-sm p-0"
     on:click={() => {
       if (max !== undefined && value >= max) return;
@@ -21,7 +21,7 @@
   >
   <Button
     size="sm"
-    variant="outline"
+    variant="ghost"
     class="h-auto w-4 rounded-none rounded-b-sm p-0"
     on:click={() => {
       if (min !== undefined && value <= min) return;

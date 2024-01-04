@@ -111,11 +111,11 @@
       min="1"
       class="h-auto min-w-0 border-none px-1 py-0.5 text-right shadow-none"
     />
-    <!-- <SpinBox
+    <SpinBox
       bind:value={categoryItem.quantity}
       handleChange={saveCategoryItem}
       min={1}
-    /> -->
+    />
   </div>
 
   <input type="hidden" />

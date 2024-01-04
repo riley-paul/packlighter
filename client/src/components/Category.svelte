@@ -99,6 +99,12 @@
       categoryId: category.id,
     });
   };
+
+  $: totalWeight = category.items.reduce(
+    (acc, val) =>
+      acc + getItemWeightInUnit(val.itemData, list.weight_unit) * val.quantity,
+    0,
+  );
 </script>
 
 <article class={DRAGGABLE_CLASS} id={category.id}>
@@ -173,18 +179,12 @@
     {#if list.show_weights}
       <div class="flex gap-2 justify-self-end pr-6 font-semibold">
         <p>
-          {Math.round(
-            category.items.reduce(
-              (acc, val) =>
-                acc + getItemWeightInUnit(val.itemData, list.weight_unit),
-              0,
-            ),
-          )}
+          {Math.round(totalWeight)}
         </p>
         <p>{list.weight_unit}</p>
       </div>
     {/if}
-    <div class="pr-0.5 text-right font-semibold">
+    <div class="pr-5 text-right font-semibold">
       {category.items.reduce((acc, val) => acc + val.quantity, 0)}
     </div>
   </footer>
