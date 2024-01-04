@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useRemoveList } from '@/hooks/useList';
-	import DeleteButton from '../../components/base/DeleteButton.svelte';
+	import DeleteButton from '@/components/base/DeleteButton.svelte';
 	import type { ListsResponse } from '@/lib/types';
 	import { cn } from '@/lib/utils';
 	import { DRAGGABLE_CLASS } from '@/lib/constants';

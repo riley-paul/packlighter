@@ -10,10 +10,9 @@
 	import WeightChart from '@/routes/(app)/[listId]/WeightChart.svelte';
 	import WeightTable from '@/routes/(app)/[listId]/WeightTable.svelte';
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
+	import { page } from '$app/stores';
 
-	export let params = { listId: '' };
-
-	$: list = useList(params.listId);
+	$: list = useList($page.params.listId);
 
 	const handleCategoryCreated = (ev: CustomEvent<{ id: string }>) =>
 		tick().then(() =>

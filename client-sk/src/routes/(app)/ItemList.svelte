@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useItems, useUpdateItemsOrder } from '@/hooks/useItem';
-	import { Input } from '../../components/ui/input';
+	import { Input } from '@/components/ui/input';
 	import ItemListItem from './ItemListItem.svelte';
 
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from 'svelte-dnd-action';
@@ -10,10 +10,10 @@
 	import { currentList, isForeignItem } from '@/lib/store';
 	import { useList } from '@/hooks/useList';
 	import { getListItemIds, transformDraggedElement } from '@/lib/helpers';
-	import DragGhost from '../../components/base/DragGhost.svelte';
+	import DragGhost from '@/components/base/DragGhost.svelte';
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
 	import { SearchX, Table } from 'lucide-svelte';
-	import { Button, buttonVariants } from '../../components/ui/button';
+	import { Button, buttonVariants } from '@/components/ui/button';
 
 	let searchTerm = '';
 
