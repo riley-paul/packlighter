@@ -42,6 +42,7 @@
 		"@internationalized/date": "^3.5.1",
 		"@tanstack/svelte-query": "^5.17.1",
 		"bits-ui": "^0.13.0",
+		"chart.js": "^4.4.1",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.12",
 		"formsnap": "^0.4.2",

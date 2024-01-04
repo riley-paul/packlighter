@@ -1,7 +1,7 @@
 <script lang="ts">
-  import AccountEditor from "@/components/AccountEditor.svelte";
-  import ItemList from "@/components/ItemList.svelte";
-  import ListList from "@/components/ListList.svelte";
+  import AccountEditor from "@/routes/(app)/AccountEditor.svelte";
+  import ItemList from "@/routes/(app)/ItemList.svelte";
+  import ListList from "@/routes/(app)/ListList.svelte";
   import ModeToggle from "@/components/base/ModeToggle.svelte";
   import { Feather } from "lucide-svelte";
 

@@ -1,7 +1,10 @@
-<script>
-	import { Button } from '@/components/ui/button';
+<script lang="ts">
+	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
+	import { Home } from 'lucide-svelte';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<Button>Click me</Button>
+<IconTitleSubtitle big>
+	<Home class="h-16 w-16" />
+	<svelte.fragment slot="title">Home</svelte.fragment>
+	<svelte.fragment slot="subtitle">Select a list to get packing</svelte.fragment>
+</IconTitleSubtitle>
