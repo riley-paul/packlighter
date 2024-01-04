@@ -6,6 +6,7 @@
   import DragHandle from "./base/DragHandle.svelte";
   import { DRAGGABLE_CLASS } from "@/lib/constants";
   import { Item } from "./ui/dropdown-menu";
+  import { formatWeight } from "@/lib/helpers";
 
   export let item: ItemsResponse;
 
@@ -24,7 +25,8 @@
     <p class="text-muted-foreground">{item.description}</p>
   </div>
   <div class="text-muted-foreground">
-    {item.weight}{item.weight_unit || "g"}
+    {item.weight}
+    {item.weight_unit}
   </div>
   <DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
 </div>

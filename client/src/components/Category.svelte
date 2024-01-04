@@ -88,6 +88,7 @@
       );
       $createCategoryItem.mutate({
         category,
+        listId: list.id,
         itemId: id,
         insertionIndex,
       });
@@ -166,7 +167,7 @@
       size="sm"
       class="w-min"
       variant="linkMuted"
-      on:click={() => $createCategoryItem.mutate({ category })}
+      on:click={() => $createCategoryItem.mutate({ category, listId: list.id })}
       disabled={$createCategoryItem.isPending}
     >
       <Plus class="mr-2 h-4 w-4" />
