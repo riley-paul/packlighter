@@ -7,13 +7,14 @@
 	import { flip } from 'svelte/animate';
 	import type { ItemsResponse } from '@/lib/types';
 	import { flipDurationMs, isDraggingClasslist } from '@/lib/constants';
-	import { currentList, isForeignItem } from '@/lib/store';
+	import { isForeignItem } from '@/lib/store';
 	import { useList } from '@/hooks/useList';
 	import { getListItemIds, transformDraggedElement } from '@/lib/helpers';
 	import DragGhost from '@/components/base/DragGhost.svelte';
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
 	import { SearchX, Table } from 'lucide-svelte';
-	import { Button, buttonVariants } from '@/components/ui/button';
+	import { buttonVariants } from '@/components/ui/button';
+	import { page } from '$app/stores';
 
 	let searchTerm = '';
 
@@ -21,7 +22,7 @@
 		[SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
 	};
 
-	$: list = useList($currentList ?? '');
+	$: list = useList($page.params.listId);
 	$: allListItems = $list.data ? getListItemIds($list.data) : [];
 
 	const items = useItems();
