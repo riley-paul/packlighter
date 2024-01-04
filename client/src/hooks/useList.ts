@@ -12,7 +12,6 @@ import {
   Collections,
   type ListsResponse,
 } from "@/lib/types";
-import toast from "svelte-french-toast";
 
 const CATEGORY_ITEM_EXPAND_KEY = "categories_items(category)";
 
@@ -89,11 +88,11 @@ export const useCreateList = () =>
         user: pb.authStore.model?.id,
         sort_order:
           queryClient.getQueryData<ListsResponse[]>(["lists"])?.length ?? 0,
+        weight_unit: "g",
       }),
     onSuccess: (data) => {
       goto(`/${data.id}`);
       queryClient.invalidateQueries({ queryKey: ["lists"] });
-      toast.success("Created list");
     },
   });
 

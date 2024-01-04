@@ -7,11 +7,9 @@
   import { currentList } from "./lib/store";
 
   import { queryClient } from "@/lib/query";
-  import { Toaster } from "svelte-french-toast";
 </script>
 
 <ModeWatcher />
-<Toaster />
 <QueryClientProvider client={queryClient}>
   <Router
     {routes}
