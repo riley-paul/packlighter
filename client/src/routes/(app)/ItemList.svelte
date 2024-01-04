@@ -66,13 +66,14 @@
 	<p>Error: {$items.error}</p>
 {:else if $items.isLoading}
 	<p>Loading...</p>
-{:else if filteredItems.length > 0}
+{:else}
 	<div
 		class="bg-card flex-1 overflow-auto rounded-md border transition-colors"
 		use:dndzone={{
 			items: filteredItems,
 			type: 'items',
 			dropFromOthersDisabled: true,
+			dragDisabled: filteredItems.length === 0,
 			flipDurationMs,
 			dropTargetStyle: {},
 			dropTargetClasses: ['border-primary'],
@@ -89,13 +90,12 @@
 				{/if}
 			</div>
 		{/each}
-	</div>
-{:else}
-	<div class="bg-card flex-1 overflow-auto rounded-md border transition-colors">
-		<IconTitleSubtitle>
-			<SearchX class="h-10 w-10" />
-			<svelte.fragment slot="title">No items found</svelte.fragment>
-			<svelte.fragment slot="subtitle">Try searching for something else</svelte.fragment>
-		</IconTitleSubtitle>
+		{#if filteredItems.length === 0}
+			<IconTitleSubtitle>
+				<SearchX class="h-10 w-10" />
+				<svelte.fragment slot="title">No items found</svelte.fragment>
+				<svelte.fragment slot="subtitle">Try searching for something else</svelte.fragment>
+			</IconTitleSubtitle>
+		{/if}
 	</div>
 {/if}
