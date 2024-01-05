@@ -31,7 +31,7 @@
 	<title>{pageTitle}</title>
 </svelte:head>
 
-<Card class="@container h-fit flex-1 p-6">
+<div class="@container bg-card h-fit flex-1 rounded-md border p-6">
 	{#if $list.isError}
 		<p>Error: {$list.error}</p>
 	{:else if $list.isLoading}
@@ -54,4 +54,4 @@
 			<CategoryList list={$list.data} on:categoryCreated={handleCategoryCreated} />
 		</div>
 	{/if}
-</Card>
+</div>

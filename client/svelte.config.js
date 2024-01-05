@@ -10,7 +10,7 @@ const config = {
 	kit: {
 		adapter: adapter({
 			fallback: 'index.html',
-			pages: '../pocketbase/pb_public'
+			pages: '../server/pb_public'
 		}),
 		alias: {
 			'@': './src'

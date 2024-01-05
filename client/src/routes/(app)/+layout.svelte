@@ -7,7 +7,7 @@
 </script>
 
 <div class="flex h-screen flex-col overflow-hidden">
-	<header class="bg-card z-50 flex h-14 w-full items-center border-b shadow">
+	<header class="bg-card z-50 flex min-h-14 w-full items-center border-b">
 		<div class="container flex justify-between">
 			<div class="flex items-center gap-2 text-lg">
 				<a href="/" class="flex items-center">
@@ -21,14 +21,19 @@
 			</div>
 		</div>
 	</header>
-	<main class="container grid h-full flex-1 grid-cols-[300px_1fr] gap-6 overflow-hidden scroll-gutter">
-		<aside class="flex w-[300px] flex-col overflow-auto py-4">
-			<ListList />
-			<br />
-			<ItemList />
-		</aside>
-		<div class="scroll-gutter flex-1 overflow-auto py-6">
-			<slot />
-		</div>
-	</main>
+	<div class="overflow-auto" style="height: calc(100vh-3.5rem);">
+		<main class="container grid grid-cols-[300px_1fr] gap-6">
+			<aside
+				class="sticky top-0 flex w-[300px] flex-col py-4"
+				style="height: calc(100vh - 3.5rem);"
+			>
+				<ListList />
+				<br />
+				<ItemList />
+			</aside>
+			<div class="scroll-gutter flex-1 py-6">
+				<slot />
+			</div>
+		</main>
+	</div>
 </div>
