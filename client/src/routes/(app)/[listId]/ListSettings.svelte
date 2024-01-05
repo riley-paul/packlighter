@@ -37,19 +37,6 @@
 	<DropdownMenuContent class="w-52">
 		<DropdownMenuLabel>List Settings</DropdownMenuLabel>
 		<DropdownMenuSeparator />
-		<DropdownMenuCheckboxItem bind:checked={list.show_packed} onCheckedChange={saveList}>
-			Show Packed
-		</DropdownMenuCheckboxItem>
-		<DropdownMenuCheckboxItem bind:checked={list.show_images} onCheckedChange={saveList}>
-			Show Images
-		</DropdownMenuCheckboxItem>
-		<DropdownMenuCheckboxItem bind:checked={list.show_weights} onCheckedChange={saveList}>
-			Show Weight
-		</DropdownMenuCheckboxItem>
-		<DropdownMenuCheckboxItem bind:checked={list.show_prices} onCheckedChange={saveList}>
-			Show Prices
-		</DropdownMenuCheckboxItem>
-		<DropdownMenuSeparator />
 		<DropdownMenuSub>
 			<DropdownMenuSubTrigger>Default unit of mass</DropdownMenuSubTrigger>
 			<DropdownMenuSubContent>
@@ -62,5 +49,18 @@
 				</DropdownMenuRadioGroup>
 			</DropdownMenuSubContent>
 		</DropdownMenuSub>
+		<DropdownMenuSeparator />
+		<DropdownMenuCheckboxItem bind:checked={list.show_packed} onCheckedChange={saveList}>
+			Show Packed
+		</DropdownMenuCheckboxItem>
+		<DropdownMenuCheckboxItem bind:checked={list.show_images} onCheckedChange={saveList}>
+			Show Images
+		</DropdownMenuCheckboxItem>
+		<DropdownMenuCheckboxItem bind:checked={list.show_weights} onCheckedChange={saveList}>
+			Show Weight
+		</DropdownMenuCheckboxItem>
+		<DropdownMenuCheckboxItem bind:checked={list.show_prices} onCheckedChange={saveList}>
+			Show Prices
+		</DropdownMenuCheckboxItem>
 	</DropdownMenuContent>
 </DropdownMenu>
