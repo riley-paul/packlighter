@@ -3,6 +3,10 @@
 	import { Home } from 'lucide-svelte';
 </script>
 
+<svelte:head>
+	<title>PackLighter</title>
+</svelte:head>
+
 <IconTitleSubtitle big>
 	<Home class="h-16 w-16" />
 	<svelte.fragment slot="title">Home</svelte.fragment>

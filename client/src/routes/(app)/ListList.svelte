@@ -32,31 +32,36 @@
 	};
 </script>
 
-<div class="mb-2 flex items-center justify-between">
-	<h2 class="text-sm font-medium">Lists</h2>
-	<Button size="sm" variant="linkMuted" on:click={() => $createList.mutate()}>
-		<Plus class="mr-2 w-4" /> New List
-	</Button>
-</div>
-<div
-	use:dndzone={{
-		items: listData,
-		type: 'lists',
-		flipDurationMs,
-		dropTargetStyle: {},
-		dropTargetClasses: ['border-primary'],
-		transformDraggedElement
-	}}
-	on:consider={handleConsider}
-	on:finalize={handleFinalize}
-	class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 transition-colors"
->
-	{#each listData as list (list.id)}
-		<div animate:flip={{ duration: flipDurationMs }} class="relative">
-			<ListListItem {list} />
-			{#if list[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-				<DragGhost fullWidth />
-			{/if}
-		</div>
-	{/each}
-</div>
+<section class="flex flex-col gap-2">
+	<div class="flex items-center justify-between">
+		<h2 class="text-sm font-medium">Lists</h2>
+		<Button size="sm" variant="linkMuted" on:click={() => $createList.mutate()}>
+			<Plus class="mr-2 w-4" /> New List
+		</Button>
+	</div>
+	<div
+		use:dndzone={{
+			items: listData,
+			type: 'lists',
+			flipDurationMs,
+			dropTargetStyle: {},
+			dropTargetClasses: ['border-primary'],
+			transformDraggedElement
+		}}
+		on:consider={handleConsider}
+		on:finalize={handleFinalize}
+		class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 transition-colors"
+	>
+		{#each listData as list (list.id)}
+			<div animate:flip={{ duration: flipDurationMs }} class="relative">
+				<ListListItem {list} />
+				{#if list[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+					<DragGhost fullWidth />
+				{/if}
+			</div>
+		{/each}
+		{#if listData.length === 0}
+			<p class="text-muted-foreground flex w-full justify-center p-6 text-sm">No lists</p>
+		{/if}
+	</div>
+</section>

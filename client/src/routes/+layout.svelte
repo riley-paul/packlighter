@@ -5,6 +5,10 @@
 	import { queryClient } from '@/lib/query';
 </script>
 
+<svelte:head>
+	<title>PackLighter</title>
+</svelte:head>
+
 <ModeWatcher />
 <QueryClientProvider client={queryClient}>
 	<slot />

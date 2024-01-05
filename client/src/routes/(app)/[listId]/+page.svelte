@@ -23,7 +23,13 @@
 				}
 			)
 		);
+
+	$: pageTitle = $list.data?.name ? ['PackLighter', $list.data?.name].join(' - ') : 'PackLighter';
 </script>
+
+<svelte:head>
+	<title>{pageTitle}</title>
+</svelte:head>
 
 <Card class="@container h-fit flex-1 p-6">
 	{#if $list.isError}

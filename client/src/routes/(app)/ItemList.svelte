@@ -48,7 +48,7 @@
 	};
 </script>
 
-<div class="mb-2">
+<div class="mb-2 flex flex-col gap-2">
 	<div class="flex items-center justify-between gap-4">
 		<h2 class="text-sm font-medium">Gear</h2>
 		<a class={buttonVariants({ size: 'sm', variant: 'linkMuted' })} href="/gear">
@@ -62,40 +62,43 @@
 		bind:value={searchTerm}
 	/>
 </div>
-{#if $items.isError}
-	<p>Error: {$items.error}</p>
-{:else if $items.isLoading}
-	<p>Loading...</p>
-{:else}
-	<div
-		class="bg-card flex-1 overflow-auto rounded-md border transition-colors"
-		use:dndzone={{
-			items: filteredItems,
-			type: 'items',
-			dropFromOthersDisabled: true,
-			dragDisabled: filteredItems.length === 0,
-			flipDurationMs,
-			dropTargetStyle: {},
-			dropTargetClasses: ['border-primary'],
-			transformDraggedElement
-		}}
-		on:consider={handleConsider}
-		on:finalize={handleFinalize}
-	>
-		{#each filteredItems as item (item.id)}
-			<div animate:flip={{ duration: flipDurationMs }} class="relative">
-				<ItemListItem {item} />
-				{#if item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-					<DragGhost fullWidth />
-				{/if}
-			</div>
-		{/each}
-		{#if filteredItems.length === 0}
+<div
+	class="bg-card flex-1 overflow-auto rounded-md border transition-colors"
+	use:dndzone={{
+		items: filteredItems,
+		type: 'items',
+		dropFromOthersDisabled: true,
+		dragDisabled: filteredItems.length === 0,
+		flipDurationMs,
+		dropTargetStyle: {},
+		dropTargetClasses: ['border-primary'],
+		transformDraggedElement
+	}}
+	on:consider={handleConsider}
+	on:finalize={handleFinalize}
+>
+	{#each filteredItems as item (item.id)}
+		<div animate:flip={{ duration: flipDurationMs }} class="relative">
+			<ItemListItem {item} />
+			{#if item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
+				<DragGhost fullWidth />
+			{/if}
+		</div>
+	{/each}
+	{#if $items.isError}
+		<p>Error: {$items.error}</p>
+	{:else if $items.isLoading}
+		<p>Loading...</p>
+	{:else}
+		{#if filteredItems.length === 0 && searchTerm.length > 0}
 			<IconTitleSubtitle>
 				<SearchX class="h-10 w-10" />
 				<svelte.fragment slot="title">No items found</svelte.fragment>
 				<svelte.fragment slot="subtitle">Try searching for something else</svelte.fragment>
 			</IconTitleSubtitle>
 		{/if}
-	</div>
-{/if}
+		{#if filteredItems.length === 0 && searchTerm.length === 0}
+			<p class="text-muted-foreground mt-24 flex justify-center p-6 text-sm">No items</p>
+		{/if}
+	{/if}
+</div>

@@ -58,6 +58,7 @@ export type ItemsRecord = {
 	image?: string
 	image_url?: string
 	name?: string
+	price?: number
 	sort_order?: number
 	user: RecordIdString
 	weight?: number
