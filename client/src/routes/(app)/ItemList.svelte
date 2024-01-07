@@ -15,8 +15,22 @@
 	import { SearchX, Table } from 'lucide-svelte';
 	import { buttonVariants } from '@/components/ui/button';
 	import { page } from '$app/stores';
+	import { onDestroy, onMount } from 'svelte';
 
 	let searchTerm = '';
+
+	const shortcuts = (e: KeyboardEvent) => {
+		const itemsFilterElement = document.getElementById('itemsFilter') as HTMLInputElement;
+		if (e.key === 'f' && e.ctrlKey) {
+			e.preventDefault();
+			itemsFilterElement.focus();
+			itemsFilterElement.select();
+			return;
+		}
+	};
+
+	onMount(() => window.addEventListener('keyup', shortcuts));
+	onDestroy(() => window.removeEventListener('keyup', shortcuts));
 
 	type ItemWithShadowItem = ItemsResponse & {
 		[SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
@@ -56,6 +70,7 @@
 		</a>
 	</div>
 	<Input
+		id="itemsFilter"
 		type="search"
 		placeholder="Filter..."
 		class="bg-card shadow-none"
