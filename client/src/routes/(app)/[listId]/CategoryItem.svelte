@@ -9,9 +9,9 @@
 	import DragHandle from '@/components/base/DragHandle.svelte';
 	import { DRAGGABLE_CLASS } from '@/lib/constants';
 	import { ItemsWeightUnitOptions } from '@/lib/types';
-	import { ChevronDown, ChevronUp } from 'lucide-svelte';
-	import { Button } from '@/components/ui/button';
+	import { Shirt, Utensils } from 'lucide-svelte';
 	import SpinBox from '@/components/base/SpinBox.svelte';
+	import { Toggle } from '@/components/ui/toggle';
 
 	export let list: ListWithCategories;
 	export let categoryItem: ExpandedCategoryItem;
@@ -27,7 +27,7 @@
 <form
 	id={categoryItem.id}
 	data-id={categoryItem.id}
-	class="{DRAGGABLE_CLASS} hover:bg-muted grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
+	class="{DRAGGABLE_CLASS} hover:bg-muted group grid items-center gap-2 border-b px-2 py-1 text-sm transition-colors"
 	style="grid-template-columns: {createCategoryTemplateCols({
 		list,
 		type: 'body'
@@ -64,6 +64,31 @@
 
 	{#if list.show_weights}
 		<div class="flex">
+			<Toggle
+				bind:pressed={categoryItem.cons_weight}
+				onPressedChange={saveCategoryItem}
+				size="xs"
+				variant="ghost"
+				class="{categoryItem.cons_weight || 'opacity-0'} transition-opacity group-hover:opacity-100"
+			>
+				<Utensils class="h-4 w-4" />
+			</Toggle>
+			<Toggle
+				bind:pressed={categoryItem.worn_weight}
+				onPressedChange={saveCategoryItem}
+				size="xs"
+				variant="ghost"
+				class="{categoryItem.worn_weight || 'opacity-0'} transition-opacity group-hover:opacity-100"
+			>
+				<Shirt class="h-4 w-4" />
+			</Toggle>
+			<!-- <Toggle
+				bind:pressed={categoryItem.worn_weight}
+				onPressedChange={saveCategoryItem}
+				size="sm"
+				class="hidden h-6 group-hover:flex"
+			>
+			</Toggle> -->
 			<Input
 				on:blur={saveCategoryItem}
 				bind:value={categoryItem.itemData.weight}
