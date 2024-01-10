@@ -57,6 +57,7 @@ export type ItemsRecord = {
 	description?: string
 	image?: string
 	image_url?: string
+	image_use_url?: boolean
 	name?: string
 	price?: number
 	sort_order?: number
@@ -78,7 +79,8 @@ export enum ListsWeightUnitOptions {
 	"oz" = "oz",
 	"lb" = "lb",
 }
-export type ListsRecord = {
+export type ListsRecord<Tcategories = unknown> = {
+	categories?: null | Tcategories
 	description?: string
 	name?: string
 	show_images?: boolean
@@ -99,7 +101,7 @@ export type UsersRecord = {
 export type CategoriesItemsResponse<Texpand = unknown> = Required<CategoriesItemsRecord> & BaseSystemFields<Texpand>
 export type ItemsResponse<Texpand = unknown> = Required<ItemsRecord> & BaseSystemFields<Texpand>
 export type ListCategoriesResponse<Texpand = unknown> = Required<ListCategoriesRecord> & BaseSystemFields<Texpand>
-export type ListsResponse<Texpand = unknown> = Required<ListsRecord> & BaseSystemFields<Texpand>
+export type ListsResponse<Tcategories = unknown, Texpand = unknown> = Required<ListsRecord<Tcategories>> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions

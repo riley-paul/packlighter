@@ -66,7 +66,10 @@
 		<div class="flex">
 			<Toggle
 				bind:pressed={categoryItem.cons_weight}
-				onPressedChange={saveCategoryItem}
+				onPressedChange={(pressed) => {
+					if (pressed) categoryItem.worn_weight = false;
+					saveCategoryItem();
+				}}
 				size="xs"
 				variant="ghost"
 				class="{categoryItem.cons_weight || 'opacity-0'} transition-opacity group-hover:opacity-100"
@@ -75,7 +78,10 @@
 			</Toggle>
 			<Toggle
 				bind:pressed={categoryItem.worn_weight}
-				onPressedChange={saveCategoryItem}
+				onPressedChange={(pressed) => {
+					if (pressed) categoryItem.cons_weight = false;
+					saveCategoryItem();
+				}}
 				size="xs"
 				variant="ghost"
 				class="{categoryItem.worn_weight || 'opacity-0'} transition-opacity group-hover:opacity-100"
