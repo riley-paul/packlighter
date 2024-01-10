@@ -13,17 +13,9 @@ export const useItems = () =>
 
 export const useUpdateItem = () =>
 	createMutation({
-		mutationFn: (variables: { id: string; item: Partial<ItemsRecord>; image?: Blob }) => {
-			const formData = new FormData();
-			if (variables.image) formData.append('image', variables.image);
+		mutationFn: (variables: { id: string; item: Partial<ItemsRecord> }) =>
+			pb.collection(Collections.Items).update(variables.id, variables.item),
 
-			return Promise.all([
-				pb.collection(Collections.Items).update(variables.id, variables.item),
-				variables.image
-					? pb.collection(Collections.Items).update(variables.id, formData)
-					: Promise.resolve()
-			]);
-		},
 		onSuccess: () =>
 			page.subscribe(({ params: { listId } }) => {
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
@@ -34,6 +26,20 @@ export const useUpdateItem = () =>
 export const useDeleteItem = () =>
 	createMutation({
 		mutationFn: (id: string) => pb.collection(Collections.Items).delete(id),
+		onSuccess: () =>
+			page.subscribe(({ params: { listId } }) => {
+				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
+			})
+	});
+
+export const useSetItemImage = () =>
+	createMutation({
+		mutationFn: (variables: { id: string; image: Blob }) => {
+			const formData = new FormData();
+			formData.append('image', variables.image);
+			return pb.collection(Collections.Items).update(variables.id, formData);
+		},
 		onSuccess: () =>
 			page.subscribe(({ params: { listId } }) => {
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
