@@ -15,10 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Change directory
-        run: |
-          cd ./server
-
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -26,5 +22,6 @@ jobs:
 
       - name: Build
         run: |
+          cd ./server
           go get .
           CGO_ENABLED=0 go build
