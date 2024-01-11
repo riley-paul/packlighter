@@ -2,7 +2,7 @@
 	import type { ExpandedCategoryItem, ListWithCategories } from '@/hooks/useList';
 	import { useDeleteCategoryItem, useUpdateCategoryItem } from '@/hooks/useCategoryItem';
 	import { Checkbox } from '@/components/ui/checkbox';
-	import ItemImage from './ItemImage.svelte';
+	import ItemImage from '../../../components/ItemImage.svelte';
 	import { createCategoryTemplateCols, selectContentOnFocus } from '@/lib/helpers';
 	import { Input } from '@/components/ui/input';
 	import DeleteButton from '@/components/base/DeleteButton.svelte';

@@ -9,11 +9,31 @@
 		TableHeader,
 		TableRow
 	} from '@/components/ui/table';
-	import { useItems } from '@/hooks/useItem';
-	import { formatWeight } from '@/lib/helpers';
-	import { ItemsWeightUnitOptions } from '@/lib/types';
+	import { useItems, useUpdateItemsOrder } from '@/hooks/useItem';
+	import { ItemsWeightUnitOptions, type ItemsResponse } from '@/lib/types';
+	import ItemImage from '@/components/ItemImage.svelte';
+	import type { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 
 	$: items = useItems();
+	$: updateItemsOrder = useUpdateItemsOrder();
+
+	type ItemWithShadowItem = ItemsResponse & {
+		[SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
+	};
+
+	$: itemsData = ($items.data ?? []) as ItemWithShadowItem[];
+
+	const templateCols = []
+
+	const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
+		itemsData = ev.detail.items;
+	};
+
+	const handleFinalize = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
+		itemsData = ev.detail.items;
+		const ids = ev.detail.items.map((item) => item.id);
+		$updateItemsOrder.mutate({ itemIds: ids });
+	};
 </script>
 
 <svelte:head>
@@ -24,16 +44,20 @@
 	<TableHeader>
 		<TableRow>
 			<TableHead class="w-0" />
+			<TableHead class="w-0">Image</TableHead>
 			<TableHead class="w-64 pl-5">Name</TableHead>
 			<TableHead class="pl-5">Description</TableHead>
 			<TableHead class="w-32 text-right">Weight</TableHead>
 		</TableRow>
 	</TableHeader>
 	<TableBody>
-		{#each $items.data ?? [] as item}
+		{#each itemsData as item}
 			<TableRow>
 				<TableCell>
 					<DragHandle />
+				</TableCell>
+				<TableCell>
+					<ItemImage {item} />
 				</TableCell>
 				<TableCell>
 					<Input
