@@ -2,13 +2,13 @@
 	import { Card } from '@/components/ui/card';
 	import { Loader2 } from 'lucide-svelte';
 	import { useList } from '@/hooks/useList';
-	import ListHeader from '@/routes/(app)/[listId]/ListHeader.svelte';
-	import CategoryList from '@/routes/(app)/[listId]/CategoryList.svelte';
+	import ListHeader from '@/components/list/ListHeader.svelte';
+	import CategoryList from '@/components/list/CategoryList.svelte';
 	import { CATEGORY_NAME_CLASS } from '@/lib/constants';
 	import { waitForElm } from '@/lib/helpers';
 	import { tick } from 'svelte';
-	import WeightChart from '@/routes/(app)/[listId]/WeightChart.svelte';
-	import WeightTable from '@/routes/(app)/[listId]/WeightTable.svelte';
+	import WeightChart from '@/components/list/WeightChart.svelte';
+	import WeightTable from '@/components/list/WeightTable.svelte';
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
 	import { page } from '$app/stores';
 

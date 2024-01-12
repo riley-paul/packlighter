@@ -6,6 +6,7 @@
 		TableCell,
 		TableHead,
 		TableHeader,
+		TableFooter,
 		TableRow
 	} from '@/components/ui/table';
 	import { formatWeight, getCategoryWeight, getItemWeightInUnit } from '@/lib/helpers';
@@ -29,7 +30,9 @@
 				</TableCell>
 			</TableRow>
 		{/each}
-		<TableRow class="font-bold">
+	</TableBody>
+	<TableFooter class="text-foreground bg-transparent">
+		<TableRow>
 			<TableCell class="border-t-2">Total</TableCell>
 			<TableCell class="border-t-2 text-right">
 				{formatWeight(
@@ -38,5 +41,5 @@
 				{list.weight_unit}
 			</TableCell>
 		</TableRow>
-	</TableBody>
+	</TableFooter>
 </Table>

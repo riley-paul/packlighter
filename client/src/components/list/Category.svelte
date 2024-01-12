@@ -14,7 +14,6 @@
 		createTempCategoryItem,
 		formatWeight,
 		getCategoryWeight,
-		getItemWeightInUnit,
 		isCategoryFullyPacked,
 		transformDraggedElement
 	} from '@/lib/helpers';
