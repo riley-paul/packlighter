@@ -6,7 +6,7 @@
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME, dndzone } from 'svelte-dnd-action';
 	import { flip } from 'svelte/animate';
 	import type { ItemsResponse } from '@/lib/types';
-	import { flipDurationMs, isDraggingClasslist } from '@/lib/constants';
+	import { flipDurationMs } from '@/lib/constants';
 	import { isForeignItem } from '@/lib/store';
 	import { useList } from '@/hooks/useList';
 	import { getListItemIds, transformDraggedElement } from '@/lib/helpers';

@@ -4,6 +4,7 @@ import type { ClientResponseError } from 'pocketbase';
 import { queryClient } from '@/lib/query';
 import { Collections, type ItemsRecord, type ItemsResponse } from '@/lib/types';
 import { page } from '$app/stores';
+import { toast } from 'svelte-sonner';
 
 export const useItems = () =>
 	createQuery<ItemsResponse[], ClientResponseError>({
@@ -20,7 +21,8 @@ export const useUpdateItem = () =>
 			page.subscribe(({ params: { listId } }) => {
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
 				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-			})
+			}),
+		onError: (error) => toast.error(error.message)
 	});
 
 export const useDeleteItem = () =>
@@ -30,7 +32,22 @@ export const useDeleteItem = () =>
 			page.subscribe(({ params: { listId } }) => {
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
 				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-			})
+			}),
+		onError: (error) => toast.error(error.message)
+	});
+
+export const useCreateItem = () =>
+	createMutation({
+		mutationFn: () =>
+			pb
+				.collection(Collections.Items)
+				.create({ user: pb.authStore.model?.id, weight: 0, weight_unit: 'g', sort_order: 0 }),
+		onSuccess: () =>
+			page.subscribe(({ params: { listId } }) => {
+				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
+			}),
+		onError: (error) => toast.error(error.message)
 	});
 
 export const useSetItemImage = () =>
@@ -44,7 +61,8 @@ export const useSetItemImage = () =>
 			page.subscribe(({ params: { listId } }) => {
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
 				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-			})
+			}),
+		onError: (error) => toast.error(error.message)
 	});
 
 export const useDeleteItemImage = () =>
@@ -54,7 +72,8 @@ export const useDeleteItemImage = () =>
 			page.subscribe(({ params: { listId } }) => {
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
 				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-			})
+			}),
+		onError: (error) => toast.error(error.message)
 	});
 
 export const useUpdateItemsOrder = () =>
@@ -65,5 +84,6 @@ export const useUpdateItemsOrder = () =>
 					pb.collection(Collections.Items).update(id, { sort_order: index })
 				)
 			),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: [Collections.Items] })
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: [Collections.Items] }),
+		onError: (error) => toast.error(error.message)
 	});

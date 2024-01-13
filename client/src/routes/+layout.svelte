@@ -3,6 +3,7 @@
 	import '../app.pcss';
 	import { ModeWatcher } from 'mode-watcher';
 	import { queryClient } from '@/lib/query';
+	import { Toaster } from '@/components/ui/sonner';
 </script>
 
 <svelte:head>
@@ -10,6 +11,7 @@
 </svelte:head>
 
 <ModeWatcher />
+<Toaster />
 <QueryClientProvider client={queryClient}>
 	<slot />
 </QueryClientProvider>
