@@ -56,6 +56,28 @@
 			New Item
 		</Button>
 	</div>
+	<div class="columns-sm">
+		{#each itemsData as item}
+			<div class="hover:bg-muted flex w-full gap-2 rounded-md p-2 transition-colors">
+				<ItemImage {item} fullSizePlaceholer />
+				<div class="flex-1">
+					<Input
+						class="h-auto border-none py-0.5 font-medium shadow-none placeholder:italic"
+						placeholder="Unnamed item"
+						autocomplete="off"
+						bind:value={item.name}
+					/>
+					<Input
+						class="h-auto border-none py-0.5 shadow-none placeholder:italic"
+						placeholder="Description"
+						autocomplete="off"
+						bind:value={item.description}
+					/>
+				</div>
+			</div>
+		{/each}
+	</div>
+
 	<Table>
 		<TableHeader>
 			<TableRow>

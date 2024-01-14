@@ -18,6 +18,7 @@
 	import { Input } from '@/components/ui/input';
 
 	export let item: ItemsResponse;
+	export let fullSizePlaceholer = false;
 
 	let isOpen = false;
 
@@ -47,7 +48,8 @@
 			class={cn(
 				'flex w-20 items-center justify-center rounded-sm p-0.5',
 				item.image ? 'aspect-square bg-white' : 'bg-muted/50 h-full',
-				'outline-primary outline-1 transition-all hover:outline'
+				'outline-primary outline-1 transition-all hover:outline',
+				fullSizePlaceholer && 'aspect-square'
 			)}
 		>
 			{#if item.image}
