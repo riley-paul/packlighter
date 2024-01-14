@@ -6,6 +6,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"deploy": "vite build && rsync -azv --delete ./build/ root@45.79.102.74:/root/packlighter/pb_public",
 		"typegen": "pocketbase-typegen --db ../server/pb_data/data.db --out ./src/lib/types.ts",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
