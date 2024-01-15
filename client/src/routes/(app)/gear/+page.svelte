@@ -129,8 +129,20 @@
 				<TableHead class="w-0" />
 			</TableRow>
 		</TableHeader>
-		<TableBody>
-			{#each itemsData as item}
+		<tbody
+			use:dndzone={{
+				items: itemsData,
+				type: 'items',
+				dropFromOthersDisabled: true,
+				flipDurationMs,
+				dropTargetStyle: {},
+				dropTargetClasses: ['outline', 'outline-1', 'outline-primary'],
+				transformDraggedElement
+			}}
+			on:consider={handleConsider}
+			on:finalize={handleFinalize}
+		>
+			{#each itemsData as item (item.id)}
 				<TableRow>
 					<TableCell>
 						<ItemImage {item} fullSizePlaceholer />
@@ -172,6 +184,6 @@
 					</TableCell>
 				</TableRow>
 			{/each}
-		</TableBody>
+		</tbody>
 	</Table>
 </div>

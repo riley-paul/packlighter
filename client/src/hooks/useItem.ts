@@ -51,8 +51,8 @@ export const useCreateItem = () =>
 	});
 
 export const useSetItemImage = () =>
-	createMutation({
-		mutationFn: (variables: { id: string; image: Blob }) => {
+	createMutation<ItemsResponse, ClientResponseError, { id: string; image: Blob }>({
+		mutationFn: (variables) => {
 			const formData = new FormData();
 			formData.append('image', variables.image);
 			return pb.collection(Collections.Items).update(variables.id, formData);
@@ -62,7 +62,7 @@ export const useSetItemImage = () =>
 				queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
 				queryClient.invalidateQueries({ queryKey: [Collections.Items] });
 			}),
-		onError: (error) => toast.error(error.message)
+		onError: (error) => toast.error(error.response.data.image.message)
 	});
 
 export const useDeleteItemImage = () =>
