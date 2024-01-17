@@ -17,7 +17,6 @@ export const isCategoryFullyPacked = (category: ExpandedCategory) =>
 export const isItemUntouched = (item: ExpandedCategoryItem) =>
 	!item.itemData.name &&
 	!item.itemData.name &&
-	!item.itemData.image_url &&
 	item.quantity === 1 &&
 	!item.packed;
 

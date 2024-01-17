@@ -9,7 +9,8 @@ import { toast } from 'svelte-sonner';
 export const useItems = () =>
 	createQuery<ItemsResponse[], ClientResponseError>({
 		queryKey: [Collections.Items],
-		queryFn: () => pb.collection(Collections.Items).getFullList({ sort: 'sort_order' })
+		queryFn: () =>
+			pb.collection(Collections.Items).getFullList({ sort: 'sort_order', expand: 'tags' })
 	});
 
 export const useUpdateItem = () =>

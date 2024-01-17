@@ -41,6 +41,8 @@
 			item.description.toLowerCase().includes(searchTerm.toLowerCase())
 	) ?? []) as ItemWithShadowItem[];
 
+	$: console.log(itemsData.filter((i) => i.tags.length > 0));
+
 	const templateCols = [];
 
 	const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {

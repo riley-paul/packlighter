@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host",
 		"build": "vite build",
 		"preview": "vite preview",
 		"deploy": "vite build && rsync -azv --delete ./build/ root@45.79.102.74:/root/packlighter/pb_public",
