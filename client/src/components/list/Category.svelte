@@ -107,7 +107,7 @@
 				bind:value={category.name}
 				on:blur={saveCategory}
 				placeholder="Category Name"
-				class="{CATEGORY_NAME_CLASS} text-primary h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none placeholder:italic"
+				class="{CATEGORY_NAME_CLASS} h-auto w-full border-none bg-inherit py-0.5 text-base font-semibold shadow-none placeholder:italic"
 			/>
 			<input type="hidden" />
 		</form>
