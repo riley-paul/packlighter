@@ -2,7 +2,7 @@ import { pb } from '@/lib/pocketbase';
 import { createMutation } from '@tanstack/svelte-query';
 import { type ExpandedCategory, type ListWithCategories } from './useList';
 import { isCategoryFullyPacked, isItemUntouched } from '@/lib/helpers';
-import { queryClient } from '@/lib/query';
+import { queryClient } from '../../../native-app/src/lib/query';
 import { Collections } from '@/lib/types';
 import { page } from '$app/stores';
 

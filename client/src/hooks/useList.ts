@@ -2,7 +2,7 @@ import { pb } from '@/lib/pocketbase';
 import { createMutation, createQuery } from '@tanstack/svelte-query';
 import type { ClientResponseError } from 'pocketbase';
 
-import { queryClient } from '@/lib/query';
+import { queryClient } from '../../../native-app/src/lib/query';
 import {
 	type CategoriesItemsResponse,
 	type ListCategoriesResponse,

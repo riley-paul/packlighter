@@ -1,7 +1,7 @@
 import { pb } from '@/lib/pocketbase';
 import { createMutation, createQuery } from '@tanstack/svelte-query';
 import type { ClientResponseError } from 'pocketbase';
-import { queryClient } from '@/lib/query';
+import { queryClient } from '../../../native-app/src/lib/query';
 import { Collections, type ItemsRecord, type ItemsResponse } from '@/lib/types';
 import { page } from '$app/stores';
 import { toast } from 'svelte-sonner';

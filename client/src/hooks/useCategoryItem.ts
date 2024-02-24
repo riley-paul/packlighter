@@ -7,7 +7,7 @@ import {
 import { pb } from '@/lib/pocketbase';
 import { getSortOrderFromIndex, isItemUntouched } from '@/lib/helpers';
 
-import { queryClient } from '@/lib/query';
+import { queryClient } from '../../../native-app/src/lib/query';
 import { Collections, type ItemsResponse } from '@/lib/types';
 import { page } from '$app/stores';
 
