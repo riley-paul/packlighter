@@ -1,4 +1,5 @@
 import LoginForm from "@/components/forms/login-form";
+import SignUpForm from "@/components/forms/signup-form";
 import {
   Card,
   Tab,
@@ -81,6 +82,7 @@ export default function AuthPage(): ReturnType<React.FC> {
         </TabList>
         <Card className={styles.card}>
           {selectedTab === AuthTab.Login && <LoginForm />}
+          {selectedTab === AuthTab.SignUp && <SignUpForm />}
         </Card>
       </div>
     </div>

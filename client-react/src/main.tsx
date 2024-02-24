@@ -7,19 +7,23 @@ import Root from "./routes/root";
 import { FluentProvider, Toaster, tokens } from "@fluentui/react-components";
 import { TOASTER_ID } from "./lib/constants";
 import AuthPage from "./routes/auth";
-import { darkTheme } from "./lib/theme";
+import { lightTheme } from "./lib/theme";
+import App from "./routes/app";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
-    children: [{ path: "auth", element: <AuthPage /> }],
+    children: [
+      { index: true, element: <App /> },
+      { path: "auth", element: <AuthPage /> },
+    ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <FluentProvider
-    theme={darkTheme}
+    theme={lightTheme}
     style={{
       height: "100vh",
       width: "100vw",
