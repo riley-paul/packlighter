@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fluentui/react-components": "^9.46.5",
+    "lucide-react": "^0.338.0",
     "pocketbase": "^0.21.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
