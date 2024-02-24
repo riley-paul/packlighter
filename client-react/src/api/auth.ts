@@ -23,3 +23,5 @@ export const signUpSchema = z
 export type SignUpSchema = z.infer<typeof signUpSchema>;
 export const signUp = (data: SignUpSchema) =>
   pb.collection("users").create(data);
+
+export const logout = () => pb.authStore.clear();

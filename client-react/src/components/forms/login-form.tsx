@@ -8,6 +8,9 @@ import { Button, Spinner, tokens } from "@fluentui/react-components";
 import { Key, Send, User } from "lucide-react";
 import FormInputContainer from "./form-input-container";
 import FormActionContainer from "./form-action-container";
+import { useNavigate } from "react-router-dom";
+import useToaster from "@/hooks/useToaster";
+import { ClientResponseError } from "pocketbase";
 
 const defaultForm: LoginSchema = {
   email: "",
@@ -20,10 +23,22 @@ export default function LoginForm(): ReturnType<React.FC> {
     resolver: zodResolver(loginSchema),
   });
 
+  const navigate = useNavigate();
+  const { makeToast } = useToaster();
+
   const { handleSubmit } = methods;
 
   const submitMutation = useMutation({
     mutationFn: login,
+    onSuccess: () => navigate("/"),
+    onError: (error: ClientResponseError) => {
+      console.error(error);
+      makeToast({
+        message: "Login failed",
+        body: error.message,
+        intent: "error",
+      });
+    },
   });
 
   const onSubmit = handleSubmit(
