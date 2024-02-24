@@ -5,8 +5,8 @@ import { z } from "zod";
 import ControlledTextInput from "../input/controlled-text";
 import { useMutation } from "react-query";
 import { login } from "@/api/auth";
-import { Button, tokens } from "@fluentui/react-components";
-import { Key, User } from "lucide-react";
+import { Button, Spinner, tokens } from "@fluentui/react-components";
+import { Key, Send, User } from "lucide-react";
 import FormInputContainer from "./form-input-container";
 import FormActionContainer from "./form-action-container";
 
@@ -79,11 +79,13 @@ export default function LoginForm(): ReturnType<React.FC> {
           />
         </FormInputContainer>
         <FormActionContainer>
-          <Button type="submit" appearance="primary">
+          <Button
+            type="submit"
+            appearance="primary"
+            icon={submitMutation.isLoading ? <Spinner size="tiny" /> : <Send />}
+            disabled={submitMutation.isLoading}
+          >
             Submit
-          </Button>
-          <Button type="reset" appearance="secondary">
-            Reset
           </Button>
         </FormActionContainer>
       </form>
