@@ -1,30 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
 import ControlledTextInput from "../input/controlled-text";
 import { useMutation } from "react-query";
-import { login } from "@/api/auth";
+import { SignUpSchema, signUp, signUpSchema } from "@/api/auth";
 import { Button, Spinner, tokens } from "@fluentui/react-components";
 import { Key, Send, User } from "lucide-react";
 import FormInputContainer from "./form-input-container";
 import FormActionContainer from "./form-action-container";
 
-const schema = z
-  .object({
-    username: z.string().min(3),
-    email: z.string().email(),
-    password: z.string().min(8),
-    confirmPassword: z.string().min(8),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-type Schema = z.infer<typeof schema>;
-
-const defaultForm: Schema = {
+const defaultForm: SignUpSchema = {
   username: "",
   email: "",
   password: "",
@@ -32,15 +17,15 @@ const defaultForm: Schema = {
 };
 
 export default function SignUpForm(): ReturnType<React.FC> {
-  const methods = useForm<Schema>({
+  const methods = useForm<SignUpSchema>({
     defaultValues: defaultForm,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signUpSchema),
   });
 
   const { handleSubmit } = methods;
 
   const submitMutation = useMutation({
-    mutationFn: (data: Schema) => login(data.email, data.password),
+    mutationFn: signUp,
   });
 
   const onSubmit = handleSubmit(
@@ -54,7 +39,7 @@ export default function SignUpForm(): ReturnType<React.FC> {
     <FormProvider {...methods}>
       <form onSubmit={onSubmit}>
         <FormInputContainer>
-          <ControlledTextInput<Schema, "username">
+          <ControlledTextInput<SignUpSchema, "username">
             name="username"
             label="Username"
             contentBefore={
@@ -68,7 +53,7 @@ export default function SignUpForm(): ReturnType<React.FC> {
             appearance="filled-lighter"
             placeholder="Username"
           />
-          <ControlledTextInput<Schema, "email">
+          <ControlledTextInput<SignUpSchema, "email">
             name="email"
             label="Email"
             type="email"
@@ -84,7 +69,7 @@ export default function SignUpForm(): ReturnType<React.FC> {
             appearance="filled-lighter"
             placeholder="Username"
           />
-          <ControlledTextInput<Schema, "password">
+          <ControlledTextInput<SignUpSchema, "password">
             name="password"
             label="Password"
             type="password"
@@ -100,7 +85,7 @@ export default function SignUpForm(): ReturnType<React.FC> {
             appearance="filled-lighter"
             placeholder="Password"
           />
-          <ControlledTextInput<Schema, "confirmPassword">
+          <ControlledTextInput<SignUpSchema, "confirmPassword">
             name="confirmPassword"
             label="Confirm Password"
             type="password"

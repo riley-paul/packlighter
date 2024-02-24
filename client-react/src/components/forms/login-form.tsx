@@ -1,37 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
 import ControlledTextInput from "../input/controlled-text";
 import { useMutation } from "react-query";
-import { login } from "@/api/auth";
+import { LoginSchema, login, loginSchema } from "@/api/auth";
 import { Button, Spinner, tokens } from "@fluentui/react-components";
 import { Key, Send, User } from "lucide-react";
 import FormInputContainer from "./form-input-container";
 import FormActionContainer from "./form-action-container";
 
-const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-});
-
-type Schema = z.infer<typeof schema>;
-
-const defaultForm: Schema = {
+const defaultForm: LoginSchema = {
   email: "",
   password: "",
 };
 
 export default function LoginForm(): ReturnType<React.FC> {
-  const methods = useForm<Schema>({
+  const methods = useForm<LoginSchema>({
     defaultValues: defaultForm,
-    resolver: zodResolver(schema),
+    resolver: zodResolver(loginSchema),
   });
 
   const { handleSubmit } = methods;
 
   const submitMutation = useMutation({
-    mutationFn: (data: Schema) => login(data.email, data.password),
+    mutationFn: login,
   });
 
   const onSubmit = handleSubmit(
@@ -45,7 +37,7 @@ export default function LoginForm(): ReturnType<React.FC> {
     <FormProvider {...methods}>
       <form onSubmit={onSubmit}>
         <FormInputContainer>
-          <ControlledTextInput<Schema, "email">
+          <ControlledTextInput<LoginSchema, "email">
             name="email"
             label="Email"
             type="email"
@@ -61,7 +53,7 @@ export default function LoginForm(): ReturnType<React.FC> {
             appearance="filled-lighter"
             placeholder="Username"
           />
-          <ControlledTextInput<Schema, "password">
+          <ControlledTextInput<LoginSchema, "password">
             name="password"
             label="Password"
             type="password"
