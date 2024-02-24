@@ -1,14 +1,14 @@
+import LoginForm from "@/components/forms/login-form";
 import {
-  Button,
   Card,
-  Input,
   Tab,
   TabList,
   Text,
   makeStyles,
   tokens,
+  shorthands,
 } from "@fluentui/react-components";
-import { Feather, Key, User } from "lucide-react";
+import { Feather } from "lucide-react";
 import React from "react";
 
 const useStyles = makeStyles({
@@ -22,9 +22,11 @@ const useStyles = makeStyles({
   },
   card: {
     backgroundColor: tokens.colorNeutralBackground2,
+    ...shorthands.padding(tokens.spacingVerticalL),
+    ...shorthands.borderRadius(tokens.borderRadiusLarge),
   },
   cardContainer: {
-    maxWidth: "300px",
+    maxWidth: "350px",
     width: "100%",
   },
   copyContainer: {
@@ -33,6 +35,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     marginTop: "10vh",
+    rowGap: tokens.spacingVerticalXS,
   },
   title: {
     fontSize: tokens.fontSizeBase600,
@@ -65,7 +68,7 @@ export default function AuthPage(): ReturnType<React.FC> {
         <Text size={800} weight="bold">
           PackLighter
         </Text>
-        <Text size={200}>The packing list tool of champions</Text>
+        <Text size={200}>The packing tool of champions</Text>
       </div>
       <div className={styles.cardContainer}>
         <TabList
@@ -77,32 +80,7 @@ export default function AuthPage(): ReturnType<React.FC> {
           <Tab value="sign-up">Sign Up</Tab>
         </TabList>
         <Card className={styles.card}>
-          <Input
-            contentBefore={
-              <User
-                style={{
-                  height: tokens.fontSizeBase300,
-                  width: tokens.fontSizeBase300,
-                }}
-              />
-            }
-            appearance="filled-lighter"
-            placeholder="Username"
-          />
-          <Input
-            contentBefore={
-              <Key
-                style={{
-                  height: tokens.fontSizeBase300,
-                  width: tokens.fontSizeBase300,
-                }}
-              />
-            }
-            type="password"
-            appearance="filled-lighter"
-            placeholder="Password"
-          />
-          <Button appearance="primary">Submit</Button>
+          {selectedTab === AuthTab.Login && <LoginForm />}
         </Card>
       </div>
     </div>

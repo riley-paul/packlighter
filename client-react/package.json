@@ -12,12 +12,15 @@
   },
   "dependencies": {
     "@fluentui/react-components": "^9.46.5",
+    "@hookform/resolvers": "^3.3.4",
     "lucide-react": "^0.338.0",
     "pocketbase": "^0.21.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.50.1",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.22.1"
+    "react-router-dom": "^6.22.1",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "^20.11.20",
