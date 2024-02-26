@@ -9,13 +9,21 @@ import { TOASTER_ID } from "./lib/constants";
 import AuthPage from "./routes/auth";
 import { lightTheme } from "./lib/theme";
 import App from "./routes/app";
+import ListPage from "./routes/list";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
-      { index: true, element: <App /> },
+      {
+        path: "/",
+        element: <App />,
+        children: [
+          { path: "list/:listId", element: <ListPage /> },
+          { path: "settings", element: <div>settings</div> },
+        ],
+      },
       { path: "auth", element: <AuthPage /> },
     ],
   },
