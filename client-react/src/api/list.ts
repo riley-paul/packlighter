@@ -30,7 +30,7 @@ export type ListWithCategories = ListsResponse & {
   categories: ExpandedCategory[];
 };
 
-export const getList = (listId: string) => async () => {
+export const getList = async (listId: string) => {
   const expandItems = (
     record: CategoriesItemsExpandItem
   ): ExpandedCategoryItem => ({

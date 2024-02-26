@@ -55,6 +55,9 @@ const useStyles = makeStyles({
       },
     },
   },
+  tab: {
+    flexGrow: 1,
+  },
   tabUnnamed: {
     fontStyle: "italic",
     color: tokens.colorNeutralForeground3,
@@ -124,7 +127,10 @@ export default function PackingLists(): ReturnType<React.FC> {
               <Tab
                 key={list.id}
                 value={list.id}
-                className={mergeClasses(!list.name && styles.tabUnnamed)}
+                className={mergeClasses(
+                  styles.tab,
+                  !list.name && styles.tabUnnamed
+                )}
               >
                 {list.name || "Unnamed List"}
               </Tab>

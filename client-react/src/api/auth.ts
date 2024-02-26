@@ -25,3 +25,8 @@ export const signUp = (data: SignUpSchema) =>
   pb.collection("users").create(data);
 
 export const logout = () => pb.authStore.clear();
+
+export const getProfilePhoto = () => {
+  const user = pb.authStore.model;
+  return user ? pb.files.getUrl(user, user.avatar, { thumb: "100x100" }) : "";
+};
