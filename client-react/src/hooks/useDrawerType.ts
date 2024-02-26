@@ -10,7 +10,7 @@ export default function useDrawerType(): DrawerType {
     const onMediaQueryChange = ({ matches }: MediaQueryListEvent) =>
       setType(matches ? "overlay" : "inline");
 
-    const match = window.matchMedia("(max-width: 720px)");
+    const match = window.matchMedia("(max-width: 1024px)");
     if (match.matches) setType("overlay");
     match.addEventListener("change", onMediaQueryChange);
 

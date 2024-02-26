@@ -123,9 +123,8 @@ export default function PackingLists(): ReturnType<React.FC> {
           onTabSelect={(_, { value }) => navigate(`/list/${value}`)}
         >
           {listsQuery.data?.map((list) => (
-            <div className={styles.tabContainer}>
+            <div className={styles.tabContainer} key={list.id}>
               <Tab
-                key={list.id}
                 value={list.id}
                 className={mergeClasses(
                   styles.tab,

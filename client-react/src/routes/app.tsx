@@ -12,18 +12,35 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 
 const useStyles = makeStyles({
-  container: { display: "flex", flexDirection: "column", height: "100%" },
-  bodyContainer: { display: "flex", flexGrow: 1 },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    overflowX: "hidden",
+    overflowY: "hidden",
+  },
+  bodyContainer: {
+    display: "flex",
+    flexGrow: 1,
+    width: "100%",
+    overflowX: "hidden",
+    overflowY: "hidden",
+  },
   drawer: {
     backgroundColor: tokens.colorNeutralBackground2,
     borderRightColor: tokens.colorNeutralStroke1,
     borderRightWidth: tokens.strokeWidthThin,
     borderRightStyle: "solid",
     ...shorthands.padding(0),
+    minWidth: "300px",
   },
   drawerBody: {
     backgroundColor: tokens.colorNeutralBackground2,
     ...shorthands.padding("1rem"),
+  },
+  main: {
+    width: "100%",
+    overflowY: "auto",
   },
 });
 
@@ -48,7 +65,9 @@ export default function App(): ReturnType<React.FC> {
             <PackingLists />
           </DrawerBody>
         </Drawer>
-        <Outlet />
+        <main className={styles.main}>
+          <Outlet />
+        </main>
       </div>
     </div>
   );
