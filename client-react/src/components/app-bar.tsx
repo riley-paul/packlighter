@@ -3,19 +3,24 @@ import {
   tokens,
   shorthands,
   Text,
+  ToggleButton,
 } from "@fluentui/react-components";
-import { Feather } from "lucide-react";
+import { Feather, Menu } from "lucide-react";
 import React from "react";
 
 const useStyles = makeStyles({
   header: {
     width: "100%",
-    backgroundColor: tokens.colorNeutralBackground2,
+    backgroundColor: tokens.colorNeutralBackground1,
     borderBottomColor: tokens.colorNeutralStroke1,
     borderBottomWidth: tokens.strokeWidthThin,
     borderBottomStyle: "solid",
-    ...shorthands.padding(tokens.spacingHorizontalM, tokens.spacingVerticalXL),
     height: "3rem",
+    display: "flex",
+    alignItems: "center",
+  },
+  headerContainer: {
+    ...shorthands.padding(tokens.spacingHorizontalM, tokens.spacingVerticalXL),
     display: "flex",
     alignItems: "center",
   },
@@ -23,22 +28,45 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
+  toggleButton: {
+    height: "100%",
+    width: "3rem",
+    maxWidth: "unset",
+  },
 });
 
-export default function AppBar(): ReturnType<React.FC> {
+interface Props {
+  isDrawerOpen: boolean;
+  setIsDrawerOpen: (open: boolean) => void;
+}
+
+export default function AppBar(props: Props): ReturnType<React.FC<Props>> {
   const styles = useStyles();
+  const { isDrawerOpen, setIsDrawerOpen } = props;
+
   return (
     <header className={styles.header}>
-      <div className={styles.groupContainer}>
-        <Feather
-          style={{
-            color: tokens.colorBrandForeground1,
-            marginRight: tokens.spacingHorizontalS,
-          }}
-        />
-        <Text size={400} weight="semibold">
-          PackLighter
-        </Text>
+      <ToggleButton
+        className={styles.toggleButton}
+        shape="square"
+        icon={<Menu size="1rem" />}
+        appearance="subtle"
+        size="large"
+        checked={isDrawerOpen}
+        onClick={() => setIsDrawerOpen(!isDrawerOpen)}
+      />
+      <div className={styles.headerContainer}>
+        <div className={styles.groupContainer}>
+          <Feather
+            style={{
+              color: tokens.colorBrandForeground1,
+              marginRight: tokens.spacingHorizontalS,
+            }}
+          />
+          <Text size={400} weight="semibold">
+            PackLighter
+          </Text>
+        </div>
       </div>
     </header>
   );

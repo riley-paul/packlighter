@@ -32,5 +32,8 @@ export const darkTheme: Theme = {
   ...createDarkTheme(myNewTheme),
 };
 
+lightTheme.colorBrandForeground1 = myNewTheme[110];
+lightTheme.colorBrandForeground2 = myNewTheme[120];
+
 darkTheme.colorBrandForeground1 = myNewTheme[110];
 darkTheme.colorBrandForeground2 = myNewTheme[120];
