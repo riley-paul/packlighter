@@ -1,3 +1,4 @@
+import React from "react";
 import { ExpandedCategory, ExpandedCategoryItem } from "@/api/list";
 import {
   DataGrid,
@@ -10,21 +11,6 @@ import {
   createTableColumn,
 } from "@fluentui/react-components";
 
-const columnsDef: TableColumnDefinition<ExpandedCategoryItem>[] = [
-  createTableColumn<ExpandedCategoryItem>({
-    columnId: "name",
-    renderHeaderCell: () => "Name",
-    renderCell: (item) => item.itemData.name,
-  }),
-  createTableColumn<ExpandedCategoryItem>({
-    columnId: "description",
-    renderHeaderCell: () => "Description",
-    renderCell: (item) => item.itemData.description,
-  }),
-];
-
-import React from "react";
-
 interface Props {
   category: ExpandedCategory;
 }
@@ -34,8 +20,40 @@ export default function ListCategory(
 ): ReturnType<React.FC<Props>> {
   const { category } = props;
 
+  const columnsDef: TableColumnDefinition<ExpandedCategoryItem>[] =
+    React.useMemo(
+      () => [
+        createTableColumn<ExpandedCategoryItem>({
+          columnId: "name",
+          renderHeaderCell: () => category.name,
+          renderCell: (item) => item.itemData.name,
+        }),
+        createTableColumn<ExpandedCategoryItem>({
+          columnId: "description",
+          renderHeaderCell: () => null,
+          renderCell: (item) => item.itemData.description,
+        }),
+        createTableColumn<ExpandedCategoryItem>({
+          columnId: "weight",
+          renderHeaderCell: () => "Weight",
+          renderCell: (item) => item.itemData.weight,
+        }),
+        createTableColumn<ExpandedCategoryItem>({
+          columnId: "quantity",
+          renderHeaderCell: () => "Qty",
+          renderCell: (item) => item.quantity,
+        }),
+      ],
+      [category.name]
+    );
+
   return (
-    <DataGrid items={category.items} columns={columnsDef} size="small">
+    <DataGrid
+      items={category.items}
+      columns={columnsDef}
+      size="small"
+      getRowId={(item: ExpandedCategoryItem) => item.id}
+    >
       <DataGridHeader>
         <DataGridRow<ExpandedCategoryItem>>
           {({ renderHeaderCell }) => (

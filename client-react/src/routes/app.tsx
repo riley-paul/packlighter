@@ -41,6 +41,7 @@ const useStyles = makeStyles({
   main: {
     width: "100%",
     overflowY: "auto",
+    ...shorthands.padding("1rem"),
   },
 });
 
