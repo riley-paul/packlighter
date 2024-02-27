@@ -4,7 +4,7 @@ import { Collections } from "@/lib/types";
 import { Copy, Delete, MoreHorizontal, Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 export default function PackingLists(): ReturnType<React.FC> {
   const { listId } = useParams();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const listsQuery = useQuery({
     queryKey: [Collections.Lists],
@@ -49,18 +50,35 @@ export default function PackingLists(): ReturnType<React.FC> {
   if (listsQuery.isError) return <div>Error</div>;
 
   return (
-    <div>
-      <header className="flex items-center justify-between mb-4">
-        <span className="font-semibold">Lists</span>
-        <Button size="sm" onClick={() => newListMutation.mutate()}>
+    <div className="flex flex-col gap-2">
+      <header className="flex items-center justify-between">
+        <span className="font-semibold text-sm">Lists</span>
+        <Button
+          size="sm"
+          variant="linkMuted"
+          onClick={() => newListMutation.mutate()}
+        >
           <Plus size="1rem" className="mr-2" />
           Add List
         </Button>
       </header>
       <Card className="py-2 max-h-[30vh] overflow-y-auto">
         {listsQuery.data?.map((list) => (
-          <div className={cn("flex items-center px-2")} key={list.id}>
-            <Link to={`/list/${list.id}`} className="flex-1">
+          <div
+            className={cn(
+              "flex items-center pr-2 pl-4 hover:border-l-4 hover:pl-3 py-0.5",
+              pathname === `/list/${list.id}` &&
+                "border-l-4 pl-3 border-primary text-primary-foreground bg-secondary"
+            )}
+            key={list.id}
+          >
+            <Link
+              to={`/list/${list.id}`}
+              className={cn(
+                "flex-1",
+                !list.name && "italic text-muted-foreground"
+              )}
+            >
               {list.name || "Unnamed List"}
             </Link>
             <DropdownMenu>
