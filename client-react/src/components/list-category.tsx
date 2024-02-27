@@ -10,6 +10,7 @@ import {
   TableColumnDefinition,
   createTableColumn,
 } from "@fluentui/react-components";
+import ListCategoryName from "./list-category-name";
 
 interface Props {
   category: ExpandedCategory;
@@ -25,7 +26,7 @@ export default function ListCategory(
       () => [
         createTableColumn<ExpandedCategoryItem>({
           columnId: "name",
-          renderHeaderCell: () => category.name,
+          renderHeaderCell: () => <ListCategoryName category={category} />,
           renderCell: (item) => item.itemData.name,
         }),
         createTableColumn<ExpandedCategoryItem>({
@@ -44,7 +45,7 @@ export default function ListCategory(
           renderCell: (item) => item.quantity,
         }),
       ],
-      [category.name]
+      [category]
     );
 
   return (

@@ -2,7 +2,6 @@ import { pb } from '@/lib/pocketbase';
 import { createMutation, createQuery } from '@tanstack/svelte-query';
 import type { ClientResponseError } from 'pocketbase';
 
-import { queryClient } from '../../../native-app/src/lib/query';
 import {
 	type CategoriesItemsResponse,
 	type ListCategoriesResponse,
@@ -12,6 +11,7 @@ import {
 } from '@/lib/types';
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
+import { queryClient } from '@/lib/query';
 
 const CATEGORY_ITEM_EXPAND_KEY = 'categories_items(category)';
 
