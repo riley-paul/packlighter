@@ -8,8 +8,6 @@ import AuthPage from "./routes/auth";
 import App from "./routes/app";
 import ListPage from "./routes/list";
 import { Toaster } from "./components/ui/sonner";
-import { FluentProvider } from "@fluentui/react-components";
-import { lightTheme } from "./lib/theme";
 
 const router = createBrowserRouter([
   {
@@ -30,10 +28,8 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <FluentProvider theme={lightTheme}>
-    <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  // </FluentProvider>
+  <QueryClientProvider client={queryClient}>
+    <Toaster />
+    <RouterProvider router={router} />
+  </QueryClientProvider>
 );

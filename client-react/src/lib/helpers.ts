@@ -7,6 +7,9 @@ import type {
 export const isCategoryFullyPacked = (category: ExpandedCategory) =>
   category.items.length > 0 && category.items.every((i) => i.packed);
 
+export const isCategoryPartiallyPacked = (category: ExpandedCategory) =>
+  category.items.some((i) => i.packed);
+
 export const isItemUntouched = (item: ExpandedCategoryItem) =>
   !item.itemData.name &&
   !item.itemData.name &&
