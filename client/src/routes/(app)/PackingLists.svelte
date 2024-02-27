@@ -7,7 +7,7 @@
 	import type { ListsResponse } from '@/lib/types';
 	import { flip } from 'svelte/animate';
 	import { flipDurationMs } from '@/lib/constants';
-	import ListListItem from './ListListItem.svelte';
+	import ListListItem from './PackingList.svelte';
 	import DragGhost from '@/components/base/DragGhost.svelte';
 	import { transformDraggedElement } from '@/lib/helpers';
 
@@ -32,7 +32,7 @@
 	};
 </script>
 
-<section class="flex flex-col gap-2">
+<section class="flex h-full max-h-[30vh] flex-col gap-2">
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium">Lists</h2>
 		<Button size="sm" variant="linkMuted" on:click={() => $createList.mutate()}>
@@ -50,7 +50,7 @@
 		}}
 		on:consider={handleConsider}
 		on:finalize={handleFinalize}
-		class="bg-card max-h-[200px] overflow-y-auto rounded-md border py-2 transition-colors"
+		class="bg-card overflow-y-auto rounded-md border py-2 transition-colors"
 	>
 		{#each listData as list (list.id)}
 			<div animate:flip={{ duration: flipDurationMs }} class="relative">

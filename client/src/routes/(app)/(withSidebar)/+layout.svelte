@@ -1,20 +1,22 @@
 <script lang="ts">
 	import { isSidebarOpen } from '@/lib/store';
-	import { fly } from 'svelte/transition';
-	import ListList from '@/routes/(app)/ListList.svelte';
+	import ListList from '@/routes/(app)/PackingLists.svelte';
 	import ItemList from '@/routes/(app)/ItemList.svelte';
+	import { Feather } from 'lucide-svelte';
 </script>
 
 {#if $isSidebarOpen}
-	<aside
-		in:fly={{ y: 0, duration: 200 }}
-		out:fly={{ y: 0, duration: 200 }}
-		class="sticky top-0 flex w-[300px] flex-col pb-6 pt-4"
-		style="height: calc(100vh - 3.5rem);"
-	>
-		<ListList />
-		<br />
-		<ItemList />
+	<aside class="flex h-screen w-[300px] flex-col">
+		<header class="h-12 border-b">
+			<a href="/" class="flex items-center">
+				<Feather class="text-primary mr-2 w-6" />
+				<h1 class="font-medium">PackLighter</h1>
+			</a>
+		</header>
+		<section class="p-4 flex-1">
+			<ListList />
+			<ItemList />
+		</section>
 	</aside>
 {/if}
 <div class="flex-1 py-6">

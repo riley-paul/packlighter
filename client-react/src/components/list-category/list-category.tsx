@@ -13,6 +13,8 @@ import {
   isCategoryPartiallyPacked,
 } from "@/lib/helpers";
 import { toggleCategoryPacked } from "@/api/category";
+import ServerInput from "../input/server-input";
+import { updateItem } from "@/api/item";
 
 interface Props {
   category: ExpandedCategory;
@@ -25,8 +27,15 @@ export default function ListCategory(
 
   const { listId } = useParams();
 
-  const updateItemMutation = useMutation({
+  const updateCatItemMutation = useMutation({
     mutationFn: updateCategoryItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries([Collections.Lists, listId]);
+    },
+  });
+
+  const updateItemMutation = useMutation({
+    mutationFn: updateItem,
     onSuccess: () => {
       queryClient.invalidateQueries([Collections.Lists, listId]);
     },
@@ -48,7 +57,7 @@ export default function ListCategory(
           <Checkbox
             checked={ctx.getValue() as boolean}
             onCheckedChange={(v) =>
-              updateItemMutation.mutate({
+              updateCatItemMutation.mutate({
                 id: ctx.row.original.id,
                 categoryItem: { packed: v === true ? true : false },
               })
@@ -76,6 +85,17 @@ export default function ListCategory(
         id: "name",
         header: "Name",
         accessorFn: (row) => row.itemData.name,
+        cell: (ctx) => (
+          <ServerInput
+            currentValue={ctx.getValue() as string}
+            onUpdate={(v) =>
+              updateItemMutation.mutate({
+                id: ctx.row.original.item,
+                item: { name: v as string },
+              })
+            }
+          />
+        ),
       },
       {
         id: "description",
@@ -83,7 +103,7 @@ export default function ListCategory(
         accessorFn: (row) => row.itemData.description,
       },
     ],
-    [category, toggleCategoryPackedMutation, updateItemMutation]
+    [category, toggleCategoryPackedMutation, updateCatItemMutation]
   );
 
   return <DataTable columns={columns} data={category.items} />;
