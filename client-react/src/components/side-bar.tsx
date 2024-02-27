@@ -12,7 +12,7 @@ export default function SideBar(): ReturnType<React.FC> {
         </Button>
         <div className="flex gap-2 items-center px-4">
           <Feather size="1.5rem" className="text-primary" />
-          <span className="text-lg font-semibold">PackLighter</span>
+          <span className="text-md">PackLighter</span>
         </div>
       </header>
       <section className="px-2 py-2">

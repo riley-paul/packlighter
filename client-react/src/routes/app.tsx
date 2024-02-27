@@ -5,10 +5,12 @@ import { Outlet } from "react-router-dom";
 export default function App(): ReturnType<React.FC> {
   return (
     <div className="flex w-full h-full">
-      <aside className="min-w-[300px] border-r">
+      <aside className="border-r">
         <SideBar />
       </aside>
-      <Outlet />
+      <div className="flex-1">
+        <Outlet />
+      </div>
     </div>
   );
 }

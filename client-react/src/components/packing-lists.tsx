@@ -68,14 +68,14 @@ export default function PackingLists(): ReturnType<React.FC> {
             className={cn(
               "flex items-center pr-2 pl-4 hover:border-l-4 hover:pl-3 py-0.5",
               pathname === `/list/${list.id}` &&
-                "border-l-4 pl-3 border-primary text-primary-foreground bg-secondary"
+                "border-l-4 pl-3 border-primary text-secondary-foreground bg-secondary"
             )}
             key={list.id}
           >
             <Link
               to={`/list/${list.id}`}
               className={cn(
-                "flex-1",
+                "flex-1 truncate max-w-48",
                 !list.name && "italic text-muted-foreground"
               )}
             >
