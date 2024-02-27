@@ -19,19 +19,6 @@
 
 	let searchTerm = '';
 
-	const shortcuts = (e: KeyboardEvent) => {
-		const itemsFilterElement = document.getElementById('itemsFilter') as HTMLInputElement;
-		if (e.key === 'f' && e.ctrlKey) {
-			e.preventDefault();
-			itemsFilterElement.focus();
-			itemsFilterElement.select();
-			return;
-		}
-	};
-
-	onMount(() => window.addEventListener('keyup', shortcuts));
-	onDestroy(() => window.removeEventListener('keyup', shortcuts));
-
 	type ItemWithShadowItem = ItemsResponse & {
 		[SHADOW_ITEM_MARKER_PROPERTY_NAME]?: string;
 	};
@@ -62,24 +49,22 @@
 	};
 </script>
 
-<div class="flex flex-col gap-2">
-	<div class="flex flex-col gap-2">
-		<div class="flex items-center justify-between gap-4">
-			<h2 class="text-sm font-medium">Gear</h2>
-			<a class={buttonVariants({ size: 'sm', variant: 'linkMuted' })} href="/gear">
-				<Table class="mr-2 w-4" /> All gear
-			</a>
-		</div>
-		<Input
-			id="itemsFilter"
-			type="search"
-			placeholder="Filter..."
-			class="bg-card shadow-none"
-			bind:value={searchTerm}
-		/>
+<div class="flex flex-col gap-2 overflow-hidden p-4">
+	<div class="flex items-center justify-between gap-4">
+		<h3 class="text-sm font-medium">Gear</h3>
+		<a class={buttonVariants({ size: 'sm', variant: 'linkMuted' })} href="/gear">
+			<Table class="mr-2 w-4" /> All gear
+		</a>
 	</div>
+	<Input
+		id="itemsFilter"
+		type="search"
+		placeholder="Filter..."
+		class="bg-card shadow-none"
+		bind:value={searchTerm}
+	/>
 	<div
-		class="bg-card flex-1 overflow-auto rounded-md border transition-colors"
+		class="bg-card overflow-auto rounded-md border transition-colors"
 		use:dndzone={{
 			items: filteredItems,
 			type: 'items',

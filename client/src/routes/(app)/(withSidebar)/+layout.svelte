@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Separator } from '@/components/ui/separator';
 	import ItemList from '@/components/ItemList.svelte';
 	import PackingLists from '@/components/PackingLists.svelte';
 	import { Button } from '@/components/ui/button';
@@ -6,9 +7,9 @@
 	import { Feather, Menu } from 'lucide-svelte';
 </script>
 
-<main class="flex">
+<main class="flex h-screen overflow-hidden">
 	{#if $isSidebarOpen}
-		<aside class="flex h-screen w-[300px] flex-col border-r">
+		<aside class="flex h-screen w-[300px] flex-col overflow-hidden border-r">
 			<header class="flex h-14 border-b">
 				<Button
 					size="icon"
@@ -23,12 +24,9 @@
 					<h1 class="font-medium">PackLighter</h1>
 				</a>
 			</header>
-			<section class="flex-1 p-4">
-				<PackingLists />
-			</section>
-			<section class="flex-1 p-4">
-				<ItemList />
-			</section>
+			<PackingLists />
+			<Separator />
+			<ItemList />
 		</aside>
 	{/if}
 	<div class="flex-1">

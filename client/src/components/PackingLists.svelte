@@ -32,7 +32,7 @@
 	};
 </script>
 
-<section class="flex h-full max-h-[30vh] flex-col gap-2">
+<section class="flex h-full max-h-[30vh] flex-col gap-2 p-4">
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium">Lists</h2>
 		<Button size="sm" variant="linkMuted" on:click={() => $createList.mutate()}>
