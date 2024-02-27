@@ -31,7 +31,10 @@
 	<title>{pageTitle}</title>
 </svelte:head>
 
-<div class="@container bg-card h-fit flex-1 rounded-md border p-6">
+<header class="flex h-14 items-center border-b px-4">
+	<h2 class="text-lg font-medium">{$list.data?.name}</h2>
+</header>
+<div class="@container overflow-y-auto p-4">
 	{#if $list.isError}
 		<p>Error: {$list.error}</p>
 	{:else if $list.isLoading}

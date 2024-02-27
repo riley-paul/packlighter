@@ -60,28 +60,17 @@
 	<title>PackLighter - Gear</title>
 </svelte:head>
 
-<div class="flex w-full flex-col gap-4">
-	<div
-		class="from-background sticky top-0 z-50 flex justify-between bg-gradient-to-b from-90% py-2"
-	>
-		<a href="/" class={buttonVariants({ variant: 'linkMuted' })}>
-			<ArrowLeft class="mr-2 h-4 w-4" />Lists
-		</a>
-		<div class="flex flex-1 justify-end gap-2">
-			<Input
-				type="search"
-				placeholder="Filter..."
-				class="bg-card max-w-64"
-				bind:value={searchTerm}
-			/>
-			<Button on:click={() => $createItem.mutate()}>
-				<Plus class="mr-2 h-4 w-4" />
-				New Item
-			</Button>
-		</div>
-	</div>
-	<div
-		class="grid grid-cols-1 gap-2 rounded-lg p-1 md:grid-cols-2 lg:grid-cols-3"
+<Table>
+	<TableHeader>
+		<TableRow>
+			<TableHead class="w-0">Image</TableHead>
+			<TableHead class="w-64 pl-5">Name</TableHead>
+			<TableHead class="pl-5">Description</TableHead>
+			<TableHead class="w-32 text-right">Weight</TableHead>
+			<TableHead class="w-0" />
+		</TableRow>
+	</TableHeader>
+	<tbody
 		use:dndzone={{
 			items: itemsData,
 			type: 'items',
@@ -95,97 +84,46 @@
 		on:finalize={handleFinalize}
 	>
 		{#each itemsData as item (item.id)}
-			<div animate:flip={{ duration: flipDurationMs }} class="relative">
-				<Card class="hover:bg-muted/50 flex w-full gap-2 rounded-md p-2 transition-colors">
-					<ItemImage {item} fullSizePlaceholer />
-					<div class="flex-1">
-						<Input
-							class="h-auto border-none py-0.5 font-medium shadow-none placeholder:italic"
-							placeholder="Unnamed item"
-							autocomplete="off"
-							bind:value={item.name}
-						/>
-						<Input
-							class="h-auto border-none py-0.5 shadow-none placeholder:italic"
-							placeholder="Description"
-							autocomplete="off"
-							bind:value={item.description}
-						/>
-					</div>
-					<DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
-				</Card>
-				{#if item[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
-					<DragGhost fullWidth />
-				{/if}
-			</div>
-		{/each}
-	</div>
-
-	<Table>
-		<TableHeader>
 			<TableRow>
-				<TableHead class="w-0">Image</TableHead>
-				<TableHead class="w-64 pl-5">Name</TableHead>
-				<TableHead class="pl-5">Description</TableHead>
-				<TableHead class="w-32 text-right">Weight</TableHead>
-				<TableHead class="w-0" />
+				<TableCell>
+					<ItemImage {item} fullSizePlaceholer />
+				</TableCell>
+				<TableCell>
+					<Input
+						class="h-auto border-none py-0.5 shadow-none placeholder:italic"
+						placeholder="Unnamed item"
+						autocomplete="off"
+						bind:value={item.name}
+					/>
+				</TableCell>
+				<TableCell class="text-muted-foreground">
+					<Input
+						class="h-auto border-none py-0.5 shadow-none placeholder:italic"
+						placeholder="Description"
+						autocomplete="off"
+						bind:value={item.description}
+					/>
+				</TableCell>
+				<TableCell class="flex justify-end text-right">
+					<Input
+						bind:value={item.weight}
+						type="number"
+						autocomplete="off"
+						min="0"
+						class="h-auto border-none px-1 py-0.5 text-right shadow-none"
+					/>
+					<select bind:value={item.weight_unit} class="bg-inherit">
+						{#each Object.values(ItemsWeightUnitOptions) as massUnit}
+							<option value={massUnit}>
+								{massUnit}
+							</option>
+						{/each}
+					</select>
+				</TableCell>
+				<TableCell>
+					<DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
+				</TableCell>
 			</TableRow>
-		</TableHeader>
-		<tbody
-			use:dndzone={{
-				items: itemsData,
-				type: 'items',
-				dropFromOthersDisabled: true,
-				flipDurationMs,
-				dropTargetStyle: {},
-				dropTargetClasses: ['outline', 'outline-1', 'outline-primary'],
-				transformDraggedElement
-			}}
-			on:consider={handleConsider}
-			on:finalize={handleFinalize}
-		>
-			{#each itemsData as item (item.id)}
-				<TableRow>
-					<TableCell>
-						<ItemImage {item} fullSizePlaceholer />
-					</TableCell>
-					<TableCell>
-						<Input
-							class="h-auto border-none py-0.5 shadow-none placeholder:italic"
-							placeholder="Unnamed item"
-							autocomplete="off"
-							bind:value={item.name}
-						/>
-					</TableCell>
-					<TableCell class="text-muted-foreground">
-						<Input
-							class="h-auto border-none py-0.5 shadow-none placeholder:italic"
-							placeholder="Description"
-							autocomplete="off"
-							bind:value={item.description}
-						/>
-					</TableCell>
-					<TableCell class="flex justify-end text-right">
-						<Input
-							bind:value={item.weight}
-							type="number"
-							autocomplete="off"
-							min="0"
-							class="h-auto border-none px-1 py-0.5 text-right shadow-none"
-						/>
-						<select bind:value={item.weight_unit} class="bg-inherit">
-							{#each Object.values(ItemsWeightUnitOptions) as massUnit}
-								<option value={massUnit}>
-									{massUnit}
-								</option>
-							{/each}
-						</select>
-					</TableCell>
-					<TableCell>
-						<DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
-					</TableCell>
-				</TableRow>
-			{/each}
-		</tbody>
-	</Table>
-</div>
+		{/each}
+	</tbody>
+</Table>

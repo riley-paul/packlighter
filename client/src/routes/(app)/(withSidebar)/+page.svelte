@@ -7,6 +7,7 @@
 	<title>PackLighter</title>
 </svelte:head>
 
+<header class="h-14 border-b"></header>
 <IconTitleSubtitle big>
 	<Home class="h-16 w-16" />
 	<svelte.fragment slot="title">Home</svelte.fragment>
