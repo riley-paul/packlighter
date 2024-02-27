@@ -1,16 +1,24 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import ControlledTextInput from "../input/controlled-text";
+import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { LoginSchema, login, loginSchema } from "@/api/auth";
-import { Button, Spinner, tokens } from "@fluentui/react-components";
-import { Key, Send, User } from "lucide-react";
+import { Loader, Send } from "lucide-react";
 import FormInputContainer from "./form-input-container";
 import FormActionContainer from "./form-action-container";
 import { useNavigate } from "react-router-dom";
 import { ClientResponseError } from "pocketbase";
 import { toast } from "sonner";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 const defaultForm: LoginSchema = {
   email: "",
@@ -46,53 +54,49 @@ export default function LoginForm(): ReturnType<React.FC> {
   );
 
   return (
-    <FormProvider {...methods}>
+    <Form {...methods}>
       <form onSubmit={onSubmit}>
         <FormInputContainer>
-          <ControlledTextInput<LoginSchema, "email">
+          <FormField<LoginSchema, "email">
             name="email"
-            label="Email"
-            type="email"
-            required
-            contentBefore={
-              <User
-                style={{
-                  height: tokens.fontSizeBase300,
-                  width: tokens.fontSizeBase300,
-                }}
-              />
-            }
-            appearance="filled-lighter"
-            placeholder="Username"
+            render={() => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="ultra_light@gmail.com"
+                    type="email"
+                    required
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <ControlledTextInput<LoginSchema, "password">
+          <FormField<LoginSchema, "password">
             name="password"
-            label="Password"
-            type="password"
-            required
-            contentBefore={
-              <Key
-                style={{
-                  height: tokens.fontSizeBase300,
-                  width: tokens.fontSizeBase300,
-                }}
-              />
-            }
-            appearance="filled-lighter"
-            placeholder="Password"
+            render={() => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="••••••••" type="password" required />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
         </FormInputContainer>
         <FormActionContainer>
-          <Button
-            type="submit"
-            appearance="primary"
-            icon={submitMutation.isLoading ? <Spinner size="tiny" /> : <Send />}
-            disabled={submitMutation.isLoading}
-          >
+          <Button type="submit" disabled={submitMutation.isLoading}>
+            {submitMutation.isLoading ? (
+              <Loader size="1rem" className="animate-spin mr-2" />
+            ) : (
+              <Send className="h-4 w-4 mr-2" />
+            )}
             Submit
           </Button>
         </FormActionContainer>
       </form>
-    </FormProvider>
+    </Form>
   );
 }
