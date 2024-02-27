@@ -33,33 +33,35 @@
 	<title>{pageTitle}</title>
 </svelte:head>
 
-<AppHeader>
-	{#if $list.data}
-		<h2 class="text-lg font-medium">{$list.data.name}</h2>
-		<ListSettings list={$list.data} />
-	{/if}
-</AppHeader>
-<div class="@container overflow-y-auto p-4">
-	{#if $list.isError}
-		<p>Error: {$list.error}</p>
-	{:else if $list.isLoading}
-		<IconTitleSubtitle>
-			<Loader2 class="text-primary h-10 w-10 animate-spin" />
-			<svelte.fragment slot="title">Loading your list</svelte.fragment>
-			<svelte.fragment slot="subtitle">Please wait one moment...</svelte.fragment>
-		</IconTitleSubtitle>
-	{:else if $list.data}
-		<div class="flex flex-col gap-4">
-			{#if $list.data.show_weights}
-				<div class="flex justify-center">
-					<div class="flex items-center gap-8">
-						<WeightChart list={$list.data} />
-						<WeightTable list={$list.data} />
+<div class="h-screen overflow-hidden flex flex-col">
+	<AppHeader>
+		{#if $list.data}
+			<h2 class="text-lg font-medium">{$list.data.name}</h2>
+			<ListSettings list={$list.data} />
+		{/if}
+	</AppHeader>
+	<div class="@container overflow-y-auto p-4">
+		{#if $list.isError}
+			<p>Error: {$list.error}</p>
+		{:else if $list.isLoading}
+			<IconTitleSubtitle>
+				<Loader2 class="text-primary h-10 w-10 animate-spin" />
+				<svelte.fragment slot="title">Loading your list</svelte.fragment>
+				<svelte.fragment slot="subtitle">Please wait one moment...</svelte.fragment>
+			</IconTitleSubtitle>
+		{:else if $list.data}
+			<div class="flex flex-col gap-4">
+				{#if $list.data.show_weights}
+					<div class="flex justify-center">
+						<div class="flex items-center gap-8">
+							<WeightChart list={$list.data} />
+							<WeightTable list={$list.data} />
+						</div>
 					</div>
-				</div>
-			{/if}
-			<ListHeader list={$list.data} />
-			<CategoryList list={$list.data} on:categoryCreated={handleCategoryCreated} />
-		</div>
-	{/if}
+				{/if}
+				<ListHeader list={$list.data} />
+				<CategoryList list={$list.data} on:categoryCreated={handleCategoryCreated} />
+			</div>
+		{/if}
+	</div>
 </div>
