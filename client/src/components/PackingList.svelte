@@ -23,10 +23,10 @@
 <div
 	class={cn(
 		DRAGGABLE_CLASS,
-		'flex w-full items-center justify-between gap-2 py-0.5 pl-4 pr-2 hover:border-l-4 hover:pl-3',
+		'flex w-full items-center gap-2 py-0.5 pl-4 pr-2 hover:border-l-4 hover:pl-3',
 		!list.name && 'text-muted-foreground italic',
 		$page.url.pathname.includes(list.id) &&
-			'border-primary text-secondary-foreground bg-secondary border-l-4 pl-3'
+			'border-primary text-foreground bg-secondary border-l-4 pl-3'
 	)}
 >
 	<a href={`/${list.id}`} class="flex h-8 flex-1 items-center truncate">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AccountEditor from '@/routes/(app)/AccountEditor.svelte';
+	import AccountEditor from '@/components/AccountEditor.svelte';
 	import ModeToggle from '@/components/base/ModeToggle.svelte';
 	import { Feather, Sidebar } from 'lucide-svelte';
 	import { Toggle } from '@/components/ui/toggle';
