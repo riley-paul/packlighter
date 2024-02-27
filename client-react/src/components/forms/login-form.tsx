@@ -9,8 +9,8 @@ import { Key, Send, User } from "lucide-react";
 import FormInputContainer from "./form-input-container";
 import FormActionContainer from "./form-action-container";
 import { useNavigate } from "react-router-dom";
-import useToaster from "@/hooks/useToaster";
 import { ClientResponseError } from "pocketbase";
+import { toast } from "sonner";
 
 const defaultForm: LoginSchema = {
   email: "",
@@ -24,7 +24,6 @@ export default function LoginForm(): ReturnType<React.FC> {
   });
 
   const navigate = useNavigate();
-  const { makeToast } = useToaster();
 
   const { handleSubmit } = methods;
 
@@ -33,10 +32,8 @@ export default function LoginForm(): ReturnType<React.FC> {
     onSuccess: () => navigate("/"),
     onError: (error: ClientResponseError) => {
       console.error(error);
-      makeToast({
-        message: "Login failed",
-        body: error.message,
-        intent: "error",
+      toast.error("Login failed", {
+        description: error.message,
       });
     },
   });

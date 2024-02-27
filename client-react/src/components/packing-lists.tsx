@@ -1,68 +1,21 @@
 import { createList, deleteList, getLists } from "@/api/list";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
-import {
-  makeStyles,
-  tokens,
-  shorthands,
-  TabList,
-  Tab,
-  Text,
-  Button,
-  mergeClasses,
-  Spinner,
-} from "@fluentui/react-components";
-import { Delete, Plus } from "lucide-react";
+import { Copy, Delete, MoreHorizontal, Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
-import { useNavigate, useParams } from "react-router-dom";
-
-const useStyles = makeStyles({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    backgroundColor: tokens.colorNeutralBackground1,
-
-    ...shorthands.borderRadius(tokens.borderRadiusMedium),
-    ...shorthands.borderColor(tokens.colorNeutralStroke1),
-    ...shorthands.borderWidth(tokens.strokeWidthThin),
-    ...shorthands.borderStyle("solid"),
-
-    paddingBottom: tokens.spacingVerticalS,
-    paddingTop: tokens.spacingVerticalS,
-    maxHeight: "30vh",
-    overflowY: "auto",
-  },
-  headerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: tokens.spacingVerticalS,
-  },
-  tabContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingRight: tokens.spacingHorizontalS,
-
-    "& .delete-list-button": {
-      display: "none",
-    },
-
-    "&:hover": {
-      "& .delete-list-button": {
-        display: "inline-flex",
-      },
-    },
-  },
-  tab: {
-    flexGrow: 1,
-  },
-  tabUnnamed: {
-    fontStyle: "italic",
-    color: tokens.colorNeutralForeground3,
-  },
-});
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Card } from "./ui/card";
+import { cn } from "@/lib/utils";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const { listId } = useParams();
@@ -91,60 +44,56 @@ export default function PackingLists(): ReturnType<React.FC> {
     },
   });
 
-  const styles = useStyles();
-
   if (listsQuery.isLoading) return <div>Loading...</div>;
 
   if (listsQuery.isError) return <div>Error</div>;
 
   return (
     <div>
-      <header className={styles.headerContainer}>
-        <Text weight="semibold">Packing Lists</Text>
-        <Button
-          icon={
-            newListMutation.isLoading ? (
-              <Spinner size="extra-tiny" />
-            ) : (
-              <Plus size="1rem" />
-            )
-          }
-          size="small"
-          appearance="subtle"
-          onClick={() => newListMutation.mutate()}
-        >
-          New List
+      <header className="flex items-center justify-between mb-4">
+        <span className="font-semibold">Lists</span>
+        <Button size="sm" onClick={() => newListMutation.mutate()}>
+          <Plus size="1rem" className="mr-2" />
+          Add List
         </Button>
       </header>
-      <div className={styles.container}>
-        <TabList
-          vertical
-          selectedValue={listId}
-          onTabSelect={(_, { value }) => navigate(`/list/${value}`)}
-        >
-          {listsQuery.data?.map((list) => (
-            <div className={styles.tabContainer} key={list.id}>
-              <Tab
-                value={list.id}
-                className={mergeClasses(
-                  styles.tab,
-                  !list.name && styles.tabUnnamed
-                )}
-              >
-                {list.name || "Unnamed List"}
-              </Tab>
-              <Button
-                className="delete-list-button"
-                appearance="subtle"
-                shape="circular"
-                icon={<Delete size="1rem" />}
-                size="small"
-                onClick={() => deleteListMutation.mutate(list.id)}
-              />
-            </div>
-          ))}
-        </TabList>
-      </div>
+      <Card className="py-2 max-h-[30vh] overflow-y-auto">
+        {listsQuery.data?.map((list) => (
+          <div className={cn("flex items-center px-2")} key={list.id}>
+            <Link to={`/list/${list.id}`} className="flex-1">
+              {list.name || "Unnamed List"}
+            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => deleteListMutation.mutate(list.id)}
+                >
+                  Delete List
+                  <DropdownMenuShortcut>
+                    <Delete size="1rem" />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  disabled
+                  onClick={() => deleteListMutation.mutate(list.id)}
+                >
+                  Duplicate List
+                  <DropdownMenuShortcut>
+                    <Copy size="1rem" />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        ))}
+      </Card>
     </div>
   );
 }

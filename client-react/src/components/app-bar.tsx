@@ -1,44 +1,6 @@
 import { getProfilePhoto } from "@/api/auth";
-import {
-  makeStyles,
-  tokens,
-  shorthands,
-  Text,
-  ToggleButton,
-  Persona,
-} from "@fluentui/react-components";
 import { Feather, Menu } from "lucide-react";
 import React from "react";
-
-const useStyles = makeStyles({
-  header: {
-    width: "100%",
-    backgroundColor: tokens.colorNeutralBackground1,
-    borderBottomColor: tokens.colorNeutralStroke1,
-    borderBottomWidth: tokens.strokeWidthThin,
-    borderBottomStyle: "solid",
-    height: "3rem",
-    display: "flex",
-    alignItems: "center",
-    zIndex: 50,
-  },
-  headerContainer: {
-    ...shorthands.padding(tokens.spacingHorizontalM, tokens.spacingVerticalXL),
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "100%",
-  },
-  groupContainer: {
-    display: "flex",
-    alignItems: "center",
-  },
-  toggleButton: {
-    height: "100%",
-    width: "3rem",
-    maxWidth: "unset",
-  },
-});
 
 interface Props {
   isDrawerOpen: boolean;
