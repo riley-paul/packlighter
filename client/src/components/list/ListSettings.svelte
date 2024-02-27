@@ -30,7 +30,7 @@
 
 <DropdownMenu>
 	<DropdownMenuTrigger asChild let:builder>
-		<Button builders={[builder]} size="icon" variant="outline" class="h-full">
+		<Button builders={[builder]} size="icon" variant="ghost">
 			<Settings class="h-4 w-4" />
 		</Button>
 	</DropdownMenuTrigger>

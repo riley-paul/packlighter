@@ -11,6 +11,8 @@
 	import WeightTable from '@/components/list/WeightTable.svelte';
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
 	import { page } from '$app/stores';
+	import ListSettings from '@/components/list/ListSettings.svelte';
+	import AppHeader from '@/components/list/AppHeader.svelte';
 
 	$: list = useList($page.params.listId);
 
@@ -31,9 +33,12 @@
 	<title>{pageTitle}</title>
 </svelte:head>
 
-<header class="flex h-14 items-center border-b px-4">
-	<h2 class="text-lg font-medium">{$list.data?.name}</h2>
-</header>
+<AppHeader>
+	{#if $list.data}
+		<h2 class="text-lg font-medium">{$list.data.name}</h2>
+		<ListSettings list={$list.data} />
+	{/if}
+</AppHeader>
 <div class="@container overflow-y-auto p-4">
 	{#if $list.isError}
 		<p>Error: {$list.error}</p>
