@@ -1,5 +1,5 @@
 import { getItems } from "@/api/item";
-import { Collections } from "@/lib/types";
+import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import { useQuery } from "react-query";
 import { Input } from "./ui/input";
@@ -10,9 +10,10 @@ import { Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
+import Error from "./base/error";
 
 const PackingItems: React.FC = () => {
-  const itemsQuery = useQuery({
+  const itemsQuery = useQuery<ItemsResponse[], Error>({
     queryKey: [Collections.Items],
     queryFn: getItems,
   });
@@ -43,6 +44,7 @@ const PackingItems: React.FC = () => {
       </header>
       <Card className="flex-1 h-full overflow-y-auto">
         {itemsQuery.isLoading && <Loader />}
+        {itemsQuery.isError && <Error message={itemsQuery.error.message} />}
         {itemsQuery.data?.map((item) => (
           <PackingItem key={item.id} item={item} />
         ))}

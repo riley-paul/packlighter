@@ -1,6 +1,6 @@
 import { createList, getLists } from "@/api/list";
 import { queryClient } from "@/lib/query";
-import { Collections } from "@/lib/types";
+import { Collections, ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
@@ -9,11 +9,12 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import PackingList from "./packing-list";
 import Loader from "./base/loader";
+import Error from "./base/error";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
 
-  const listsQuery = useQuery({
+  const listsQuery = useQuery<ListsResponse[], Error>({
     queryKey: [Collections.Lists],
     queryFn: getLists,
   });
@@ -41,7 +42,7 @@ export default function PackingLists(): ReturnType<React.FC> {
       </header>
       <Card className="py-2 h-full overflow-y-auto">
         {listsQuery.isLoading && <Loader />}
-        {listsQuery.isError && <div>Error</div>}
+        {listsQuery.isError && <Error message={listsQuery.error?.message} />}
         {listsQuery.data?.map((list) => (
           <PackingList key={list.id} list={list} />
         ))}

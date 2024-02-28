@@ -1,5 +1,6 @@
 import { ListWithCategories, getList, updateList } from "@/api/list";
 import AppHeader from "@/components/app-header";
+import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
 import ListCategory from "@/components/list-category/list-category";
@@ -13,9 +14,9 @@ import { useParams } from "react-router-dom";
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
 
-  const listQuery = useQuery({
+  const listQuery = useQuery<ListWithCategories, Error>({
     queryKey: [Collections.Lists, listId],
-    queryFn: ({ queryKey }) => getList(queryKey[1]),
+    queryFn: ({ queryKey }) => getList(queryKey[1] as string),
   });
 
   const updateListMutation = useMutation({
@@ -35,7 +36,8 @@ export default function ListPage(): ReturnType<React.FC> {
       </div>
     );
 
-  if (listQuery.isError || !listQuery.data) return <div>Error</div>;
+  if (listQuery.isError || !listQuery.data)
+    return <Error message={listQuery.error?.message} />;
 
   return (
     <div className="flex flex-col h-screen">
