@@ -45,6 +45,14 @@ const sortingFunction = (option: SortOptions) => {
   }
 };
 
+const filterItems = (item: ItemsResponse, query: string) => {
+  const lowerCaseQuery = query.toLowerCase();
+  return (
+    item.name.toLowerCase().includes(lowerCaseQuery) ||
+    item.description.toLowerCase().includes(lowerCaseQuery)
+  );
+};
+
 const PackingItems: React.FC = () => {
   const { toggleSidebar } = useStore();
 
@@ -59,6 +67,7 @@ const PackingItems: React.FC = () => {
   const [sortOption, setSortOption] = React.useState<SortOptions>(
     SortOptions.Name
   );
+  const [filterQuery, setFilterQuery] = React.useState("");
 
   return (
     <div className="p-4 flex flex-col gap-2 h-full flex-1 overflow-hidden">
@@ -78,7 +87,12 @@ const PackingItems: React.FC = () => {
           </Button>
         </div>
         <div className="flex gap-2">
-          <Input placeholder="Filter gear..." className="bg-card" />
+          <Input
+            placeholder="Filter..."
+            className="bg-card"
+            value={filterQuery}
+            onChange={(ev) => setFilterQuery(ev.target.value)}
+          />
           <DropdownMenu>
             <DropdownMenuTrigger>
               <TooltipProvider>
@@ -115,6 +129,7 @@ const PackingItems: React.FC = () => {
         {itemsQuery.isError && <Error message={itemsQuery.error.message} />}
         {itemsQuery.isSuccess &&
           itemsQuery.data
+            .filter((item) => filterItems(item, filterQuery))
             .sort(sortingFunction(sortOption))
             .map((item) => <PackingItem key={item.id} item={item} />)}
       </Card>
