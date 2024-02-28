@@ -1,6 +1,6 @@
 <script lang="ts">
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
-	import AppHeader from '@/components/list/AppHeader.svelte';
+	import AppHeader from '@/components/AppHeader.svelte';
 	import { Home } from 'lucide-svelte';
 </script>
 

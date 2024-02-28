@@ -2,17 +2,17 @@
 	import { Card } from '@/components/ui/card';
 	import { Loader2 } from 'lucide-svelte';
 	import { useList } from '@/hooks/useList';
-	import ListHeader from '@/components/list/ListHeader.svelte';
-	import CategoryList from '@/components/list/CategoryList.svelte';
+	import ListHeader from '@/components/ListHeader.svelte';
+	import CategoryList from '@/components/CategoryList.svelte';
 	import { CATEGORY_NAME_CLASS } from '@/lib/constants';
 	import { waitForElm } from '@/lib/helpers';
 	import { tick } from 'svelte';
-	import WeightChart from '@/components/list/WeightChart.svelte';
-	import WeightTable from '@/components/list/WeightTable.svelte';
+	import WeightChart from '@/components/WeightChart.svelte';
+	import WeightTable from '@/components/WeightTable.svelte';
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
 	import { page } from '$app/stores';
-	import ListSettings from '@/components/list/ListSettings.svelte';
-	import AppHeader from '@/components/list/AppHeader.svelte';
+	import ListSettings from '@/components/ListSettings.svelte';
+	import AppHeader from '@/components/AppHeader.svelte';
 
 	$: list = useList($page.params.listId);
 
@@ -33,7 +33,7 @@
 	<title>{pageTitle}</title>
 </svelte:head>
 
-<div class="h-screen overflow-hidden flex flex-col">
+<div class="flex h-screen flex-col overflow-hidden">
 	<AppHeader>
 		{#if $list.data}
 			<h2 class="text-lg font-medium">{$list.data.name}</h2>
