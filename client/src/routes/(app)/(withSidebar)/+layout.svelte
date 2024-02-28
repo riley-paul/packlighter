@@ -5,10 +5,16 @@
 	import { Button } from '@/components/ui/button';
 	import { isSidebarOpen } from '@/lib/store';
 	import { Feather, Menu } from 'lucide-svelte';
+	import { cn } from '@/lib/utils';
 </script>
 
 <main class="flex h-screen overflow-hidden">
-	<aside class="flex h-screen w-[300px] flex-col overflow-hidden border-r">
+	<aside
+		class={cn(
+			'flex h-screen w-[300px] flex-col overflow-hidden border-r transition-all',
+			!$isSidebarOpen && 'w-0'
+		)}
+	>
 		<header class="flex h-14 border-b">
 			<Button
 				size="icon"

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { useItems, useUpdateItemsOrder } from '@/hooks/useItem';
+	import { useUpdateItemsOrder } from '@/hooks/useItem';
 	import { Input } from '@/components/ui/input';
 	import ItemListItem from './ItemListItem.svelte';
 
@@ -15,7 +15,6 @@
 	import { SearchX, Table } from 'lucide-svelte';
 	import { buttonVariants } from '@/components/ui/button';
 	import { page } from '$app/stores';
-	import { onDestroy, onMount } from 'svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 	import Loader from './base/Loader.svelte';
 	import { getItems } from '@/api/item';

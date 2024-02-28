@@ -34,7 +34,7 @@
 	</a>
 	<DropdownMenu>
 		<DropdownMenuTrigger>
-			<Button variant="ghost" class="h-8 w-8 p-0">
+			<Button variant="ghost" class="text-muted-foreground h-8 w-8 p-0">
 				<span class="sr-only">Open menu</span>
 				<MoreHorizontal class="h-4 w-4" />
 			</Button>
