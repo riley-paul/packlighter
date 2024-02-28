@@ -3,6 +3,7 @@
 	import AccountEditor from '@/components/AccountEditor.svelte';
 	import { Button } from '@/components/ui/button';
 	import { Menu } from 'lucide-svelte';
+	import ModeToggle from './base/ModeToggle.svelte';
 </script>
 
 <header class="flex h-14 items-center border-b">
@@ -20,6 +21,7 @@
 		<div class="flex flex-1 items-center justify-between">
 			<slot />
 		</div>
+		<ModeToggle />
 		<AccountEditor />
 	</div>
 </header>

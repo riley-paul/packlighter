@@ -32,7 +32,7 @@
 	};
 </script>
 
-<section class="flex h-full max-h-[30vh] flex-col gap-2 p-4">
+<section class="flex h-full max-h-[40vh] flex-col gap-2 p-4">
 	<div class="flex items-center justify-between">
 		<h2 class="text-sm font-medium">Lists</h2>
 		<Button size="sm" variant="linkMuted" on:click={() => $createList.mutate()}>
@@ -50,7 +50,7 @@
 		}}
 		on:consider={handleConsider}
 		on:finalize={handleFinalize}
-		class="bg-card overflow-y-auto rounded-md border py-2 transition-colors"
+		class="bg-card h-full overflow-y-auto rounded-md border py-2 transition-colors"
 	>
 		{#each listData as list (list.id)}
 			<div animate:flip={{ duration: flipDurationMs }} class="relative">
@@ -61,7 +61,9 @@
 			</div>
 		{/each}
 		{#if listData.length === 0}
-			<p class="text-muted-foreground flex w-full justify-center p-6 text-sm">No lists</p>
+			<p class="text-muted-foreground flex h-full items-center justify-center p-6 text-sm">
+				No lists
+			</p>
 		{/if}
 	</div>
 </section>
