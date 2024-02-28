@@ -3,7 +3,7 @@ import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
-import ListCategory from "@/components/list-category/list-category";
+import ListCategory from "@/components/list-category";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";

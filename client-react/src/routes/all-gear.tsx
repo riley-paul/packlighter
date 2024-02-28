@@ -1,7 +1,7 @@
 import { getItems } from "@/api/item";
 import AppHeader from "@/components/app-header";
 import Loader from "@/components/base/loader";
-import { DataTable } from "@/components/list-category/data-table";
+import { DataTable } from "@/components/ui/data-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collections, ItemsResponse } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
