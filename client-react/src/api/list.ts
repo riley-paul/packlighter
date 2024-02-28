@@ -89,9 +89,9 @@ export const updateList = (variables: {
   list: Partial<ListWithCategories>;
 }) => pb.collection(Collections.Lists).update(variables.id, variables.list);
 
-export const useUpdateListsOrder = (variables: { listIds: string[] }) =>
+export const updateListsOrder = (listIds: string[]) =>
   Promise.all(
-    variables.listIds.map((id, index) =>
+    listIds.map((id, index) =>
       pb.collection(Collections.Lists).update(id, { sort_order: index })
     )
   );

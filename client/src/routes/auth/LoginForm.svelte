@@ -12,7 +12,6 @@
 	} from '@/components/ui/card';
 	import { Input } from '@/components/ui/input';
 	import { pb } from '@/lib/pocketbase';
-	import { initSchemaMutation } from '@/lib/query';
 	import { createMutation } from '@tanstack/svelte-query';
 	import { AlertTriangle } from 'lucide-svelte';
 	import type { ClientResponseError } from 'pocketbase';
@@ -38,7 +37,6 @@
 			pb.collection('users').authWithPassword(data.email, data.password),
 		onSuccess: () => {
 			toast.success('Login successful');
-			$initSchemaMutation.mutate(pb.authStore.model?.id);
 			goto('/');
 		},
 		onError: (err: ClientResponseError) => {

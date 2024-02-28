@@ -6,7 +6,7 @@ import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Feather, Menu } from "lucide-react";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 export default function App(): ReturnType<React.FC> {
   const { isSidebarOpen, toggleSidebar } = useStore();
@@ -30,10 +30,10 @@ export default function App(): ReturnType<React.FC> {
           >
             <Menu size="1.2rem" />
           </Button>
-          <div className="flex gap-2 items-center px-2">
+          <Link to="/" className="flex gap-2 items-center px-2">
             <Feather size="1.5rem" className="text-primary" />
             <span className="text-md">PackLighter</span>
-          </div>
+          </Link>
         </header>
         <PackingLists />
         <Separator />
