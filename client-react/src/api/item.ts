@@ -1,12 +1,10 @@
 import { pb } from "@/lib/pocketbase";
-import type { ClientResponseError } from "pocketbase";
-import { queryClient } from "@/lib/query";
-import { Collections, type ItemsRecord, type ItemsResponse } from "@/lib/types";
+import { Collections, type ItemsRecord } from "@/lib/types";
 
 export const getItems = () =>
   pb
     .collection(Collections.Items)
-    .getFullList({ sort: "sort_order", expand: "tags" });
+    .getFullList({ sort: "name", expand: "tags" });
 
 export const updateItem = (variables: {
   id: string;
@@ -33,9 +31,9 @@ export const setItemImage = (variables: { id: string; image: Blob }) => {
 export const deleteItemImage = (id: string) =>
   pb.collection(Collections.Items).update(id, { image: null });
 
-export const updateItemsOrder = (variables: { itemIds: string[] }) =>
+export const updateItemsOrder = (itemIds: string[]) =>
   Promise.all(
-    variables.itemIds.map((id, index) =>
+    itemIds.map((id, index) =>
       pb.collection(Collections.Items).update(id, { sort_order: index })
     )
   );

@@ -6,13 +6,48 @@ import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import Loader from "./base/loader";
 import { Button } from "./ui/button";
-import { Table } from "lucide-react";
+import { ArrowDownAZ, Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
 import Error from "./base/error";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
+
+enum SortOptions {
+  Name = "Name",
+  Description = "Description",
+  Weight = "Weight",
+}
+
+const sortingFunction = (option: SortOptions) => {
+  switch (option) {
+    case SortOptions.Name:
+      return (a: ItemsResponse, b: ItemsResponse) =>
+        a.name.localeCompare(b.name);
+    case SortOptions.Description:
+      return (a: ItemsResponse, b: ItemsResponse) =>
+        a.description.localeCompare(b.description);
+    case SortOptions.Weight:
+      return (a: ItemsResponse, b: ItemsResponse) => a.weight - b.weight;
+  }
+};
 
 const PackingItems: React.FC = () => {
+  const { toggleSidebar } = useStore();
+
   const itemsQuery = useQuery<ItemsResponse[], Error>({
     queryKey: [Collections.Items],
     queryFn: getItems,
@@ -21,7 +56,9 @@ const PackingItems: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { toggleSidebar } = useStore();
+  const [sortOption, setSortOption] = React.useState<SortOptions>(
+    SortOptions.Name
+  );
 
   return (
     <div className="p-4 flex flex-col gap-2 h-full flex-1 overflow-hidden">
@@ -40,14 +77,46 @@ const PackingItems: React.FC = () => {
             All Gear
           </Button>
         </div>
-        <Input placeholder="Filter gear..." className="bg-card" />
+        <div className="flex gap-2">
+          <Input placeholder="Filter gear..." className="bg-card" />
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="secondary" size="icon">
+                      <ArrowDownAZ size="1rem" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Sort Gear</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Sort Gear</DropdownMenuLabel>
+              <DropdownMenuRadioGroup
+                value={sortOption}
+                onValueChange={(v) => setSortOption(v as SortOptions)}
+              >
+                {Object.values(SortOptions).map((option) => (
+                  <DropdownMenuRadioItem key={option} value={option}>
+                    {option}
+                  </DropdownMenuRadioItem>
+                ))}
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </header>
-      <Card className="flex-1 h-full overflow-y-auto">
+      <Card className="flex-1 h-full overflow-y-auto rounded-md">
         {itemsQuery.isLoading && <Loader />}
         {itemsQuery.isError && <Error message={itemsQuery.error.message} />}
-        {itemsQuery.data?.map((item) => (
-          <PackingItem key={item.id} item={item} />
-        ))}
+        {itemsQuery.isSuccess &&
+          itemsQuery.data
+            .sort(sortingFunction(sortOption))
+            .map((item) => <PackingItem key={item.id} item={item} />)}
       </Card>
     </div>
   );

@@ -79,7 +79,7 @@ const PackingList: React.FC<Props> = (props) => {
       <Link
         to={`/list/${list.id}`}
         className={cn(
-          "flex-1 truncate",
+          "flex-1 truncate text-sm",
           !list.name && "italic text-muted-foreground"
         )}
       >

@@ -108,7 +108,7 @@ export default function PackingLists(): ReturnType<React.FC> {
       </header>
       <Card
         className={cn(
-          "py-2 h-full overflow-y-auto overflow-x-hidden transition-colors",
+          "py-2 h-full overflow-y-auto overflow-x-hidden transition-colors rounded-md",
           activeList && "border-primary"
         )}
       >
