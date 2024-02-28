@@ -4,7 +4,7 @@
   export let big = false;
 </script>
 
-<div class="flex h-min w-full items-center justify-center px-4">
+<div class="mx-auto px-4">
   <div class="my-24 flex flex-col items-center">
     <div class="text-primary mb-4"><slot /></div>
     <div class={cn("mb-1 font-semibold", big && "text-3xl font-bold")}>
