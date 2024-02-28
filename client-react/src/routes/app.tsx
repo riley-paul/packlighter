@@ -1,3 +1,4 @@
+import PackingItems from "@/components/packing-items";
 import PackingLists from "@/components/packing-lists";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -8,7 +9,7 @@ import { Outlet } from "react-router-dom";
 export default function App(): ReturnType<React.FC> {
   return (
     <div className="flex w-full h-full">
-      <aside className="border-r w-[300px]">
+      <aside className="border-r w-[300px] h-screen flex flex-col">
         <header className="border-b h-14 flex items-center">
           <Button
             size="icon"
@@ -24,6 +25,7 @@ export default function App(): ReturnType<React.FC> {
         </header>
         <PackingLists />
         <Separator />
+        <PackingItems />
       </aside>
       <div className="flex-1">
         <Outlet />

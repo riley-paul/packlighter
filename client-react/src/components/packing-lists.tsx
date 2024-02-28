@@ -27,7 +27,7 @@ export default function PackingLists(): ReturnType<React.FC> {
   });
 
   return (
-    <div className="flex flex-col flex-1 gap-2 p-4">
+    <div className="flex flex-col h-[40vh] gap-2 p-4">
       <header className="flex items-center justify-between">
         <span className="font-semibold text-sm">Lists</span>
         <Button
@@ -39,7 +39,7 @@ export default function PackingLists(): ReturnType<React.FC> {
           Add List
         </Button>
       </header>
-      <Card className="py-2 max-h-[30vh] h-full overflow-y-auto">
+      <Card className="py-2 h-full overflow-y-auto">
         {listsQuery.isLoading && <Loader />}
         {listsQuery.isError && <div>Error</div>}
         {listsQuery.data?.map((list) => (
