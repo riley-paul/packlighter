@@ -1,12 +1,21 @@
 import React from "react";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { User } from "lucide-react";
+import { LogOut, Trash, User } from "lucide-react";
 import { getProfilePhoto } from "@/api/auth";
 import { pb } from "@/lib/pocketbase";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
 
 export default function AccountEditor(): ReturnType<React.FC> {
   const user = pb.authStore.model;
@@ -26,7 +35,7 @@ export default function AccountEditor(): ReturnType<React.FC> {
           </Avatar>
         </div>
       </SheetTrigger>
-      <SheetContent className="flex flex-col">
+      <SheetContent className="flex flex-col gap-0">
         {user ? (
           <>
             <div className="flex gap-4">
@@ -41,18 +50,63 @@ export default function AccountEditor(): ReturnType<React.FC> {
                 <p className="text-muted-foreground text-sm">{user.email}</p>
               </div>
             </div>
-            <Separator className="my-4" />
-            <div className="flex-1"></div>
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={() => {
-                pb.authStore.clear();
-                navigate("/auth");
-              }}
-            >
-              Logout
-            </Button>
+            <Separator className="mt-6" />
+            <div className="flex-1 gap-4 flex flex-col overflow-y-auto py-6">
+              <Card>
+                <form>
+                  <CardHeader>
+                    <CardTitle>Change Password</CardTitle>
+                    <CardDescription>This is irreversible</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex flex-col gap-2">
+                    <Input type="password" placeholder="Current Password" />
+                    <Input type="password" placeholder="New Password" />
+                    <Input type="password" placeholder="Confirm New Password" />
+                  </CardContent>
+                  <CardFooter>
+                    <Button className="w-full" variant="secondary">
+                      Change Password
+                    </Button>
+                  </CardFooter>
+                </form>
+              </Card>
+              <Card>
+                <form>
+                  <CardHeader>
+                    <CardTitle>Update Email</CardTitle>
+                    <CardDescription>This is irreversible</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Input type="email" placeholder="New Email" />
+                  </CardContent>
+                  <CardFooter>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      variant="secondary"
+                    >
+                      Update Email
+                    </Button>
+                  </CardFooter>
+                </form>
+              </Card>
+            </div>
+            <footer className="flex flex-col gap-2 pt-2">
+              <Button className="w-full" variant="secondary" disabled>
+                Delete Account
+                <Trash size="1rem" className="ml-2" />
+              </Button>
+              <Button
+                className="w-full"
+                onClick={() => {
+                  pb.authStore.clear();
+                  navigate("/auth");
+                }}
+              >
+                Logout
+                <LogOut size="1rem" className="ml-2" />
+              </Button>
+            </footer>
           </>
         ) : (
           "Not logged in"

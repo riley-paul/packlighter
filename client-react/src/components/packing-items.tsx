@@ -124,7 +124,7 @@ const PackingItems: React.FC = () => {
           </DropdownMenu>
         </div>
       </header>
-      <Card className="flex-1 h-full overflow-y-auto rounded-md">
+      <Card className="flex-1 h-full overflow-y-auto">
         {itemsQuery.isLoading && <Loader />}
         {itemsQuery.isError && <Error message={itemsQuery.error.message} />}
         {itemsQuery.isSuccess &&
