@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useStore } from "@/lib/store";
 
 const PackingItems: React.FC = () => {
   const itemsQuery = useQuery({
@@ -19,6 +20,8 @@ const PackingItems: React.FC = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const { toggleSidebar } = useStore();
+
   return (
     <div className="p-4 flex flex-col gap-2 h-full flex-1 overflow-hidden">
       <header className="flex gap-2 flex-col">
@@ -27,7 +30,10 @@ const PackingItems: React.FC = () => {
           <Button
             size="sm"
             variant={pathname === "/gear" ? "secondary" : "linkMuted"}
-            onClick={() => navigate("/gear")}
+            onClick={() => {
+              navigate("/gear");
+              toggleSidebar(false);
+            }}
           >
             <Table size="1rem" className="mr-2" />
             All Gear

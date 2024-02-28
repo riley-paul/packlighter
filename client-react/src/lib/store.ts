@@ -3,15 +3,17 @@ import { persist } from "zustand/middleware";
 
 export interface Store {
   isSidebarOpen: boolean;
-  toggleSidebar: () => void;
+  toggleSidebar: (open?: boolean) => void;
 }
 
 export const useStore = create<Store>()(
   persist(
     (set) => ({
       isSidebarOpen: true,
-      toggleSidebar: () =>
-        set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+      toggleSidebar: (open) =>
+        set((state) => ({
+          isSidebarOpen: open !== undefined ? open : !state.isSidebarOpen,
+        })),
     }),
     { name: "packlighter-store" }
   )

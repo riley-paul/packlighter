@@ -26,7 +26,7 @@ export default function App(): ReturnType<React.FC> {
               "rounded-none h-14 w-14 transition-all",
               !isSidebarOpen && "w-0"
             )}
-            onClick={toggleSidebar}
+            onClick={() => toggleSidebar()}
           >
             <Menu size="1.2rem" />
           </Button>

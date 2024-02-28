@@ -20,7 +20,7 @@ export default function AppHeader(props: Props): ReturnType<React.FC<Props>> {
           isSidebarOpen && "w-0"
         )}
         variant="ghost"
-        onClick={toggleSidebar}
+        onClick={() => toggleSidebar()}
       >
         <Menu size="1.2rem" />
       </Button>
