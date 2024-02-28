@@ -8,6 +8,7 @@ import AuthPage from "./routes/auth";
 import App from "./routes/app";
 import ListPage from "./routes/list";
 import { Toaster } from "./components/ui/sonner";
+import { ThemeProvider } from "./components/theme-provider";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,10 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <Toaster />
-    <RouterProvider router={router} />
-  </QueryClientProvider>
+  <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+    <QueryClientProvider client={queryClient}>
+      <Toaster />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </ThemeProvider>
 );

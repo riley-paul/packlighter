@@ -1,4 +1,5 @@
 import { ListWithCategories, getList, updateList } from "@/api/list";
+import AppHeader from "@/components/app-header";
 import ServerInput from "@/components/input/server-input";
 import ListCategory from "@/components/list-category/list-category";
 import { queryClient } from "@/lib/query";
@@ -31,7 +32,7 @@ export default function ListPage(): ReturnType<React.FC> {
 
   return (
     <div className="flex flex-col h-screen">
-      <header className="h-12 border-b flex items-center px-1 justify-between">
+      <AppHeader>
         <h1 className={cn("text-lg font-bold flex-1")}>
           <ServerInput
             key={listQuery.data.id}
@@ -41,7 +42,7 @@ export default function ListPage(): ReturnType<React.FC> {
             onUpdate={(v) => updateListMutation.mutate({ name: v })}
           />
         </h1>
-      </header>
+      </AppHeader>
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-6">
           <div>{listQuery.data.description}</div>

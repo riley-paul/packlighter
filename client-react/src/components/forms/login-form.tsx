@@ -14,7 +14,6 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
@@ -59,11 +58,11 @@ export default function LoginForm(): ReturnType<React.FC> {
         <FormInputContainer>
           <FormField<LoginSchema, "email">
             name="email"
-            render={() => (
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
+                    {...field}
                     placeholder="ultra_light@gmail.com"
                     type="email"
                     required
@@ -75,11 +74,15 @@ export default function LoginForm(): ReturnType<React.FC> {
           />
           <FormField<LoginSchema, "password">
             name="password"
-            render={() => (
+            render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="••••••••" type="password" required />
+                  <Input
+                    {...field}
+                    placeholder="••••••••"
+                    type="password"
+                    required
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

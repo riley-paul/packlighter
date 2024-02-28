@@ -14,7 +14,7 @@ import React from "react";
 
 export default function AuthPage(): ReturnType<React.FC> {
   return (
-    <div className="max-w-sm w-full py-12 mx-auto">
+    <div className="max-w-xs w-full py-12 mx-auto">
       <div className="mb-8 flex flex-col items-center">
         <Feather className="mb-4 h-16 w-16 text-primary" />
         <h1 className="mb-1 text-3xl font-bold">PackLighter</h1>
