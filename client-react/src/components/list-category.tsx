@@ -74,7 +74,9 @@ const ListCategory: React.FC<Props> = (props) => {
             </Button>
           </TableCell>
           <TableCell>100</TableCell>
-          <TableCell>100</TableCell>
+          <TableCell>
+            {category.items.reduce((acc, val) => acc + val.quantity, 0)}
+          </TableCell>
           <TableCell />
         </TableRow>
       </TableFooter>

@@ -4,9 +4,12 @@ import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
 import ListCategory from "@/components/list-category";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 import { useParams } from "react-router-dom";
@@ -53,11 +56,15 @@ export default function ListPage(): ReturnType<React.FC> {
         </h1>
       </AppHeader>
       <section className="overflow-y-auto flex-1">
-        <div className="p-4 flex flex-col gap-6">
-          <div>{listQuery.data.description}</div>
+        <div className="p-4 flex flex-col gap-4">
+          <Textarea className="bg-card">{listQuery.data.description}</Textarea>
           {listQuery.data.categories.map((category) => (
             <ListCategory key={category.id} category={category} />
           ))}
+          <Button variant="linkMuted" size="sm" className="w-min ml-2">
+            <Plus size="1rem" className="mr-2" />
+            Add Category
+          </Button>
         </div>
       </section>
     </div>
