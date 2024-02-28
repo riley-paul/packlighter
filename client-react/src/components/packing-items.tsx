@@ -8,6 +8,7 @@ import Loader from "./base/loader";
 import { Button } from "./ui/button";
 import { Table } from "lucide-react";
 import PackingItem from "./packing-item";
+import { useNavigate } from "react-router-dom";
 
 const PackingItems: React.FC = () => {
   const itemsQuery = useQuery({
@@ -15,12 +16,18 @@ const PackingItems: React.FC = () => {
     queryFn: getItems,
   });
 
+  const navigate = useNavigate();
+
   return (
     <div className="p-4 flex flex-col gap-2 h-full flex-1 overflow-hidden">
       <header className="flex gap-2 flex-col">
         <div className="flex justify-between items-center w-full">
           <span className="font-semibold text-sm">Gear</span>
-          <Button size="sm" variant="linkMuted">
+          <Button
+            size="sm"
+            variant="linkMuted"
+            onClick={() => navigate("/gear")}
+          >
             <Table size="1rem" className="mr-2" />
             All Gear
           </Button>

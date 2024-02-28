@@ -9,6 +9,7 @@ import App from "./routes/app";
 import ListPage from "./routes/list";
 import { Toaster } from "./components/ui/sonner";
 import { ThemeProvider } from "./components/theme-provider";
+import GearPage from "./routes/all-gear";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
           { path: "list/:listId", element: <ListPage /> },
-          { path: "settings", element: <div>settings</div> },
+          { path: "gear", element: <GearPage /> },
         ],
       },
       { path: "auth", element: <AuthPage /> },
