@@ -1,5 +1,6 @@
 import { ListWithCategories, getList, updateList } from "@/api/list";
 import AppHeader from "@/components/app-header";
+import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
 import ListCategory from "@/components/list-category/list-category";
 import { queryClient } from "@/lib/query";
@@ -26,7 +27,13 @@ export default function ListPage(): ReturnType<React.FC> {
     },
   });
 
-  if (listQuery.isLoading) return <div>Loading...</div>;
+  if (listQuery.isLoading)
+    return (
+      <div className="h-screen">
+        <AppHeader />
+        <Loader />
+      </div>
+    );
 
   if (listQuery.isError || !listQuery.data) return <div>Error</div>;
 
