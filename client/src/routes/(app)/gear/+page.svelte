@@ -1,8 +1,5 @@
 <script lang="ts">
-	import DragHandle from '@/components/base/DragHandle.svelte';
 	import { Input } from '@/components/ui/input';
-	import { Textarea } from '@/components/ui/textarea';
-	import { Card } from '@/components/ui/card';
 	import {
 		Table,
 		TableBody,
@@ -19,15 +16,13 @@
 	import { Button, buttonVariants } from '@/components/ui/button';
 	import { flipDurationMs } from '@/lib/constants';
 	import { getListItemIds, transformDraggedElement } from '@/lib/helpers';
-	import { flip } from 'svelte/animate';
 
-	import { ArrowLeft, Plus } from 'lucide-svelte';
-	import DragGhost from '@/components/base/DragGhost.svelte';
+	import { ArrowLeft } from 'lucide-svelte';
+	import AppHeader from '@/components/AppHeader.svelte';
 
 	$: items = useItems();
 	$: updateItemsOrder = useUpdateItemsOrder();
 	$: deleteItem = useDeleteItem();
-	$: createItem = useCreateItem();
 
 	let searchTerm = '';
 
@@ -42,88 +37,75 @@
 	) ?? []) as ItemWithShadowItem[];
 
 	$: console.log(itemsData.filter((i) => i.tags.length > 0));
-
-	const templateCols = [];
-
-	const handleConsider = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
-		itemsData = ev.detail.items;
-	};
-
-	const handleFinalize = (ev: CustomEvent<DndEvent<ItemsResponse>>) => {
-		itemsData = ev.detail.items;
-		const ids = ev.detail.items.map((item) => item.id);
-		$updateItemsOrder.mutate({ itemIds: ids });
-	};
 </script>
 
 <svelte:head>
 	<title>PackLighter - Gear</title>
 </svelte:head>
 
-<Table>
-	<TableHeader>
-		<TableRow>
-			<TableHead class="w-0">Image</TableHead>
-			<TableHead class="w-64 pl-5">Name</TableHead>
-			<TableHead class="pl-5">Description</TableHead>
-			<TableHead class="w-32 text-right">Weight</TableHead>
-			<TableHead class="w-0" />
-		</TableRow>
-	</TableHeader>
-	<tbody
-		use:dndzone={{
-			items: itemsData,
-			type: 'items',
-			dropFromOthersDisabled: true,
-			flipDurationMs,
-			dropTargetStyle: {},
-			dropTargetClasses: ['outline', 'outline-1', 'outline-primary'],
-			transformDraggedElement
-		}}
-		on:consider={handleConsider}
-		on:finalize={handleFinalize}
-	>
-		{#each itemsData as item (item.id)}
+<div class="flex h-screen flex-col">
+	<AppHeader>
+		<div class="flex items-center gap-4">
+			<a href="/" class={buttonVariants({ variant: 'secondary' })}>
+				<ArrowLeft class="mr-2 h-4 w-4" />
+				Back
+			</a>
+			<span class="text-lg font-semibold">Gear Catalogue</span>
+		</div>
+	</AppHeader>
+	<Table>
+		<TableHeader>
 			<TableRow>
-				<TableCell>
-					<ItemImage {item} fullSizePlaceholer />
-				</TableCell>
-				<TableCell>
-					<Input
-						class="h-auto border-none py-0.5 shadow-none placeholder:italic"
-						placeholder="Unnamed item"
-						autocomplete="off"
-						bind:value={item.name}
-					/>
-				</TableCell>
-				<TableCell class="text-muted-foreground">
-					<Input
-						class="h-auto border-none py-0.5 shadow-none placeholder:italic"
-						placeholder="Description"
-						autocomplete="off"
-						bind:value={item.description}
-					/>
-				</TableCell>
-				<TableCell class="flex justify-end text-right">
-					<Input
-						bind:value={item.weight}
-						type="number"
-						autocomplete="off"
-						min="0"
-						class="h-auto border-none px-1 py-0.5 text-right shadow-none"
-					/>
-					<select bind:value={item.weight_unit} class="bg-inherit">
-						{#each Object.values(ItemsWeightUnitOptions) as massUnit}
-							<option value={massUnit}>
-								{massUnit}
-							</option>
-						{/each}
-					</select>
-				</TableCell>
-				<TableCell>
-					<DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
-				</TableCell>
+				<TableHead class="w-0">Image</TableHead>
+				<TableHead class="w-64 pl-5">Name</TableHead>
+				<TableHead class="pl-5">Description</TableHead>
+				<TableHead class="w-32 text-right">Weight</TableHead>
+				<TableHead class="w-0" />
 			</TableRow>
-		{/each}
-	</tbody>
-</Table>
+		</TableHeader>
+		<TableBody class="sticky top-0">
+			{#each itemsData as item (item.id)}
+				<TableRow>
+					<TableCell>
+						<ItemImage {item} fullSizePlaceholer />
+					</TableCell>
+					<TableCell>
+						<Input
+							class="h-auto border-none py-0.5 shadow-none placeholder:italic"
+							placeholder="Unnamed item"
+							autocomplete="off"
+							bind:value={item.name}
+						/>
+					</TableCell>
+					<TableCell class="text-muted-foreground">
+						<Input
+							class="h-auto border-none py-0.5 shadow-none placeholder:italic"
+							placeholder="Description"
+							autocomplete="off"
+							bind:value={item.description}
+						/>
+					</TableCell>
+					<TableCell class="flex justify-end text-right">
+						<Input
+							bind:value={item.weight}
+							type="number"
+							autocomplete="off"
+							min="0"
+							class="h-auto border-none px-1 py-0.5 text-right shadow-none"
+						/>
+						<select bind:value={item.weight_unit} class="bg-inherit">
+							{#each Object.values(ItemsWeightUnitOptions) as massUnit}
+								<option value={massUnit}>
+									{massUnit}
+								</option>
+							{/each}
+						</select>
+					</TableCell>
+					<TableCell>
+						<DeleteButton handleDelete={() => $deleteItem.mutate(item.id)} />
+					</TableCell>
+				</TableRow>
+			{/each}
+		</TableBody>
+	</Table>
+</div>
