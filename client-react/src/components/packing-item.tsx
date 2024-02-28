@@ -1,5 +1,6 @@
 import { ItemsResponse } from "@/lib/types";
 import React from "react";
+import DeleteButton from "./base/delete-button";
 
 interface Props {
   item: ItemsResponse;
@@ -18,6 +19,7 @@ const PackingItem: React.FC<Props> = (props) => {
         {item.weight}
         {item.weight_unit}
       </span>
+      <DeleteButton handleDelete={() => console.log("delete", item.id)} />
     </div>
   );
 };
