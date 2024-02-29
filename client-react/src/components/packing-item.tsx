@@ -7,6 +7,7 @@ import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { formatWeight } from "@/lib/helpers";
 
 interface Props {
   item: ItemsResponse;
@@ -33,9 +34,9 @@ const PackingItem: React.FC<Props> = (props) => {
         </span>
         <span className="text-muted-foreground">{item.description}</span>
       </div>
-      <span className="text-muted-foreground">
-        {item.weight}
-        {item.weight_unit}
+      <span className="text-muted-foreground flex gap-1">
+        <span>{formatWeight(item.weight)}</span>
+        <span>{item.weight_unit}</span>
       </span>
       <DeleteButton handleDelete={() => deleteItemMutation.mutate()} />
     </div>

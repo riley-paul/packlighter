@@ -1,4 +1,4 @@
-import { ExpandedCategory } from "@/api/list";
+import { ExpandedCategory, ListWithCategories } from "@/api/list";
 import React from "react";
 import {
   Table,
@@ -20,12 +20,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "react-query";
 import { deleteCategory, updateCategory } from "@/api/category";
-import { Collections } from "@/lib/types";
+import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ServerInput from "./input/server-input";
 import ListCategoryItem from "./list-category-item";
+import { formatWeight, getCategoryWeight } from "@/lib/helpers";
 
 interface Props {
   category: ExpandedCategory;
@@ -36,6 +37,11 @@ const ListCategory: React.FC<Props> = (props) => {
   const { category, isOverlay } = props;
 
   const { listId } = useParams();
+
+  const list = queryClient.getQueryData<ListWithCategories>([
+    Collections.Lists,
+    listId,
+  ]);
 
   const {
     attributes,
@@ -120,7 +126,21 @@ const ListCategory: React.FC<Props> = (props) => {
                 Add Item
               </Button>
             </TableCell>
-            <TableCell>100</TableCell>
+            <TableCell>
+              <div className="flex gap-2 justify-end">
+                <span>
+                  {formatWeight(
+                    getCategoryWeight(
+                      category,
+                      list?.weight_unit ?? ListsWeightUnitOptions.g
+                    )
+                  )}
+                </span>
+                <span className="min-w-8">
+                  {list?.weight_unit ?? ListsWeightUnitOptions.g}
+                </span>
+              </div>
+            </TableCell>
             <TableCell>
               <div className="pl-2">
                 {category.items.reduce((acc, val) => acc + val.quantity, 0)}

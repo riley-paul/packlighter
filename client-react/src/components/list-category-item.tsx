@@ -12,6 +12,7 @@ import {
   CategoriesItemsResponse,
   Collections,
   ItemsResponse,
+  ItemsWeightUnitOptions,
 } from "@/lib/types";
 import { useParams } from "react-router-dom";
 
@@ -68,20 +69,32 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           }
         />
       </TableCell>
-      <TableCell>
+      <TableCell className="py-0">
         <div className="flex no-spin">
           <ServerInput
             type="number"
             min={0}
+            selectOnFocus
             className="text-right"
             currentValue={item.itemData.weight.toLocaleString()}
             onUpdate={(weight) =>
               updateMutation.mutate({ item: { weight: Number(weight) } })
             }
           />
-          <select className="bg-inherit">
-            <option>g</option>
-            <option>kg</option>
+          <select
+            className="bg-inherit"
+            value={item.itemData.weight_unit}
+            onChange={(ev) =>
+              updateMutation.mutate({
+                item: {
+                  weight_unit: ev.target.value as ItemsWeightUnitOptions,
+                },
+              })
+            }
+          >
+            {Object.values(ItemsWeightUnitOptions).map((unit) => (
+              <option key={unit}>{unit}</option>
+            ))}
           </select>
         </div>
       </TableCell>
@@ -89,6 +102,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
         <ServerInput
           type="number"
           min={1}
+          selectOnFocus
           currentValue={item.quantity.toLocaleString()}
           onUpdate={(quantity) =>
             updateMutation.mutate({
