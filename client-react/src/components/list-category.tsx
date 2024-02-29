@@ -19,12 +19,13 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "react-query";
-import { deleteCategory } from "@/api/category";
+import { deleteCategory, updateCategory } from "@/api/category";
 import { Collections } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { deleteCategoryItem } from "@/api/categoryItem";
+import ServerInput from "./input/server-input";
+import ListCategoryItem from "./list-category-item";
 
 interface Props {
   category: ExpandedCategory;
@@ -58,8 +59,9 @@ const ListCategory: React.FC<Props> = (props) => {
     },
   });
 
-  const deleteCategoryItemMutation = useMutation({
-    mutationFn: deleteCategoryItem,
+  const updateCategoryMutation = useMutation({
+    mutationFn: (data: Partial<ExpandedCategory>) =>
+      updateCategory({ id: category.id, category: data }),
     onSuccess: () => {
       queryClient.invalidateQueries([Collections.Lists, listId]);
     },
@@ -86,9 +88,15 @@ const ListCategory: React.FC<Props> = (props) => {
             </TableHead>
             <TableHead
               colSpan={2}
-              className="text-foregound text-base font-semibold"
+              className="text-foregound text-base font-semibold px-1"
             >
-              <h3>{category.name}</h3>
+              <ServerInput
+                className="text-base"
+                currentValue={category.name}
+                onUpdate={(value) =>
+                  updateCategoryMutation.mutate({ name: value })
+                }
+              />
             </TableHead>
             <TableHead className="w-20">Weight</TableHead>
             <TableHead className="w-12">Qty</TableHead>
@@ -101,25 +109,7 @@ const ListCategory: React.FC<Props> = (props) => {
         </TableHeader>
         <TableBody>
           {category.items.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell className="w-4 px-1">
-                <Gripper />
-              </TableCell>
-              <TableCell>
-                <Checkbox />
-              </TableCell>
-              <TableCell>{item.itemData.name}</TableCell>
-              <TableCell className="text-muted-foreground w-1/2">
-                {item.itemData.description}
-              </TableCell>
-              <TableCell>{item.itemData.weight}</TableCell>
-              <TableCell>{item.quantity}</TableCell>
-              <TableCell className="py-0">
-                <DeleteButton
-                  handleDelete={() => deleteCategoryItemMutation.mutate(item)}
-                />
-              </TableCell>
-            </TableRow>
+            <ListCategoryItem key={item.id} item={item} />
           ))}
         </TableBody>
         <TableFooter>

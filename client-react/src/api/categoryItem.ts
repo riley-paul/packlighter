@@ -7,20 +7,23 @@ import {
 import { pb } from "@/lib/pocketbase";
 
 import { queryClient } from "@/lib/query";
-import { Collections, type ItemsResponse } from "@/lib/types";
+import {
+  CategoriesItemsRecord,
+  Collections,
+  type ItemsResponse,
+} from "@/lib/types";
 
 export const updateCategoryItem = (variables: {
   id: string;
-  categoryItem: Partial<ExpandedCategoryItem>;
+  categoryItem: Partial<CategoriesItemsRecord>;
+  itemId?: string;
+  item: Partial<ItemsResponse>;
 }) => {
-  const { categoryItem } = variables;
   const p1 = pb
     .collection(Collections.CategoriesItems)
-    .update(variables.id || "", variables.categoryItem);
-  const p2 = categoryItem.item
-    ? pb
-        .collection(Collections.Items)
-        .update(categoryItem.item, categoryItem.itemData)
+    .update(variables.id, variables.categoryItem);
+  const p2 = variables.itemId
+    ? pb.collection(Collections.Items).update(variables.itemId, variables.item)
     : Promise.resolve();
   return Promise.all([p1, p2]);
 };
