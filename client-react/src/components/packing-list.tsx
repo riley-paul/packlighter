@@ -10,7 +10,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { MoreHorizontal, Delete, Copy, GripVertical } from "lucide-react";
+import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "./ui/button";
 import { useMutation } from "react-query";
 import { deleteList } from "@/api/list";
@@ -18,6 +18,7 @@ import { queryClient } from "@/lib/query";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import Gripper from "./base/gripper";
 
 interface Props {
   list: ListsResponse;
@@ -67,15 +68,7 @@ const PackingList: React.FC<Props> = (props) => {
         isDragging && "opacity-30"
       )}
     >
-      <div
-        {...attributes}
-        {...listeners}
-        className={cn(
-          "text-muted-foreground hover:text-foreground cursor-grab"
-        )}
-      >
-        <GripVertical size="1rem" />
-      </div>
+      <Gripper {...attributes} {...listeners} isGrabbing={isOverlay}></Gripper>
       <Link
         to={`/list/${list.id}`}
         className={cn(

@@ -43,9 +43,9 @@ export const toggleCategoryPacked = (category: ExpandedCategory) => {
   );
 };
 
-export const updateCategoriesOrder = (variables: { categoryIds: string[] }) =>
+export const updateCategoriesOrder = (categoryIds: string[]) =>
   Promise.all(
-    variables.categoryIds.map((id, index) =>
+    categoryIds.map((id, index) =>
       pb
         .collection(Collections.ListCategories)
         .update(id, { sort_order: index })

@@ -3,7 +3,7 @@ import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
-import ListCategory from "@/components/list-category";
+import ListCategoryContainer from "@/components/list-category-container";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { queryClient } from "@/lib/query";
@@ -58,9 +58,7 @@ export default function ListPage(): ReturnType<React.FC> {
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-4">
           <Textarea className="bg-card">{listQuery.data.description}</Textarea>
-          {listQuery.data.categories.map((category) => (
-            <ListCategory key={category.id} category={category} />
-          ))}
+          <ListCategoryContainer categories={listQuery.data.categories} />
           <Button variant="linkMuted" size="sm" className="w-min ml-2">
             <Plus size="1rem" className="mr-2" />
             Add Category
