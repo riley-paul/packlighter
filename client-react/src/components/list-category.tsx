@@ -18,6 +18,13 @@ import Gripper from "./base/gripper";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
+import { useMutation } from "react-query";
+import { deleteCategory } from "@/api/category";
+import { Collections } from "@/lib/types";
+import { queryClient } from "@/lib/query";
+import { useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { deleteCategoryItem } from "@/api/categoryItem";
 
 interface Props {
   category: ExpandedCategory;
@@ -26,6 +33,8 @@ interface Props {
 
 const ListCategory: React.FC<Props> = (props) => {
   const { category, isOverlay } = props;
+
+  const { listId } = useParams();
 
   const {
     attributes,
@@ -41,11 +50,27 @@ const ListCategory: React.FC<Props> = (props) => {
     transition,
   };
 
+  const deleteCategoryMutation = useMutation({
+    mutationFn: () => deleteCategory(category),
+    onSuccess: () => {
+      queryClient.invalidateQueries([Collections.Lists, listId]);
+      toast.success(`${category.name || "Unnamed"} category deleted`);
+    },
+  });
+
+  const deleteCategoryItemMutation = useMutation({
+    mutationFn: deleteCategoryItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries([Collections.Lists, listId]);
+    },
+  });
+
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={cn(
+        "transition-all",
         isDragging && "opacity-30",
         isOverlay && "bg-card/70 border rounded"
       )}
@@ -54,7 +79,7 @@ const ListCategory: React.FC<Props> = (props) => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-4 px-1">
-              <Gripper {...attributes} {...listeners} />
+              <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
             </TableHead>
             <TableHead className="w-8">
               <Checkbox />
@@ -68,7 +93,9 @@ const ListCategory: React.FC<Props> = (props) => {
             <TableHead className="w-20">Weight</TableHead>
             <TableHead className="w-12">Qty</TableHead>
             <TableHead className="w-6">
-              <DeleteButton handleDelete={() => {}} />
+              <DeleteButton
+                handleDelete={() => deleteCategoryMutation.mutate()}
+              />
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -88,7 +115,9 @@ const ListCategory: React.FC<Props> = (props) => {
               <TableCell>{item.itemData.weight}</TableCell>
               <TableCell>{item.quantity}</TableCell>
               <TableCell className="py-0">
-                <DeleteButton handleDelete={() => {}} />
+                <DeleteButton
+                  handleDelete={() => deleteCategoryItemMutation.mutate(item)}
+                />
               </TableCell>
             </TableRow>
           ))}

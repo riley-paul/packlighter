@@ -1,3 +1,4 @@
+import { createCategory } from "@/api/category";
 import { ListWithCategories, getList, updateList } from "@/api/list";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
@@ -31,6 +32,13 @@ export default function ListPage(): ReturnType<React.FC> {
     },
   });
 
+  const createCategoryMutation = useMutation({
+    mutationFn: () => createCategory(listId),
+    onSuccess: () => {
+      queryClient.invalidateQueries([Collections.Lists, listId]);
+    },
+  });
+
   if (listQuery.isLoading)
     return (
       <div className="h-screen">
@@ -59,7 +67,12 @@ export default function ListPage(): ReturnType<React.FC> {
         <div className="p-4 flex flex-col gap-4">
           <Textarea className="bg-card">{listQuery.data.description}</Textarea>
           <ListCategoryContainer categories={listQuery.data.categories} />
-          <Button variant="linkMuted" size="sm" className="w-min ml-2">
+          <Button
+            variant="linkMuted"
+            size="sm"
+            className="w-min ml-2"
+            onClick={() => createCategoryMutation.mutate()}
+          >
             <Plus size="1rem" className="mr-2" />
             Add Category
           </Button>
