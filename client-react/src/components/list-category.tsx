@@ -98,9 +98,9 @@ const ListCategory: React.FC<Props> = (props) => {
                 }
               />
             </TableHead>
-            <TableHead className="w-20">Weight</TableHead>
-            <TableHead className="w-12">Qty</TableHead>
-            <TableHead className="w-6">
+            <TableHead className="w-[6.5rem] text-center">Weight</TableHead>
+            <TableHead className="w-16">Qty</TableHead>
+            <TableHead className="w-6 pl-0">
               <DeleteButton
                 handleDelete={() => deleteCategoryMutation.mutate()}
               />
@@ -122,7 +122,9 @@ const ListCategory: React.FC<Props> = (props) => {
             </TableCell>
             <TableCell>100</TableCell>
             <TableCell>
-              {category.items.reduce((acc, val) => acc + val.quantity, 0)}
+              <div className="pl-2">
+                {category.items.reduce((acc, val) => acc + val.quantity, 0)}
+              </div>
             </TableCell>
             <TableCell />
           </TableRow>

@@ -68,9 +68,36 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           }
         />
       </TableCell>
-      <TableCell>{item.itemData.weight}</TableCell>
-      <TableCell>{item.quantity}</TableCell>
-      <TableCell className="py-0">
+      <TableCell>
+        <div className="flex no-spin">
+          <ServerInput
+            type="number"
+            min={0}
+            className="text-right"
+            currentValue={item.itemData.weight.toLocaleString()}
+            onUpdate={(weight) =>
+              updateMutation.mutate({ item: { weight: Number(weight) } })
+            }
+          />
+          <select className="bg-inherit">
+            <option>g</option>
+            <option>kg</option>
+          </select>
+        </div>
+      </TableCell>
+      <TableCell>
+        <ServerInput
+          type="number"
+          min={1}
+          currentValue={item.quantity.toLocaleString()}
+          onUpdate={(quantity) =>
+            updateMutation.mutate({
+              categoryItem: { quantity: Number(quantity) },
+            })
+          }
+        />
+      </TableCell>
+      <TableCell className="py-0 pl-0">
         <DeleteButton handleDelete={() => deleteMutation.mutate()} />
       </TableCell>
     </TableRow>
