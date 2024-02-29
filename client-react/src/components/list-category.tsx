@@ -93,7 +93,7 @@ const ListCategory: React.FC<Props> = (props) => {
               <Checkbox />
             </TableHead>
             <TableHead
-              colSpan={2}
+              colSpan={3}
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput

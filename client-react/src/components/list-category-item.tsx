@@ -15,6 +15,7 @@ import {
   ItemsWeightUnitOptions,
 } from "@/lib/types";
 import { useParams } from "react-router-dom";
+import ItemImage from "./item-image";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -54,6 +55,9 @@ const ListCategoryItem: React.FC<Props> = (props) => {
       </TableCell>
       <TableCell>
         <Checkbox />
+      </TableCell>
+      <TableCell>
+        <ItemImage item={item.itemData} />
       </TableCell>
       <TableCell className="px-1">
         <ServerInput
