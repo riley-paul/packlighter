@@ -95,20 +95,20 @@ const PackingItems: React.FC = () => {
             onChange={(ev) => setFilterQuery(ev.target.value)}
           />
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button variant="secondary" size="icon">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
                       <ArrowDownWideNarrow size="1rem" />
                     </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Sort Gear</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </DropdownMenuTrigger>
+                  </DropdownMenuTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Sort Gear</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <DropdownMenuContent>
               <DropdownMenuLabel>Sort Gear</DropdownMenuLabel>
               <DropdownMenuRadioGroup
