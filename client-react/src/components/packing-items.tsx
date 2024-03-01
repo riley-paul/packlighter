@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import Loader from "./base/loader";
 import { Button } from "./ui/button";
-import { ArrowDownAZ, Table } from "lucide-react";
+import { ArrowDownWideNarrow, Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
@@ -99,7 +99,7 @@ const PackingItems: React.FC = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button variant="secondary" size="icon">
-                      <ArrowDownAZ size="1rem" />
+                      <ArrowDownWideNarrow size="1rem" />
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>

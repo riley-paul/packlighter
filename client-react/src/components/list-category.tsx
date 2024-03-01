@@ -27,6 +27,7 @@ import { toast } from "sonner";
 import ServerInput from "./input/server-input";
 import ListCategoryItem from "./list-category-item";
 import { formatWeight, getCategoryWeight } from "@/lib/helpers";
+import { createCategoryItem } from "@/api/categoryItem";
 
 interface Props {
   category: ExpandedCategory;
@@ -73,6 +74,13 @@ const ListCategory: React.FC<Props> = (props) => {
     },
   });
 
+  const addCategoryItemMutation = useMutation({
+    mutationFn: () => createCategoryItem({ category, listId: listId ?? "" }),
+    onSuccess: () => {
+      queryClient.invalidateQueries([Collections.Lists, listId]);
+    },
+  });
+
   return (
     <div
       ref={setNodeRef}
@@ -99,7 +107,8 @@ const ListCategory: React.FC<Props> = (props) => {
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput
-                className="text-base"
+                className="text-base py-0.5"
+                placeholder="Category Name"
                 currentValue={category.name}
                 onUpdate={(value) =>
                   updateCategoryMutation.mutate({ name: value })
@@ -109,7 +118,7 @@ const ListCategory: React.FC<Props> = (props) => {
             {list?.show_weights && (
               <TableHead className="w-[6.5rem] text-center">Weight</TableHead>
             )}
-            <TableHead className="w-16">Qty</TableHead>
+            <TableHead className="w-[5rem]">Qty</TableHead>
             <TableHead className="w-6 pl-0">
               <DeleteButton
                 handleDelete={() => deleteCategoryMutation.mutate()}
@@ -129,7 +138,11 @@ const ListCategory: React.FC<Props> = (props) => {
                 3 + (list?.show_packed ? 1 : 0) + (list?.show_images ? 1 : 0)
               }
             >
-              <Button variant="linkMuted" size="sm">
+              <Button
+                variant="linkMuted"
+                size="sm"
+                onClick={() => addCategoryItemMutation.mutate()}
+              >
                 <Plus size="1rem" className="mr-2" />
                 Add Item
               </Button>

@@ -55,7 +55,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
 
   return (
     <TableRow>
-      <TableCell className="w-4 px-1">
+      <TableCell className="w-4 px-1 py-0.5">
         <Gripper />
       </TableCell>
       {list?.show_packed && (
@@ -68,14 +68,16 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           <ItemImage item={item.itemData} />
         </TableCell>
       )}
-      <TableCell className="px-1">
+      <TableCell className="px-1 py-0.5">
         <ServerInput
+          placeholder="Name"
           currentValue={item.itemData.name}
           onUpdate={(name) => updateMutation.mutate({ item: { name } })}
         />
       </TableCell>
-      <TableCell className="text-muted-foreground w-1/2 px-1">
+      <TableCell className="text-muted-foreground w-1/2 px-1 py-0.5">
         <ServerInput
+          placeholder="Description"
           currentValue={item.itemData.description}
           onUpdate={(description) =>
             updateMutation.mutate({ item: { description } })
@@ -83,7 +85,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
         />
       </TableCell>
       {list?.show_weights && (
-        <TableCell className="py-0">
+        <TableCell className="py-0.5">
           <div className="flex no-spin">
             <ServerInput
               type="number"
@@ -113,7 +115,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           </div>
         </TableCell>
       )}
-      <TableCell>
+      <TableCell className="py-0.5">
         <ServerInput
           type="number"
           min={1}
@@ -126,7 +128,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           }
         />
       </TableCell>
-      <TableCell className="py-0 pl-0">
+      <TableCell className="py-0.5 pl-0">
         <DeleteButton handleDelete={() => deleteMutation.mutate()} />
       </TableCell>
     </TableRow>
