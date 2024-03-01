@@ -1,3 +1,4 @@
+import Logo from "@/components/logo";
 import PackingItems from "@/components/packing-items";
 import PackingLists from "@/components/packing-lists";
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,9 @@ import {
 } from "@/components/ui/resizable";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
-import { Feather, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export default function App(): ReturnType<React.FC> {
   const { isSidebarOpen, toggleSidebar } = useStore();
@@ -34,15 +35,9 @@ export default function App(): ReturnType<React.FC> {
           >
             <Menu size="1.2rem" />
           </Button>
-          <Link to="/" className="flex gap-2 items-center px-2">
-            <Feather size="1.5rem" className="text-primary" />
-            <span className="text-md">PackLighter</span>
-          </Link>
+          <Logo />
         </header>
-        <ResizablePanelGroup
-          autoSaveId="sidebar"
-          direction="vertical"
-        >
+        <ResizablePanelGroup autoSaveId="sidebar" direction="vertical">
           <ResizablePanel defaultSize={40}>
             <PackingLists />
           </ResizablePanel>
