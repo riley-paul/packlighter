@@ -86,7 +86,7 @@ export const deleteList = (id: string) =>
 
 export const updateList = (variables: {
   id: string;
-  list: Partial<ListWithCategories>;
+  list: Partial<ListsResponse>;
 }) => pb.collection(Collections.Lists).update(variables.id, variables.list);
 
 export const updateListsOrder = (listIds: string[]) =>

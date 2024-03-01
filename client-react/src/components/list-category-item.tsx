@@ -3,7 +3,7 @@ import { TableCell, TableRow } from "./ui/table";
 import Gripper from "./base/gripper";
 import { Checkbox } from "./ui/checkbox";
 import ServerInput from "./input/server-input";
-import { ExpandedCategoryItem } from "@/api/list";
+import { ExpandedCategoryItem, ListWithCategories } from "@/api/list";
 import DeleteButton from "./base/delete-button";
 import { useMutation } from "react-query";
 import { deleteCategoryItem, updateCategoryItem } from "@/api/categoryItem";
@@ -24,6 +24,11 @@ interface Props {
 const ListCategoryItem: React.FC<Props> = (props) => {
   const { item } = props;
   const { listId } = useParams();
+
+  const list = queryClient.getQueryData<ListWithCategories>([
+    Collections.Lists,
+    listId,
+  ]);
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteCategoryItem(item),
@@ -53,12 +58,16 @@ const ListCategoryItem: React.FC<Props> = (props) => {
       <TableCell className="w-4 px-1">
         <Gripper />
       </TableCell>
-      <TableCell>
-        <Checkbox />
-      </TableCell>
-      <TableCell>
-        <ItemImage item={item.itemData} />
-      </TableCell>
+      {list?.show_packed && (
+        <TableCell>
+          <Checkbox />
+        </TableCell>
+      )}
+      {list?.show_images && (
+        <TableCell>
+          <ItemImage item={item.itemData} />
+        </TableCell>
+      )}
       <TableCell className="px-1">
         <ServerInput
           currentValue={item.itemData.name}
@@ -73,35 +82,37 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           }
         />
       </TableCell>
-      <TableCell className="py-0">
-        <div className="flex no-spin">
-          <ServerInput
-            type="number"
-            min={0}
-            selectOnFocus
-            className="text-right"
-            currentValue={item.itemData.weight.toLocaleString()}
-            onUpdate={(weight) =>
-              updateMutation.mutate({ item: { weight: Number(weight) } })
-            }
-          />
-          <select
-            className="bg-inherit"
-            value={item.itemData.weight_unit}
-            onChange={(ev) =>
-              updateMutation.mutate({
-                item: {
-                  weight_unit: ev.target.value as ItemsWeightUnitOptions,
-                },
-              })
-            }
-          >
-            {Object.values(ItemsWeightUnitOptions).map((unit) => (
-              <option key={unit}>{unit}</option>
-            ))}
-          </select>
-        </div>
-      </TableCell>
+      {list?.show_weights && (
+        <TableCell className="py-0">
+          <div className="flex no-spin">
+            <ServerInput
+              type="number"
+              min={0}
+              selectOnFocus
+              className="text-right"
+              currentValue={item.itemData.weight.toLocaleString()}
+              onUpdate={(weight) =>
+                updateMutation.mutate({ item: { weight: Number(weight) } })
+              }
+            />
+            <select
+              className="bg-inherit"
+              value={item.itemData.weight_unit}
+              onChange={(ev) =>
+                updateMutation.mutate({
+                  item: {
+                    weight_unit: ev.target.value as ItemsWeightUnitOptions,
+                  },
+                })
+              }
+            >
+              {Object.values(ItemsWeightUnitOptions).map((unit) => (
+                <option key={unit}>{unit}</option>
+              ))}
+            </select>
+          </div>
+        </TableCell>
+      )}
       <TableCell>
         <ServerInput
           type="number"

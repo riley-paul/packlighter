@@ -15,7 +15,7 @@ export default function App(): ReturnType<React.FC> {
       <aside
         className={cn(
           "border-r w-[300px] h-screen flex flex-col transition-all overflow-hidden",
-          !isSidebarOpen && "w-0"
+          !isSidebarOpen && "w-0 border-none"
         )}
       >
         <header className="border-b h-14 flex items-center">

@@ -5,6 +5,7 @@ import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
 import ListCategoryContainer from "@/components/list-category-container";
+import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { queryClient } from "@/lib/query";
@@ -62,6 +63,7 @@ export default function ListPage(): ReturnType<React.FC> {
             onUpdate={(v) => updateListMutation.mutate({ name: v })}
           />
         </h1>
+        <ListSettings list={listQuery.data} />
       </AppHeader>
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-4">

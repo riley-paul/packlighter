@@ -89,11 +89,13 @@ const ListCategory: React.FC<Props> = (props) => {
             <TableHead className="w-4 px-1">
               <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
             </TableHead>
-            <TableHead className="w-8">
-              <Checkbox />
-            </TableHead>
+            {list?.show_packed && (
+              <TableHead className="w-8">
+                <Checkbox />
+              </TableHead>
+            )}
             <TableHead
-              colSpan={3}
+              colSpan={2 + (list?.show_images ? 1 : 0)}
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput
@@ -104,7 +106,9 @@ const ListCategory: React.FC<Props> = (props) => {
                 }
               />
             </TableHead>
-            <TableHead className="w-[6.5rem] text-center">Weight</TableHead>
+            {list?.show_weights && (
+              <TableHead className="w-[6.5rem] text-center">Weight</TableHead>
+            )}
             <TableHead className="w-16">Qty</TableHead>
             <TableHead className="w-6 pl-0">
               <DeleteButton
@@ -120,27 +124,33 @@ const ListCategory: React.FC<Props> = (props) => {
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={4}>
+            <TableCell
+              colSpan={
+                3 + (list?.show_packed ? 1 : 0) + (list?.show_images ? 1 : 0)
+              }
+            >
               <Button variant="linkMuted" size="sm">
                 <Plus size="1rem" className="mr-2" />
                 Add Item
               </Button>
             </TableCell>
-            <TableCell>
-              <div className="flex gap-2 justify-end">
-                <span>
-                  {formatWeight(
-                    getCategoryWeight(
-                      category,
-                      list?.weight_unit ?? ListsWeightUnitOptions.g
-                    )
-                  )}
-                </span>
-                <span className="min-w-8">
-                  {list?.weight_unit ?? ListsWeightUnitOptions.g}
-                </span>
-              </div>
-            </TableCell>
+            {list?.show_weights && (
+              <TableCell>
+                <div className="flex gap-2 justify-end">
+                  <span>
+                    {formatWeight(
+                      getCategoryWeight(
+                        category,
+                        list?.weight_unit ?? ListsWeightUnitOptions.g
+                      )
+                    )}
+                  </span>
+                  <span className="min-w-8">
+                    {list?.weight_unit ?? ListsWeightUnitOptions.g}
+                  </span>
+                </div>
+              </TableCell>
+            )}
             <TableCell>
               <div className="pl-2">
                 {category.items.reduce((acc, val) => acc + val.quantity, 0)}
