@@ -16,12 +16,19 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Input } from "./ui/input";
+import { queryClient } from "@/lib/query";
 
 export default function AccountEditor(): ReturnType<React.FC> {
   const user = pb.authStore.model;
   const imageUrl = getProfilePhoto();
 
   const navigate = useNavigate();
+
+  const logout = () => {
+    pb.authStore.clear();
+    navigate("/auth");
+    queryClient.removeQueries();
+  };
 
   return (
     <Sheet>
@@ -42,7 +49,7 @@ export default function AccountEditor(): ReturnType<React.FC> {
               <Avatar className="h-20 w-20">
                 <AvatarImage src={imageUrl} alt="@shadcn" />
                 <AvatarFallback>
-                  <User className="h-8" />
+                  <User size="3rem" />
                 </AvatarFallback>
               </Avatar>
               <div className="flex flex-col justify-center">
@@ -96,13 +103,7 @@ export default function AccountEditor(): ReturnType<React.FC> {
                 Delete Account
                 <Trash size="1rem" className="ml-2" />
               </Button>
-              <Button
-                className="w-full"
-                onClick={() => {
-                  pb.authStore.clear();
-                  navigate("/auth");
-                }}
-              >
+              <Button className="w-full" onClick={logout}>
                 Logout
                 <LogOut size="1rem" className="ml-2" />
               </Button>

@@ -29,6 +29,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { cn } from "@/lib/utils";
+import Placeholder from "./base/placeholder";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
@@ -133,6 +134,9 @@ export default function PackingLists(): ReturnType<React.FC> {
               {activeList && <PackingList list={activeList} isOverlay />}
             </DragOverlay>
           </DndContext>
+        )}
+        {listsQuery.isSuccess && listsQuery.data.length === 0 && (
+          <Placeholder message="No lists yet" />
         )}
       </Card>
     </div>

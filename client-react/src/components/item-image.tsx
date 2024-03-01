@@ -66,7 +66,7 @@ const ItemImage: React.FC<Props> = (props) => {
       <DialogTrigger className="h-full">
         <div
           className={cn(
-            "flex w-20 flex-1 items-center justify-center rounded-sm p-0.5",
+            "flex w-16 flex-1 items-center justify-center rounded-sm p-0.5",
             item.image ? "aspect-square bg-white" : "bg-muted/50 h-full",
             "outline-1 transition-all hover:outline"
           )}

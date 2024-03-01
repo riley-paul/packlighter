@@ -25,6 +25,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import Placeholder from "./base/placeholder";
 
 enum SortOptions {
   Name = "Name",
@@ -132,6 +133,9 @@ const PackingItems: React.FC = () => {
             .filter((item) => filterItems(item, filterQuery))
             .sort(sortingFunction(sortOption))
             .map((item) => <PackingItem key={item.id} item={item} />)}
+        {itemsQuery.isSuccess && itemsQuery.data.length === 0 && (
+          <Placeholder message="No gear yet" />
+        )}
       </Card>
     </div>
   );

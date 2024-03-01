@@ -10,6 +10,7 @@ import ListPage from "./routes/list";
 import { Toaster } from "./components/ui/sonner";
 import { ThemeProvider } from "./components/theme-provider";
 import GearPage from "./routes/all-gear";
+import Home from "./routes/home";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
         path: "/",
         element: <App />,
         children: [
+          { index: true, element: <Home /> },
           { path: "list/:listId", element: <ListPage /> },
           { path: "gear", element: <GearPage /> },
         ],
