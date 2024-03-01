@@ -19,14 +19,22 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "react-query";
-import { deleteCategory, updateCategory } from "@/api/category";
+import {
+  deleteCategory,
+  toggleCategoryPacked,
+  updateCategory,
+} from "@/api/category";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ServerInput from "./input/server-input";
 import ListCategoryItem from "./list-category-item";
-import { formatWeight, getCategoryWeight } from "@/lib/helpers";
+import {
+  formatWeight,
+  getCategoryWeight,
+  isCategoryFullyPacked,
+} from "@/lib/helpers";
 import { createCategoryItem } from "@/api/categoryItem";
 
 interface Props {
@@ -82,6 +90,13 @@ const ListCategory: React.FC<Props> = (props) => {
     },
   });
 
+  const toggleCompletionMutation = useMutation({
+    mutationFn: () => toggleCategoryPacked(category),
+    onSuccess: () => {
+      queryClient.invalidateQueries([Collections.Lists, listId]);
+    },
+  });
+
   return (
     <div
       ref={setNodeRef}
@@ -100,7 +115,10 @@ const ListCategory: React.FC<Props> = (props) => {
             </TableHead>
             {list?.show_packed && (
               <TableHead className="w-8">
-                <Checkbox />
+                <Checkbox
+                  checked={isCategoryFullyPacked(category)}
+                  onCheckedChange={() => toggleCompletionMutation.mutate()}
+                />
               </TableHead>
             )}
             <TableHead

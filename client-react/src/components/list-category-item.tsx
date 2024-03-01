@@ -60,8 +60,15 @@ const ListCategoryItem: React.FC<Props> = (props) => {
         <Gripper />
       </TableCell>
       {list?.show_packed && (
-        <TableCell>
-          <Checkbox />
+        <TableCell className="py-0">
+          <Checkbox
+            checked={item.packed}
+            onCheckedChange={(packed) =>
+              updateMutation.mutate({
+                categoryItem: { packed: Boolean(packed) },
+              })
+            }
+          />
         </TableCell>
       )}
       {list?.show_images && (
