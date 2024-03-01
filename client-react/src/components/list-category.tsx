@@ -78,6 +78,7 @@ const ListCategory: React.FC<Props> = (props) => {
     mutationFn: () => createCategoryItem({ category, listId: listId ?? "" }),
     onSuccess: () => {
       queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries([Collections.Items]);
     },
   });
 

@@ -1,7 +1,11 @@
 import PackingItems from "@/components/packing-items";
 import PackingLists from "@/components/packing-lists";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 import { useStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Feather, Menu } from "lucide-react";
@@ -35,9 +39,18 @@ export default function App(): ReturnType<React.FC> {
             <span className="text-md">PackLighter</span>
           </Link>
         </header>
-        <PackingLists />
-        <Separator />
-        <PackingItems />
+        <ResizablePanelGroup
+          autoSaveId="sidebar"
+          direction="vertical"
+        >
+          <ResizablePanel defaultSize={40}>
+            <PackingLists />
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel>
+            <PackingItems />
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </aside>
       <div className="flex-1">
         <Outlet />

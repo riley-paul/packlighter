@@ -94,7 +94,7 @@ export default function PackingLists(): ReturnType<React.FC> {
   }
 
   return (
-    <div className="flex flex-col h-[40vh] gap-2 p-4">
+    <div className="flex flex-col h-full gap-2 p-4">
       <header className="flex items-center justify-between">
         <span className="font-semibold text-sm">Lists</span>
         <Button

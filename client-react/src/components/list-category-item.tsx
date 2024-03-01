@@ -34,6 +34,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
     mutationFn: () => deleteCategoryItem(item),
     onSuccess: () => {
       queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries([Collections.Items]);
     },
   });
 
