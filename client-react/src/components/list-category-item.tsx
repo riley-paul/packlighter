@@ -57,7 +57,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
   return (
     <TableRow>
       <TableCell className="w-4 px-1 py-0.5">
-        <Gripper />
+        <Gripper disabled />
       </TableCell>
       {list?.show_packed && (
         <TableCell className="py-0">
