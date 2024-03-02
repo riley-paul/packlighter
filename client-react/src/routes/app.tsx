@@ -28,12 +28,11 @@ export default function App(): ReturnType<React.FC> {
             size="icon"
             variant="ghost"
             className={cn(
-              "rounded-none h-14 w-14 transition-all",
-              !isSidebarOpen && "w-0"
+              "rounded-none h-14 w-14 transition-all flex-shrink-0 overflow-hidden",
             )}
             onClick={() => toggleSidebar()}
           >
-            <Menu size="1.2rem" />
+            <Menu size="1.2rem" className="flex-shrink-0" />
           </Button>
           <Logo />
         </header>
