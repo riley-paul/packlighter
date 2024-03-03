@@ -99,7 +99,7 @@ const PackingItems: React.FC = () => {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="shrink-0">
                       <ArrowDownWideNarrow size="1rem" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -125,7 +125,7 @@ const PackingItems: React.FC = () => {
           </DropdownMenu>
         </div>
       </header>
-      <Card className="flex-1 h-full overflow-y-auto">
+      <Card className="flex-1 h-full overflow-y-auto overflow-x-hidden">
         {itemsQuery.isLoading && <Loader />}
         {itemsQuery.isError && <Error message={itemsQuery.error.message} />}
         {itemsQuery.isSuccess &&

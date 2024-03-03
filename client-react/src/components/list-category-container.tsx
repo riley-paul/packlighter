@@ -98,6 +98,7 @@ const ListCategoryContainer: React.FC<Props> = (props) => {
         onDragStart={handleDragStart}
       >
         <SortableContext
+          id="list-categories"
           items={categories}
           strategy={verticalListSortingStrategy}
         >

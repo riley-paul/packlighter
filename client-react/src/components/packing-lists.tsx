@@ -123,6 +123,7 @@ export default function PackingLists(): ReturnType<React.FC> {
             onDragStart={handleDragStart}
           >
             <SortableContext
+              id="packing-lists"
               items={listsQuery.data}
               strategy={verticalListSortingStrategy}
             >
