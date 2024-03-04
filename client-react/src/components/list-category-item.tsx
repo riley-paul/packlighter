@@ -18,13 +18,15 @@ import { useParams } from "react-router-dom";
 import ItemImage from "./item-image";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { cn } from "@/lib/utils";
 
 interface Props {
   item: ExpandedCategoryItem;
+  isOverlay?: boolean;
 }
 
 const ListCategoryItem: React.FC<Props> = (props) => {
-  const { item } = props;
+  const { item, isOverlay } = props;
   const { listId } = useParams();
 
   const list = queryClient.getQueryData<ListWithCategories>([
@@ -34,6 +36,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: item.id,
+    data: { type: "category-item", data: item },
   });
   const style = { transform: CSS.Translate.toString(transform) };
 
@@ -62,7 +65,11 @@ const ListCategoryItem: React.FC<Props> = (props) => {
   });
 
   return (
-    <TableRow ref={setNodeRef} style={style}>
+    <TableRow
+      ref={setNodeRef}
+      style={style}
+      className={cn(isOverlay && "border rounded")}
+    >
       <TableCell className="w-4 px-1 py-0.5">
         <Gripper {...attributes} {...listeners} />
       </TableCell>

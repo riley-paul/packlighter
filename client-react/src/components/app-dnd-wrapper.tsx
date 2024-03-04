@@ -1,12 +1,12 @@
 import { updateCategoriesOrder } from "@/api/category";
-import { ExpandedCategory, ListWithCategories } from "@/api/list";
+import {
+  ExpandedCategory,
+  ExpandedCategoryItem,
+  ListWithCategories,
+} from "@/api/list";
 import ListCategory from "@/components/list-category";
 import { queryClient } from "@/lib/query";
-import {
-  CategoriesItemsResponse,
-  Collections,
-  ItemsResponse,
-} from "@/lib/types";
+import { Collections, ItemsResponse } from "@/lib/types";
 import {
   DndContext,
   DragEndEvent,
@@ -22,6 +22,7 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import React from "react";
 import { useMutation } from "react-query";
 import { useParams } from "react-router-dom";
+import ListCategoryItem from "./list-category-item";
 
 type ActiveDraggable =
   | {
@@ -29,7 +30,7 @@ type ActiveDraggable =
       data: ExpandedCategory;
     }
   | { type: "item"; data: ItemsResponse }
-  | { type: "category-item"; data: CategoriesItemsResponse }
+  | { type: "category-item"; data: ExpandedCategoryItem }
   | null;
 
 const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -72,12 +73,15 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
       Collections.Lists,
       listId,
     ]);
-    if (!currentList) {
-      console.log("No current list");
-      return;
+    if (!currentList) return;
+
+    if (event.active.data.current?.type === "category") {
+      setActiveDraggable(event.active.data.current as ActiveDraggable);
     }
-    const active = currentList.categories.find((i) => i.id === event.active.id);
-    if (active) setActiveDraggable({ type: "category", data: active });
+
+    if (event.active.data.current?.type === "category-item") {
+      setActiveDraggable(event.active.data.current as ActiveDraggable);
+    }
   }
 
   function handleDragEnd(event: DragEndEvent) {
@@ -86,17 +90,22 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
       listId,
     ]);
     if (!currentList) return;
+
     const { active, over } = event;
-    setActiveDraggable(null);
     if (active.id === over?.id) return;
 
-    const oldIndex = currentList.categories.findIndex(
-      (i) => i.id === active.id
-    );
-    const newIndex = currentList.categories.findIndex((i) => i.id === over?.id);
+    if (event.active.data.current?.type === "category") {
+      const oldIndex = currentList.categories.findIndex(
+        (i) => i.id === active.id
+      );
+      const newIndex = currentList.categories.findIndex(
+        (i) => i.id === over?.id
+      );
 
-    const newData = arrayMove(currentList.categories, oldIndex, newIndex);
-    reorderCategoriesMutation.mutate(newData);
+      const newData = arrayMove(currentList.categories, oldIndex, newIndex);
+      reorderCategoriesMutation.mutate(newData);
+    }
+    setActiveDraggable(null);
   }
 
   const sensors = useSensors(
@@ -118,6 +127,9 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
         <DragOverlay dropAnimation={null}>
           {activeDraggable && activeDraggable.type === "category" && (
             <ListCategory category={activeDraggable.data} isOverlay />
+          )}
+          {activeDraggable && activeDraggable.type === "category-item" && (
+            <ListCategoryItem item={activeDraggable.data} isOverlay />
           )}
         </DragOverlay>
       </DndContext>

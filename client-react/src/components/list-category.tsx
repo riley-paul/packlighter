@@ -15,7 +15,11 @@ import { Plus } from "lucide-react";
 import DeleteButton from "./base/delete-button";
 import Gripper from "./base/gripper";
 
-import { useSortable } from "@dnd-kit/sortable";
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "react-query";
@@ -64,6 +68,7 @@ const ListCategory: React.FC<Props> = (props) => {
 
   const { setNodeRef: droppableRef } = useDroppable({
     id: category.id,
+    data: { type: "category", data: category },
   });
 
   const style = {
@@ -151,9 +156,15 @@ const ListCategory: React.FC<Props> = (props) => {
           </TableRow>
         </TableHeader>
         <TableBody ref={droppableRef}>
-          {category.items.map((item) => (
-            <ListCategoryItem key={item.id} item={item} />
-          ))}
+          <SortableContext
+            id="category-items"
+            items={category.items}
+            strategy={verticalListSortingStrategy}
+          >
+            {category.items.map((item) => (
+              <ListCategoryItem key={item.id} item={item} />
+            ))}
+          </SortableContext>
         </TableBody>
         <TableFooter>
           <TableRow>
