@@ -23,6 +23,7 @@ const PackingItem: React.FC<Props> = (props) => {
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: item.id,
+    data: { type: "item", data: item },
   });
   const style = { transform: CSS.Translate.toString(transform) };
 

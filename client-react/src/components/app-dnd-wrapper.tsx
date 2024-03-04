@@ -23,6 +23,8 @@ import React from "react";
 import { useMutation } from "react-query";
 import { useParams } from "react-router-dom";
 import ListCategoryItem from "./list-category-item";
+import { updateCategoryItemsOrder } from "@/api/categoryItem";
+import PackingItem from "./packing-item";
 
 type ActiveDraggable =
   | {
@@ -68,6 +70,10 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     },
   });
 
+  const reorderCategoryItemsMutation = useMutation({
+    mutationFn: updateCategoryItemsOrder,
+  });
+
   function handleDragStart(event: DragStartEvent) {
     const currentList = queryClient.getQueryData<ListWithCategories>([
       Collections.Lists,
@@ -75,8 +81,9 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     ]);
     if (!currentList) return;
 
+    setActiveDraggable(event.active.data.current as ActiveDraggable);
     if (event.active.data.current?.type === "category") {
-      setActiveDraggable(event.active.data.current as ActiveDraggable);
+      console.log("category drag start");
     }
 
     if (event.active.data.current?.type === "category-item") {
@@ -130,6 +137,9 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
           )}
           {activeDraggable && activeDraggable.type === "category-item" && (
             <ListCategoryItem item={activeDraggable.data} isOverlay />
+          )}
+          {activeDraggable && activeDraggable.type === "item" && (
+            <PackingItem item={activeDraggable.data} isOverlay />
           )}
         </DragOverlay>
       </DndContext>

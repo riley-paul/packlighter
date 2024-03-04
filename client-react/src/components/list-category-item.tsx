@@ -16,9 +16,9 @@ import {
 } from "@/lib/types";
 import { useParams } from "react-router-dom";
 import ItemImage from "./item-image";
-import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
+import { useSortable } from "@dnd-kit/sortable";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -34,10 +34,11 @@ const ListCategoryItem: React.FC<Props> = (props) => {
     listId,
   ]);
 
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: item.id,
-    data: { type: "category-item", data: item },
-  });
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({
+      id: item.id,
+      data: { type: "category-item", data: item },
+    });
   const style = { transform: CSS.Translate.toString(transform) };
 
   const deleteMutation = useMutation({
@@ -68,7 +69,11 @@ const ListCategoryItem: React.FC<Props> = (props) => {
     <TableRow
       ref={setNodeRef}
       style={style}
-      className={cn(isOverlay && "border rounded")}
+      className={cn(
+        "rounded",
+        isOverlay && "border rounded",
+        isDragging && "opacity-30"
+      )}
     >
       <TableCell className="w-4 px-1 py-0.5">
         <Gripper {...attributes} {...listeners} />
