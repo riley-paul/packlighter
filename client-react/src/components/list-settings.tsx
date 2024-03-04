@@ -61,7 +61,7 @@ const ListSettings: React.FC<Props> = (props) => {
               }
             >
               {Object.values(ListsWeightUnitOptions).map((massUnit) => (
-                <DropdownMenuRadioItem value={massUnit}>
+                <DropdownMenuRadioItem value={massUnit} key={massUnit}>
                   {massUnit}
                 </DropdownMenuRadioItem>
               ))}

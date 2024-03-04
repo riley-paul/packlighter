@@ -86,7 +86,10 @@ export default function App(): ReturnType<React.FC> {
   });
 
   function handleDragStart(event: DragStartEvent) {
-    if (!currentList) return;
+    if (!currentList) {
+      console.log("No current list");
+      return;
+    }
     const active = currentList.categories.find((i) => i.id === event.active.id);
     if (active) setActiveDraggable({ type: "category", data: active });
   }
@@ -154,7 +157,7 @@ export default function App(): ReturnType<React.FC> {
         <div className="flex-1">
           <Outlet />
         </div>
-        <DragOverlay>
+        <DragOverlay dropAnimation={null}>
           {activeDraggable && activeDraggable.type === "category" && (
             <ListCategory category={activeDraggable.data} isOverlay />
           )}

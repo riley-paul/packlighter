@@ -71,7 +71,10 @@ export default function ListPage(): ReturnType<React.FC> {
       </AppHeader>
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-4">
-          <Textarea className="bg-card">{listQuery.data.description}</Textarea>
+          <Textarea
+            className="bg-card"
+            defaultValue={listQuery.data.description}
+          />
           <SortableContext
             id="list-categories"
             items={listQuery.data.categories}
