@@ -36,6 +36,7 @@ import {
   isCategoryFullyPacked,
 } from "@/lib/helpers";
 import { createCategoryItem } from "@/api/categoryItem";
+import { useDroppable } from "@dnd-kit/core";
 
 interface Props {
   category: ExpandedCategory;
@@ -60,6 +61,10 @@ const ListCategory: React.FC<Props> = (props) => {
     transition,
     isDragging,
   } = useSortable({ id: category.id });
+
+  const { setNodeRef: droppableRef } = useDroppable({
+    id: category.id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -145,7 +150,7 @@ const ListCategory: React.FC<Props> = (props) => {
             </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody ref={droppableRef}>
           {category.items.map((item) => (
             <ListCategoryItem key={item.id} item={item} />
           ))}

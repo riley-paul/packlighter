@@ -14,10 +14,11 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   item: ItemsResponse;
+  isOverlay?: boolean;
 }
 
 const PackingItem: React.FC<Props> = (props) => {
-  const { item } = props;
+  const { item, isOverlay } = props;
   const { listId } = useParams();
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -38,7 +39,10 @@ const PackingItem: React.FC<Props> = (props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex gap-2 items-center w-full text-sm hover:bg-muted px-2 py-2"
+      className={cn(
+        "flex gap-2 items-center w-full text-sm hover:bg-secondary px-2 py-2",
+        isOverlay && "rounded outline outline-1 outline-primary"
+      )}
     >
       <Gripper {...attributes} {...listeners} />
       <div className="flex flex-col flex-1">

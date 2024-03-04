@@ -16,6 +16,8 @@ import {
 } from "@/lib/types";
 import { useParams } from "react-router-dom";
 import ItemImage from "./item-image";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -29,6 +31,11 @@ const ListCategoryItem: React.FC<Props> = (props) => {
     Collections.Lists,
     listId,
   ]);
+
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: item.id,
+  });
+  const style = { transform: CSS.Translate.toString(transform) };
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteCategoryItem(item),
@@ -55,9 +62,9 @@ const ListCategoryItem: React.FC<Props> = (props) => {
   });
 
   return (
-    <TableRow>
+    <TableRow ref={setNodeRef} style={style}>
       <TableCell className="w-4 px-1 py-0.5">
-        <Gripper disabled />
+        <Gripper {...attributes} {...listeners} />
       </TableCell>
       {list?.show_packed && (
         <TableCell className="py-0">

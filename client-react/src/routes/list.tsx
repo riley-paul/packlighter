@@ -4,13 +4,17 @@ import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
-import ListCategoryContainer from "@/components/list-category-container";
+import ListCategory from "@/components/list-category";
 import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "react-query";
@@ -68,7 +72,15 @@ export default function ListPage(): ReturnType<React.FC> {
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-4">
           <Textarea className="bg-card">{listQuery.data.description}</Textarea>
-          <ListCategoryContainer categories={listQuery.data.categories} />
+          <SortableContext
+            id="list-categories"
+            items={listQuery.data.categories}
+            strategy={verticalListSortingStrategy}
+          >
+            {listQuery.data.categories.map((category) => (
+              <ListCategory key={category.id} category={category} />
+            ))}
+          </SortableContext>
           <Button
             variant="linkMuted"
             size="sm"

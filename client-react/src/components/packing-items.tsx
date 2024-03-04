@@ -87,7 +87,7 @@ const PackingItems: React.FC = () => {
             All Gear
           </Button>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <Input
             placeholder="Filter..."
             className="bg-card"

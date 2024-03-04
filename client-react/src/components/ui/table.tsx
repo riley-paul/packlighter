@@ -31,7 +31,7 @@ const TableBody = React.forwardRef<
   <tbody
     ref={ref}
     className={cn("[&_tr:last-child]:border-0", className)}
-    {...props}ppacking
+    {...props}
   />
 ))
 TableBody.displayName = "TableBody"
