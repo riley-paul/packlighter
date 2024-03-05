@@ -43,7 +43,7 @@ export default function AccountEditor(): ReturnType<React.FC> {
           </Avatar>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end">
         <div className="flex gap-4 p-2">
           <Avatar className="h-16 w-16">
             <AvatarImage src={imageUrl} alt="@shadcn" />
