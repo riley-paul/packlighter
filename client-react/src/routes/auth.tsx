@@ -7,7 +7,7 @@ import React from "react";
 
 export default function AuthPage(): ReturnType<React.FC> {
   return (
-    <div className="flex w-full h-screen items-center justify-center">
+    <div className="flex w-full h-full items-center justify-center">
       <div className="max-w-xs w-full max-h-[80vh] h-full">
         <div className="mb-8 flex flex-col items-center">
           <Feather size="4rem" className="mb-4 text-primary" />

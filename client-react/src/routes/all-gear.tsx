@@ -16,7 +16,7 @@ export default function GearPage(): ReturnType<React.FC> {
   });
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-full flex flex-col">
       <AppHeader>
         <span className="font-semibold">Gear Catalogue</span>
         <div className="flex gap-4 items-center border-r pr-4">

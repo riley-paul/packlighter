@@ -18,11 +18,11 @@ export default function App(): ReturnType<React.FC> {
   const { isSidebarOpen, toggleSidebar } = useStore();
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full">
       <AppDndWrapper>
         <aside
           className={cn(
-            "border-r w-[300px] h-screen flex flex-col transition-all overflow-hidden",
+            "border-r w-[300px] flex flex-col transition-all overflow-hidden",
             !isSidebarOpen && "w-0 border-none"
           )}
         >

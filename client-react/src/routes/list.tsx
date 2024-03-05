@@ -46,7 +46,7 @@ export default function ListPage(): ReturnType<React.FC> {
 
   if (listQuery.isLoading)
     return (
-      <div className="h-screen">
+      <div className="h-full">
         <AppHeader />
         <Loader />
       </div>
@@ -56,7 +56,7 @@ export default function ListPage(): ReturnType<React.FC> {
     return <Error message={listQuery.error?.message} />;
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-full">
       <AppHeader>
         <h1 className={cn("text-lg font-bold flex-1")}>
           <ServerInput

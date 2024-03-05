@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Home(): ReturnType<React.FC> {
   return (
-    <div className="h-screen">
+    <div className="h-full">
       <AppHeader />
       <div className="flex justify-center items-center h-full">
         <div className="flex flex-col gap-2 items-center max-h-[50vh] h-full">

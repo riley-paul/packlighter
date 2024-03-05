@@ -10,7 +10,7 @@ export default function ErrorPage(): ReturnType<React.FC> {
   console.error(error);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-full flex flex-col">
       <AppHeader>
         <Logo />
       </AppHeader>
