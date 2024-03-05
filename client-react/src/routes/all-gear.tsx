@@ -20,7 +20,7 @@ export default function GearPage(): ReturnType<React.FC> {
       <AppHeader>
         <span className="font-semibold">Gear Catalogue</span>
         <div className="flex gap-4 items-center border-r pr-4">
-          <Button>
+          <Button variant="secondary">
             <Plus size="1rem" className="mr-2" />
             Add Item
           </Button>

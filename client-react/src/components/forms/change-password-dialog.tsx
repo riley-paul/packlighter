@@ -23,7 +23,7 @@ const ChangePasswordDialog: React.FC<Props> = (props) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Change Password</DialogTitle>
-          <DialogDescription>This is irreversible</DialogDescription>
+          <DialogDescription>This action cannot be undone.</DialogDescription>
         </DialogHeader>
         <Input type="password" placeholder="Current Password" />
         <Input type="password" placeholder="New Password" />

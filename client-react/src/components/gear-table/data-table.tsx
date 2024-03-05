@@ -41,7 +41,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <Table className="table-fixed">
+      <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

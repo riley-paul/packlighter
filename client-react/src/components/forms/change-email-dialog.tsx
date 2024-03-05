@@ -23,7 +23,7 @@ const ChangeEmailDialog: React.FC<Props> = (props) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Change Email</DialogTitle>
-          <DialogDescription>This is irreversible</DialogDescription>
+          <DialogDescription>This action cannot be undone.</DialogDescription>
         </DialogHeader>
         <Input type="email" placeholder="New Email" />
         <DialogFooter>

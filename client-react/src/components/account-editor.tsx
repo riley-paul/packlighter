@@ -1,6 +1,6 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { LogOut, Trash, User } from "lucide-react";
+import { AtSign, Lock, LogOut, Trash, User } from "lucide-react";
 import { getProfilePhoto } from "@/api/auth";
 import { pb } from "@/lib/pocketbase";
 import { useNavigate } from "react-router-dom";
@@ -81,9 +81,15 @@ export default function AccountEditor(): ReturnType<React.FC> {
             <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => setIsEmailDialogOpen(true)}>
               Change Email
+              <DropdownMenuShortcut>
+                <AtSign size="1rem" />
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsPasswordDialogOpen(true)}>
               Change Password
+              <DropdownMenuShortcut>
+                <Lock size="1rem" />
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
               Delete Account
