@@ -16,10 +16,17 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ChangeEmailDialog from "./forms/change-email-dialog";
+import ChangePasswordDialog from "./forms/change-password-dialog";
+import DeleteAccountDialog from "./forms/delete-account-dialog";
 
 export default function AccountEditor(): ReturnType<React.FC> {
   const user = pb.authStore.model;
   const imageUrl = getProfilePhoto();
+
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = React.useState(false);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = React.useState(false);
+  const [isDeteteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
   const navigate = useNavigate();
 
@@ -32,50 +39,68 @@ export default function AccountEditor(): ReturnType<React.FC> {
   if (!user) return null;
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div className="flex cursor-pointer items-center text-sm underline-offset-4 hover:underline">
-          <Avatar className="h-10 w-10">
-            <AvatarImage src={imageUrl} alt="@shadcn" />
-            <AvatarFallback>
-              <User className="h-8" />
-            </AvatarFallback>
-          </Avatar>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <div className="flex gap-4 p-2">
-          <Avatar className="h-16 w-16">
-            <AvatarImage src={imageUrl} alt="@shadcn" />
-            <AvatarFallback>
-              <User size="3rem" />
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col justify-center">
-            <h2 className="text-lg font-semibold">{user.name}</h2>
-            <p className="text-muted-foreground text-sm">{user.email}</p>
+    <>
+      <ChangeEmailDialog
+        isOpen={isEmailDialogOpen}
+        setIsOpen={setIsEmailDialogOpen}
+      />
+      <ChangePasswordDialog
+        isOpen={isPasswordDialogOpen}
+        setIsOpen={setIsPasswordDialogOpen}
+      />
+      <DeleteAccountDialog
+        isOpen={isDeteteDialogOpen}
+        setIsOpen={setIsDeleteDialogOpen}
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <div className="flex cursor-pointer items-center text-sm underline-offset-4 hover:underline">
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={imageUrl} alt="@shadcn" />
+              <AvatarFallback>
+                <User className="h-8" />
+              </AvatarFallback>
+            </Avatar>
           </div>
-        </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
-          <DropdownMenuItem disabled>Change Email</DropdownMenuItem>
-          <DropdownMenuItem disabled>Change Password</DropdownMenuItem>
-          <DropdownMenuItem disabled>
-            Delete Account
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <div className="flex gap-4 p-2">
+            <Avatar className="h-16 w-16">
+              <AvatarImage src={imageUrl} alt="@shadcn" />
+              <AvatarFallback>
+                <User size="3rem" />
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col justify-center">
+              <h2 className="text-lg font-semibold">{user.name}</h2>
+              <p className="text-muted-foreground text-sm">{user.email}</p>
+            </div>
+          </div>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>Account Settings</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => setIsEmailDialogOpen(true)}>
+              Change Email
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsPasswordDialogOpen(true)}>
+              Change Password
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
+              Delete Account
+              <DropdownMenuShortcut>
+                <Trash size="1rem" />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={logout}>
+            Logout
             <DropdownMenuShortcut>
-              <Trash size="1rem" />
+              <LogOut size="1rem" />
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout}>
-          Logout
-          <DropdownMenuShortcut>
-            <LogOut size="1rem" />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 }

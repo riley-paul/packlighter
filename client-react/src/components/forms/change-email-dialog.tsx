@@ -1,32 +1,39 @@
 import React from "react";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../ui/dialog";
 
-export default function ChangeEmailDialog(): ReturnType<React.FC> {
+interface Props {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const ChangeEmailDialog: React.FC<Props> = (props) => {
+  const { isOpen, setIsOpen } = props;
+
   return (
-    <Card>
-      <form>
-        <CardHeader>
-          <CardTitle>Update Email</CardTitle>
-          <CardDescription>This is irreversible</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Input type="email" placeholder="New Email" />
-        </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full" variant="secondary">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Change Email</DialogTitle>
+          <DialogDescription>This is irreversible</DialogDescription>
+        </DialogHeader>
+        <Input type="email" placeholder="New Email" />
+        <DialogFooter>
+          <Button type="submit" className="w-full">
             Update Email
           </Button>
-        </CardFooter>
-      </form>
-    </Card>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
-}
+};
+
+export default ChangeEmailDialog;
