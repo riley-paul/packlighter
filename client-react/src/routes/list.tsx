@@ -26,6 +26,7 @@ export default function ListPage(): ReturnType<React.FC> {
   const listQuery = useQuery<ListWithCategories, Error>({
     queryKey: [Collections.Lists, listId],
     queryFn: ({ queryKey }) => getList(queryKey[1] as string),
+    retry: false,
   });
 
   const updateListMutation = useMutation({
@@ -53,7 +54,12 @@ export default function ListPage(): ReturnType<React.FC> {
     );
 
   if (listQuery.isError || !listQuery.data)
-    return <Error message={listQuery.error?.message} />;
+    return (
+      <div className="h-full">
+        <AppHeader />
+        <Error error={listQuery.error} showGoHome />
+      </div>
+    );
 
   return (
     <div className="flex flex-col h-full">

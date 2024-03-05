@@ -60,6 +60,7 @@ const PackingItems: React.FC = () => {
   const itemsQuery = useQuery<ItemsResponse[], Error>({
     queryKey: [Collections.Items],
     queryFn: getItems,
+    retry: false,
   });
 
   const navigate = useNavigate();
@@ -127,7 +128,7 @@ const PackingItems: React.FC = () => {
       </header>
       <Card className="flex-1 h-full overflow-y-auto overflow-x-hidden">
         {itemsQuery.isLoading && <Loader />}
-        {itemsQuery.isError && <Error message={itemsQuery.error.message} />}
+        {itemsQuery.isError && <Error error={itemsQuery.error} />}
         {itemsQuery.isSuccess &&
           itemsQuery.data
             .filter((item) => filterItems(item, filterQuery))
