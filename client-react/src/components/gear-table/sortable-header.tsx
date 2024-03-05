@@ -1,17 +1,15 @@
-import { CellContext } from "@tanstack/react-table";
 import React from "react";
 import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { ItemsResponse } from "@/lib/types";
+import { Column } from "@tanstack/react-table";
 
 type Props = React.PropsWithChildren<{
-  ctx: CellContext<unknown, unknown>;
+  column: Column<ItemsResponse, unknown>;
 }>;
 
 const SortableHeader: React.FC<Props> = (props) => {
-  const {
-    ctx: { column },
-    children,
-  } = props;
+  const { column, children } = props;
 
   return (
     <Button

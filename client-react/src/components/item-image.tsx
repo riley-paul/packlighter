@@ -37,6 +37,7 @@ const ItemImage: React.FC<Props> = (props) => {
       queryClient.invalidateQueries([Collections.Items]);
       queryClient.invalidateQueries([Collections.Lists, listId]);
     },
+    onError: (error: Error) => toast.error(error.message),
   });
 
   const deleteMutation = useMutation({
