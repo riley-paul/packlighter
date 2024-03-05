@@ -114,7 +114,7 @@ export default function PackingLists(): ReturnType<React.FC> {
         )}
       >
         {listsQuery.isLoading && <Loader />}
-        {listsQuery.isError && <Error message={listsQuery.error?.message} />}
+        {listsQuery.isError && <Error error={listsQuery.error} />}
         {listsQuery.isSuccess && (
           <DndContext
             sensors={sensors}

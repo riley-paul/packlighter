@@ -42,7 +42,7 @@ const PackingItem: React.FC<Props> = (props) => {
       style={style}
       className={cn(
         "flex gap-2 items-center w-full text-sm hover:bg-secondary px-2 py-2",
-        isOverlay && "rounded outline outline-1 outline-primary"
+        isOverlay && "rounded outline outline-1 outline-ring"
       )}
     >
       <Gripper {...attributes} {...listeners} />
