@@ -10,6 +10,7 @@ import { Collections, ItemsResponse } from "@/lib/types";
 import {
   DndContext,
   DragEndEvent,
+  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   KeyboardSensor,
@@ -26,7 +27,7 @@ import ListCategoryItem from "./list-category-item";
 import { updateCategoryItemsOrder } from "@/api/categoryItem";
 import PackingItem from "./packing-item";
 
-type ActiveDraggable =
+export type ActiveDraggable =
   | {
       type: "category";
       data: ExpandedCategory;
@@ -91,12 +92,20 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
   }
 
+  function handleDragOver(event: DragOverEvent) {
+    const { active, over } = event;
+    console.log("drag over", active, over);
+  }
+
   function handleDragEnd(event: DragEndEvent) {
     const currentList = queryClient.getQueryData<ListWithCategories>([
       Collections.Lists,
       listId,
     ]);
-    if (!currentList) return;
+    if (!currentList) {
+      setActiveDraggable(null);
+      return;
+    }
 
     const { active, over } = event;
     if (active.id === over?.id) return;
@@ -129,6 +138,7 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        onDragOver={handleDragOver}
       >
         {children}
         <DragOverlay dropAnimation={null}>

@@ -41,6 +41,7 @@ import {
 } from "@/lib/helpers";
 import { createCategoryItem } from "@/api/categoryItem";
 import { useDroppable } from "@dnd-kit/core";
+import { ActiveDraggable } from "./app-dnd-wrapper";
 
 interface Props {
   category: ExpandedCategory;
@@ -57,6 +58,11 @@ const ListCategory: React.FC<Props> = (props) => {
     listId,
   ]);
 
+  const sortableData: ActiveDraggable = {
+    type: "category",
+    data: category,
+  };
+
   const {
     attributes,
     listeners,
@@ -64,7 +70,10 @@ const ListCategory: React.FC<Props> = (props) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: category.id });
+  } = useSortable({
+    id: category.id,
+    data: sortableData,
+  });
 
   const { setNodeRef: droppableRef } = useDroppable({
     id: category.id,

@@ -11,6 +11,7 @@ import { formatWeight } from "@/lib/helpers";
 import Gripper from "./base/gripper";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
+import { ActiveDraggable } from "./app-dnd-wrapper";
 
 interface Props {
   item: ItemsResponse;
@@ -21,9 +22,14 @@ const PackingItem: React.FC<Props> = (props) => {
   const { item, isOverlay } = props;
   const { listId } = useParams();
 
+  const sortableData: ActiveDraggable = {
+    type: "item",
+    data: item,
+  };
+
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: item.id,
-    data: { type: "item", data: item },
+    data: sortableData,
   });
   const style = { transform: CSS.Translate.toString(transform) };
 

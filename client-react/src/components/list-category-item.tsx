@@ -19,6 +19,7 @@ import ItemImage from "./item-image";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
+import { ActiveDraggable } from "./app-dnd-wrapper";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -34,10 +35,15 @@ const ListCategoryItem: React.FC<Props> = (props) => {
     listId,
   ]);
 
+  const sortableData: ActiveDraggable = {
+    type: "category-item",
+    data: item,
+  };
+
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: item.id,
-      data: { type: "category-item", data: item },
+      data: sortableData,
     });
   const style = { transform: CSS.Translate.toString(transform) };
 
