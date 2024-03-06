@@ -12,13 +12,16 @@
 	} from '@/components/ui/card';
 	import { Input } from '@/components/ui/input';
 	import { pb } from '@/lib/pocketbase';
+	import { createMutation } from '@tanstack/svelte-query';
 	import { AlertTriangle } from 'lucide-svelte';
 	import type { ClientResponseError } from 'pocketbase';
 
-	type Schema = { email: string; password: string };
+	import { toast } from 'svelte-sonner';
+
+	type LoginSchema = { email: string; password: string };
 	type PbValidationError = { message: string; code: string };
 
-	let data: Schema = {
+	let data: LoginSchema = {
 		email: '',
 		password: ''
 	};
@@ -29,25 +32,26 @@
 		overall?: string;
 	} = {};
 
-	const submitForm = (data: Schema) =>
-		pb
-			.collection('users')
-			.authWithPassword(data.email, data.password)
-			.then((res) => {
-				console.log('login successful');
-				goto('/');
-			})
-			.catch((err: ClientResponseError) => {
-				console.log(err.data);
-				error = { ...error, ...err.data.data };
-				error.overall = err.data.message;
-			});
+	const loginMutation = createMutation({
+		mutationFn: (data: LoginSchema) =>
+			pb.collection('users').authWithPassword(data.email, data.password),
+		onSuccess: () => {
+			toast.success('Login successful');
+			goto('/');
+		},
+		onError: (err: ClientResponseError) => {
+			console.error(err.data);
+			toast.error('Login failed');
+			error = { ...error, ...err.data.data };
+			error.overall = err.data.message;
+		}
+	});
 </script>
 
-<form on:submit|preventDefault={() => submitForm(data)}>
+<form on:submit|preventDefault={() => $loginMutation.mutate(data)}>
 	{#if error.overall}
 		<Alert variant="destructive" class="mb-2">
-			<AlertTriangle className="h-4 w-4" />
+			<AlertTriangle className="h-4 w-4 mr-2" />
 			<AlertTitle>Error</AlertTitle>
 			<AlertDescription>{error.overall}</AlertDescription>
 		</Alert>

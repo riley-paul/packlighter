@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 5%;
+
+    --card: 0 0% 99%;
+    --card-foreground: 0 0% 5%;
+
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 5%;
+
+    --primary: 175 84% 32%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 95%;
+    --secondary-foreground: 0 0% 5%;
+
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 95%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 91%;
+    --input: 0 0% 84%;
+    --ring: 0 0% 76%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Name: custom color palette
+       Author: Ilias Ism
+       URL: https://gradient.page */
+
+    /* CSS: .bg-gradient { background: var(--gradient) } */
+    --gradient: #5eead4;
+
+    --background: 181 50.050000000000004% 5.12%;
+    --foreground: 181 7.7% 98.2%;
+
+    --muted: 181 35.42% 19.84%;
+    --muted-foreground: 181 7.7% 56.4%;
+
+    --popover: 181 44.980000000000004% 8.32%;
+    --popover-foreground: 181 7.7% 98.2%;
+
+    --card: 181 44.980000000000004% 8.32%;
+    --card-foreground: 181 7.7% 98.2%;
+
+    --border: 181 35.42% 19.84%;
+    --input: 181 35.42% 19.84%;
+
+    --primary: 181 77% 64%;
+    --primary-foreground: 181 7.7% 6.4%;
+
+    --secondary: 181 35.42% 19.84%;
+    --secondary-foreground: 181 7.7% 98.2%;
+
+    --accent: 181 35.42% 19.84%;
+    --accent-foreground: 181 7.7% 98.2%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 181 7.7% 98.2%;
+
+    --ring: 181 77% 64%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+  }
+}
+
+.no-spin {
+  & input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  }
+
+  & input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+  }
+}

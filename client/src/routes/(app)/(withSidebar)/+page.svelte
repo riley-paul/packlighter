@@ -1,5 +1,6 @@
 <script lang="ts">
 	import IconTitleSubtitle from '@/components/base/IconTitleSubtitle.svelte';
+	import AppHeader from '@/components/AppHeader.svelte';
 	import { Home } from 'lucide-svelte';
 </script>
 
@@ -7,6 +8,7 @@
 	<title>PackLighter</title>
 </svelte:head>
 
+<AppHeader />
 <IconTitleSubtitle big>
 	<Home class="h-16 w-16" />
 	<svelte.fragment slot="title">Home</svelte.fragment>
