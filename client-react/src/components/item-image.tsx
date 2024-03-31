@@ -31,6 +31,7 @@ const ItemImage: React.FC<Props> = (props) => {
   const { listId } = useParams();
 
   const updateMutation = useMutation({
+    // @ts-expect-error - image is a Blob
     mutationFn: (image: Blob) => setItemImage({ id: item.id, image }),
     onSuccess: () => {
       toast.success(`${item.name} image updated`);

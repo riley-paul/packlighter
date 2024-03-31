@@ -24,7 +24,6 @@ import React from "react";
 import { useMutation } from "react-query";
 import { useParams } from "react-router-dom";
 import ListCategoryItem from "./list-category-item";
-import { updateCategoryItemsOrder } from "@/api/categoryItem";
 import PackingItem from "./packing-item";
 
 export type ActiveDraggable =
@@ -69,10 +68,6 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     onSuccess: () => {
       queryClient.invalidateQueries([Collections.Lists, listId]);
     },
-  });
-
-  const reorderCategoryItemsMutation = useMutation({
-    mutationFn: updateCategoryItemsOrder,
   });
 
   function handleDragStart(event: DragStartEvent) {
