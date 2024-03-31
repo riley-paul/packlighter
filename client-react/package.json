@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "typegen": "pocketbase-typegen --env .env.local --out ./src/lib/types.ts",
-    "deploy": "scp -r dist/ 45.79.102.74:/root/packlighter/pb_public"
+    "deploy": "scp -r dist root@45.79.102.74:/root/packlighter/pb_public"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
