@@ -1,5 +1,5 @@
 import { Collections, ListsResponse } from "@/lib/types";
-import { cn } from "@/lib/utils";
+import { cn, getPaths } from "@/lib/utils";
 import React from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
@@ -51,7 +51,7 @@ const PackingList: React.FC<Props> = (props) => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries(Collections.Lists);
       if (variables === listId) {
-        navigate("/");
+        navigate(getPaths.home());
       }
     },
   });
@@ -100,7 +100,7 @@ const PackingList: React.FC<Props> = (props) => {
         style={style}
         className={cn(
           "flex gap-2 items-center pr-2 pl-4 hover:border-l-4 hover:pl-3 py-0.5",
-          pathname === `/list/${list.id}` &&
+          pathname === getPaths.list(list.id) &&
             "border-l-4 pl-3 border-primary text-secondary-foreground bg-secondary",
           isOverlay && "bg-card/70 border rounded",
           isDragging && "opacity-30"
@@ -112,7 +112,7 @@ const PackingList: React.FC<Props> = (props) => {
           isGrabbing={isOverlay}
         ></Gripper>
         <Link
-          to={`/list/${list.id}`}
+          to={getPaths.list(list.id)}
           className={cn(
             "flex-1 truncate text-sm",
             !list.name && "italic text-muted-foreground"

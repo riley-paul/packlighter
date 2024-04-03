@@ -28,7 +28,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { cn } from "@/lib/utils";
+import { cn, getPaths } from "@/lib/utils";
 import Placeholder from "./base/placeholder";
 
 export default function PackingLists(): ReturnType<React.FC> {
@@ -47,7 +47,7 @@ export default function PackingLists(): ReturnType<React.FC> {
     mutationFn: createList,
     onSuccess: (data) => {
       queryClient.invalidateQueries(Collections.Lists);
-      navigate(`/list/${data.id}`);
+      navigate(getPaths.list(data.id));
     },
   });
 

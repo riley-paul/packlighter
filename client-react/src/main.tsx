@@ -17,15 +17,15 @@ import GearPage from "./routes/all-gear";
 import Home from "./routes/home";
 import ErrorPage from "./routes/error";
 import { pb } from "./lib/pocketbase";
+import { getPaths } from "./lib/utils";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: getPaths.home(),
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
         element: <App />,
         loader: () => {
           if (!pb.authStore.isValid) return redirect("/auth");
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         },
         children: [
           { index: true, element: <Home /> },
-          { path: "list/:listId", element: <ListPage /> },
-          { path: "gear", element: <GearPage /> },
+          { path: getPaths.list(":listId"), element: <ListPage /> },
+          { path: getPaths.gear(), element: <GearPage /> },
         ],
       },
       { path: "auth", element: <AuthPage /> },

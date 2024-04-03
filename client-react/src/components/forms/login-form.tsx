@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { getPaths } from "@/lib/utils";
 
 const defaultForm: LoginSchema = {
   email: "",
@@ -42,7 +43,7 @@ export default function LoginForm(): ReturnType<React.FC> {
 
   const submitMutation = useMutation({
     mutationFn: login,
-    onSuccess: () => navigate("/"),
+    onSuccess: () => navigate(getPaths.home()),
     onError: (error: ClientResponseError) => {
       console.error(error);
       toast.error("Login failed", {

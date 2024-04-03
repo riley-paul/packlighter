@@ -24,6 +24,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { getPaths } from "@/lib/utils";
 
 const defaultForm: SignUpSchema = {
   username: "",
@@ -44,7 +45,7 @@ export default function SignupForm(): ReturnType<React.FC> {
 
   const submitMutation = useMutation({
     mutationFn: signUp,
-    onSuccess: () => navigate("/"),
+    onSuccess: () => navigate(getPaths.home()),
     onError: (error: ClientResponseError) => {
       console.error(error);
       toast.error("Sign Up failed", {

@@ -26,6 +26,7 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import Placeholder from "./base/placeholder";
+import { getPaths } from "@/lib/utils";
 
 enum SortOptions {
   Name = "Name",
@@ -78,9 +79,9 @@ const PackingItems: React.FC = () => {
           <span className="font-semibold text-sm">Gear</span>
           <Button
             size="sm"
-            variant={pathname === "/gear" ? "secondary" : "linkMuted"}
+            variant={pathname === getPaths.gear() ? "secondary" : "linkMuted"}
             onClick={() => {
-              navigate("/gear");
+              navigate(getPaths.gear());
               toggleSidebar(false);
             }}
           >

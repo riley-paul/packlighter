@@ -2,6 +2,7 @@ import { Bug } from "lucide-react";
 import React from "react";
 import { ErrorResponse, Link, isRouteErrorResponse } from "react-router-dom";
 import { Button, buttonVariants } from "../ui/button";
+import { getPaths } from "@/lib/utils";
 
 interface Props {
   error: Error | ErrorResponse | null;
@@ -33,7 +34,10 @@ const Error: React.FC<Props> = (props) => {
         <div className="flex flex-col gap-2">
           {retry && <Button onClick={() => retry()}>Retry</Button>}
           {showGoHome && (
-            <Link className={buttonVariants({ variant: "secondary" })} to="/">
+            <Link
+              className={buttonVariants({ variant: "secondary" })}
+              to={getPaths.home()}
+            >
               Go Home
             </Link>
           )}
