@@ -30,20 +30,36 @@ const ItemImage: React.FC<Props> = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { listId } = useParams();
 
+  const updateToastId = React.useRef<string | number | undefined>(undefined);
+  const deleteToastId = React.useRef<string | number | undefined>(undefined);
+
   const updateMutation = useMutation({
     mutationFn: (image: Blob) => setItemImage({ id: item.id, image }),
+    onMutate: () => {
+      updateToastId.current = toast.loading("Updating image...");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Items] });
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      toast.success("Image updated", { id: updateToastId.current });
+    },
+    onError: (error) => {
+      toast.error(error.message, { id: updateToastId.current });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteItemImage(item.id),
+    onMutate: () => {
+      deleteToastId.current = toast.loading("Deleting image...");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Items] });
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      toast.success(`${item.name} image deleted`);
+      toast.success("Image deleted", { id: deleteToastId.current });
+    },
+    onError: (error) => {
+      toast.error(error.message, { id: deleteToastId.current });
     },
   });
 
@@ -85,7 +101,7 @@ const ItemImage: React.FC<Props> = (props) => {
         <DialogHeader className="text-left">
           <DialogTitle>Update {item.name} Image</DialogTitle>
           <DialogDescription>
-            Upload or provide a link to an image
+            Choose a file or paste an image to update the image for this item
           </DialogDescription>
         </DialogHeader>
         <Input
@@ -121,13 +137,7 @@ const ItemImage: React.FC<Props> = (props) => {
             type="button"
             variant="destructive"
             disabled={deleteMutation.isPending}
-            onClick={() =>
-              toast.promise(deleteMutation.mutateAsync(), {
-                loading: "Deleting image...",
-                success: `${item.name} image deleted`,
-                error: "Failed to delete image",
-              })
-            }
+            onClick={() => deleteMutation.mutate()}
           >
             <Trash className="mr-2 h-4 w-4" />
             Delete Image
