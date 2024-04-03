@@ -9,4 +9,5 @@ export const getPaths = {
   list: (listId: string) => `/packlighter/list/${listId}`,
   gear: () => "/packlighter/gear",
   home: () => "/packlighter",
+  auth: () => "/packlighter/auth",
 };

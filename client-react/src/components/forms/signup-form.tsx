@@ -43,13 +43,21 @@ export default function SignupForm(): ReturnType<React.FC> {
 
   const { handleSubmit } = methods;
 
+  const submitToastId = React.useRef<string | number | undefined>(undefined);
   const submitMutation = useMutation({
     mutationFn: signUp,
-    onSuccess: () => navigate(getPaths.home()),
+    onMutate: () => {
+      submitToastId.current = toast.loading("Signing up...");
+    },
+    onSuccess: () => {
+      navigate(getPaths.home());
+      toast.success("Signed up successfully", { id: submitToastId.current });
+    },
     onError: (error: ClientResponseError) => {
       console.error(error);
       toast.error("Sign Up failed", {
         description: error.message,
+        id: submitToastId.current,
       });
     },
   });
@@ -58,6 +66,7 @@ export default function SignupForm(): ReturnType<React.FC> {
     (data) => submitMutation.mutate(data),
     (formErrors) => {
       console.error(formErrors);
+      toast.error("Check your info once again. Something isn't quite right");
     }
   );
 

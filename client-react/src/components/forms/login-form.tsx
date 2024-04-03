@@ -41,13 +41,21 @@ export default function LoginForm(): ReturnType<React.FC> {
 
   const { handleSubmit } = methods;
 
+  const submitToastId = React.useRef<string | number | undefined>(undefined);
   const submitMutation = useMutation({
     mutationFn: login,
-    onSuccess: () => navigate(getPaths.home()),
+    onMutate: () => {
+      submitToastId.current = toast.loading("Logging in...");
+    },
+    onSuccess: () => {
+      navigate(getPaths.home());
+      toast.success("Logged in successfully", { id: submitToastId.current });
+    },
     onError: (error: ClientResponseError) => {
       console.error(error);
       toast.error("Login failed", {
         description: error.message,
+        id: submitToastId.current,
       });
     },
   });

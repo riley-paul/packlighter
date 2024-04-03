@@ -31,14 +31,27 @@ const PackingItem: React.FC<Props> = (props) => {
     id: item.id,
     data: sortableData,
   });
+
+  const itemName = item.name || "Unnamed Gear";
+
   const style = { transform: CSS.Translate.toString(transform) };
+
+  const deleteToastId = React.useRef<string | number | undefined>(undefined);
 
   const deleteItemMutation = useMutation({
     mutationFn: () => deleteItem(item.id),
+    onMutate: () => {
+      deleteToastId.current = toast.loading("Deleting item...");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Items] });
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      toast.success(`${item.name || "Unnamed Gear"} deleted successfully`);
+      toast.success(`${itemName} deleted successfully`, {
+        id: deleteToastId.current,
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message, { id: deleteToastId.current });
     },
   });
 
@@ -54,7 +67,7 @@ const PackingItem: React.FC<Props> = (props) => {
       <Gripper {...attributes} {...listeners} />
       <div className="flex flex-col flex-1">
         <span className={cn(!item.name && "italic text-muted-foreground")}>
-          {item.name || "Unnamed Gear"}
+          {itemName}
         </span>
         <span className="text-muted-foreground">{item.description}</span>
       </div>

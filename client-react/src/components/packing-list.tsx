@@ -32,6 +32,7 @@ import { queryClient } from "@/lib/query";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Gripper from "./base/gripper";
+import { toast } from "sonner";
 
 interface Props {
   list: ListsResponse;
@@ -46,13 +47,21 @@ const PackingList: React.FC<Props> = (props) => {
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
+  const deleteToastId = React.useRef<string | number | undefined>(undefined);
   const deleteListMutation = useMutation({
     mutationFn: deleteList,
+    onMutate: () => {
+      deleteToastId.current = toast.loading("Deleting list...");
+    },
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
+      toast.success("List deleted successfully", { id: deleteToastId.current });
       if (variables === listId) {
         navigate(getPaths.home());
       }
+    },
+    onError: (error) => {
+      toast.error(error.message, { id: deleteToastId.current });
     },
   });
 

@@ -19,6 +19,7 @@ import {
 import ChangeEmailDialog from "./forms/change-email-dialog";
 import ChangePasswordDialog from "./forms/change-password-dialog";
 import DeleteAccountDialog from "./forms/delete-account-dialog";
+import { getPaths } from "@/lib/utils";
 
 export default function AccountEditor(): ReturnType<React.FC> {
   const user = pb.authStore.model;
@@ -32,7 +33,7 @@ export default function AccountEditor(): ReturnType<React.FC> {
 
   const logout = () => {
     pb.authStore.clear();
-    navigate("/auth");
+    navigate(getPaths.auth());
     queryClient.removeQueries();
   };
 

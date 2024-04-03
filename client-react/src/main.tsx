@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       {
         element: <App />,
         loader: () => {
-          if (!pb.authStore.isValid) return redirect("/auth");
+          if (!pb.authStore.isValid) return redirect(getPaths.auth());
           return "";
         },
         children: [
