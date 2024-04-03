@@ -1,7 +1,7 @@
 import { getItems } from "@/api/item";
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Input } from "./ui/input";
 import { Card } from "./ui/card";
 import Loader from "./base/loader";

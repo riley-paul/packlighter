@@ -14,7 +14,7 @@ import { Trash } from "lucide-react";
 import { Collections, ItemsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pb } from "@/lib/pocketbase";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { deleteItemImage, setItemImage } from "@/api/item";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
@@ -31,21 +31,18 @@ const ItemImage: React.FC<Props> = (props) => {
   const { listId } = useParams();
 
   const updateMutation = useMutation({
-    // @ts-expect-error - image is a Blob
     mutationFn: (image: Blob) => setItemImage({ id: item.id, image }),
     onSuccess: () => {
-      toast.success(`${item.name} image updated`);
-      queryClient.invalidateQueries([Collections.Items]);
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
-    onError: (error: Error) => toast.error(error.message),
   });
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteItemImage(item.id),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Items]);
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       toast.success(`${item.name} image deleted`);
     },
   });
@@ -65,11 +62,13 @@ const ItemImage: React.FC<Props> = (props) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="h-full">
+      <DialogTrigger className="h-full flex">
         <div
           className={cn(
             "flex w-16 flex-1 items-center justify-center rounded-sm p-0.5",
-            item.image ? "aspect-square bg-white" : "bg-muted/50 h-full",
+            item.image
+              ? "aspect-square bg-white"
+              : "bg-muted/50 h-full min-h-4",
             "outline-1 transition-all hover:outline"
           )}
         >
@@ -121,8 +120,14 @@ const ItemImage: React.FC<Props> = (props) => {
           <Button
             type="button"
             variant="destructive"
-            disabled={deleteMutation.isLoading}
-            onClick={() => deleteMutation.mutate()}
+            disabled={deleteMutation.isPending}
+            onClick={() =>
+              toast.promise(deleteMutation.mutateAsync(), {
+                loading: "Deleting image...",
+                success: `${item.name} image deleted`,
+                error: "Failed to delete image",
+              })
+            }
           >
             <Trash className="mr-2 h-4 w-4" />
             Delete Image

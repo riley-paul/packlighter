@@ -3,7 +3,7 @@ import { queryClient } from "@/lib/query";
 import { Collections, ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";
 import React from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
@@ -46,7 +46,7 @@ export default function PackingLists(): ReturnType<React.FC> {
   const newListMutation = useMutation({
     mutationFn: createList,
     onSuccess: (data) => {
-      queryClient.invalidateQueries(Collections.Lists);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
       navigate(getPaths.list(data.id));
     },
   });
@@ -65,7 +65,7 @@ export default function PackingLists(): ReturnType<React.FC> {
         queryClient.setQueryData([Collections.Lists], context.previousLists);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
     },
   });
 

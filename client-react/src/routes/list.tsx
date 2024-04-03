@@ -17,7 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { Plus } from "lucide-react";
 import React from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 export default function ListPage(): ReturnType<React.FC> {
@@ -33,15 +33,15 @@ export default function ListPage(): ReturnType<React.FC> {
     mutationFn: (data: Partial<ListWithCategories>) =>
       updateList({ id: listId, list: data }),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
-      queryClient.invalidateQueries([Collections.Lists]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
     },
   });
 
   const createCategoryMutation = useMutation({
     mutationFn: () => createCategory(listId),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
   });
 

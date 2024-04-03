@@ -25,7 +25,7 @@ import {
 
 import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "./ui/button";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/api/list";
 import { queryClient } from "@/lib/query";
 
@@ -49,7 +49,7 @@ const PackingList: React.FC<Props> = (props) => {
   const deleteListMutation = useMutation({
     mutationFn: deleteList,
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries(Collections.Lists);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
       if (variables === listId) {
         navigate(getPaths.home());
       }

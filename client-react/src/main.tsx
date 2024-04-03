@@ -5,7 +5,7 @@ import {
   createBrowserRouter,
   redirect,
 } from "react-router-dom";
-import { QueryClientProvider } from "react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query.ts";
 import Root from "./routes/root";
 import AuthPage from "./routes/auth";
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
     <QueryClientProvider client={queryClient}>
-      <Toaster />
+      <Toaster richColors />
       <RouterProvider router={router} />
     </QueryClientProvider>
   </ThemeProvider>

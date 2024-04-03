@@ -22,7 +22,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import {
   deleteCategory,
   toggleCategoryPacked,
@@ -88,7 +88,7 @@ const ListCategory: React.FC<Props> = (props) => {
   const deleteCategoryMutation = useMutation({
     mutationFn: () => deleteCategory(category),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       toast.success(`${category.name || "Unnamed"} category deleted`);
     },
   });
@@ -97,22 +97,22 @@ const ListCategory: React.FC<Props> = (props) => {
     mutationFn: (data: Partial<ExpandedCategory>) =>
       updateCategory({ id: category.id, category: data }),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
   });
 
   const addCategoryItemMutation = useMutation({
     mutationFn: () => createCategoryItem({ category, listId: listId ?? "" }),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
-      queryClient.invalidateQueries([Collections.Items]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
     },
   });
 
   const toggleCompletionMutation = useMutation({
     mutationFn: () => toggleCategoryPacked(category),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
   });
 

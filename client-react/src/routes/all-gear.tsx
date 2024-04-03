@@ -4,7 +4,7 @@ import Loader from "@/components/base/loader";
 import { DataTable } from "@/components/gear-table/data-table";
 import { Collections } from "@/lib/types";
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { columns } from "../components/gear-table/columns";

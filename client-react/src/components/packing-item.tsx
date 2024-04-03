@@ -1,7 +1,7 @@
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "./base/delete-button";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { deleteItem } from "@/api/item";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
@@ -36,8 +36,8 @@ const PackingItem: React.FC<Props> = (props) => {
   const deleteItemMutation = useMutation({
     mutationFn: () => deleteItem(item.id),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Items]);
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       toast.success(`${item.name || "Unnamed Gear"} deleted successfully`);
     },
   });

@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { LoginSchema, login, loginSchema } from "@/api/auth";
 import { Loader2, Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -105,9 +105,9 @@ export default function LoginForm(): ReturnType<React.FC> {
             <Button
               className="w-full"
               type="submit"
-              disabled={submitMutation.isLoading}
+              disabled={submitMutation.isPending}
             >
-              {submitMutation.isLoading ? (
+              {submitMutation.isPending ? (
                 <Loader2 size="1rem" className="animate-spin mr-2" />
               ) : (
                 <Send className="h-4 w-4 mr-2" />

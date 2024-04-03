@@ -19,7 +19,7 @@ import {
   ListsResponse,
   ListsWeightUnitOptions,
 } from "@/lib/types";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { updateList } from "@/api/list";
 import { queryClient } from "@/lib/query";
 
@@ -34,7 +34,7 @@ const ListSettings: React.FC<Props> = (props) => {
     mutationFn: (data: Partial<ListsResponse>) =>
       updateList({ id: list.id, list: data }),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, list.id]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, list.id] });
     },
   });
 

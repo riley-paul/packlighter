@@ -5,7 +5,7 @@ import { Checkbox } from "./ui/checkbox";
 import ServerInput from "./input/server-input";
 import { ExpandedCategoryItem, ListWithCategories } from "@/api/list";
 import DeleteButton from "./base/delete-button";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { deleteCategoryItem, updateCategoryItem } from "@/api/categoryItem";
 import { queryClient } from "@/lib/query";
 import {
@@ -50,8 +50,8 @@ const ListCategoryItem: React.FC<Props> = (props) => {
   const deleteMutation = useMutation({
     mutationFn: () => deleteCategoryItem(item),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
-      queryClient.invalidateQueries([Collections.Items]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
     },
   });
 
@@ -67,7 +67,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
         item: data.item ?? {},
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
   });
 

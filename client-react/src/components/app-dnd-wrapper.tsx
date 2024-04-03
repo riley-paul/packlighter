@@ -21,7 +21,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import React from "react";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import ListCategoryItem from "./list-category-item";
 import PackingItem from "./packing-item";
@@ -66,7 +66,7 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
         );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries([Collections.Lists, listId]);
+      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
   });
 
