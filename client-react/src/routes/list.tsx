@@ -7,7 +7,6 @@ import ServerInput from "@/components/input/server-input";
 import ListCategory from "@/components/list-category";
 import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -19,6 +18,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import ServerTextarea from "@/components/input/server-textarea";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -77,9 +77,12 @@ export default function ListPage(): ReturnType<React.FC> {
       </AppHeader>
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-4">
-          <Textarea
+          <ServerTextarea
+            key={listQuery.data.id}
             className="bg-card"
-            defaultValue={listQuery.data.description}
+            placeholder="List Description"
+            currentValue={listQuery.data.description}
+            onUpdate={(v) => updateListMutation.mutate({ description: v })}
           />
           <SortableContext
             id="list-categories"

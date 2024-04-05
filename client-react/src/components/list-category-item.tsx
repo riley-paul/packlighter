@@ -20,6 +20,13 @@ import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { ActiveDraggable } from "./app-dnd-wrapper";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -130,21 +137,25 @@ const ListCategoryItem: React.FC<Props> = (props) => {
                 updateMutation.mutate({ item: { weight: Number(weight) } })
               }
             />
-            <select
-              className="bg-inherit"
+            <Select
               value={item.itemData.weight_unit}
-              onChange={(ev) =>
+              onValueChange={(value) =>
                 updateMutation.mutate({
                   item: {
-                    weight_unit: ev.target.value as ItemsWeightUnitOptions,
+                    weight_unit: value as ItemsWeightUnitOptions,
                   },
                 })
               }
             >
-              {Object.values(ItemsWeightUnitOptions).map((unit) => (
-                <option key={unit}>{unit}</option>
-              ))}
-            </select>
+              <SelectTrigger className="p-0 px-2 h-auto border-none shadow-none">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(ItemsWeightUnitOptions).map((unit) => (
+                  <SelectItem value={unit}>{unit}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </TableCell>
       )}

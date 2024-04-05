@@ -66,7 +66,7 @@ const ListCategory: React.FC<Props> = (props) => {
   const {
     attributes,
     listeners,
-    setNodeRef,
+    setNodeRef: sortableRef,
     transform,
     transition,
     isDragging,
@@ -118,7 +118,7 @@ const ListCategory: React.FC<Props> = (props) => {
 
   return (
     <div
-      ref={setNodeRef}
+      ref={sortableRef}
       style={style}
       className={cn(
         "transition-all",
@@ -154,7 +154,7 @@ const ListCategory: React.FC<Props> = (props) => {
               />
             </TableHead>
             {list?.show_weights && (
-              <TableHead className="w-[6.5rem] text-center">Weight</TableHead>
+              <TableHead className="w-[7rem] text-center">Weight</TableHead>
             )}
             <TableHead className="w-[5rem]">Qty</TableHead>
             <TableHead className="w-6 pl-0">
