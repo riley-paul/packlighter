@@ -4,6 +4,9 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ClerkProvider, UserButton } from "@clerk/nextjs";
+import { ModeToggle } from "@/components/mode-toggle";
+import AppHeader from "@/components/app-header";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -14,19 +17,22 @@ export const metadata: Metadata = {
 
 const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </body>
-      <Toaster richColors />
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <AppHeader />
+            {children}
+          </ThemeProvider>
+        </body>
+        <Toaster richColors />
+      </html>
+    </ClerkProvider>
   );
 };
 
