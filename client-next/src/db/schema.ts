@@ -2,8 +2,11 @@ import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { weightUnits } from "./enums";
 
-export const items = sqliteTable("items", {
-  id: text("id").default(sql`(UUID())`),
+export const itemsTable = sqliteTable("items", {
+  id: text("id")
+    .notNull()
+    .default(sql`(UUID())`)
+    .primaryKey(),
   user: text("user").notNull(),
   created: text("created")
     .notNull()
@@ -14,8 +17,11 @@ export const items = sqliteTable("items", {
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
 });
 
-export const lists = sqliteTable("lists", {
-  id: text("id").default(sql`(UUID())`),
+export const listsTable = sqliteTable("lists", {
+  id: text("id")
+    .notNull()
+    .default(sql`(UUID())`)
+    .primaryKey(),
   user: text("user").notNull(),
   created: text("created")
     .notNull()
@@ -35,11 +41,14 @@ export const lists = sqliteTable("lists", {
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
 });
 
-export const categories = sqliteTable("categories", {
-  id: text("id").default(sql`(UUID())`),
+export const categoriesTable = sqliteTable("categories", {
+  id: text("id")
+    .notNull()
+    .default(sql`(UUID())`)
+    .primaryKey(),
   list: text("list")
     .notNull()
-    .references(() => lists.id),
+    .references(() => listsTable.id),
   created: text("created")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
@@ -47,17 +56,20 @@ export const categories = sqliteTable("categories", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
-export const categoriesItems = sqliteTable("categories_items", {
-  id: text("id").default(sql`(UUID())`),
+export const categoriesItemsTable = sqliteTable("categories_items", {
+  id: text("id")
+    .notNull()
+    .default(sql`(UUID())`)
+    .primaryKey(),
   created: text("created")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
   category: text("category")
     .notNull()
-    .references(() => categories.id),
+    .references(() => categoriesTable.id),
   item: text("item")
     .notNull()
-    .references(() => items.id),
+    .references(() => itemsTable.id),
   sortOrder: integer("sort_order").notNull().default(0),
   quantity: integer("quantity").notNull().default(1),
   wornWeight: integer("worn_weight", { mode: "boolean" })

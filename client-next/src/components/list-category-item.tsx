@@ -152,7 +152,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
               </SelectTrigger>
               <SelectContent>
                 {Object.values(ItemsWeightUnitOptions).map((unit) => (
-                  <SelectItem value={unit}>{unit}</SelectItem>
+                  <SelectItem key={unit} value={unit}>{unit}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

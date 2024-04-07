@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "db:push": "drizzle-kit push:sqlite",
-    "db:studio": "drizzle-kit studio"
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "bun --env-file .env.local ./src/db/seed/index.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.12",
