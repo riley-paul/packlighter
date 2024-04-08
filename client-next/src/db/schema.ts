@@ -17,6 +17,9 @@ export const itemsTable = sqliteTable("items", {
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
 });
 
+export type Item = typeof itemsTable.$inferSelect;
+export type ItemInsert = typeof itemsTable.$inferInsert;
+
 export const listsTable = sqliteTable("lists", {
   id: text("id")
     .notNull()
@@ -41,6 +44,9 @@ export const listsTable = sqliteTable("lists", {
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
 });
 
+export type List = typeof listsTable.$inferSelect;
+export type ListInsert = typeof listsTable.$inferInsert;
+
 export const categoriesTable = sqliteTable("categories", {
   id: text("id")
     .notNull()
@@ -55,6 +61,9 @@ export const categoriesTable = sqliteTable("categories", {
   name: text("name"),
   sortOrder: integer("sort_order").notNull().default(0),
 });
+
+export type Category = typeof categoriesTable.$inferSelect;
+export type CategoryInsert = typeof categoriesTable.$inferInsert;
 
 export const categoriesItemsTable = sqliteTable("categories_items", {
   id: text("id")
@@ -80,3 +89,6 @@ export const categoriesItemsTable = sqliteTable("categories_items", {
     .default(false),
   packed: integer("packed", { mode: "boolean" }).notNull().default(false),
 });
+
+export type CategoryItem = typeof categoriesItemsTable.$inferSelect;
+export type CategoryItemInsert = typeof categoriesItemsTable.$inferInsert;

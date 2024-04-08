@@ -1,3 +1,4 @@
+import PackingLists from "@/components/packing-lists";
 import { Button } from "@/components/ui/button";
 import { UserButton, auth } from "@clerk/nextjs";
 import { toast } from "sonner";
@@ -5,5 +6,9 @@ import { toast } from "sonner";
 export default function Home() {
   const { userId } = auth();
 
-  return <main className="">{userId}</main>;
+  return (
+    <main className="">
+      {userId}
+    </main>
+  );
 }

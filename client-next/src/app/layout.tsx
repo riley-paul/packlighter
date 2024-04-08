@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "@/components/mode-toggle";
 import AppHeader from "@/components/app-header";
+import PackingLists from "@/components/packing-lists";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -27,6 +28,8 @@ const RootLayout: React.FC<React.PropsWithChildren> = ({ children }) => {
         >
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <AppHeader />
+            <PackingLists />
+
             {children}
           </ThemeProvider>
         </body>

@@ -5,6 +5,6 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 const client = createClient({ url: "file:local.db" });
 const db = drizzle(client);
 
-await migrate(db, { migrationsFolder: "drizzle" });
+// await migrate(db, { migrationsFolder: "drizzle" });
 
 export default db;
