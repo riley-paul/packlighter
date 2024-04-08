@@ -82,7 +82,7 @@ const ItemImage: React.FC<Props> = (props) => {
         <div
           className={cn(
             "flex w-16 flex-1 items-center justify-center rounded-sm p-0.5",
-            item.image ? "h-16 bg-white" : "bg-muted/50 h-full min-h-4",
+            item.image ? "h-16 bg-white" : "bg-muted/50 h-full",
             "outline-1 transition-all hover:outline outline-primary outline-offset-1"
           )}
         >

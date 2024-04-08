@@ -4,21 +4,17 @@ import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
-import ListCategory from "@/components/list-category";
 import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
 import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import ServerTextarea from "@/components/input/server-textarea";
+import ListCategory2 from "@/components/list-category-2";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -84,15 +80,11 @@ export default function ListPage(): ReturnType<React.FC> {
             currentValue={listQuery.data.description}
             onUpdate={(v) => updateListMutation.mutate({ description: v })}
           />
-          <SortableContext
-            id="list-categories"
-            items={listQuery.data.categories}
-            strategy={verticalListSortingStrategy}
-          >
-            {listQuery.data.categories.map((category) => (
-              <ListCategory key={category.id} category={category} />
-            ))}
-          </SortableContext>
+
+          {listQuery.data.categories.map((category) => (
+            <ListCategory2 key={category.id} category={category} />
+          ))}
+
           <Button
             variant="linkMuted"
             size="sm"

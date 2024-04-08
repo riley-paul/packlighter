@@ -1,5 +1,4 @@
 import React from "react";
-import { TableCell, TableRow } from "./ui/table";
 import Gripper from "./base/gripper";
 import { Checkbox } from "./ui/checkbox";
 import ServerInput from "./input/server-input";
@@ -16,10 +15,6 @@ import {
 } from "@/lib/types";
 import { useParams } from "react-router-dom";
 import ItemImage from "./item-image";
-import { CSS } from "@dnd-kit/utilities";
-import { cn } from "@/lib/utils";
-import { useSortable } from "@dnd-kit/sortable";
-import { ActiveDraggable } from "./app-dnd-wrapper";
 import {
   Select,
   SelectContent,
@@ -34,25 +29,13 @@ interface Props {
 }
 
 const ListCategoryItem2: React.FC<Props> = (props) => {
-  const { item, isOverlay } = props;
+  const { item } = props;
   const { listId } = useParams();
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,
     listId,
   ]);
-
-  const sortableData: ActiveDraggable = {
-    type: "category-item",
-    data: item,
-  };
-
-  const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useSortable({
-      id: item.id,
-      data: sortableData,
-    });
-  const style = { transform: CSS.Translate.toString(transform) };
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteCategoryItem(item),
@@ -79,103 +62,81 @@ const ListCategoryItem2: React.FC<Props> = (props) => {
   });
 
   return (
-    <TableRow
-      ref={setNodeRef}
-      style={style}
-      className={cn(
-        "rounded",
-        isOverlay && "border rounded",
-        isDragging && "opacity-30"
-      )}
-    >
-      <TableCell className="w-4 px-1 py-0.5">
-        <Gripper {...attributes} {...listeners} />
-      </TableCell>
+    <article className="flex items-center p-1 gap-2 border-b transition-colors hover:bg-muted/50">
+      <Gripper />
       {list?.show_packed && (
-        <TableCell className="py-0">
-          <Checkbox
-            checked={item.packed}
-            onCheckedChange={(packed) =>
-              updateMutation.mutate({
-                categoryItem: { packed: Boolean(packed) },
-              })
-            }
-          />
-        </TableCell>
+        <Checkbox
+          checked={item.packed}
+          onCheckedChange={(packed) =>
+            updateMutation.mutate({
+              categoryItem: { packed: Boolean(packed) },
+            })
+          }
+        />
       )}
-      {list?.show_images && (
-        <TableCell>
-          <ItemImage item={item.itemData} />
-        </TableCell>
-      )}
-      <TableCell className="px-1 py-0.5">
+      {list?.show_images && <ItemImage item={item.itemData} />}
+      <div className="flex-1">
         <ServerInput
           placeholder="Name"
           currentValue={item.itemData.name}
           onUpdate={(name) => updateMutation.mutate({ item: { name } })}
         />
-      </TableCell>
-      <TableCell className="text-muted-foreground w-1/2 px-1 py-0.5">
         <ServerInput
           placeholder="Description"
+          className="text-muted-foreground"
           currentValue={item.itemData.description}
           onUpdate={(description) =>
             updateMutation.mutate({ item: { description } })
           }
         />
-      </TableCell>
+      </div>
       {list?.show_weights && (
-        <TableCell className="py-0.5">
-          <div className="flex no-spin">
-            <ServerInput
-              type="number"
-              min={0}
-              selectOnFocus
-              className="text-right"
-              currentValue={item.itemData.weight.toLocaleString()}
-              onUpdate={(weight) =>
-                updateMutation.mutate({ item: { weight: Number(weight) } })
-              }
-            />
-            <Select
-              value={item.itemData.weight_unit}
-              onValueChange={(value) =>
-                updateMutation.mutate({
-                  item: {
-                    weight_unit: value as ItemsWeightUnitOptions,
-                  },
-                })
-              }
-            >
-              <SelectTrigger className="p-0 px-2 h-auto border-none shadow-none">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.values(ItemsWeightUnitOptions).map((unit) => (
-                  <SelectItem value={unit}>{unit}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </TableCell>
+        <div className="flex no-spin max-w-24">
+          <ServerInput
+            type="number"
+            min={0}
+            selectOnFocus
+            className="text-right"
+            currentValue={item.itemData.weight.toLocaleString()}
+            onUpdate={(weight) =>
+              updateMutation.mutate({ item: { weight: Number(weight) } })
+            }
+          />
+          <Select
+            value={item.itemData.weight_unit}
+            onValueChange={(value) =>
+              updateMutation.mutate({
+                item: {
+                  weight_unit: value as ItemsWeightUnitOptions,
+                },
+              })
+            }
+          >
+            <SelectTrigger className="p-0 px-2 h-auto border-none shadow-none">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {Object.values(ItemsWeightUnitOptions).map((unit) => (
+                <SelectItem value={unit}>{unit}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       )}
-      <TableCell className="py-0.5">
-        <ServerInput
-          type="number"
-          min={1}
-          selectOnFocus
-          currentValue={item.quantity.toLocaleString()}
-          onUpdate={(quantity) =>
-            updateMutation.mutate({
-              categoryItem: { quantity: Number(quantity) },
-            })
-          }
-        />
-      </TableCell>
-      <TableCell className="py-0.5 pl-0">
-        <DeleteButton handleDelete={() => deleteMutation.mutate()} />
-      </TableCell>
-    </TableRow>
+      <ServerInput
+        type="number"
+        className="max-w-16"
+        min={1}
+        selectOnFocus
+        currentValue={item.quantity.toLocaleString()}
+        onUpdate={(quantity) =>
+          updateMutation.mutate({
+            categoryItem: { quantity: Number(quantity) },
+          })
+        }
+      />
+      <DeleteButton handleDelete={() => deleteMutation.mutate()} />
+    </article>
   );
 };
 
