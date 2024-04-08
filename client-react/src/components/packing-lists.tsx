@@ -1,4 +1,4 @@
-import { createList, getLists, updateListsOrder } from "@/api/list";
+import { createList, getLists, updateListsOrder } from "@/actions/list";
 import { queryClient } from "@/lib/query";
 import { Collections, ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";

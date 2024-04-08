@@ -3,10 +3,10 @@ import { TableCell, TableRow } from "./ui/table";
 import Gripper from "./base/gripper";
 import { Checkbox } from "./ui/checkbox";
 import ServerInput from "./input/server-input";
-import { ExpandedCategoryItem, ListWithCategories } from "@/api/list";
+import { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
 import DeleteButton from "./base/delete-button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteCategoryItem, updateCategoryItem } from "@/api/categoryItem";
+import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
 import { queryClient } from "@/lib/query";
 import {
   CategoriesItemsResponse,

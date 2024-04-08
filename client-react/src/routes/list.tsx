@@ -1,5 +1,5 @@
-import { createCategory } from "@/api/category";
-import { ListWithCategories, getList, updateList } from "@/api/list";
+import { createCategory } from "@/actions/category";
+import { ListWithCategories, getList, updateList } from "@/actions/list";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";

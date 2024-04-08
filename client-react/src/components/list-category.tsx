@@ -1,4 +1,4 @@
-import { ExpandedCategory, ListWithCategories } from "@/api/list";
+import { ExpandedCategory, ListWithCategories } from "@/actions/list";
 import React from "react";
 import {
   Table,
@@ -27,7 +27,7 @@ import {
   deleteCategory,
   toggleCategoryPacked,
   updateCategory,
-} from "@/api/category";
+} from "@/actions/category";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
@@ -39,7 +39,7 @@ import {
   getCategoryWeight,
   isCategoryFullyPacked,
 } from "@/lib/helpers";
-import { createCategoryItem } from "@/api/categoryItem";
+import { createCategoryItem } from "@/actions/categoryItem";
 import { useDroppable } from "@dnd-kit/core";
 import { ActiveDraggable } from "./app-dnd-wrapper";
 

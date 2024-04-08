@@ -1,4 +1,4 @@
-import { getItems } from "@/api/item";
+import { getItems } from "@/actions/item";
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";

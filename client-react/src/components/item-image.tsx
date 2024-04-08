@@ -15,7 +15,7 @@ import { Collections, ItemsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pb } from "@/lib/pocketbase";
 import { useMutation } from "@tanstack/react-query";
-import { deleteItemImage, setItemImage } from "@/api/item";
+import { deleteItemImage, setItemImage } from "@/actions/item";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { AtSign, Lock, LogOut, Trash, User } from "lucide-react";
-import { getProfilePhoto } from "@/api/auth";
+import { getProfilePhoto } from "@/actions/auth";
 import { pb } from "@/lib/pocketbase";
 import { useNavigate } from "react-router-dom";
 import { queryClient } from "@/lib/query";

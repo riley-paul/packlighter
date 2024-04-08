@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { LoginSchema, login, loginSchema } from "@/api/auth";
+import { LoginSchema, login, loginSchema } from "@/actions/auth";
 import { Loader2, Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ClientResponseError } from "pocketbase";

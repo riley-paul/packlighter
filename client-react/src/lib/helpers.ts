@@ -2,7 +2,7 @@ import type {
   ExpandedCategory,
   ExpandedCategoryItem,
   ListWithCategories,
-} from "@/api/list";
+} from "@/actions/list";
 import {
   ItemsResponse,
   ItemsWeightUnitOptions,

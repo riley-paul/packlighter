@@ -1,4 +1,4 @@
-import { getItems } from "@/api/item";
+import { getItems } from "@/actions/item";
 import AppHeader from "@/components/app-header";
 import Loader from "@/components/base/loader";
 import { DataTable } from "@/components/gear-table/data-table";

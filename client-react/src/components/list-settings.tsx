@@ -20,7 +20,7 @@ import {
   ListsWeightUnitOptions,
 } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";
-import { updateList } from "@/api/list";
+import { updateList } from "@/actions/list";
 import { queryClient } from "@/lib/query";
 
 interface Props {

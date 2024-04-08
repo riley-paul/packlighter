@@ -2,7 +2,7 @@ import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "./base/delete-button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteItem } from "@/api/item";
+import { deleteItem } from "@/actions/item";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
