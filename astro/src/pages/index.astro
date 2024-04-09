@@ -1,12 +1,6 @@
 ---
 import RootLayout from "@/layouts/RootLayout.astro";
 import App from "@/app/app.tsx";
-import { pb } from "@/lib/pocketbase";
-
-if (!pb.authStore.isValid) {
-  pb.authStore.clear();
-  return Astro.redirect("/auth");
-}
 ---
 
 <RootLayout>
