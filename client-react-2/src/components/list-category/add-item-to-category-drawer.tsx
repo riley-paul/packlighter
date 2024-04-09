@@ -84,7 +84,7 @@ const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
           Add Item
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="h-[80vh]">
         <header className="flex gap-2 justify-between items-center px-4 py-2">
           <DrawerTitle>
             Add {selection.length} item{selection.length === 1 ? "" : "s"} to{" "}
@@ -112,7 +112,7 @@ const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
             onChange={(e) => setSearch(e.target.value)}
           />
         </section>
-        <article className="h-[70vh] overflow-auto mx-4 bg-card rounded-t-md">
+        <article className="overflow-auto mx-4 bg-card rounded-t-md">
           {itemsQuery.data
             ?.filter((i) => filterItems(i, search))
             .map((item) => (
