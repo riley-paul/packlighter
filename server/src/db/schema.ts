@@ -55,7 +55,7 @@ export const categoriesTable = sqliteTable("categories", {
     .primaryKey(),
   list: text("list")
     .notNull()
-    .references(() => listsTable.id),
+    .references(() => listsTable.id, { onDelete: "cascade" }),
   created: text("created")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
@@ -76,10 +76,10 @@ export const categoriesItemsTable = sqliteTable("categories_items", {
     .default(sql`(CURRENT_TIMESTAMP)`),
   category: text("category")
     .notNull()
-    .references(() => categoriesTable.id),
+    .references(() => categoriesTable.id, { onDelete: "cascade" }),
   item: text("item")
     .notNull()
-    .references(() => itemsTable.id),
+    .references(() => itemsTable.id, { onDelete: "cascade" }),
   sortOrder: integer("sort_order").notNull().default(0),
   quantity: integer("quantity").notNull().default(1),
   wornWeight: integer("worn_weight", { mode: "boolean" })

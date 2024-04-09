@@ -1,6 +1,7 @@
 import db from "./drizzle";
 import {
   CategoryInsert,
+  CategoryItemInsert,
   categoriesItemsTable,
   categoriesTable,
   itemsTable,
@@ -153,12 +154,10 @@ async function seed() {
     },
   ];
 
-  await Promise.all([
-    db.delete(itemsTable),
-    db.delete(categoriesTable),
-    db.delete(categoriesItemsTable),
-    db.delete(listsTable),
-  ]);
+  await db.delete(listsTable);
+  await db.delete(itemsTable);
+  await db.delete(categoriesTable);
+  await db.delete(categoriesItemsTable);
 
   await db.insert(itemsTable).values(itemsData);
   const items = await db.select().from(itemsTable);
@@ -213,6 +212,18 @@ async function seed() {
 
   await db.insert(categoriesTable).values(categoriesData);
   const categories = await db.select().from(categoriesTable);
+
+  const categoriesItemsData: CategoryItemInsert[] = categories.flatMap(
+    (category) =>
+      items
+        .filter(() => Math.random() < 0.2)
+        .flatMap((item) => ({
+          category: category.id,
+          item: item.id,
+        }))
+  );
+
+  await db.insert(categoriesItemsTable).values(categoriesItemsData);
 
   console.log("seeded");
 }
