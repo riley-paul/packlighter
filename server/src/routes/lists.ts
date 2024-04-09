@@ -2,7 +2,7 @@ import { getAuth } from "@hono/clerk-auth";
 import { Hono } from "hono";
 
 const app = new Hono()
-  .get("/", (c) => {
+  .use(async (c, next) => {
     const auth = getAuth(c);
 
     if (!auth?.userId) {
@@ -10,6 +10,9 @@ const app = new Hono()
       return c.text("Unauthorized");
     }
 
+    await next();
+  })
+  .get("/", (c) => {
     return c.text("all lists");
   })
   .post("/", (c) => c.text("create list"))

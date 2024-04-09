@@ -1,7 +1,9 @@
 {
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "db:seed": "tsx src/db/seed/index.ts"
   },
   "dependencies": {
     "@clerk/backend": "^0.30.3",
@@ -14,6 +16,7 @@
     "@cloudflare/workers-types": "^4.20240403.0",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.20.14",
+    "tsx": "^4.7.2",
     "wrangler": "^3.47.0"
   }
 }
