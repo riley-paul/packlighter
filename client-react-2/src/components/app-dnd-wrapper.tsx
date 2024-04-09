@@ -4,7 +4,7 @@ import {
   ExpandedCategoryItem,
   ListWithCategories,
 } from "@/actions/list";
-import ListCategory from "@/components/list-category";
+import ListCategory from "@/components/list-category/list-category";
 import { queryClient } from "@/lib/query";
 import { Collections, ItemsResponse } from "@/lib/types";
 import {
@@ -23,8 +23,8 @@ import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import ListCategoryItem from "./list-category-item";
-import PackingItem from "./packing-item";
+import ListCategoryItem from "./list-category/list-category-item";
+import PackingItem from "./packing-items/packing-item";
 
 export type ActiveDraggable =
   | {

@@ -14,7 +14,8 @@ import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import ServerTextarea from "@/components/input/server-textarea";
-import ListCategory2 from "@/components/list-category-2";
+import ListCategory2 from "@/components/list-category/list-category-2";
+import ListCategory from "@/components/list-category/list-category";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -82,7 +83,7 @@ export default function ListPage(): ReturnType<React.FC> {
           />
 
           {listQuery.data.categories.map((category) => (
-            <ListCategory2 key={category.id} category={category} />
+            <ListCategory key={category.id} category={category} />
           ))}
 
           <Button

@@ -1,10 +1,10 @@
 import React from "react";
-import { TableCell, TableRow } from "./ui/table";
-import Gripper from "./base/gripper";
-import { Checkbox } from "./ui/checkbox";
-import ServerInput from "./input/server-input";
+import { TableCell, TableRow } from "../ui/table";
+import Gripper from "../base/gripper";
+import { Checkbox } from "../ui/checkbox";
+import ServerInput from "../input/server-input";
 import { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
-import DeleteButton from "./base/delete-button";
+import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
 import { queryClient } from "@/lib/query";
@@ -15,18 +15,18 @@ import {
   ItemsWeightUnitOptions,
 } from "@/lib/types";
 import { useParams } from "react-router-dom";
-import ItemImage from "./item-image";
+import ItemImage from "../item-image";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
-import { ActiveDraggable } from "./app-dnd-wrapper";
+import { ActiveDraggable } from "../app-dnd-wrapper";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 
 interface Props {
   item: ExpandedCategoryItem;

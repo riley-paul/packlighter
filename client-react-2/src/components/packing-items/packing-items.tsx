@@ -2,15 +2,15 @@ import { getItems } from "@/actions/item";
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Input } from "./ui/input";
-import { Card } from "./ui/card";
-import Loader from "./base/loader";
-import { Button } from "./ui/button";
+import { Input } from "../ui/input";
+import { Card } from "../ui/card";
+import Loader from "../base/loader";
+import { Button } from "../ui/button";
 import { ArrowDownWideNarrow, Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
-import Error from "./base/error";
+import Error from "../base/error";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +18,14 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./ui/tooltip";
-import Placeholder from "./base/placeholder";
+} from "../ui/tooltip";
+import Placeholder from "../base/placeholder";
 import { getPaths } from "@/lib/utils";
 
 enum SortOptions {

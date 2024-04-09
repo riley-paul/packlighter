@@ -1,6 +1,6 @@
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
-import DeleteButton from "./base/delete-button";
+import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
 import { deleteItem } from "@/actions/item";
 import { queryClient } from "@/lib/query";
@@ -8,10 +8,10 @@ import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatWeight } from "@/lib/helpers";
-import Gripper from "./base/gripper";
+import Gripper from "../base/gripper";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { ActiveDraggable } from "./app-dnd-wrapper";
+import { ActiveDraggable } from "../app-dnd-wrapper";
 
 interface Props {
   item: ItemsResponse;
