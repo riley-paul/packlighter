@@ -3,6 +3,14 @@ import RootLayout from "@/layouts/RootLayout.astro";
 import App from "@/app/app.tsx";
 ---
 
+<script is:inline>
+  import { pb } from "@/lib/pocketbase";
+
+  if (!pb.authStore.isValid) {
+    window.location.href = "/auth";
+  }
+</script>
+
 <RootLayout>
   <App client:only="react" />
 </RootLayout>
