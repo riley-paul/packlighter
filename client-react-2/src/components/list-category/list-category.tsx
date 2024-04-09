@@ -10,8 +10,6 @@ import {
   TableRow,
 } from "../ui/table";
 import { Checkbox } from "../ui/checkbox";
-import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
 import DeleteButton from "../base/delete-button";
 import Gripper from "../base/gripper";
 
@@ -39,7 +37,6 @@ import {
   getCategoryWeight,
   isCategoryFullyPacked,
 } from "@/lib/helpers";
-import { createCategoryItem } from "@/actions/categoryItem";
 import { useDroppable } from "@dnd-kit/core";
 import { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
@@ -99,14 +96,6 @@ const ListCategory: React.FC<Props> = (props) => {
       updateCategory({ id: category.id, category: data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-    },
-  });
-
-  const addCategoryItemMutation = useMutation({
-    mutationFn: () => createCategoryItem({ category, listId: listId ?? "" }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
     },
   });
 
@@ -183,15 +172,7 @@ const ListCategory: React.FC<Props> = (props) => {
                 3 + (list?.show_packed ? 1 : 0) + (list?.show_images ? 1 : 0)
               }
             >
-              <AddItemToCategoryDrawer categoryId={category.id} />
-              <Button
-                variant="linkMuted"
-                size="sm"
-                onClick={() => addCategoryItemMutation.mutate()}
-              >
-                <Plus size="1rem" className="mr-2" />
-                Add Item
-              </Button>
+              <AddItemToCategoryDrawer category={category} />
             </TableCell>
             {list?.show_weights && (
               <TableCell>
