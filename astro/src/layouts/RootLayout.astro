@@ -1,6 +1,7 @@
 ---
-import { Toaster } from "@/components/ui/sonner";
 import "@/global.css";
+import { Toaster } from "@/components/ui/sonner";
+import { ClerkLayout } from "astro-clerk-auth/components/control";
 ---
 
 <script is:inline>
@@ -36,7 +37,9 @@ import "@/global.css";
     <title>PackLighter</title>
   </head>
   <body>
-    <slot />
-    <Toaster client:load />
+    <ClerkLayout>
+      <slot />
+      <Toaster client:load />
+    </ClerkLayout>
   </body>
 </html>
