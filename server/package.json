@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "db:push": "bunx drizzle-kit push:sqlite",
-    "db:seed": "bun run src/db/seed/index.ts",
+    "db:seed": "bun run src/db/seed.ts",
     "db:studio": "bunx drizzle-kit studio"
   },
   "dependencies": {
