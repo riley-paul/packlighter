@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { clerkMiddleware } from "@hono/clerk-auth";
 
 import lists from "./routes/lists";
 import items from "./routes/items";
