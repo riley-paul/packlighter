@@ -1,12 +1,13 @@
 {
   "scripts": {
-    "start": "vercel dev",
-    "deploy": "vercel"
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts"
   },
   "dependencies": {
     "hono": "^4.2.2"
   },
   "devDependencies": {
-    "vercel": "^32.4.1"
+    "@cloudflare/workers-types": "^4.20240403.0",
+    "wrangler": "^3.47.0"
   }
 }
