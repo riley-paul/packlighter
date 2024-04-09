@@ -1,11 +1,12 @@
 import { integer, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 import { weightUnits } from "./enums";
+import { v4 as uuid } from "uuid";
 
 export const itemsTable = sqliteTable("items", {
   id: text("id")
     .notNull()
-    .default(sql`(UUID())`)
+    .$defaultFn(() => uuid())
     .primaryKey(),
   user: text("user").notNull(),
   created: text("created")
@@ -23,7 +24,7 @@ export type ItemInsert = typeof itemsTable.$inferInsert;
 export const listsTable = sqliteTable("lists", {
   id: text("id")
     .notNull()
-    .default(sql`(UUID())`)
+    .$defaultFn(() => uuid())
     .primaryKey(),
   user: text("user").notNull(),
   created: text("created")
@@ -50,7 +51,7 @@ export type ListInsert = typeof listsTable.$inferInsert;
 export const categoriesTable = sqliteTable("categories", {
   id: text("id")
     .notNull()
-    .default(sql`(UUID())`)
+    .$defaultFn(() => uuid())
     .primaryKey(),
   list: text("list")
     .notNull()
@@ -68,7 +69,7 @@ export type CategoryInsert = typeof categoriesTable.$inferInsert;
 export const categoriesItemsTable = sqliteTable("categories_items", {
   id: text("id")
     .notNull()
-    .default(sql`(UUID())`)
+    .$defaultFn(() => uuid())
     .primaryKey(),
   created: text("created")
     .notNull()

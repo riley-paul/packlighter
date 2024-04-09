@@ -1,7 +1,6 @@
 import db from "../drizzle";
 import { itemsTable, listsTable } from "../schema";
 import { itemsData, listsData } from "./data";
-import "dotenv/config";
 
 async function seed() {
   await db.delete(itemsTable);
