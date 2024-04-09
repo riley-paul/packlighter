@@ -1,0 +1,16 @@
+---
+import "@/global.css";
+import { Button } from "@/components/ui/button";
+import RootLayout from "@/layouts/RootLayout.astro";
+import { toast } from "sonner";
+---
+
+<RootLayout>
+  <Button
+    client:load
+    onClick={() => {
+      console.log("hello");
+      toast.success("toast works");
+    }}>Hello</Button
+  >
+</RootLayout>
