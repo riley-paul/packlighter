@@ -1,4 +1,4 @@
-import { Collections, ListsResponse } from "@/lib/types";
+import { Collections, type ListsResponse } from "@/lib/types";
 import { cn, getPaths } from "@/lib/utils";
 import React from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";

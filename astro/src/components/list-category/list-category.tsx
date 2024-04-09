@@ -1,4 +1,4 @@
-import { ExpandedCategory, ListWithCategories } from "@/actions/list";
+import type { ExpandedCategory, ListWithCategories } from "@/actions/list";
 import React from "react";
 import {
   Table,
@@ -38,7 +38,7 @@ import {
   isCategoryFullyPacked,
 } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
-import { ActiveDraggable } from "../app-dnd-wrapper";
+import type { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
 
 interface Props {

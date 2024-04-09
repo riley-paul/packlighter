@@ -16,9 +16,6 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import ChangeEmailDialog from "./forms/change-email-dialog";
-import ChangePasswordDialog from "./forms/change-password-dialog";
-import DeleteAccountDialog from "./forms/delete-account-dialog";
 import { getPaths } from "@/lib/utils";
 
 export default function AccountEditor(): ReturnType<React.FC> {
@@ -41,18 +38,6 @@ export default function AccountEditor(): ReturnType<React.FC> {
 
   return (
     <>
-      <ChangeEmailDialog
-        isOpen={isEmailDialogOpen}
-        setIsOpen={setIsEmailDialogOpen}
-      />
-      <ChangePasswordDialog
-        isOpen={isPasswordDialogOpen}
-        setIsOpen={setIsPasswordDialogOpen}
-      />
-      <DeleteAccountDialog
-        isOpen={isDeteteDialogOpen}
-        setIsOpen={setIsDeleteDialogOpen}
-      />
       <DropdownMenu>
         <DropdownMenuTrigger>
           <div className="flex cursor-pointer items-center text-sm underline-offset-4 hover:underline">

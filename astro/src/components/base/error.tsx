@@ -1,6 +1,6 @@
 import { Bug } from "lucide-react";
 import React from "react";
-import { ErrorResponse, Link, isRouteErrorResponse } from "react-router-dom";
+import { type ErrorResponse, Link, isRouteErrorResponse } from "react-router-dom";
 import { Button, buttonVariants } from "../ui/button";
 import { getPaths } from "@/lib/utils";
 

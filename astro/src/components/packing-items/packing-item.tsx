@@ -1,4 +1,4 @@
-import { Collections, ItemsResponse } from "@/lib/types";
+import { Collections, type ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import { formatWeight } from "@/lib/helpers";
 import Gripper from "../base/gripper";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { ActiveDraggable } from "../app-dnd-wrapper";
+import { type ActiveDraggable } from "../app-dnd-wrapper";
 
 interface Props {
   item: ItemsResponse;

@@ -1,4 +1,4 @@
-import { ExpandedCategory, ListWithCategories } from "@/actions/list";
+import type { ExpandedCategory, ListWithCategories } from "@/actions/list";
 import React from "react";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";

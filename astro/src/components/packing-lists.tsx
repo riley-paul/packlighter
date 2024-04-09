@@ -1,6 +1,6 @@
 import { createList, getLists, updateListsOrder } from "@/actions/list";
 import { queryClient } from "@/lib/query";
-import { Collections, ListsResponse } from "@/lib/types";
+import { Collections, type ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -18,9 +18,9 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent,
+  type DragEndEvent,
   DragOverlay,
-  DragStartEvent,
+  type DragStartEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,

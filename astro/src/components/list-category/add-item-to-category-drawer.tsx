@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "../ui/button";
 import { Plus, X } from "lucide-react";
-import { ExpandedCategory } from "@/actions/list";
+import { type ExpandedCategory } from "@/actions/list";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Collections, ItemsResponse } from "@/lib/types";
+import { Collections, type ItemsResponse } from "@/lib/types";
 import { getItems } from "@/actions/item";
 import SelectPackingItem from "./select-packing-item";
 import { pb } from "@/lib/pocketbase";

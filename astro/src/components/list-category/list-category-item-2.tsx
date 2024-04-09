@@ -2,15 +2,15 @@ import React from "react";
 import Gripper from "../base/gripper";
 import { Checkbox } from "../ui/checkbox";
 import ServerInput from "../input/server-input";
-import { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
+import type { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
 import { queryClient } from "@/lib/query";
 import {
-  CategoriesItemsResponse,
+  type CategoriesItemsResponse,
   Collections,
-  ItemsResponse,
+  type ItemsResponse,
   ItemsWeightUnitOptions,
 } from "@/lib/types";
 import { useParams } from "react-router-dom";

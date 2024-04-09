@@ -1,4 +1,4 @@
-import { Collections, ItemsResponse } from "@/lib/types";
+import { Collections, type ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";

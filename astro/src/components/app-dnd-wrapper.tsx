@@ -1,18 +1,18 @@
 import { updateCategoriesOrder } from "@/actions/category";
 import {
-  ExpandedCategory,
-  ExpandedCategoryItem,
-  ListWithCategories,
+  type ExpandedCategory,
+  type ExpandedCategoryItem,
+  type ListWithCategories,
 } from "@/actions/list";
 import ListCategory from "@/components/list-category/list-category";
 import { queryClient } from "@/lib/query";
-import { Collections, ItemsResponse } from "@/lib/types";
+import { Collections, type ItemsResponse } from "@/lib/types";
 import {
   DndContext,
-  DragEndEvent,
-  DragOverEvent,
+  type DragEndEvent,
+  type DragOverEvent,
   DragOverlay,
-  DragStartEvent,
+  type DragStartEvent,
   KeyboardSensor,
   PointerSensor,
   closestCenter,

@@ -16,7 +16,7 @@ import { Settings } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Collections,
-  ListsResponse,
+  type ListsResponse,
   ListsWeightUnitOptions,
 } from "@/lib/types";
 import { useMutation } from "@tanstack/react-query";

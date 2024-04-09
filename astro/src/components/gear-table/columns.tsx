@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { ItemsResponse } from "@/lib/types";
-import { ColumnDef } from "@tanstack/react-table";
+import { type ItemsResponse } from "@/lib/types";
+import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Copy, Delete, Edit2, MoreHorizontal } from "lucide-react";
 import { formatWeight } from "@/lib/helpers";

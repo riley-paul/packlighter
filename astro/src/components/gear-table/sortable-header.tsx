@@ -1,8 +1,8 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { ItemsResponse } from "@/lib/types";
-import { Column } from "@tanstack/react-table";
+import { type ItemsResponse } from "@/lib/types";
+import { type Column } from "@tanstack/react-table";
 
 type Props = React.PropsWithChildren<{
   column: Column<ItemsResponse, unknown>;

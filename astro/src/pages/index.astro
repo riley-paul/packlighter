@@ -1,16 +1,8 @@
 ---
-import "@/global.css";
-import { Button } from "@/components/ui/button";
 import RootLayout from "@/layouts/RootLayout.astro";
-import { toast } from "sonner";
+import App from "@/app/app.tsx";
 ---
 
 <RootLayout>
-  <Button
-    client:load
-    onClick={() => {
-      console.log("hello");
-      toast.success("toast works");
-    }}>Hello</Button
-  >
+  <App client:only="react" />
 </RootLayout>

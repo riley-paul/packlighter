@@ -1,5 +1,5 @@
 import { getItems } from "@/actions/item";
-import { Collections, ItemsResponse } from "@/lib/types";
+import { Collections, type ItemsResponse } from "@/lib/types";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "../ui/input";
