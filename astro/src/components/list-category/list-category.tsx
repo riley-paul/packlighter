@@ -68,9 +68,7 @@ const ListCategory: React.FC<Props> = (props) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({
-    id: category.id,
-  });
+  } = useSortable({ id: category.id });
 
   const { setNodeRef: droppableRef } = useDroppable({
     id: category.id,
@@ -107,6 +105,7 @@ const ListCategory: React.FC<Props> = (props) => {
 
   return (
     <div
+      key={category.id}
       ref={sortableRef}
       style={style}
       className={cn(

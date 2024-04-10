@@ -21,6 +21,7 @@ import {
   type DragEndEvent,
   DragOverlay,
   type DragStartEvent,
+  TouchSensor,
 } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
@@ -74,7 +75,8 @@ export default function PackingLists(): ReturnType<React.FC> {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
+    useSensor(TouchSensor)
   );
 
   function handleDragStart(event: DragStartEvent) {

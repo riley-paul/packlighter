@@ -25,6 +25,7 @@ import {
   DragOverlay,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   closestCenter,
   useSensor,
   useSensors,
@@ -35,7 +36,9 @@ import {
   SortableContext,
   arrayMove,
   sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -71,6 +74,26 @@ export default function ListPage(): ReturnType<React.FC> {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
+    onMutate: async (newCategories) => {
+      await queryClient.cancelQueries({
+        queryKey: [Collections.Lists, listId],
+      });
+      const previousList = queryClient.getQueryData<ListWithCategories>([
+        Collections.Lists,
+        listId,
+      ]);
+      if (!previousList) return;
+      const newList = { ...previousList, categories: newCategories };
+      queryClient.setQueryData<ListWithCategories>(
+        [Collections.Lists, listId],
+        newList
+      );
+      return { previousList };
+    },
+    onError: (_, __, context) => {
+      if (context?.previousList)
+        queryClient.setQueryData([Collections.Lists], context.previousList);
+    },
   });
 
   function handleDragStart(event: DragStartEvent) {
@@ -101,7 +124,8 @@ export default function ListPage(): ReturnType<React.FC> {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
+    useSensor(TouchSensor)
   );
 
   if (listQuery.isLoading)
@@ -149,12 +173,14 @@ export default function ListPage(): ReturnType<React.FC> {
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
+            modifiers={[restrictToVerticalAxis]}
           >
-            <SortableContext items={listQuery.data.categories}>
-              {(reorderCategoriesMutation.isPending
-                ? reorderCategoriesMutation.variables
-                : listQuery.data.categories
-              ).map((category) => (
+            <SortableContext
+              id="list-categories"
+              items={listQuery.data.categories}
+              strategy={verticalListSortingStrategy}
+            >
+              {listQuery.data.categories.map((category) => (
                 <ListCategory key={category.id} category={category} />
               ))}
             </SortableContext>
