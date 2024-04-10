@@ -70,7 +70,6 @@ const ListCategory: React.FC<Props> = (props) => {
     isDragging,
   } = useSortable({
     id: category.id,
-    data: sortableData,
   });
 
   const { setNodeRef: droppableRef } = useDroppable({

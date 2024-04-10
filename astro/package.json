@@ -15,6 +15,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@astrojs/vercel": "^7.5.2",
     "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/modifiers": "^7.0.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "^3.3.4",

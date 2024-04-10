@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import React from "react";
 import Logo from "./logo";
 import PackingItems from "./packing-items/packing-items";
-import PackingLists from "./packing-lists";
+import PackingLists from "./packing-lists/packing-lists";
 import { Button } from "./ui/button";
 import {
   ResizablePanelGroup,

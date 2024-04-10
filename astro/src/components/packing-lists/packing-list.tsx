@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 
 import {
   AlertDialog,
@@ -24,14 +24,14 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { MoreHorizontal, Delete, Copy } from "lucide-react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/actions/list";
 import { queryClient } from "@/lib/query";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Gripper from "./base/gripper";
+import Gripper from "../base/gripper";
 import { toast } from "sonner";
 
 interface Props {
