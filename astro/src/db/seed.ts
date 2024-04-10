@@ -1,13 +1,13 @@
 import db from "./drizzle";
 import {
-  CategoryInsert,
-  CategoryItemInsert,
+  type CategoryInsert,
+  type CategoryItemInsert,
   categoriesItemsTable,
   categoriesTable,
   itemsTable,
   listsTable,
 } from "./schema";
-import { ItemInsert, ListInsert } from "./schema";
+import type { ItemInsert, ListInsert } from "./schema";
 
 const USER_ID = "user_2ekgTFQpkuJqHh4Kyt4CQ7gAh6k";
 
