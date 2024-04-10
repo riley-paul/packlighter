@@ -40,10 +40,11 @@ import { ClerkLayout } from "astro-clerk-auth/components/control";
     <meta name="generator" content={Astro.generator} />
     <title>PackLighter</title>
   </head>
-  <body>
-    <ClerkLayout>
+  <ClerkLayout>
+    <body>
       <slot />
       <Toaster client:load richColors />
-    </ClerkLayout>
-  </body>
+    </body>
+  </ClerkLayout>
+
 </html>
