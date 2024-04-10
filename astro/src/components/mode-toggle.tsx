@@ -25,6 +25,10 @@ export function ModeToggle() {
       (theme === "system" &&
         window.matchMedia("(prefers-color-scheme: dark)").matches);
     document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+    document.documentElement.style.setProperty(
+      "color-scheme",
+      isDark ? "dark" : "light"
+    );
   }, [theme]);
 
   return (

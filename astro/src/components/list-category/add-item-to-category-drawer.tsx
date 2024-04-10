@@ -98,7 +98,7 @@ const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
               <Plus size="1rem" className="mr-2" />
               Add
             </Button>
-            <DrawerClose>
+            <DrawerClose asChild>
               <Button size="icon" variant="secondary">
                 <X />
               </Button>

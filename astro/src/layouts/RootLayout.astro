@@ -15,6 +15,10 @@ import { ClerkLayout } from "astro-clerk-auth/components/control";
   };
   const isDark = getThemePreference() === "dark";
   document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+  document.documentElement.style.setProperty(
+    "color-scheme",
+    isDark ? "dark" : "light"
+  );
 
   if (typeof localStorage !== "undefined") {
     const observer = new MutationObserver(() => {
@@ -39,7 +43,7 @@ import { ClerkLayout } from "astro-clerk-auth/components/control";
   <body>
     <ClerkLayout>
       <slot />
-      <Toaster client:load />
+      <Toaster client:load richColors />
     </ClerkLayout>
   </body>
 </html>
