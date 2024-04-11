@@ -33,6 +33,7 @@ import { CSS } from "@dnd-kit/utilities";
 import Gripper from "../base/gripper";
 import { toast } from "sonner";
 import type { List } from "@/db/schema";
+import { trpc } from "@/client";
 
 interface Props {
   list: List;
@@ -47,9 +48,9 @@ const PackingList: React.FC<Props> = (props) => {
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
-  const deleteToastId = React.useRef<string | number | undefined>(undefined);
+  const deleteToastId = React.useRef<string | number | undefined>();
   const deleteListMutation = useMutation({
-    mutationFn: deleteList,
+    mutationFn: trpc.lists.delete.mutate,
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting list...");
     },

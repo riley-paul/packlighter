@@ -1,5 +1,5 @@
 import db from "@/db/drizzle";
-import { privateProcedure, publicProcedure, router } from "../trpc";
+import { privateProcedure, router } from "../trpc";
 import {
   categoriesItemsTable,
   categoriesTable,
@@ -9,7 +9,7 @@ import {
   type ExpandedList,
 } from "@/db/schema";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 const listRouter = router({
@@ -63,6 +63,29 @@ const listRouter = router({
       const result: ExpandedList = { ...list, categories: expandedCategories };
       return result;
     }),
+  delete: privateProcedure
+    .input(z.string())
+    .mutation(async ({ input, ctx: { userId } }) =>
+      db
+        .delete(listsTable)
+        .where(and(eq(listsTable.user, userId), eq(listsTable.id, input)))
+        .returning()
+    ),
+  create: privateProcedure.mutation(async ({ ctx: { userId } }) => {
+    const currentSortOrders = await db
+      .select({ value: listsTable.sortOrder })
+      .from(listsTable)
+      .where(eq(listsTable.user, userId));
+    const maxSortOrder = Math.max(...currentSortOrders.map((r) => r.value));
+    const newSortOrder = maxSortOrder + 1;
+
+    const newList = await db
+      .insert(listsTable)
+      .values({ user: userId, sortOrder: newSortOrder })
+      .execute();
+
+    return newList;
+  }),
 });
 
 export default listRouter;

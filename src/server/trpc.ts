@@ -20,12 +20,14 @@ export const middleware = t.middleware;
 export const publicProcedure = t.procedure;
 
 const isLoggedIn = middleware(async ({ ctx, next }) => {
-  if (!ctx.userId) {
+  const { userId } = ctx;
+
+  if (!userId) {
     throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
   }
 
   return next({
-    ctx: { ...ctx },
+    ctx: { ...ctx, userId },
   });
 });
 
