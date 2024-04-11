@@ -3,17 +3,11 @@ import { TableCell, TableRow } from "../ui/table";
 import Gripper from "../base/gripper";
 import { Checkbox } from "../ui/checkbox";
 import ServerInput from "../input/server-input";
-import type { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
 import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
 import { queryClient } from "@/lib/query";
-import {
-  type CategoriesItemsResponse,
-  Collections,
-  type ItemsResponse,
-  ItemsWeightUnitOptions,
-} from "@/lib/types";
+
 import { useParams } from "react-router-dom";
 import ItemImage from "../item-image";
 import { CSS } from "@dnd-kit/utilities";
@@ -27,30 +21,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import type { ExpandedCategoryItem, List } from "@/db/schema";
 
 interface Props {
   item: ExpandedCategoryItem;
+  list: List;
   isOverlay?: boolean;
 }
 
 const ListCategoryItem: React.FC<Props> = (props) => {
-  const { item, isOverlay } = props;
+  const { item, isOverlay, list } = props;
   const { listId } = useParams();
-
-  const list = queryClient.getQueryData<ListWithCategories>([
-    Collections.Lists,
-    listId,
-  ]);
-
-  const sortableData: ActiveDraggable = {
-    type: "category-item",
-    data: item,
-  };
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
       id: item.id,
-      data: sortableData,
     });
   const style = { transform: CSS.Translate.toString(transform) };
 

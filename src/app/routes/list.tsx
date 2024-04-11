@@ -49,8 +49,8 @@ export default function ListPage(): ReturnType<React.FC> {
   });
 
   const updateListMutation = useMutation({
-    mutationFn: (data: Partial<ListWithCategories>) =>
-      updateList({ id: listId, list: data }),
+    mutationFn: (data: Partial<ExpandedList>) =>
+      trpc.lists.update.mutate({ id: listId, value: data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
@@ -177,12 +177,20 @@ export default function ListPage(): ReturnType<React.FC> {
               strategy={verticalListSortingStrategy}
             >
               {listQuery.data.categories.map((category) => (
-                <ListCategory key={category.id} category={category} />
+                <ListCategory
+                  list={listQuery.data}
+                  key={category.id}
+                  category={category}
+                />
               ))}
             </SortableContext>
             <DragOverlay>
               {activeCategory ? (
-                <ListCategory category={activeCategory} isOverlay />
+                <ListCategory
+                  list={listQuery.data}
+                  category={activeCategory}
+                  isOverlay
+                />
               ) : null}
             </DragOverlay>
           </DndContext>

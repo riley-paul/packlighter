@@ -20,13 +20,8 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import {
-  deleteCategory,
-  toggleCategoryPacked,
-  updateCategory,
-} from "@/actions/category";
-import { Collections, ListsWeightUnitOptions } from "@/lib/types";
-import { queryClient } from "@/lib/query";
+import { ListsWeightUnitOptions } from "@/lib/types";
+import { CacheKeys, queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ServerInput from "../input/server-input";
@@ -38,22 +33,21 @@ import {
 } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
-import type { ExpandedCategory, ExpandedList } from "@/db/schema";
+import type { ExpandedCategory, List } from "@/db/schema";
+import { trpc } from "@/client";
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
 
 interface Props {
   category: ExpandedCategory;
+  list: List;
   isOverlay?: boolean;
 }
 
 const ListCategory: React.FC<Props> = (props) => {
-  const { category, isOverlay } = props;
+  const { category, isOverlay, list } = props;
 
   const { listId } = useParams();
-
-  const list = queryClient.getQueryData<ExpandedList>([
-    Collections.Lists,
-    listId,
-  ]);
 
   const {
     attributes,
@@ -75,25 +69,25 @@ const ListCategory: React.FC<Props> = (props) => {
   };
 
   const deleteCategoryMutation = useMutation({
-    mutationFn: () => deleteCategory(category),
+    mutationFn: () => trpc.categories.delete.mutate(category.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
       toast.success(`${category.name || "Unnamed"} category deleted`);
     },
   });
 
   const updateCategoryMutation = useMutation({
     mutationFn: (data: Partial<ExpandedCategory>) =>
-      updateCategory({ id: category.id, category: data }),
+      trpc.categories.update.mutate({ id: category.id, value: data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
   });
 
-  const toggleCompletionMutation = useMutation({
-    mutationFn: () => toggleCategoryPacked(category),
+  const togglePackedMutation = useMutation({
+    mutationFn: () => trpc.categories.togglePacked.mutate({ id: category.id }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
   });
 
@@ -114,16 +108,16 @@ const ListCategory: React.FC<Props> = (props) => {
             <TableHead className="w-4 px-1">
               <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
             </TableHead>
-            {list?.showPacked && (
+            {list.showPacked && (
               <TableHead className="w-8">
                 <Checkbox
                   checked={isCategoryFullyPacked(category)}
-                  onCheckedChange={() => toggleCompletionMutation.mutate()}
+                  onCheckedChange={() => togglePackedMutation.mutate()}
                 />
               </TableHead>
             )}
             <TableHead
-              colSpan={2 + (list?.showImages ? 1 : 0)}
+              colSpan={2 + (list.showImages ? 1 : 0)}
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput
@@ -135,7 +129,7 @@ const ListCategory: React.FC<Props> = (props) => {
                 }
               />
             </TableHead>
-            {list?.showWeight && (
+            {list.showWeights && (
               <TableHead className="w-[7rem] text-center">Weight</TableHead>
             )}
             <TableHead className="w-[5rem]">Qty</TableHead>
@@ -161,24 +155,27 @@ const ListCategory: React.FC<Props> = (props) => {
           <TableRow>
             <TableCell
               colSpan={
-                3 + (list?.show_packed ? 1 : 0) + (list?.show_images ? 1 : 0)
+                3 + (list.showPacked ? 1 : 0) + (list.showImages ? 1 : 0)
               }
             >
-              <AddItemToCategoryDrawer category={category} />
+              <Button size="sm" variant="linkMuted">
+                <Plus size="1rem" className="mr-2" />
+                Add Item
+              </Button>
             </TableCell>
-            {list?.show_weights && (
+            {list?.showWeights && (
               <TableCell>
                 <div className="flex gap-2 justify-end">
                   <span>
                     {formatWeight(
                       getCategoryWeight(
                         category,
-                        list?.weight_unit ?? ListsWeightUnitOptions.g
+                        list.weightUnit ?? ListsWeightUnitOptions.g
                       )
                     )}
                   </span>
                   <span className="min-w-8">
-                    {list?.weight_unit ?? ListsWeightUnitOptions.g}
+                    {list.weightUnit ?? ListsWeightUnitOptions.g}
                   </span>
                 </div>
               </TableCell>

@@ -4,6 +4,7 @@ import {
   categoriesItemsTable,
   categoriesTable,
   itemsTable,
+  listSchema,
   listsTable,
   type ExpandedCategory,
   type ExpandedList,
@@ -86,6 +87,16 @@ const listRouter = router({
       .returning();
     return newList[0];
   }),
+  update: privateProcedure
+    .input(z.object({ id: z.string(), value: listSchema.partial() }))
+    .mutation(async ({ input }) => {
+      const updated = await db
+        .update(listsTable)
+        .set(input.value)
+        .where(eq(listsTable.id, input.id))
+        .returning();
+      return updated[0];
+    }),
   reorder: privateProcedure
     .input(z.array(z.string()))
     .mutation(async ({ input }) => {

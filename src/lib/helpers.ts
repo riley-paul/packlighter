@@ -1,13 +1,10 @@
+import type { WeightUnit } from "@/db/enums";
 import type {
   ExpandedCategory,
   ExpandedCategoryItem,
-  ListWithCategories,
-} from "@/actions/list";
-import {
-  type ItemsResponse,
-  ItemsWeightUnitOptions,
-  ListsWeightUnitOptions,
-} from "./types";
+  ExpandedList,
+  Item,
+} from "@/db/schema";
 
 export const isCategoryFullyPacked = (category: ExpandedCategory) =>
   category.items.length > 0 && category.items.every((i) => i.packed);
@@ -21,7 +18,7 @@ export const isItemUntouched = (item: ExpandedCategoryItem) =>
   item.quantity === 1 &&
   !item.packed;
 
-export const getListItemIds = (list: ListWithCategories): string[] =>
+export const getListItemIds = (list: ExpandedList): string[] =>
   list.categories.map((c) => c.items.map((i) => i.item)).flat();
 
 export const getSortOrderFromIndex = (
@@ -34,23 +31,20 @@ export const getSortOrderFromIndex = (
   return (sortOrders[insertionIndex - 1] + sortOrders[insertionIndex]) / 2;
 };
 
-export const getItemWeightInUnit = (
-  item: ItemsResponse,
-  unit: ListsWeightUnitOptions
-) => {
-  const gramsConversions: Record<ItemsWeightUnitOptions, number> = {
+export const getItemWeightInUnit = (item: Item, unit: WeightUnit) => {
+  const gramsConversions: Record<WeightUnit, number> = {
     oz: 28.3495,
     lb: 453.592,
     kg: 1000,
     g: 1,
   };
-  const weight_g = item.weight * gramsConversions[item.weight_unit];
+  const weight_g = item.weight * gramsConversions[item.weightUnit];
   return weight_g / gramsConversions[unit];
 };
 
 export const getCategoryWeight = (
   category: ExpandedCategory,
-  unit: ListsWeightUnitOptions
+  unit: WeightUnit
 ) =>
   category.items.reduce((acc, item) => {
     const itemWeight = getItemWeightInUnit(item.itemData, unit);
