@@ -40,6 +40,7 @@ export default function PackingLists(): ReturnType<React.FC> {
   const listsQuery = useQuery({
     queryKey: [CacheKeys.Lists],
     queryFn: () => trpc.lists.get.query(),
+    retry: false,
   });
 
   const newListMutation = useMutation({
@@ -114,7 +115,7 @@ export default function PackingLists(): ReturnType<React.FC> {
         )}
       >
         {listsQuery.isLoading && <Loader />}
-        {listsQuery.isError && <Error error={listsQuery.error} />}
+        {listsQuery.isError && <Error small error={listsQuery.error} />}
         {listsQuery.isSuccess && (
           <DndContext
             sensors={sensors}

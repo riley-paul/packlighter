@@ -1,10 +1,10 @@
 import React from "react";
-import { Button, buttonVariants } from "./ui/button";
+import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "./mode-toggle";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
-import { SignedIn, SignedOut, UserButton } from "astro-clerk-auth/client/react";
+import AccountButton from "./account-button";
 
 type Props = React.PropsWithChildren;
 
@@ -29,14 +29,7 @@ export default function AppHeader(props: Props): ReturnType<React.FC<Props>> {
           {children}
         </div>
         <ModeToggle />
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
-        <SignedOut>
-          <a href="/sign-in" className={cn(buttonVariants())}>
-            Sign in
-          </a>
-        </SignedOut>
+        <AccountButton />
       </div>
     </header>
   );
