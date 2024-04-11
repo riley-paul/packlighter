@@ -3,12 +3,14 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "../ui/textarea";
 
 type Props = {
-  currentValue: string | undefined;
-  onUpdate: (value: string | undefined) => void;
+  currentValue: string | null | undefined;
+  onUpdate: (value: string | null | undefined) => void;
   selectOnFocus?: boolean;
 } & React.InputHTMLAttributes<HTMLTextAreaElement>;
 
-export default function ServerTextarea(props: Props): ReturnType<React.FC<Props>> {
+export default function ServerTextarea(
+  props: Props
+): ReturnType<React.FC<Props>> {
   const { currentValue, onUpdate, selectOnFocus, ...rest } = props;
 
   const inputRef = React.useRef<HTMLTextAreaElement>(null);

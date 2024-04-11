@@ -1,4 +1,3 @@
-import type { ExpandedCategory, ListWithCategories } from "@/actions/list";
 import React from "react";
 import {
   Table,
@@ -40,6 +39,8 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 import type { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
+import type { ExpandedCategory } from "@/actions/list";
+import type { ExpandedList } from "@/db/schema";
 
 interface Props {
   category: ExpandedCategory;
@@ -51,7 +52,7 @@ const ListCategory: React.FC<Props> = (props) => {
 
   const { listId } = useParams();
 
-  const list = queryClient.getQueryData<ListWithCategories>([
+  const list = queryClient.getQueryData<ExpandedList>([
     Collections.Lists,
     listId,
   ]);
@@ -120,7 +121,7 @@ const ListCategory: React.FC<Props> = (props) => {
             <TableHead className="w-4 px-1">
               <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
             </TableHead>
-            {list?.show_packed && (
+            {list?.showPacked && (
               <TableHead className="w-8">
                 <Checkbox
                   checked={isCategoryFullyPacked(category)}
@@ -129,7 +130,7 @@ const ListCategory: React.FC<Props> = (props) => {
               </TableHead>
             )}
             <TableHead
-              colSpan={2 + (list?.show_images ? 1 : 0)}
+              colSpan={2 + (list?.showImages ? 1 : 0)}
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput
@@ -141,7 +142,7 @@ const ListCategory: React.FC<Props> = (props) => {
                 }
               />
             </TableHead>
-            {list?.show_weights && (
+            {list?.showWeight && (
               <TableHead className="w-[7rem] text-center">Weight</TableHead>
             )}
             <TableHead className="w-[5rem]">Qty</TableHead>

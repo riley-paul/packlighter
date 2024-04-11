@@ -1,10 +1,4 @@
 import { createCategory, updateCategoriesOrder } from "@/actions/category";
-import {
-  type ListWithCategories,
-  getList,
-  updateList,
-  type ExpandedCategory,
-} from "@/actions/list";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
@@ -40,6 +34,7 @@ import {
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { trpc } from "@/client";
+import type { ExpandedCategory, ExpandedList } from "@/db/schema";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -79,13 +74,13 @@ export default function ListPage(): ReturnType<React.FC> {
       await queryClient.cancelQueries({
         queryKey: [Collections.Lists, listId],
       });
-      const previousList = queryClient.getQueryData<ListWithCategories>([
+      const previousList = queryClient.getQueryData<ExpandedList>([
         Collections.Lists,
         listId,
       ]);
       if (!previousList) return;
       const newList = { ...previousList, categories: newCategories };
-      queryClient.setQueryData<ListWithCategories>(
+      queryClient.setQueryData<ExpandedList>(
         [Collections.Lists, listId],
         newList
       );

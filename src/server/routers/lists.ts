@@ -5,6 +5,8 @@ import {
   categoriesTable,
   itemsTable,
   listsTable,
+  type ExpandedCategory,
+  type ExpandedList,
 } from "@/db/schema";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
@@ -18,36 +20,49 @@ const listRouter = router({
       .orderBy(listsTable.sortOrder);
     return lists;
   }),
-  getById: privateProcedure.input(z.string()).query(async ({ input }) => {
-    const list = await db.query.listsTable.findFirst({
-      where: eq(listsTable.id, input),
-    });
+  getById: privateProcedure
+    .input(z.string())
+    .query(async ({ input, ctx: { userId } }) => {
+      const list = await db.query.listsTable.findFirst({
+        where: eq(listsTable.id, input),
+      });
 
-    if (!list) {
-      throw new TRPCError({ code: "NOT_FOUND", message: "List not found" });
-    }
+      if (!list) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "List not found" });
+      }
 
-    const categories = await db
-      .select()
-      .from(categoriesTable)
-      .where(eq(categoriesTable.list, input));
+      if (list.user !== userId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not allowed to access this list",
+        });
+      }
 
-    const categoryItems = await db
-      .select()
-      .from(categoriesItemsTable)
-      .leftJoin(itemsTable, eq(categoriesItemsTable.item, itemsTable.id));
+      const categories = await db
+        .select()
+        .from(categoriesTable)
+        .where(eq(categoriesTable.list, input));
 
-    const expandedCategories = categories.map((category) => {
-      const items = categoryItems
-        .filter((ci) => ci.categories_items.category === category.id)
-        .filter((ci) => ci.items !== null)
-        .map((ci) => ({ ...ci.categories_items, itemData: ci.items! }));
+      const categoryItems = await db
+        .select()
+        .from(categoriesItemsTable)
+        .leftJoin(itemsTable, eq(categoriesItemsTable.item, itemsTable.id))
+        .where(eq(itemsTable.user, userId));
 
-      return { ...category, items };
-    });
+      const expandedCategories: ExpandedCategory[] = categories.map(
+        (category) => {
+          const items = categoryItems
+            .filter((ci) => ci.categories_items.category === category.id)
+            .filter((ci) => ci.items !== null)
+            .map((ci) => ({ ...ci.categories_items, itemData: ci.items! }));
 
-    return { ...list, categories: expandedCategories };
-  }),
+          return { ...category, items };
+        }
+      );
+
+      const result: ExpandedList = { ...list, categories: expandedCategories };
+      return result;
+    }),
 });
 
 export default listRouter;

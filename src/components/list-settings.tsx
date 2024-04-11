@@ -22,9 +22,10 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { updateList } from "@/actions/list";
 import { queryClient } from "@/lib/query";
+import type { List } from "@/db/schema";
 
 interface Props {
-  list: ListsResponse;
+  list: List;
 }
 
 const ListSettings: React.FC<Props> = (props) => {

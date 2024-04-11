@@ -107,3 +107,8 @@ export type CategoryItemInsert = typeof categoriesItemsTable.$inferInsert;
 export const categoryItemSchema = createSelectSchema(categoriesItemsTable);
 export const categoryItemInsertSchema =
   createInsertSchema(categoriesItemsTable);
+
+// Extra types
+export type ExpandedCategoryItem = CategoryItem & { itemData: Item };
+export type ExpandedCategory = Category & { items: ExpandedCategoryItem[] };
+export type ExpandedList = List & { categories: ExpandedCategory[] };
