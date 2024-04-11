@@ -10,7 +10,7 @@ import {
   type ExpandedList,
 } from "@/db/schema";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 const listRouter = router({
@@ -109,6 +109,23 @@ const listRouter = router({
         )
       );
     }),
+  unpack: privateProcedure.input(z.string()).mutation(async ({ input }) => {
+    const categoryItems = await db
+      .select({ id: categoriesItemsTable.id })
+      .from(categoriesItemsTable)
+      .leftJoin(
+        categoriesTable,
+        eq(categoriesTable.id, categoriesItemsTable.category)
+      )
+      .where(eq(categoriesTable.list, input));
+
+    const ids = categoryItems.filter((i) => i !== null).map((ci) => ci.id!);
+
+    await db
+      .update(categoriesItemsTable)
+      .set({ packed: false })
+      .where(inArray(categoriesItemsTable.id, ids));
+  }),
 });
 
 export default listRouter;

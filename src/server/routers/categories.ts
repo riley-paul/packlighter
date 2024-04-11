@@ -48,7 +48,7 @@ const categoriesRouter = router({
       );
     }),
   togglePacked: privateProcedure
-    .input(z.object({ value: z.boolean().optional(), id: z.string() }))
+    .input(z.object({ id: z.string(), value: z.boolean().optional() }))
     .mutation(async ({ input }) => {
       const categoryItems = await db
         .select()
@@ -61,7 +61,7 @@ const categoriesRouter = router({
       await db
         .update(categoriesItemsTable)
         .set({ packed: newValue })
-        .where(eq(categoriesItemsTable.id, input.id));
+        .where(eq(categoriesItemsTable.category, input.id));
     }),
 });
 

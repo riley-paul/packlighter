@@ -3,6 +3,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -30,6 +31,13 @@ const ListSettings: React.FC<Props> = (props) => {
   const updateMutation = useMutation({
     mutationFn: (data: Partial<List>) =>
       trpc.lists.update.mutate({ id: list.id, value: data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, list.id] });
+    },
+  });
+
+  const unpackMutation = useMutation({
+    mutationFn: () => trpc.lists.unpack.mutate(list.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, list.id] });
     },
@@ -107,8 +115,12 @@ const ListSettings: React.FC<Props> = (props) => {
         >
           Show Prices
         </DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => unpackMutation.mutate()}>
+          Unpack everything
+        </DropdownMenuItem>
       </DropdownMenuContent>
-    </DropdownMenu>
+    </DropdownMenu> 
   );
 };
 
