@@ -1,6 +1,5 @@
 import { createList, getLists, updateListsOrder } from "@/actions/list";
-import { queryClient } from "@/lib/query";
-import { Collections, type ListsResponse } from "@/lib/types";
+import { CacheKeys, fetchSafely, queryClient } from "@/lib/query";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -32,42 +31,42 @@ import {
 } from "@dnd-kit/sortable";
 import { cn, getPaths } from "@/lib/utils";
 import Placeholder from "../base/placeholder";
+import { z } from "zod";
+import { listSchema, type List } from "@/db/schema";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
 
-  const [activeList, setActiveList] = React.useState<ListsResponse | null>(
-    null
-  );
+  const [activeList, setActiveList] = React.useState<List | null>(null);
 
-  const listsQuery = useQuery<ListsResponse[], Error>({
-    queryKey: [Collections.Lists],
-    queryFn: getLists,
+  const listsQuery = useQuery({
+    queryKey: [CacheKeys.List],
+    queryFn: () => fetchSafely("/api/lists", z.array(listSchema)),
   });
 
   const newListMutation = useMutation({
     mutationFn: createList,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
       navigate(getPaths.list(data.id));
     },
   });
 
   const reorderListsMutation = useMutation({
-    mutationFn: (lists: ListsResponse[]) =>
+    mutationFn: (lists: List[]) =>
       updateListsOrder(lists.map((i) => i.id)),
     onMutate: async (newLists) => {
-      await queryClient.cancelQueries({ queryKey: [Collections.Lists] });
-      const previousLists = queryClient.getQueryData([Collections.Lists]);
-      queryClient.setQueryData([Collections.Lists], newLists);
+      await queryClient.cancelQueries({ queryKey: [CacheKeys.List] });
+      const previousLists = queryClient.getQueryData([CacheKeys.List]);
+      queryClient.setQueryData([CacheKeys.List], newLists);
       return { previousLists };
     },
     onError: (_, __, context) => {
       if (context?.previousLists)
-        queryClient.setQueryData([Collections.Lists], context.previousLists);
+        queryClient.setQueryData([CacheKeys.List], context.previousLists);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
     },
   });
 

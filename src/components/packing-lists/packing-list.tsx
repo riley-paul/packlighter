@@ -1,4 +1,3 @@
-import { Collections, type ListsResponse } from "@/lib/types";
 import { cn, getPaths } from "@/lib/utils";
 import React from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -27,15 +26,16 @@ import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { deleteList } from "@/actions/list";
-import { queryClient } from "@/lib/query";
+import { CacheKeys, queryClient } from "@/lib/query";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Gripper from "../base/gripper";
 import { toast } from "sonner";
+import type { List } from "@/db/schema";
 
 interface Props {
-  list: ListsResponse;
+  list: List;
   isOverlay?: boolean;
 }
 
@@ -54,7 +54,7 @@ const PackingList: React.FC<Props> = (props) => {
       deleteToastId.current = toast.loading("Deleting list...");
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
       toast.success("List deleted successfully", { id: deleteToastId.current });
       if (variables === listId) {
         navigate(getPaths.home());
