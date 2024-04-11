@@ -1,6 +1,10 @@
 import db from "@/db/drizzle";
 import { privateProcedure, router } from "../trpc";
-import { categoriesItemsTable, categoryItemSchema } from "@/db/schema";
+import {
+  categoriesItemsTable,
+  categoryItemSchema,
+  itemsTable,
+} from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -21,6 +25,21 @@ const categoriesItemsRouter = router({
         .where(eq(categoriesItemsTable.id, input.id))
         .returning();
       return updated[0];
+    }),
+  createEmpty: privateProcedure
+    .input(z.object({ categoryId: z.string() }))
+    .mutation(async ({ input, ctx: { userId } }) => {
+      const createdItem = await db
+        .insert(itemsTable)
+        .values({ user: userId })
+        .returning();
+
+      const created = await db
+        .insert(categoriesItemsTable)
+        .values({ category: input.categoryId, item: createdItem[0].id })
+        .returning();
+
+      return created[0];
     }),
   togglePacked: privateProcedure
     .input(z.object({ value: z.boolean().optional(), id: z.string() }))

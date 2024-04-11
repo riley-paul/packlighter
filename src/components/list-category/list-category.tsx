@@ -90,6 +90,15 @@ const ListCategory: React.FC<Props> = (props) => {
     },
   });
 
+  const createItemMutation = useMutation({
+    mutationFn: () =>
+      trpc.categoriesItems.createEmpty.mutate({ categoryId: category.id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+    },
+  });
+
   return (
     <div
       key={category.id}
@@ -159,7 +168,11 @@ const ListCategory: React.FC<Props> = (props) => {
                 3 + (list.showPacked ? 1 : 0) + (list.showImages ? 1 : 0)
               }
             >
-              <Button size="sm" variant="linkMuted">
+              <Button
+                size="sm"
+                variant="linkMuted"
+                onClick={() => createItemMutation.mutate()}
+              >
                 <Plus size="1rem" className="mr-2" />
                 Add Item
               </Button>

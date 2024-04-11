@@ -70,7 +70,6 @@ const PackingItems: React.FC = () => {
   const itemsQuery = useQuery({
     queryKey: [CacheKeys.Items],
     queryFn: () => trpc.items.get.query(),
-    retry: false,
   });
 
   const navigate = useNavigate();

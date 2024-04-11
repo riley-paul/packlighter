@@ -21,7 +21,6 @@ import {
   type DragStartEvent,
   TouchSensor,
 } from "@dnd-kit/core";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   arrayMove,
   SortableContext,
@@ -122,7 +121,6 @@ export default function PackingLists(): ReturnType<React.FC> {
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
-            modifiers={[restrictToVerticalAxis]}
           >
             <SortableContext
               id="packing-lists"

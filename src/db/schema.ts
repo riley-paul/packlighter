@@ -13,8 +13,8 @@ export const itemsTable = sqliteTable("items", {
   created: text("created")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
-  name: text("name"),
-  description: text("description"),
+  name: text("name").notNull().default(""),
+  description: text("description").notNull().default(""),
   weight: real("weight").notNull().default(0),
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
 });
