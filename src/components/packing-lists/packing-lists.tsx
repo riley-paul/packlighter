@@ -33,6 +33,7 @@ import { cn, getPaths } from "@/lib/utils";
 import Placeholder from "../base/placeholder";
 import { z } from "zod";
 import { listSchema, type List } from "@/db/schema";
+import { trpc } from "@/client";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ export default function PackingLists(): ReturnType<React.FC> {
 
   const listsQuery = useQuery({
     queryKey: [CacheKeys.List],
-    queryFn: () => fetchSafely("/api/lists", z.array(listSchema)),
+    queryFn: () => trpc.lists.get.query(),
   });
 
   const newListMutation = useMutation({
@@ -53,8 +54,7 @@ export default function PackingLists(): ReturnType<React.FC> {
   });
 
   const reorderListsMutation = useMutation({
-    mutationFn: (lists: List[]) =>
-      updateListsOrder(lists.map((i) => i.id)),
+    mutationFn: (lists: List[]) => updateListsOrder(lists.map((i) => i.id)),
     onMutate: async (newLists) => {
       await queryClient.cancelQueries({ queryKey: [CacheKeys.List] });
       const previousLists = queryClient.getQueryData([CacheKeys.List]);
