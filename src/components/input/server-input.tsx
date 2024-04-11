@@ -6,6 +6,7 @@ type Props = {
   currentValue: string | null | undefined;
   onUpdate: (value: string | undefined | null | undefined) => void;
   selectOnFocus?: boolean;
+  className?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export default function ServerInput(props: Props): ReturnType<React.FC<Props>> {

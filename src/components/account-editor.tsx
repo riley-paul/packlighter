@@ -26,6 +26,8 @@ export default function AccountEditor(): ReturnType<React.FC> {
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = React.useState(false);
   const [isDeteteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
+  console.log(isEmailDialogOpen, isPasswordDialogOpen, isDeteteDialogOpen);
+
   const navigate = useNavigate();
 
   const logout = () => {

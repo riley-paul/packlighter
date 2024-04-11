@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { type SignUpSchema, signUp, signUpSchema } from "@/actions/auth";
 import { Loader2, Send } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { ClientResponseError } from "pocketbase";
 import { toast } from "sonner";
 import {
@@ -24,7 +23,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { getPaths } from "@/lib/utils";
 
 const defaultForm: SignUpSchema = {
   username: "",

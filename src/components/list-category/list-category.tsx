@@ -37,10 +37,8 @@ import {
   isCategoryFullyPacked,
 } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
-import type { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
-import type { ExpandedCategory } from "@/actions/list";
-import type { ExpandedList } from "@/db/schema";
+import type { ExpandedCategory, ExpandedList } from "@/db/schema";
 
 interface Props {
   category: ExpandedCategory;
@@ -56,11 +54,6 @@ const ListCategory: React.FC<Props> = (props) => {
     Collections.Lists,
     listId,
   ]);
-
-  const sortableData: ActiveDraggable = {
-    type: "category",
-    data: category,
-  };
 
   const {
     attributes,

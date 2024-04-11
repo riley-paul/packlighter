@@ -129,7 +129,7 @@ async function seed() {
       user: USER_ID,
       name: "Crampons",
     },
-  ];
+  ].map((item) => ({ ...item, weight: Math.random() * 1000 }));
 
   const listsData: ListInsert[] = [
     {
@@ -158,7 +158,7 @@ async function seed() {
   await db.delete(itemsTable);
   await db.delete(categoriesTable);
   await db.delete(categoriesItemsTable);
-  console.log("\n\n------ DATA CLEARED ------ \n\n")
+  console.log("\n\n------ DATA CLEARED ------ \n\n");
 
   await db.insert(itemsTable).values(itemsData);
   const items = await db.select().from(itemsTable);
