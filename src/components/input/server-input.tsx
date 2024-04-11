@@ -3,8 +3,8 @@ import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  currentValue: string | null | undefined;
-  onUpdate: (value: string | undefined | null | undefined) => void;
+  currentValue: string | undefined;
+  onUpdate: (value: string | undefined | undefined) => void;
   selectOnFocus?: boolean;
   className?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;

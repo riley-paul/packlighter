@@ -79,6 +79,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
     },
   });
 

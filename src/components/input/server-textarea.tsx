@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "../ui/textarea";
 
 type Props = {
-  currentValue: string | null | undefined;
-  onUpdate: (value: string | null | undefined) => void;
+  currentValue: string | undefined;
+  onUpdate: (value: string | undefined) => void;
   selectOnFocus?: boolean;
   className?: string;
 } & React.InputHTMLAttributes<HTMLTextAreaElement>;
