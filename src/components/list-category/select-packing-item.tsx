@@ -1,18 +1,18 @@
-import { Collections, type ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteItem } from "@/actions/item";
-import { queryClient } from "@/lib/query";
+import { CacheKeys, queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatWeight } from "@/lib/helpers";
 
 import { Checkbox } from "../ui/checkbox";
+import { trpc } from "@/client";
+import type { Item } from "@/db/schema";
 
 interface Props {
-  item: ItemsResponse;
+  item: Item;
   selected: boolean;
   onSelect: (id: string) => void;
 }
@@ -25,13 +25,13 @@ const SelectPackingItem: React.FC<Props> = (props) => {
 
   const deleteToastId = React.useRef<string | number | undefined>();
   const deleteItemMutation = useMutation({
-    mutationFn: () => deleteItem(item.id),
+    mutationFn: () => trpc.items.delete.mutate(item.id),
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting item...");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
       toast.success(`${itemName} deleted successfully`, {
         id: deleteToastId.current,
       });
@@ -58,7 +58,7 @@ const SelectPackingItem: React.FC<Props> = (props) => {
       </div>
       <span className="text-muted-foreground flex gap-1">
         <span>{formatWeight(item.weight)}</span>
-        <span>{item.weight_unit}</span>
+        <span>{item.weightUnit}</span>
       </span>
       <DeleteButton handleDelete={() => deleteItemMutation.mutate()} />
     </div>

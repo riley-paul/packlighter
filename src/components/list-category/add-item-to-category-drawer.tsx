@@ -8,65 +8,35 @@ import {
 } from "@/components/ui/drawer";
 import { Button } from "../ui/button";
 import { Plus, X } from "lucide-react";
-import { type ExpandedCategory } from "@/actions/list";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Collections, type ItemsResponse } from "@/lib/types";
-import { getItems } from "@/actions/item";
+import { useQuery } from "@tanstack/react-query";
 import SelectPackingItem from "./select-packing-item";
-import { pb } from "@/lib/pocketbase";
-import { toast } from "sonner";
-import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
+import { CacheKeys } from "@/lib/query";
 import { Input } from "../ui/input";
+import type { ExpandedCategory, Item } from "@/db/schema";
+import { trpc } from "@/client";
 
 type Props = {
   category: ExpandedCategory;
 };
 
-const filterItems = (item: ItemsResponse, query: string) => {
+const filterItems = (item: Item, query: string) => {
   const lowerCaseQuery = query.toLowerCase();
   return (
-    item.name.toLowerCase().includes(lowerCaseQuery) ||
-    item.description.toLowerCase().includes(lowerCaseQuery)
+    item.name?.toLowerCase().includes(lowerCaseQuery) ||
+    item.description?.toLowerCase().includes(lowerCaseQuery)
   );
 };
 
 const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
   const { category } = props;
-  const { listId = "" } = useParams();
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [selection, setSelection] = React.useState<string[]>([]);
   const [search, setSearch] = React.useState("");
 
   const itemsQuery = useQuery({
-    queryKey: [Collections.Items],
-    queryFn: getItems,
-  });
-
-  const toastId = React.useRef<string | number | undefined>();
-  const addItemsMutation = useMutation({
-    mutationFn: () =>
-      Promise.all(
-        selection.map((itemId) =>
-          pb.collection(Collections.CategoriesItems).create({
-            category: category.id,
-            item: itemId,
-            quantity: 1,
-          })
-        )
-      ),
-    onMutate: () => {
-      toastId.current = toast.loading("Adding items...");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      toast.success("Items added successfully", { id: toastId.current });
-      setIsOpen(false);
-    },
-    onError: (error) => {
-      toast.error(error.message, { id: toastId.current });
-    },
+    queryKey: [CacheKeys.Items],
+    queryFn: () => trpc.items.get.query(),
   });
 
   return (
@@ -91,10 +61,7 @@ const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
             {category.name ?? "Unnamed Category"}
           </DrawerTitle>
           <div className="flex items-center gap-2">
-            <Button
-              disabled={selection.length === 0}
-              onClick={() => addItemsMutation.mutate()}
-            >
+            <Button disabled={selection.length === 0}>
               <Plus size="1rem" className="mr-2" />
               Add
             </Button>
