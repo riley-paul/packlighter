@@ -1,3 +1,4 @@
+import expandList from "@/db/actions/expandList";
 import db from "@/db/drizzle";
 import {
   categoriesItemsTable,
@@ -26,6 +27,7 @@ export const GET: APIRoute = async ({ locals, params }) => {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const result = { ...lists[0] };
+  const result = await expandList(id);
+
   return new Response(JSON.stringify(result));
 };

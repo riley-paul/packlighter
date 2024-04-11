@@ -7,14 +7,13 @@ import {
   itemSchema,
   itemsTable,
   listSchema,
+  listsTable,
 } from "../schema";
 import db from "../drizzle";
 import { eq } from "drizzle-orm";
 
-export const expandedCategoryItemSchema = z.object({
-  [categoriesItemsTable._.name]: categoryItemSchema,
-  [categoriesTable._.name]: categorySchema,
-  [itemsTable._.name]: itemSchema,
+export const expandedCategoryItemSchema = categoryItemSchema.extend({
+  itemData: itemSchema,
 });
 export type ExpandedCategoryItem = z.infer<typeof expandedCategoryItemSchema>;
 
@@ -30,33 +29,31 @@ export type ExpandedList = z.infer<typeof expandedListSchema>;
 
 export default async function expandList(
   listId: string
-): Promise<ExpandedList | undefined >{
+): Promise<ExpandedList | undefined> {
+  const list = await db.query.listsTable.findFirst({
+    where: eq(listsTable.id, listId),
+  });
 
-  const list = await db.query.listsTable.findFirst({where: })
+  if (!list) return;
 
-  const categoryItems: ExpandedCategoryItem[] = await db
+  const categories = await db
     .select()
-    .from(categoriesItemsTable)
-    .leftJoin(
-      categoriesTable,
-      eq(categoriesItemsTable.category, categoriesTable.id)
-    )
-    .leftJoin(itemsTable, eq(categoriesItemsTable.item, itemsTable.id))
+    .from(categoriesTable)
     .where(eq(categoriesTable.list, listId));
 
-  const categories: ExpandedCategory[] = categoryItems.reduce((acc, val) => {
-    const category = acc.find((c) => c.id === val.category);
-    if (category) {
-      category.items.push(val);
-    } else {
-      acc.push({
-        ...val,
-        items: [val],
-      });
-    }
-    return acc;
-  },[])
-  
-  
-  return undefined;
+  const categoryItems = await db
+    .select()
+    .from(categoriesItemsTable)
+    .leftJoin(itemsTable, eq(categoriesItemsTable.item, itemsTable.id));
+
+  const expandedCategories = categories.map((category) => {
+    const items = categoryItems
+      .filter((ci) => ci.categories_items.category === category.id)
+      .filter((ci) => ci.items !== null)
+      .map((ci) => ({ ...ci.categories_items, itemData: ci.items! }));
+
+    return { ...category, items };
+  });
+
+  return { ...list, categories: expandedCategories };
 }

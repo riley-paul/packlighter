@@ -68,7 +68,6 @@
   },
   "devDependencies": {
     "@types/uuid": "^9.0.8",
-    "drizzle-kit": "^0.20.14",
-    "tsx": "^4.7.2"
+    "drizzle-kit": "^0.20.14"
   }
 }
