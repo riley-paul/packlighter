@@ -1,3 +1,4 @@
+import React from "react";
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query.ts";
@@ -20,8 +21,6 @@ const router = createHashRouter([
     ],
   },
 ]);
-
-import React from "react";
 
 const App: React.FC = () => {
   return (

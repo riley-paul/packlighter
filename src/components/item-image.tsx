@@ -12,12 +12,10 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { pb } from "@/lib/pocketbase";
-import { useMutation } from "@tanstack/react-query";
-import { deleteItemImage, setItemImage } from "@/actions/item";
-import { toast } from "sonner";
-import { CacheKeys, queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
+// import { useMutation } from "@tanstack/react-query";
+// import { toast } from "sonner";
+// import { CacheKeys, queryClient } from "@/lib/query";
+// import { useParams } from "react-router-dom";
 import type { Item } from "@/db/schema";
 
 interface Props {
@@ -28,53 +26,53 @@ const ItemImage: React.FC<Props> = (props) => {
   const { item } = props;
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const { listId } = useParams();
+  // const { listId } = useParams();
 
-  const updateToastId = React.useRef<string | number | undefined>(undefined);
-  const deleteToastId = React.useRef<string | number | undefined>(undefined);
+  // const updateToastId = React.useRef<string | number | undefined>(undefined);
+  // const deleteToastId = React.useRef<string | number | undefined>(undefined);
 
-  const updateMutation = useMutation({
-    mutationFn: (image: Blob) => setItemImage({ id: item.id, image }),
-    onMutate: () => {
-      updateToastId.current = toast.loading("Updating image...");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
-      toast.success("Image updated", { id: updateToastId.current });
-    },
-    onError: (error) => {
-      toast.error(error.message, { id: updateToastId.current });
-    },
-  });
+  // const updateMutation = useMutation({
+  //   mutationFn: (image: Blob) => setItemImage({ id: item.id, image }),
+  //   onMutate: () => {
+  //     updateToastId.current = toast.loading("Updating image...");
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+  //     queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
+  //     toast.success("Image updated", { id: updateToastId.current });
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message, { id: updateToastId.current });
+  //   },
+  // });
 
-  const deleteMutation = useMutation({
-    mutationFn: () => deleteItemImage(item.id),
-    onMutate: () => {
-      deleteToastId.current = toast.loading("Deleting image...");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
-      toast.success("Image deleted", { id: deleteToastId.current });
-    },
-    onError: (error) => {
-      toast.error(error.message, { id: deleteToastId.current });
-    },
-  });
+  // const deleteMutation = useMutation({
+  //   mutationFn: () => deleteItemImage(item.id),
+  //   onMutate: () => {
+  //     deleteToastId.current = toast.loading("Deleting image...");
+  //   },
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+  //     queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
+  //     toast.success("Image deleted", { id: deleteToastId.current });
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.message, { id: deleteToastId.current });
+  //   },
+  // });
 
-  React.useEffect(() => {
-    const pasteFiles = (e: ClipboardEvent) => {
-      if (isOpen && e.clipboardData?.files?.length) {
-        updateMutation.mutate(e.clipboardData.files[0]);
-      }
-    };
+  // React.useEffect(() => {
+  //   const pasteFiles = (e: ClipboardEvent) => {
+  //     if (isOpen && e.clipboardData?.files?.length) {
+  //       updateMutation.mutate(e.clipboardData.files[0]);
+  //     }
+  //   };
 
-    document.addEventListener("paste", pasteFiles);
-    return () => {
-      document.removeEventListener("paste", pasteFiles);
-    };
-  }, [isOpen, updateMutation]);
+  //   document.addEventListener("paste", pasteFiles);
+  //   return () => {
+  //     document.removeEventListener("paste", pasteFiles);
+  //   };
+  // }, [isOpen, updateMutation]);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -89,7 +87,7 @@ const ItemImage: React.FC<Props> = (props) => {
           {item.image && (
             <img
               className="h-full w-full object-contain"
-              src={pb.files.getUrl(item, item.image, { thumb: "80x80" })}
+              // src={pb.files.getUrl(item, item.image, { thumb: "80x80" })}
               alt={item.name}
             />
           )}
@@ -105,12 +103,12 @@ const ItemImage: React.FC<Props> = (props) => {
         <Input
           type="file"
           accept="image/*"
-          onChange={(e) => {
-            const target = e.target as HTMLInputElement;
-            if (target.files) {
-              updateMutation.mutate(target.files[0]);
-            }
-          }}
+          // onChange={(e) => {
+          //   const target = e.target as HTMLInputElement;
+          //   if (target.files) {
+          //     updateMutation.mutate(target.files[0]);
+          //   }
+          // }}
         />
 
         <div
@@ -122,7 +120,7 @@ const ItemImage: React.FC<Props> = (props) => {
           {item.image ? (
             <img
               className="h-full w-full object-contain"
-              src={pb.files.getUrl(item, item.image, { thumb: "500x500" })}
+              // src={pb.files.getUrl(item, item.image, { thumb: "500x500" })}
               alt={item.name}
             />
           ) : (
@@ -134,8 +132,8 @@ const ItemImage: React.FC<Props> = (props) => {
           <Button
             type="button"
             variant="destructive"
-            disabled={deleteMutation.isPending}
-            onClick={() => deleteMutation.mutate()}
+            // disabled={deleteMutation.isPending}
+            // onClick={() => deleteMutation.mutate()}
           >
             <Trash className="mr-2 h-4 w-4" />
             Delete Image
