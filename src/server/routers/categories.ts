@@ -16,6 +16,15 @@ const categoriesRouter = router({
       .returning();
     return deleted[0];
   }),
+  create: privateProcedure
+    .input(z.object({ listId: z.string() }))
+    .mutation(async ({ input }) => {
+      const created = await db
+        .insert(categoriesTable)
+        .values({ list: input.listId })
+        .returning();
+      return created[0];
+    }),
   update: privateProcedure
     .input(z.object({ id: z.string(), value: categorySchema.partial() }))
     .mutation(async ({ input }) => {
@@ -25,6 +34,18 @@ const categoriesRouter = router({
         .where(eq(categoriesTable.id, input.id))
         .returning();
       return updated[0];
+    }),
+  reorder: privateProcedure
+    .input(z.array(z.string()))
+    .mutation(async ({ input }) => {
+      await Promise.all(
+        input.map((id, idx) =>
+          db
+            .update(categoriesTable)
+            .set({ sortOrder: idx + 1 })
+            .where(eq(categoriesTable.id, id))
+        )
+      );
     }),
   togglePacked: privateProcedure
     .input(z.object({ value: z.boolean().optional(), id: z.string() }))

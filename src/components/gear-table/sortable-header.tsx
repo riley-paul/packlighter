@@ -1,11 +1,11 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { type ItemsResponse } from "@/lib/types";
 import { type Column } from "@tanstack/react-table";
+import type { Item } from "@/db/schema";
 
 type Props = React.PropsWithChildren<{
-  column: Column<ItemsResponse, unknown>;
+  column: Column<Item, unknown>;
 }>;
 
 const SortableHeader: React.FC<Props> = (props) => {

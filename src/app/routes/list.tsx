@@ -1,12 +1,10 @@
-import { createCategory, updateCategoriesOrder } from "@/actions/category";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
 import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
-import { queryClient } from "@/lib/query";
-import { Collections } from "@/lib/types";
+import { CacheKeys, queryClient } from "@/lib/query";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import React from "react";
@@ -43,7 +41,7 @@ export default function ListPage(): ReturnType<React.FC> {
     React.useState<ExpandedCategory | null>(null);
 
   const listQuery = useQuery({
-    queryKey: [Collections.Lists, listId],
+    queryKey: [CacheKeys.Lists, listId],
     queryFn: () => trpc.lists.getById.query(listId),
     retry: false,
   });
@@ -52,43 +50,43 @@ export default function ListPage(): ReturnType<React.FC> {
     mutationFn: (data: Partial<ExpandedList>) =>
       trpc.lists.update.mutate({ id: listId, value: data }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
     },
   });
 
   const createCategoryMutation = useMutation({
-    mutationFn: () => createCategory(listId),
+    mutationFn: () => trpc.categories.create.mutate({ listId }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
   });
 
   const reorderCategoriesMutation = useMutation({
     mutationFn: (categories: ExpandedCategory[]) =>
-      updateCategoriesOrder(categories.map((c) => c.id)),
+      trpc.categories.reorder.mutate(categories.map((c) => c.id)),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
     onMutate: async (newCategories) => {
       await queryClient.cancelQueries({
-        queryKey: [Collections.Lists, listId],
+        queryKey: [CacheKeys.Lists, listId],
       });
       const previousList = queryClient.getQueryData<ExpandedList>([
-        Collections.Lists,
+        CacheKeys.Lists,
         listId,
       ]);
       if (!previousList) return;
       const newList = { ...previousList, categories: newCategories };
       queryClient.setQueryData<ExpandedList>(
-        [Collections.Lists, listId],
+        [CacheKeys.Lists, listId],
         newList
       );
       return { previousList };
     },
     onError: (_, __, context) => {
       if (context?.previousList)
-        queryClient.setQueryData([Collections.Lists], context.previousList);
+        queryClient.setQueryData([CacheKeys.Lists], context.previousList);
     },
   });
 

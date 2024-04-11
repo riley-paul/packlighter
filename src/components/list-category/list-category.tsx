@@ -20,7 +20,6 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import { ListsWeightUnitOptions } from "@/lib/types";
 import { CacheKeys, queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -169,16 +168,9 @@ const ListCategory: React.FC<Props> = (props) => {
               <TableCell>
                 <div className="flex gap-2 justify-end">
                   <span>
-                    {formatWeight(
-                      getCategoryWeight(
-                        category,
-                        list.weightUnit ?? ListsWeightUnitOptions.g
-                      )
-                    )}
+                    {formatWeight(getCategoryWeight(category, list.weightUnit))}
                   </span>
-                  <span className="min-w-8">
-                    {list.weightUnit ?? ListsWeightUnitOptions.g}
-                  </span>
+                  <span className="min-w-8">{list.weightUnit}</span>
                 </div>
               </TableCell>
             )}

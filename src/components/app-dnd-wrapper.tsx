@@ -1,9 +1,3 @@
-import { updateCategoriesOrder } from "@/actions/category";
-import {
-  type ExpandedCategory,
-  type ExpandedCategoryItem,
-  type ListWithCategories,
-} from "@/actions/list";
 import ListCategory from "@/components/list-category/list-category";
 import { queryClient } from "@/lib/query";
 import { Collections, type ItemsResponse } from "@/lib/types";

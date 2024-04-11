@@ -4,7 +4,7 @@ import Gripper from "../base/gripper";
 import { Checkbox } from "../ui/checkbox";
 import ServerInput from "../input/server-input";
 import DeleteButton from "../base/delete-button";
-import { useIsFetching, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { CacheKeys, queryClient } from "@/lib/query";
 
 import { useParams } from "react-router-dom";

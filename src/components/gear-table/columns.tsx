@@ -1,6 +1,5 @@
 import React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { type ItemsResponse } from "@/lib/types";
 import { type ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Copy, Delete, Edit2, MoreHorizontal } from "lucide-react";
@@ -17,8 +16,9 @@ import {
 import SortableHeader from "@/components/gear-table/sortable-header";
 import { toast } from "sonner";
 import ItemImage from "@/components/item-image";
+import type { Item } from "@/db/schema";
 
-export const columns: ColumnDef<ItemsResponse>[] = [
+export const columns: ColumnDef<Item>[] = [
   {
     id: "selected",
     header: ({ table }) => (
@@ -69,18 +69,9 @@ export const columns: ColumnDef<ItemsResponse>[] = [
     accessorKey: "weight",
     cell: (ctx) => (
       <div className="text-right">
-        {formatWeight(ctx.row.original.weight)} {ctx.row.original.weight_unit}
+        {formatWeight(ctx.row.original.weight)} {ctx.row.original.weightUnit}
       </div>
     ),
-  },
-  {
-    header: ({ column }) => (
-      <div className="text-right">
-        <SortableHeader column={column}>Price</SortableHeader>
-      </div>
-    ),
-    accessorKey: "price",
-    cell: (ctx) => <div className="text-right">${ctx.row.original.price}</div>,
   },
   {
     id: "actions",
