@@ -25,7 +25,6 @@ import {
 import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteList } from "@/actions/list";
 import { CacheKeys, queryClient } from "@/lib/query";
 
 import { useSortable } from "@dnd-kit/sortable";

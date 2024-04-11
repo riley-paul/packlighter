@@ -1,5 +1,4 @@
-import { createList, getLists, updateListsOrder } from "@/actions/list";
-import { CacheKeys, fetchSafely, queryClient } from "@/lib/query";
+import { CacheKeys, queryClient } from "@/lib/query";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -45,7 +44,7 @@ export default function PackingLists(): ReturnType<React.FC> {
   });
 
   const newListMutation = useMutation({
-    mutationFn: createList,
+    mutationFn: trpc.lists.create.mutate,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
       navigate(getPaths.list(data.id));
@@ -53,7 +52,8 @@ export default function PackingLists(): ReturnType<React.FC> {
   });
 
   const reorderListsMutation = useMutation({
-    mutationFn: (lists: List[]) => updateListsOrder(lists.map((i) => i.id)),
+    mutationFn: (lists: List[]) =>
+      trpc.lists.reorder.mutate(lists.map((i) => i.id)),
     onMutate: async (newLists) => {
       await queryClient.cancelQueries({ queryKey: [CacheKeys.List] });
       const previousLists = queryClient.getQueryData([CacheKeys.List]);

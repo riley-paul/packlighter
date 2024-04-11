@@ -65,12 +65,13 @@ const listRouter = router({
     }),
   delete: privateProcedure
     .input(z.string())
-    .mutation(async ({ input, ctx: { userId } }) =>
-      db
+    .mutation(async ({ input, ctx: { userId } }) => {
+      const deleted = await db
         .delete(listsTable)
         .where(and(eq(listsTable.user, userId), eq(listsTable.id, input)))
-        .returning()
-    ),
+        .returning();
+      return deleted[0];
+    }),
   create: privateProcedure.mutation(async ({ ctx: { userId } }) => {
     const currentSortOrders = await db
       .select({ value: listsTable.sortOrder })
@@ -82,10 +83,21 @@ const listRouter = router({
     const newList = await db
       .insert(listsTable)
       .values({ user: userId, sortOrder: newSortOrder })
-      .execute();
-
-    return newList;
+      .returning();
+    return newList[0];
   }),
+  reorder: privateProcedure
+    .input(z.array(z.string()))
+    .mutation(async ({ input }) => {
+      await Promise.all(
+        input.map((id, idx) =>
+          db
+            .update(listsTable)
+            .set({ sortOrder: idx + 1 })
+            .where(eq(listsTable.id, id))
+        )
+      );
+    }),
 });
 
 export default listRouter;
