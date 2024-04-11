@@ -1,8 +1,32 @@
-import { initTRPC } from '@trpc/server';
- 
-// You can use any variable name you like.
-// We use t to keep things simple.
-const t = initTRPC.create();
- 
+import { TRPCError, initTRPC } from "@trpc/server";
+import type { inferAsyncReturnType } from "@trpc/server";
+
+interface ContextProps {
+  locals: App.Locals;
+  req: Request;
+}
+
+export function createContext({ req, locals }: ContextProps) {
+  const { userId } = locals.auth();
+  return { req, locals, userId };
+}
+
+export type Context = inferAsyncReturnType<typeof createContext>;
+
+const t = initTRPC.context<Context>().create();
+
 export const router = t.router;
+export const middleware = t.middleware;
 export const publicProcedure = t.procedure;
+
+const isLoggedIn = middleware(async ({ ctx, next }) => {
+  if (!ctx.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED", message: "Unauthorized" });
+  }
+
+  return next({
+    ctx: { ...ctx },
+  });
+});
+
+export const privateProcedure = publicProcedure.use(isLoggedIn);

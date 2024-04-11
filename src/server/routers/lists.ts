@@ -1,5 +1,5 @@
 import db from "@/db/drizzle";
-import { publicProcedure, router } from "../trpc";
+import { privateProcedure, publicProcedure, router } from "../trpc";
 import {
   categoriesItemsTable,
   categoriesTable,
@@ -11,14 +11,14 @@ import { eq } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 const listRouter = router({
-  get: publicProcedure.query(async () => {
+  get: privateProcedure.query(async () => {
     const lists = await db
       .select()
       .from(listsTable)
       .orderBy(listsTable.sortOrder);
     return lists;
   }),
-  getById: publicProcedure.input(z.string()).query(async ({ input }) => {
+  getById: privateProcedure.input(z.string()).query(async ({ input }) => {
     const list = await db.query.listsTable.findFirst({
       where: eq(listsTable.id, input),
     });
