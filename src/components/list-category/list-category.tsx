@@ -32,7 +32,6 @@ import {
   isCategoryFullyPacked,
 } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
-import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
 import type { ExpandedCategory, List } from "@/db/schema";
 import { trpc } from "@/client";
 import { Button } from "../ui/button";
@@ -85,7 +84,8 @@ const ListCategory: React.FC<Props> = (props) => {
   });
 
   const togglePackedMutation = useMutation({
-    mutationFn: () => trpc.categories.togglePacked.mutate({ id: category.id }),
+    mutationFn: (value: boolean) =>
+      trpc.categories.togglePacked.mutate({ id: category.id, value }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
@@ -112,7 +112,9 @@ const ListCategory: React.FC<Props> = (props) => {
               <TableHead className="w-8">
                 <Checkbox
                   checked={isCategoryFullyPacked(category)}
-                  onCheckedChange={() => togglePackedMutation.mutate()}
+                  onCheckedChange={(checked) =>
+                    togglePackedMutation.mutate(checked === true)
+                  }
                 />
               </TableHead>
             )}
@@ -147,7 +149,7 @@ const ListCategory: React.FC<Props> = (props) => {
             strategy={verticalListSortingStrategy}
           >
             {category.items.map((item) => (
-              <ListCategoryItem key={item.id} item={item} />
+              <ListCategoryItem list={list} key={item.id} item={item} />
             ))}
           </SortableContext>
         </TableBody>

@@ -11,17 +11,17 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
-import { Collections, type ItemsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pb } from "@/lib/pocketbase";
 import { useMutation } from "@tanstack/react-query";
 import { deleteItemImage, setItemImage } from "@/actions/item";
 import { toast } from "sonner";
-import { queryClient } from "@/lib/query";
+import { CacheKeys, queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
+import type { Item } from "@/db/schema";
 
 interface Props {
-  item: ItemsResponse;
+  item: Item;
 }
 
 const ItemImage: React.FC<Props> = (props) => {
@@ -39,8 +39,8 @@ const ItemImage: React.FC<Props> = (props) => {
       updateToastId.current = toast.loading("Updating image...");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
       toast.success("Image updated", { id: updateToastId.current });
     },
     onError: (error) => {
@@ -54,8 +54,8 @@ const ItemImage: React.FC<Props> = (props) => {
       deleteToastId.current = toast.loading("Deleting image...");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
       toast.success("Image deleted", { id: deleteToastId.current });
     },
     onError: (error) => {

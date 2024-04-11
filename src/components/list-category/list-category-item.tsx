@@ -4,16 +4,14 @@ import Gripper from "../base/gripper";
 import { Checkbox } from "../ui/checkbox";
 import ServerInput from "../input/server-input";
 import DeleteButton from "../base/delete-button";
-import { useMutation } from "@tanstack/react-query";
-import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
-import { queryClient } from "@/lib/query";
+import { useIsFetching, useMutation } from "@tanstack/react-query";
+import { CacheKeys, queryClient } from "@/lib/query";
 
 import { useParams } from "react-router-dom";
 import ItemImage from "../item-image";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
-import type { ActiveDraggable } from "../app-dnd-wrapper";
 import {
   Select,
   SelectContent,
@@ -21,7 +19,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import type { ExpandedCategoryItem, List } from "@/db/schema";
+import type {
+  CategoryItem,
+  ExpandedCategoryItem,
+  Item,
+  List,
+} from "@/db/schema";
+import { trpc } from "@/client";
+import { weightUnits, type WeightUnit } from "@/db/enums";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -40,26 +45,40 @@ const ListCategoryItem: React.FC<Props> = (props) => {
   const style = { transform: CSS.Translate.toString(transform) };
 
   const deleteMutation = useMutation({
-    mutationFn: () => deleteCategoryItem(item),
+    mutationFn: () => trpc.categoriesItems.delete.mutate(item.id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+    },
+  });
+
+  const togglePackedMutation = useMutation({
+    mutationFn: (value: boolean) =>
+      trpc.categoriesItems.togglePacked.mutate({ id: item.id, value }),
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: (data: {
-      categoryItem?: Partial<CategoriesItemsResponse>;
-      item?: Partial<ItemsResponse>;
+      categoryItem?: Partial<CategoryItem>;
+      item?: Partial<Item>;
     }) =>
-      updateCategoryItem({
-        id: item.id,
-        itemId: data.item ? item.item : undefined,
-        categoryItem: data.categoryItem ?? {},
-        item: data.item ?? {},
-      }),
+      Promise.all([
+        data.categoryItem
+          ? trpc.categoriesItems.update.mutate({
+              id: item.id,
+              value: data.categoryItem,
+            })
+          : Promise.resolve(),
+        data.item
+          ? trpc.items.update.mutate({ id: item.item, value: data.item })
+          : Promise.resolve(),
+      ]),
+
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
     },
   });
 
@@ -76,19 +95,17 @@ const ListCategoryItem: React.FC<Props> = (props) => {
       <TableCell className="w-4 px-1 py-0.5">
         <Gripper {...attributes} {...listeners} />
       </TableCell>
-      {list?.show_packed && (
+      {list.showPacked && (
         <TableCell className="py-0">
           <Checkbox
             checked={item.packed}
-            onCheckedChange={(packed) =>
-              updateMutation.mutate({
-                categoryItem: { packed: Boolean(packed) },
-              })
+            onCheckedChange={(checked) =>
+              togglePackedMutation.mutate(checked === true)
             }
           />
         </TableCell>
       )}
-      {list?.show_images && (
+      {list.showImages && (
         <TableCell>
           <ItemImage item={item.itemData} />
         </TableCell>
@@ -109,7 +126,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           }
         />
       </TableCell>
-      {list?.show_weights && (
+      {list.showWeights && (
         <TableCell className="py-0.5">
           <div className="flex no-spin">
             <ServerInput
@@ -123,11 +140,11 @@ const ListCategoryItem: React.FC<Props> = (props) => {
               }
             />
             <Select
-              value={item.itemData.weight_unit}
+              value={item.itemData.weightUnit}
               onValueChange={(value) =>
                 updateMutation.mutate({
                   item: {
-                    weight_unit: value as ItemsWeightUnitOptions,
+                    weightUnit: value as WeightUnit,
                   },
                 })
               }
@@ -136,8 +153,10 @@ const ListCategoryItem: React.FC<Props> = (props) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {Object.values(ItemsWeightUnitOptions).map((unit) => (
-                  <SelectItem value={unit}>{unit}</SelectItem>
+                {Object.values(weightUnits).map((unit) => (
+                  <SelectItem key={unit} value={unit}>
+                    {unit}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
