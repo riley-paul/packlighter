@@ -5,7 +5,7 @@ import { appRouter } from "@/server/router";
 
 export const ALL: APIRoute = ({ request }) => {
   return fetchRequestHandler({
-    endpoint: "/api/trpc",
+    endpoint: "/trpc",
     req: request,
     router: appRouter,
     createContext,

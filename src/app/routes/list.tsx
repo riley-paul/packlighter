@@ -39,6 +39,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { trpc } from "@/client";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -46,9 +47,9 @@ export default function ListPage(): ReturnType<React.FC> {
   const [activeCategory, setActiveCategory] =
     React.useState<ExpandedCategory | null>(null);
 
-  const listQuery = useQuery<ListWithCategories, Error>({
+  const listQuery = useQuery({
     queryKey: [Collections.Lists, listId],
-    queryFn: ({ queryKey }) => getList(queryKey[1] as string),
+    queryFn: () => trpc.lists.getById.query(listId),
     retry: false,
   });
 

@@ -31,8 +31,7 @@ import {
 } from "@dnd-kit/sortable";
 import { cn, getPaths } from "@/lib/utils";
 import Placeholder from "../base/placeholder";
-import { z } from "zod";
-import { listSchema, type List } from "@/db/schema";
+import { type List } from "@/db/schema";
 import { trpc } from "@/client";
 
 export default function PackingLists(): ReturnType<React.FC> {
