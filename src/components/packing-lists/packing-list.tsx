@@ -54,7 +54,7 @@ const PackingList: React.FC<Props> = (props) => {
       deleteToastId.current = toast.loading("Deleting list...");
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
       toast.success("List deleted successfully", { id: deleteToastId.current });
       if (variables === listId) {
         navigate(getPaths.home());

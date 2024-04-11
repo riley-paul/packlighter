@@ -45,6 +45,9 @@ export const listsTable = sqliteTable("lists", {
   showPacked: integer("show_packed", { mode: "boolean" })
     .notNull()
     .default(false),
+  showWeights: integer("show_weights", { mode: "boolean" })
+    .notNull()
+    .default(false),
   sortOrder: integer("sort_order").notNull().default(0),
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
 });

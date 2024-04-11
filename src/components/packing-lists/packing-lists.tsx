@@ -39,14 +39,14 @@ export default function PackingLists(): ReturnType<React.FC> {
   const [activeList, setActiveList] = React.useState<List | null>(null);
 
   const listsQuery = useQuery({
-    queryKey: [CacheKeys.List],
+    queryKey: [CacheKeys.Lists],
     queryFn: () => trpc.lists.get.query(),
   });
 
   const newListMutation = useMutation({
     mutationFn: trpc.lists.create.mutate,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
       navigate(getPaths.list(data.id));
     },
   });
@@ -55,17 +55,17 @@ export default function PackingLists(): ReturnType<React.FC> {
     mutationFn: (lists: List[]) =>
       trpc.lists.reorder.mutate(lists.map((i) => i.id)),
     onMutate: async (newLists) => {
-      await queryClient.cancelQueries({ queryKey: [CacheKeys.List] });
-      const previousLists = queryClient.getQueryData([CacheKeys.List]);
-      queryClient.setQueryData([CacheKeys.List], newLists);
+      await queryClient.cancelQueries({ queryKey: [CacheKeys.Lists] });
+      const previousLists = queryClient.getQueryData([CacheKeys.Lists]);
+      queryClient.setQueryData([CacheKeys.Lists], newLists);
       return { previousLists };
     },
     onError: (_, __, context) => {
       if (context?.previousLists)
-        queryClient.setQueryData([CacheKeys.List], context.previousLists);
+        queryClient.setQueryData([CacheKeys.Lists], context.previousLists);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.List] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
     },
   });
 

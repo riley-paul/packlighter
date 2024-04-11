@@ -1,5 +1,3 @@
-import { getItems } from "@/actions/item";
-import { Collections, type ItemsResponse } from "@/lib/types";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "../ui/input";
@@ -27,6 +25,9 @@ import {
 } from "../ui/tooltip";
 import Placeholder from "../base/placeholder";
 import { getPaths } from "@/lib/utils";
+import { CacheKeys } from "@/lib/query";
+import { trpc } from "@/client";
+import type { Item } from "@/db/schema";
 
 enum SortOptions {
   Name = "Name",
@@ -37,30 +38,38 @@ enum SortOptions {
 const sortingFunction = (option: SortOptions) => {
   switch (option) {
     case SortOptions.Name:
-      return (a: ItemsResponse, b: ItemsResponse) =>
-        a.name.localeCompare(b.name);
+      return (a: Item, b: Item) => {
+        if (!a.name) return -1;
+        if (!b.name) return 1;
+        return a.name.localeCompare(b.name);
+      };
     case SortOptions.Description:
-      return (a: ItemsResponse, b: ItemsResponse) =>
-        a.description.localeCompare(b.description);
+      return (a: Item, b: Item) => {
+        if (!a.description) return -1;
+        if (!b.description) return 1;
+        return a.description.localeCompare(b.description);
+      };
     case SortOptions.Weight:
-      return (a: ItemsResponse, b: ItemsResponse) => a.weight - b.weight;
+      return (a: Item, b: Item) => a.weight - b.weight;
+    default:
+      0;
   }
 };
 
-const filterItems = (item: ItemsResponse, query: string) => {
+const filterItems = (item: Item, query: string) => {
   const lowerCaseQuery = query.toLowerCase();
   return (
-    item.name.toLowerCase().includes(lowerCaseQuery) ||
-    item.description.toLowerCase().includes(lowerCaseQuery)
+    item.name?.toLowerCase().includes(lowerCaseQuery) ||
+    item.description?.toLowerCase().includes(lowerCaseQuery)
   );
 };
 
 const PackingItems: React.FC = () => {
   const { toggleSidebar } = useStore();
 
-  const itemsQuery = useQuery<ItemsResponse[], Error>({
-    queryKey: [Collections.Items],
-    queryFn: getItems,
+  const itemsQuery = useQuery({
+    queryKey: [CacheKeys.Items],
+    queryFn: () => trpc.items.get.query(),
     retry: false,
   });
 

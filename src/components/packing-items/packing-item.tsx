@@ -1,9 +1,7 @@
-import { Collections, type ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteItem } from "@/actions/item";
-import { queryClient } from "@/lib/query";
+import { CacheKeys, queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -11,10 +9,11 @@ import { formatWeight } from "@/lib/helpers";
 import Gripper from "../base/gripper";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { type ActiveDraggable } from "../app-dnd-wrapper";
+import type { Item } from "@/db/schema";
+import { trpc } from "@/client";
 
 interface Props {
-  item: ItemsResponse;
+  item: Item;
   isOverlay?: boolean;
 }
 
@@ -22,30 +21,23 @@ const PackingItem: React.FC<Props> = (props) => {
   const { item, isOverlay } = props;
   const { listId } = useParams();
 
-  const sortableData: ActiveDraggable = {
-    type: "item",
-    data: item,
-  };
-
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: item.id,
-    data: sortableData,
   });
 
   const itemName = item.name || "Unnamed Gear";
 
   const style = { transform: CSS.Translate.toString(transform) };
 
-  const deleteToastId = React.useRef<string | number | undefined>(undefined);
-
+  const deleteToastId = React.useRef<string | number | undefined>();
   const deleteItemMutation = useMutation({
-    mutationFn: () => deleteItem(item.id),
+    mutationFn: () => trpc.items.delete.mutate(item.id),
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting item...");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Items] });
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists, listId] });
       toast.success(`${itemName} deleted successfully`, {
         id: deleteToastId.current,
       });
@@ -73,7 +65,7 @@ const PackingItem: React.FC<Props> = (props) => {
       </div>
       <span className="text-muted-foreground flex gap-1">
         <span>{formatWeight(item.weight)}</span>
-        <span>{item.weight_unit}</span>
+        <span>{item.weightUnit}</span>
       </span>
       <DeleteButton handleDelete={() => deleteItemMutation.mutate()} />
     </div>
