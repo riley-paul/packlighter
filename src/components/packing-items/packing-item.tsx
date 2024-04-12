@@ -1,59 +1,30 @@
-import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatWeight } from "@/lib/helpers";
 import Gripper from "../base/gripper";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { ActiveDraggable } from "../app-dnd-wrapper";
-import actions from "@/actions";
+import { Item } from "@/store/schema";
+import useAppStore from "@/store";
 
 interface Props {
-  item: ItemsResponse;
+  item: Item;
   isOverlay?: boolean;
 }
 
 const PackingItem: React.FC<Props> = (props) => {
   const { item, isOverlay } = props;
-  const { listId } = useParams();
-
-  const sortableData: ActiveDraggable = {
-    type: "item",
-    data: item,
-  };
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: item.id,
-    data: sortableData,
   });
+
+  const { itemRemove } = useAppStore();
 
   const itemName = item.name || "Unnamed Gear";
 
   const style = { transform: CSS.Translate.toString(transform) };
-
-  const deleteToastId = React.useRef<string | number | undefined>(undefined);
-
-  const deleteItemMutation = useMutation({
-    mutationFn: () => actions.items.delete(item.id),
-    onMutate: () => {
-      deleteToastId.current = toast.loading("Deleting item...");
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      toast.success(`${itemName} deleted successfully`, {
-        id: deleteToastId.current,
-      });
-    },
-    onError: (error) => {
-      toast.error(error.message, { id: deleteToastId.current });
-    },
-  });
 
   return (
     <div
@@ -73,9 +44,9 @@ const PackingItem: React.FC<Props> = (props) => {
       </div>
       <span className="text-muted-foreground flex gap-1">
         <span>{formatWeight(item.weight)}</span>
-        <span>{item.weight_unit}</span>
+        <span>{item.weightUnit}</span>
       </span>
-      <DeleteButton handleDelete={() => deleteItemMutation.mutate()} />
+      <DeleteButton handleDelete={() => itemRemove(item.id)} />
     </div>
   );
 };

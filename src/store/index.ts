@@ -32,6 +32,7 @@ type Actions = {
   itemGet: Getter<Item>;
   itemCreate: Creator<Item>;
   itemUpdate: Updater<Item>;
+  itemRemove: Remover;
 
   listGet: Getter<List>;
   listCreate: Creator<List>;
@@ -71,6 +72,17 @@ const useAppStore = create<State & Actions>()(
           const index = s.items.findIndex((i) => i.id === id);
           if (index === -1) return;
           s.items[index] = { ...s.items[index], ...data };
+        }),
+
+      itemRemove: (id) =>
+        set((s) => {
+          s.items = s.items.filter((i) => i.id !== id);
+          // remove related category items
+          s.lists.forEach((l) => {
+            l.categories.forEach((c) => {
+              c.items = c.items.filter((i) => i.itemId !== id);
+            });
+          });
         }),
 
       listGet: (id) => {

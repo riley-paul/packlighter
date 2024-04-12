@@ -1,15 +1,11 @@
-import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import { Input } from "../ui/input";
 import { Card } from "../ui/card";
-import Loader from "../base/loader";
 import { Button } from "../ui/button";
 import { ArrowDownWideNarrow, Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
-import ErrorReport from "../base/error";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +22,8 @@ import {
 } from "../ui/tooltip";
 import Placeholder from "../base/placeholder";
 import { getPaths } from "@/lib/utils";
-import actions from "@/actions";
+import useAppStore from "@/store";
+import { Item } from "@/store/schema";
 
 enum SortOptions {
   Name = "Name",
@@ -37,17 +34,15 @@ enum SortOptions {
 const sortingFunction = (option: SortOptions) => {
   switch (option) {
     case SortOptions.Name:
-      return (a: ItemsResponse, b: ItemsResponse) =>
-        a.name.localeCompare(b.name);
+      return (a: Item, b: Item) => a.name.localeCompare(b.name);
     case SortOptions.Description:
-      return (a: ItemsResponse, b: ItemsResponse) =>
-        a.description.localeCompare(b.description);
+      return (a: Item, b: Item) => a.description.localeCompare(b.description);
     case SortOptions.Weight:
-      return (a: ItemsResponse, b: ItemsResponse) => a.weight - b.weight;
+      return (a: Item, b: Item) => a.weight - b.weight;
   }
 };
 
-const filterItems = (item: ItemsResponse, query: string) => {
+const filterItems = (item: Item, query: string) => {
   const lowerCaseQuery = query.toLowerCase();
   return (
     item.name.toLowerCase().includes(lowerCaseQuery) ||
@@ -58,11 +53,7 @@ const filterItems = (item: ItemsResponse, query: string) => {
 const PackingItems: React.FC = () => {
   const { toggleSidebar } = useStore();
 
-  const itemsQuery = useQuery<ItemsResponse[], Error>({
-    queryKey: [Collections.Items],
-    queryFn: actions.items.get,
-    retry: false,
-  });
+  const { items } = useAppStore();
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -128,16 +119,13 @@ const PackingItems: React.FC = () => {
         </div>
       </header>
       <Card className="flex-1 h-full overflow-y-auto overflow-x-hidden">
-        {itemsQuery.isLoading && <Loader />}
-        {itemsQuery.isError && <ErrorReport error={itemsQuery.error} />}
-        {itemsQuery.isSuccess &&
-          itemsQuery.data
-            .filter((item) => filterItems(item, filterQuery))
-            .sort(sortingFunction(sortOption))
-            .map((item) => <PackingItem key={item.id} item={item} />)}
-        {itemsQuery.isSuccess && itemsQuery.data.length === 0 && (
-          <Placeholder message="No gear yet" />
-        )}
+        {items
+          .filter((item) => filterItems(item, filterQuery))
+          .sort(sortingFunction(sortOption))
+          .map((item) => (
+            <PackingItem key={item.id} item={item} />
+          ))}
+        {items.length === 0 && <Placeholder message="No gear yet" />}
       </Card>
     </div>
   );
