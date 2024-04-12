@@ -3,14 +3,19 @@ import { persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import {
   Category,
+  CategoryItem,
   Item,
   ItemsLists,
   List,
   zCategory,
+  zCategoryItem,
   zItem,
   zList,
 } from "./schema";
 
+type CreatorParent<T> = (parentId: string, data?: Partial<T>) => T;
+type Creator<T> = (data?: Partial<T>) => T;
+type Getter<T> = (id: string) => T | undefined;
 type Updater<T> = (id: string, data: Partial<T>) => void;
 type Remover = (id: string) => void;
 type Reorderer<T> = (entities: T[]) => void;
@@ -23,18 +28,23 @@ const defaultState = {
 };
 
 type Actions = {
-  itemCreate: () => Item;
+  itemGet: Getter<Item>;
+  itemCreate: Creator<Item>;
   itemUpdate: Updater<Item>;
 
-  listGet: (id: string) => List | undefined;
-  listCreate: () => List;
+  listGet: Getter<List>;
+  listCreate: Creator<List>;
   listUpdate: Updater<List>;
   listRemove: Remover;
   listReorder: Reorderer<List>;
 
-  categoryCreate: (listId: string) => Category;
+  categoryCreate: CreatorParent<Category>;
   categoryUpdate: Updater<Category>;
   categoryRemove: Remover;
+
+  categoryItemCreate: CreatorParent<CategoryItem>;
+  categoryItemUpdate: Updater<CategoryItem>;
+  categoryItemRemove: Remover;
 };
 
 const useAppStore = create<State & Actions>()(
@@ -42,13 +52,18 @@ const useAppStore = create<State & Actions>()(
     immer((set, get) => ({
       ...defaultState,
 
-      itemCreate: () => {
-        const newItem = zItem.parse({});
+      itemGet: (id) => {
+        return get().items.find((i) => i.id === id);
+      },
+
+      itemCreate: (data) => {
+        const newItem = zItem.parse({ ...data });
         set((s) => {
           s.items.push(newItem);
         });
         return newItem;
       },
+
       itemUpdate: (id, data) =>
         set((s) => {
           const index = s.items.findIndex((i) => i.id === id);
@@ -59,30 +74,34 @@ const useAppStore = create<State & Actions>()(
       listGet: (id) => {
         return get().lists.find((l) => l.id === id);
       },
-      listCreate: () => {
-        const newList = zList.parse({});
+
+      listCreate: (data) => {
+        const newList = zList.parse({ ...data });
         set((s) => {
           s.lists.push(newList);
         });
         return newList;
       },
+
       listUpdate: (id, data) =>
         set((s) => {
           const index = s.lists.findIndex((l) => l.id === id);
           if (index === -1) return;
           s.lists[index] = { ...s.lists[index], ...data };
         }),
+
       listRemove: (id) =>
         set((s) => {
           s.lists = s.lists.filter((l) => l.id !== id);
         }),
+
       listReorder: (lists) =>
         set((s) => {
           s.lists = lists;
         }),
 
-      categoryCreate: (listId) => {
-        const newCategory = zCategory.parse({});
+      categoryCreate: (listId, data) => {
+        const newCategory = zCategory.parse({ ...data });
         set((s) => {
           const list = s.lists.find((l) => l.id === listId);
           if (!list) return;
@@ -90,6 +109,7 @@ const useAppStore = create<State & Actions>()(
         });
         return newCategory;
       },
+
       categoryUpdate: (id, data) =>
         set((s) => {
           const list = s.lists.find((l) =>
@@ -100,6 +120,7 @@ const useAppStore = create<State & Actions>()(
           if (index === -1) return;
           list.categories[index] = { ...list.categories[index], ...data };
         }),
+
       categoryRemove: (id) =>
         set((s) => {
           const list = s.lists.find((l) =>
@@ -107,6 +128,48 @@ const useAppStore = create<State & Actions>()(
           );
           if (!list) return;
           list.categories = list.categories.filter((c) => c.id !== id);
+        }),
+
+      categoryItemCreate: (categoryId, data) => {
+        const newCategoryItem = zCategoryItem.parse({ ...data });
+        set((s) => {
+          const list = s.lists.find((l) =>
+            l.categories.some((c) => c.id === categoryId)
+          );
+          if (!list) return;
+          const category = list.categories.find((c) => c.id === categoryId);
+          if (!category) return;
+          category.items.push(newCategoryItem);
+        });
+        return newCategoryItem;
+      },
+
+      categoryItemUpdate: (id, data) =>
+        set((s) => {
+          const list = s.lists.find((l) =>
+            l.categories.some((c) => c.items.some((i) => i.id === id))
+          );
+          if (!list) return;
+          const category = list.categories.find((c) =>
+            c.items.some((i) => i.id === id)
+          );
+          if (!category) return;
+          const index = category.items.findIndex((i) => i.id === id);
+          if (index === -1) return;
+          category.items[index] = { ...category.items[index], ...data };
+        }),
+
+      categoryItemRemove: (id) =>
+        set((s) => {
+          const list = s.lists.find((l) =>
+            l.categories.some((c) => c.items.some((i) => i.id === id))
+          );
+          if (!list) return;
+          const category = list.categories.find((c) =>
+            c.items.some((i) => i.id === id)
+          );
+          if (!category) return;
+          category.items = category.items.filter((i) => i.id !== id);
         }),
     })),
     { name: "app-storage" }

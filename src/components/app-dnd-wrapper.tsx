@@ -141,7 +141,7 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
             <ListCategory category={activeDraggable.data} isOverlay />
           )}
           {activeDraggable && activeDraggable.type === "category-item" && (
-            <ListCategoryItem item={activeDraggable.data} isOverlay />
+            <ListCategoryItem categoryItem={activeDraggable.data} isOverlay />
           )}
           {activeDraggable && activeDraggable.type === "item" && (
             <PackingItem item={activeDraggable.data} isOverlay />

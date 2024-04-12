@@ -23,7 +23,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
-import { toast } from "sonner";
 import ServerInput from "../input/server-input";
 import ListCategoryItem from "./list-category-item";
 import {
@@ -32,10 +31,11 @@ import {
   isCategoryFullyPacked,
 } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
-import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
 import actions from "@/actions";
 import { Category, List } from "@/store/schema";
 import useAppStore from "@/store";
+import { Button } from "../ui/button";
+import { Plus } from "lucide-react";
 
 interface Props {
   category: Category;
@@ -47,7 +47,8 @@ const ListCategory: React.FC<Props> = (props) => {
   const { category, isOverlay, list } = props;
 
   const { listId } = useParams();
-  const { categoryRemove, categoryUpdate } = useAppStore();
+  const { categoryRemove, categoryUpdate, categoryItemCreate, itemCreate } =
+    useAppStore();
 
   const {
     attributes,
@@ -130,7 +131,7 @@ const ListCategory: React.FC<Props> = (props) => {
             strategy={verticalListSortingStrategy}
           >
             {category.items.map((item) => (
-              <ListCategoryItem key={item.id} item={item} />
+              <ListCategoryItem key={item.id} categoryItem={item} list={list} />
             ))}
           </SortableContext>
         </TableBody>
@@ -141,7 +142,17 @@ const ListCategory: React.FC<Props> = (props) => {
                 3 + (list.showPacked ? 1 : 0) + (list.showImages ? 1 : 0)
               }
             >
-              <AddItemToCategoryDrawer category={category} />
+              <Button
+                variant="linkMuted"
+                size="sm"
+                onClick={() => {
+                  const newItem = itemCreate();
+                  categoryItemCreate(category.id, { itemId: newItem.id });
+                }}
+              >
+                <Plus size="1rem" className="mr-2" />
+                Add Item
+              </Button>
             </TableCell>
             {list.showWeights && (
               <TableCell>

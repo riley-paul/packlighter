@@ -11,7 +11,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
-import { Collections, ItemsResponse } from "@/lib/types";
+import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pb } from "@/lib/pocketbase";
 import { useMutation } from "@tanstack/react-query";
@@ -19,9 +19,10 @@ import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import actions from "@/actions";
+import { Item } from "@/store/schema";
 
 interface Props {
-  item: ItemsResponse;
+  item: Item;
 }
 
 const ItemImage: React.FC<Props> = (props) => {

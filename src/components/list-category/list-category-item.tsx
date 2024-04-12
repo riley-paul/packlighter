@@ -3,23 +3,11 @@ import { TableCell, TableRow } from "../ui/table";
 import Gripper from "../base/gripper";
 import { Checkbox } from "../ui/checkbox";
 import ServerInput from "../input/server-input";
-import { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
 import DeleteButton from "../base/delete-button";
-import { useMutation } from "@tanstack/react-query";
-import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
-import { queryClient } from "@/lib/query";
-import {
-  CategoriesItemsResponse,
-  Collections,
-  ItemsResponse,
-  ItemsWeightUnitOptions,
-} from "@/lib/types";
-import { useParams } from "react-router-dom";
 import ItemImage from "../item-image";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
-import { ActiveDraggable } from "../app-dnd-wrapper";
 import {
   Select,
   SelectContent,
@@ -27,56 +15,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { CategoryItem, List, WeightUnits, weightUnits } from "@/store/schema";
+import useAppStore from "@/store";
 
 interface Props {
-  item: ExpandedCategoryItem;
+  categoryItem: CategoryItem;
+  list: List;
   isOverlay?: boolean;
 }
 
 const ListCategoryItem: React.FC<Props> = (props) => {
-  const { item, isOverlay } = props;
-  const { listId } = useParams();
-
-  const list = queryClient.getQueryData<ListWithCategories>([
-    Collections.Lists,
-    listId,
-  ]);
-
-  const sortableData: ActiveDraggable = {
-    type: "category-item",
-    data: item,
-  };
+  const { categoryItem, isOverlay, list } = props;
+  const { itemGet, categoryItemUpdate, itemUpdate } = useAppStore();
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
-      id: item.id,
-      data: sortableData,
+      id: categoryItem.id,
     });
   const style = { transform: CSS.Translate.toString(transform) };
 
-  const deleteMutation = useMutation({
-    mutationFn: () => deleteCategoryItem(item),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Items] });
-    },
-  });
-
-  const updateMutation = useMutation({
-    mutationFn: (data: {
-      categoryItem?: Partial<CategoriesItemsResponse>;
-      item?: Partial<ItemsResponse>;
-    }) =>
-      updateCategoryItem({
-        id: item.id,
-        itemId: data.item ? item.item : undefined,
-        categoryItem: data.categoryItem ?? {},
-        item: data.item ?? {},
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-    },
-  });
+  const item = itemGet(categoryItem.itemId);
+  if (!item) return null;
 
   return (
     <TableRow
@@ -91,42 +50,38 @@ const ListCategoryItem: React.FC<Props> = (props) => {
       <TableCell className="w-4 px-1 py-0.5">
         <Gripper {...attributes} {...listeners} />
       </TableCell>
-      {list?.show_packed && (
+      {list.showPacked && (
         <TableCell className="py-0">
           <Checkbox
-            checked={item.packed}
+            checked={categoryItem.packed}
             onCheckedChange={(packed) =>
-              updateMutation.mutate({
-                categoryItem: { packed: Boolean(packed) },
-              })
+              categoryItemUpdate(categoryItem.id, { packed: Boolean(packed) })
             }
           />
         </TableCell>
       )}
-      {list?.show_images && (
+      {list.showImages && (
         <TableCell>
-          <div className={cn(!item.itemData.image && "absolute inset-2")}>
-            <ItemImage item={item.itemData} />
+          <div className={cn(!item.imageUrl && "absolute inset-2")}>
+            <ItemImage item={item} />
           </div>
         </TableCell>
       )}
       <TableCell className="px-1 py-0.5">
         <ServerInput
           placeholder="Name"
-          currentValue={item.itemData.name}
-          onUpdate={(name) => updateMutation.mutate({ item: { name } })}
+          currentValue={item.name}
+          onUpdate={(name) => itemUpdate(item.id, { name })}
         />
       </TableCell>
       <TableCell className="text-muted-foreground w-1/2 px-1 py-0.5">
         <ServerInput
           placeholder="Description"
-          currentValue={item.itemData.description}
-          onUpdate={(description) =>
-            updateMutation.mutate({ item: { description } })
-          }
+          currentValue={item.description}
+          onUpdate={(description) => itemUpdate(item.id, { description })}
         />
       </TableCell>
-      {list?.show_weights && (
+      {list.showWeights && (
         <TableCell className="py-0.5">
           <div className="flex no-spin">
             <ServerInput
@@ -134,18 +89,16 @@ const ListCategoryItem: React.FC<Props> = (props) => {
               min={0}
               selectOnFocus
               className="text-right"
-              currentValue={item.itemData.weight.toLocaleString()}
+              currentValue={item.weight.toLocaleString()}
               onUpdate={(weight) =>
-                updateMutation.mutate({ item: { weight: Number(weight) } })
+                itemUpdate(item.id, { weight: Number(weight) })
               }
             />
             <Select
-              value={item.itemData.weight_unit}
+              value={item.weightUnit}
               onValueChange={(value) =>
-                updateMutation.mutate({
-                  item: {
-                    weight_unit: value as ItemsWeightUnitOptions,
-                  },
+                itemUpdate(item.id, {
+                  weightUnit: value as WeightUnits,
                 })
               }
             >
@@ -153,7 +106,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {Object.values(ItemsWeightUnitOptions).map((unit) => (
+                {Object.values(weightUnits).map((unit) => (
                   <SelectItem value={unit}>{unit}</SelectItem>
                 ))}
               </SelectContent>
@@ -166,11 +119,9 @@ const ListCategoryItem: React.FC<Props> = (props) => {
           type="number"
           min={1}
           selectOnFocus
-          currentValue={item.quantity.toLocaleString()}
+          currentValue={categoryItem.quantity.toLocaleString()}
           onUpdate={(quantity) =>
-            updateMutation.mutate({
-              categoryItem: { quantity: Number(quantity) },
-            })
+            categoryItemUpdate(categoryItem.id, { quantity: Number(quantity) })
           }
         />
       </TableCell>
