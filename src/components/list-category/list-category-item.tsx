@@ -105,7 +105,9 @@ const ListCategoryItem: React.FC<Props> = (props) => {
       )}
       {list?.show_images && (
         <TableCell>
-          <ItemImage item={item.itemData} />
+          <div className={cn(!item.itemData.image && "absolute inset-2")}>
+            <ItemImage item={item.itemData} />
+          </div>
         </TableCell>
       )}
       <TableCell className="px-1 py-0.5">

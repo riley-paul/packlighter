@@ -16,6 +16,7 @@ import {
 import SortableHeader from "@/components/gear-table/sortable-header";
 import { toast } from "sonner";
 import ItemImage from "@/components/item-image";
+import { cn } from "@/lib/utils";
 
 export const columns: ColumnDef<ItemsResponse>[] = [
   {
@@ -44,7 +45,11 @@ export const columns: ColumnDef<ItemsResponse>[] = [
   },
   {
     id: "image",
-    cell: ({ row }) => <ItemImage item={row.original} />,
+    cell: ({ row }) => (
+      <div className={cn(!row.original.image && "absolute inset-2")}>
+        <ItemImage item={row.original} />
+      </div>
+    ),
     size: 60,
   },
   {
