@@ -1,4 +1,3 @@
-import { ExpandedCategory, ListWithCategories } from "@/actions/list";
 import React from "react";
 import {
   Table,
@@ -33,29 +32,22 @@ import {
   isCategoryFullyPacked,
 } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
-import { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
 import actions from "@/actions";
+import { Category, List } from "@/store/schema";
+import useAppStore from "@/store";
 
 interface Props {
-  category: ExpandedCategory;
+  category: Category;
+  list: List;
   isOverlay?: boolean;
 }
 
 const ListCategory: React.FC<Props> = (props) => {
-  const { category, isOverlay } = props;
+  const { category, isOverlay, list } = props;
 
   const { listId } = useParams();
-
-  const list = queryClient.getQueryData<ListWithCategories>([
-    Collections.Lists,
-    listId,
-  ]);
-
-  const sortableData: ActiveDraggable = {
-    type: "category",
-    data: category,
-  };
+  const { categoryRemove, categoryUpdate } = useAppStore();
 
   const {
     attributes,
@@ -66,7 +58,6 @@ const ListCategory: React.FC<Props> = (props) => {
     isDragging,
   } = useSortable({
     id: category.id,
-    data: sortableData,
   });
 
   const { setNodeRef: droppableRef } = useDroppable({
@@ -78,22 +69,6 @@ const ListCategory: React.FC<Props> = (props) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
-  const deleteCategoryMutation = useMutation({
-    mutationFn: () => actions.categories.delete(category),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      toast.success(`${category.name || "Unnamed"} category deleted`);
-    },
-  });
-
-  const updateCategoryMutation = useMutation({
-    mutationFn: (data: Partial<ExpandedCategory>) =>
-      actions.categories.update({ id: category.id, category: data }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-    },
-  });
 
   const togglePackedMutation = useMutation({
     mutationFn: () => actions.categories.togglePacked(category),
@@ -118,7 +93,7 @@ const ListCategory: React.FC<Props> = (props) => {
             <TableHead className="w-4 px-1">
               <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
             </TableHead>
-            {list?.show_packed && (
+            {list.showPacked && (
               <TableHead className="w-8">
                 <Checkbox
                   checked={isCategoryFullyPacked(category)}
@@ -127,7 +102,7 @@ const ListCategory: React.FC<Props> = (props) => {
               </TableHead>
             )}
             <TableHead
-              colSpan={2 + (list?.show_images ? 1 : 0)}
+              colSpan={2 + (list.showImages ? 1 : 0)}
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput
@@ -135,18 +110,16 @@ const ListCategory: React.FC<Props> = (props) => {
                 placeholder="Category Name"
                 currentValue={category.name}
                 onUpdate={(value) =>
-                  updateCategoryMutation.mutate({ name: value })
+                  categoryUpdate(category.id, { name: value })
                 }
               />
             </TableHead>
-            {list?.show_weights && (
+            {list.showWeights && (
               <TableHead className="w-[7rem] text-center">Weight</TableHead>
             )}
             <TableHead className="w-[5rem]">Qty</TableHead>
             <TableHead className="w-6 pl-0">
-              <DeleteButton
-                handleDelete={() => deleteCategoryMutation.mutate()}
-              />
+              <DeleteButton handleDelete={() => categoryRemove(category.id)} />
             </TableHead>
           </TableRow>
         </TableHeader>
@@ -165,24 +138,24 @@ const ListCategory: React.FC<Props> = (props) => {
           <TableRow>
             <TableCell
               colSpan={
-                3 + (list?.show_packed ? 1 : 0) + (list?.show_images ? 1 : 0)
+                3 + (list.showPacked ? 1 : 0) + (list.showImages ? 1 : 0)
               }
             >
               <AddItemToCategoryDrawer category={category} />
             </TableCell>
-            {list?.show_weights && (
+            {list.showWeights && (
               <TableCell>
                 <div className="flex gap-2 justify-end">
                   <span>
                     {formatWeight(
                       getCategoryWeight(
                         category,
-                        list?.weight_unit ?? ListsWeightUnitOptions.g
+                        list.weightUnit ?? ListsWeightUnitOptions.g
                       )
                     )}
                   </span>
                   <span className="min-w-8">
-                    {list?.weight_unit ?? ListsWeightUnitOptions.g}
+                    {list.weightUnit ?? ListsWeightUnitOptions.g}
                   </span>
                 </div>
               </TableCell>

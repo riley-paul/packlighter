@@ -1,95 +1,66 @@
-import type { ListWithCategories } from "@/actions/list";
 import AppHeader from "@/components/app-header";
-import Error from "@/components/base/error";
-import Loader from "@/components/base/loader";
+import ErrorReport from "@/components/base/error";
 import ServerInput from "@/components/input/server-input";
 import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
-import { queryClient } from "@/lib/query";
-import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import ServerTextarea from "@/components/input/server-textarea";
 import ListCategory from "@/components/list-category/list-category";
-import actions from "@/actions";
+import useAppStore from "@/store";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
 
-  const listQuery = useQuery<ListWithCategories, Error>({
-    queryKey: [Collections.Lists, listId],
-    queryFn: () => actions.lists.getById(listId),
-    retry: false,
-  });
+  const { listGet, listUpdate, categoryCreate } = useAppStore();
 
-  const updateListMutation = useMutation({
-    mutationFn: (data: Partial<ListWithCategories>) =>
-      actions.lists.update({ id: listId, list: data }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
-    },
-  });
+  const list = listGet(listId);
 
-  const createCategoryMutation = useMutation({
-    mutationFn: () => actions.categories.create(listId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-    },
-  });
-
-  if (listQuery.isLoading)
+  if (!list) {
+    const error = new Error("List not found");
     return (
       <div className="h-full">
         <AppHeader />
-        <Loader />
+        <ErrorReport error={error} showGoHome />
       </div>
     );
-
-  if (listQuery.isError || !listQuery.data)
-    return (
-      <div className="h-full">
-        <AppHeader />
-        <Error error={listQuery.error} showGoHome />
-      </div>
-    );
+  }
 
   return (
     <div className="flex flex-col h-full">
       <AppHeader>
         <h1 className={cn("text-lg font-bold flex-1")}>
           <ServerInput
-            key={listQuery.data.id}
-            currentValue={listQuery.data.name}
+            key={list.id}
+            currentValue={list.name}
             placeholder="Unnamed List"
             className="text-lg font-bold w-full border-none bg-transparent shadow-none placeholder:italic"
-            onUpdate={(v) => updateListMutation.mutate({ name: v })}
+            onUpdate={(v) => listUpdate(list.id, { name: v })}
           />
         </h1>
-        <ListSettings list={listQuery.data} />
+        <ListSettings list={list} />
       </AppHeader>
       <section className="overflow-y-auto flex-1">
         <div className="p-4 flex flex-col gap-4">
           <ServerTextarea
-            key={listQuery.data.id}
+            key={list.id}
             className="bg-card"
             placeholder="List Description"
-            currentValue={listQuery.data.description}
-            onUpdate={(v) => updateListMutation.mutate({ description: v })}
+            currentValue={list.description}
+            onUpdate={(v) => listUpdate(list.id, { description: v })}
           />
 
-          {listQuery.data.categories.map((category) => (
-            <ListCategory key={category.id} category={category} />
+          {list.categories.map((category) => (
+            <ListCategory key={category.id} category={category} list={list} />
           ))}
 
           <Button
             variant="linkMuted"
             size="sm"
             className="w-min ml-2"
-            onClick={() => createCategoryMutation.mutate()}
+            onClick={() => categoryCreate(list.id)}
           >
             <Plus size="1rem" className="mr-2" />
             Add Category

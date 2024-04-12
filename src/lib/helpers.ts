@@ -1,21 +1,13 @@
-import type {
-  ExpandedCategory,
-  ExpandedCategoryItem,
-  ListWithCategories,
-} from "@/actions/list";
-import {
-  ItemsResponse,
-  ItemsWeightUnitOptions,
-  ListsWeightUnitOptions,
-} from "./types";
+import type { ListWithCategories } from "@/actions/list";
+import { Category, CategoryItem, Item, WeightUnits } from "@/store/schema";
 
-export const isCategoryFullyPacked = (category: ExpandedCategory) =>
+export const isCategoryFullyPacked = (category: Category) =>
   category.items.length > 0 && category.items.every((i) => i.packed);
 
-export const isCategoryPartiallyPacked = (category: ExpandedCategory) =>
+export const isCategoryPartiallyPacked = (category: Category) =>
   category.items.some((i) => i.packed);
 
-export const isItemUntouched = (item: ExpandedCategoryItem) =>
+export const isItemUntouched = (item: CategoryItem) =>
   !item.itemData.name &&
   !item.itemData.name &&
   item.quantity === 1 &&
@@ -34,24 +26,18 @@ export const getSortOrderFromIndex = (
   return (sortOrders[insertionIndex - 1] + sortOrders[insertionIndex]) / 2;
 };
 
-export const getItemWeightInUnit = (
-  item: ItemsResponse,
-  unit: ListsWeightUnitOptions
-) => {
-  const gramsConversions: Record<ItemsWeightUnitOptions, number> = {
+export const getItemWeightInUnit = (item: Item, unit: WeightUnits) => {
+  const gramsConversions: Record<WeightUnits, number> = {
     oz: 28.3495,
     lb: 453.592,
     kg: 1000,
     g: 1,
   };
-  const weight_g = item.weight * gramsConversions[item.weight_unit];
+  const weight_g = item.weight * gramsConversions[item.weightUnit];
   return weight_g / gramsConversions[unit];
 };
 
-export const getCategoryWeight = (
-  category: ExpandedCategory,
-  unit: ListsWeightUnitOptions
-) =>
+export const getCategoryWeight = (category: Category, unit: WeightUnits) =>
   category.items.reduce((acc, item) => {
     const itemWeight = getItemWeightInUnit(item.itemData, unit);
     return acc + itemWeight * item.quantity;

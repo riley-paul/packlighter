@@ -10,7 +10,7 @@ interface Props {
   retry?: () => void;
 }
 
-const Error: React.FC<Props> = (props) => {
+const ErrorReport: React.FC<Props> = (props) => {
   const { error, showGoHome, retry } = props;
 
   const status = error && "status" in error ? error.status : 500;
@@ -47,4 +47,4 @@ const Error: React.FC<Props> = (props) => {
   );
 };
 
-export default Error;
+export default ErrorReport;

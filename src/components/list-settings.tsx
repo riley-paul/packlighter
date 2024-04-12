@@ -14,29 +14,16 @@ import {
 } from "./ui/dropdown-menu";
 import { Settings } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  Collections,
-  ListsResponse,
-  ListsWeightUnitOptions,
-} from "@/lib/types";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query";
-import actions from "@/actions";
+import { List, WeightUnits, weightUnits } from "@/store/schema";
+import useAppStore from "@/store";
 
 interface Props {
-  list: ListsResponse;
+  list: List;
 }
 
 const ListSettings: React.FC<Props> = (props) => {
   const { list } = props;
-
-  const updateMutation = useMutation({
-    mutationFn: (data: Partial<ListsResponse>) =>
-      actions.lists.update({ id: list.id, list: data }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, list.id] });
-    },
-  });
+  const updateList = useAppStore((s) => s.listUpdate);
 
   return (
     <DropdownMenu>
@@ -53,16 +40,16 @@ const ListSettings: React.FC<Props> = (props) => {
           <DropdownMenuSubTrigger>Default unit of mass</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup
-              value={list.weight_unit}
+              value={list.weightUnit}
               onValueChange={(value) =>
-                updateMutation.mutate({
-                  weight_unit: value as ListsWeightUnitOptions,
+                updateList(list.id, {
+                  weightUnit: value as WeightUnits,
                 })
               }
             >
-              {Object.values(ListsWeightUnitOptions).map((massUnit) => (
-                <DropdownMenuRadioItem value={massUnit} key={massUnit}>
-                  {massUnit}
+              {Object.values(weightUnits).map((unit) => (
+                <DropdownMenuRadioItem value={unit} key={unit}>
+                  {unit}
                 </DropdownMenuRadioItem>
               ))}
             </DropdownMenuRadioGroup>
@@ -70,30 +57,30 @@ const ListSettings: React.FC<Props> = (props) => {
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem
-          checked={list.show_packed}
+          checked={list.showPacked}
           onCheckedChange={(checked) =>
-            updateMutation.mutate({
-              show_packed: checked,
+            updateList(list.id, {
+              showPacked: checked,
             })
           }
         >
           Show Packed
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          checked={list.show_images}
+          checked={list.showImages}
           onCheckedChange={(checked) =>
-            updateMutation.mutate({
-              show_images: checked,
+            updateList(list.id, {
+              showImages: checked,
             })
           }
         >
           Show Images
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
-          checked={list.show_weights}
+          checked={list.showWeights}
           onCheckedChange={(checked) =>
-            updateMutation.mutate({
-              show_weights: checked,
+            updateList(list.id, {
+              showWeights: checked,
             })
           }
         >
@@ -101,10 +88,10 @@ const ListSettings: React.FC<Props> = (props) => {
         </DropdownMenuCheckboxItem>
         <DropdownMenuCheckboxItem
           disabled
-          checked={list.show_prices}
+          checked={list.showPrices}
           onCheckedChange={(checked) =>
-            updateMutation.mutate({
-              show_prices: checked,
+            updateList(list.id, {
+              showPrices: checked,
             })
           }
         >

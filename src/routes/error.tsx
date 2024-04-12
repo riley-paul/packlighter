@@ -1,5 +1,5 @@
 import AppHeader from "@/components/app-header";
-import Error from "@/components/base/error";
+import ErrorReport from "@/components/base/error";
 import Logo from "@/components/logo";
 import React from "react";
 import { ErrorResponse, useRouteError } from "react-router-dom";
@@ -13,7 +13,7 @@ export default function ErrorPage(): ReturnType<React.FC> {
       <AppHeader>
         <Logo />
       </AppHeader>
-      <Error error={error} showGoHome />
+      <ErrorReport error={error} showGoHome />
     </div>
   );
 }

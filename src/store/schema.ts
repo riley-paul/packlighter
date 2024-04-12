@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 
 export const weightUnits = ["g", "kg", "lb", "oz"] as const;
 export const zWeightUnits = z.enum(weightUnits);
+export type WeightUnits = z.infer<typeof zWeightUnits>;
 
 export const zItem = z.object({
   id: z.string().default(() => uuid()),
@@ -34,6 +35,11 @@ export const zList = z.object({
   name: z.string().default(""),
   description: z.string().default(""),
   categories: z.array(zCategory).default([]),
+  showWeights: z.boolean().default(false),
+  showPacked: z.boolean().default(false),
+  showPrices: z.boolean().default(false),
+  showImages: z.boolean().default(false),
+  weightUnit: zWeightUnits.default("g"),
 });
 export type List = z.infer<typeof zList>;
 

@@ -9,7 +9,7 @@ import { ArrowDownWideNarrow, Table } from "lucide-react";
 import PackingItem from "./packing-item";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
-import Error from "../base/error";
+import ErrorReport from "../base/error";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -129,7 +129,7 @@ const PackingItems: React.FC = () => {
       </header>
       <Card className="flex-1 h-full overflow-y-auto overflow-x-hidden">
         {itemsQuery.isLoading && <Loader />}
-        {itemsQuery.isError && <Error error={itemsQuery.error} />}
+        {itemsQuery.isError && <ErrorReport error={itemsQuery.error} />}
         {itemsQuery.isSuccess &&
           itemsQuery.data
             .filter((item) => filterItems(item, filterQuery))
