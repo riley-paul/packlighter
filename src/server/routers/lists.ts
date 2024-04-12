@@ -153,6 +153,11 @@ const listRouter = router({
         });
       }
 
+      throw new TRPCError({
+        code: "NOT_IMPLEMENTED",
+        message: "Not implemented",
+      });
+
       // const currentCategories = await db
       //   .select({
 

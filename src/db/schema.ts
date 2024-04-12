@@ -17,6 +17,7 @@ export const itemsTable = sqliteTable("items", {
   description: text("description").notNull().default(""),
   weight: real("weight").notNull().default(0),
   weightUnit: text("weight_unit", { enum: weightUnits }).notNull().default("g"),
+  image: text("image"),
 });
 
 export type Item = typeof itemsTable.$inferSelect;

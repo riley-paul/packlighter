@@ -133,7 +133,7 @@ const ListCategory: React.FC<Props> = (props) => {
               <ServerInput
                 className="text-base py-0.5"
                 placeholder="Category Name"
-                currentValue={category.name}
+                currentValue={category.name ?? ""}
                 onUpdate={(value) =>
                   updateCategoryMutation.mutate({ name: value })
                 }

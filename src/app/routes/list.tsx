@@ -144,7 +144,7 @@ export default function ListPage(): ReturnType<React.FC> {
         <h1 className={cn("text-lg font-bold flex-1")}>
           <ServerInput
             key={listQuery.data.id}
-            currentValue={listQuery.data.name}
+            currentValue={listQuery.data.name ?? ""}
             placeholder="Unnamed List"
             className="text-lg font-bold w-full border-none bg-transparent shadow-none placeholder:italic"
             onUpdate={(v) => updateListMutation.mutate({ name: v })}
@@ -158,7 +158,7 @@ export default function ListPage(): ReturnType<React.FC> {
             key={listQuery.data.id}
             className="bg-card"
             placeholder="List Description"
-            currentValue={listQuery.data.description}
+            currentValue={listQuery.data.description ?? ""}
             onUpdate={(v) => updateListMutation.mutate({ description: v })}
           />
 
