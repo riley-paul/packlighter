@@ -1,4 +1,4 @@
-import { ListWithCategories, getList, updateList } from "@/actions/list";
+import type { ListWithCategories } from "@/actions/list";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Loader from "@/components/base/loader";
@@ -21,13 +21,13 @@ export default function ListPage(): ReturnType<React.FC> {
 
   const listQuery = useQuery<ListWithCategories, Error>({
     queryKey: [Collections.Lists, listId],
-    queryFn: ({ queryKey }) => getList(queryKey[1] as string),
+    queryFn: () => actions.lists.getById(listId),
     retry: false,
   });
 
   const updateListMutation = useMutation({
     mutationFn: (data: Partial<ListWithCategories>) =>
-      updateList({ id: listId, list: data }),
+      actions.lists.update({ id: listId, list: data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       queryClient.invalidateQueries({ queryKey: [Collections.Lists] });

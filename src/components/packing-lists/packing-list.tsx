@@ -26,7 +26,6 @@ import {
 import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteList } from "@/actions/list";
 import { queryClient } from "@/lib/query";
 
 import { useSortable } from "@dnd-kit/sortable";
@@ -36,6 +35,7 @@ import { toast } from "sonner";
 import { useMediaQuery } from "usehooks-ts";
 import { MOBILE_MEDIA_QUERY } from "@/lib/constants";
 import { useStore } from "@/lib/store";
+import actions from "@/actions";
 
 interface Props {
   list: ListsResponse;
@@ -61,7 +61,7 @@ const PackingList: React.FC<Props> = (props) => {
 
   const deleteToastId = React.useRef<string | number | undefined>(undefined);
   const deleteListMutation = useMutation({
-    mutationFn: deleteList,
+    mutationFn: actions.lists.delete,
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting list...");
     },

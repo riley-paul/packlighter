@@ -1,4 +1,3 @@
-import { createList, getLists, updateListsOrder } from "@/actions/list";
 import { queryClient } from "@/lib/query";
 import { Collections, ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";
@@ -30,6 +29,7 @@ import {
 } from "@dnd-kit/sortable";
 import { cn, getPaths } from "@/lib/utils";
 import Placeholder from "../base/placeholder";
+import actions from "@/actions";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
@@ -40,11 +40,11 @@ export default function PackingLists(): ReturnType<React.FC> {
 
   const listsQuery = useQuery<ListsResponse[], Error>({
     queryKey: [Collections.Lists],
-    queryFn: getLists,
+    queryFn: actions.lists.get,
   });
 
   const newListMutation = useMutation({
-    mutationFn: createList,
+    mutationFn: actions.lists.create,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
       navigate(getPaths.list(data.id));
@@ -53,7 +53,7 @@ export default function PackingLists(): ReturnType<React.FC> {
 
   const reorderListsMutation = useMutation({
     mutationFn: (lists: ListsResponse[]) =>
-      updateListsOrder(lists.map((i) => i.id)),
+      actions.lists.reorder(lists.map((i) => i.id)),
     onMutate: async (newLists) => {
       await queryClient.cancelQueries({ queryKey: [Collections.Lists] });
       const previousLists = queryClient.getQueryData([Collections.Lists]);
