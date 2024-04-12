@@ -106,7 +106,7 @@ const PackingItems: React.FC = () => {
                     </Button>
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="right">
                   <p>Sort Gear</p>
                 </TooltipContent>
               </Tooltip>

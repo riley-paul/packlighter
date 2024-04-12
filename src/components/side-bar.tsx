@@ -3,7 +3,7 @@ import { Menu } from "lucide-react";
 import React from "react";
 import Logo from "./logo";
 import PackingItems from "./packing-items/packing-items";
-import PackingLists from "./packing-lists";
+import PackingLists from "./packing-lists/packing-lists";
 import { Button } from "./ui/button";
 import {
   ResizablePanelGroup,
@@ -12,11 +12,12 @@ import {
 } from "./ui/resizable";
 import { useStore } from "@/lib/store";
 import { useMediaQuery } from "usehooks-ts";
+import { MOBILE_MEDIA_QUERY } from "@/lib/constants";
 
 const SideBar: React.FC = () => {
   const { isSidebarOpen, toggleSidebar } = useStore();
 
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
 
   if (isMobile) {
     return (

@@ -5,11 +5,11 @@ import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
+import { Button } from "../ui/button";
+import { Card } from "../ui/card";
 import PackingList from "./packing-list";
-import Loader from "./base/loader";
-import Error from "./base/error";
+import Loader from "../base/loader";
+import Error from "../base/error";
 
 import {
   DndContext,
@@ -29,7 +29,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { cn, getPaths } from "@/lib/utils";
-import Placeholder from "./base/placeholder";
+import Placeholder from "../base/placeholder";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
