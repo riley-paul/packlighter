@@ -33,6 +33,9 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Gripper from "../base/gripper";
 import { toast } from "sonner";
+import { useMediaQuery } from "usehooks-ts";
+import { MOBILE_MEDIA_QUERY } from "@/lib/constants";
+import { useStore } from "@/lib/store";
 
 interface Props {
   list: ListsResponse;
@@ -44,6 +47,15 @@ const PackingList: React.FC<Props> = (props) => {
   const { pathname } = useLocation();
   const { listId } = useParams();
   const navigate = useNavigate();
+
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
+  const { isSidebarOpen, toggleSidebar } = useStore();
+
+  const onNavigate = React.useCallback(() => {
+    if (isMobile && isSidebarOpen) {
+      toggleSidebar(false);
+    }
+  }, [isMobile, isSidebarOpen, toggleSidebar]);
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
@@ -115,13 +127,10 @@ const PackingList: React.FC<Props> = (props) => {
           isDragging && "opacity-30"
         )}
       >
-        <Gripper
-          {...attributes}
-          {...listeners}
-          isGrabbing={isOverlay}
-        />
+        <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
         <Link
           to={getPaths.list(list.id)}
+          onClick={onNavigate}
           className={cn(
             "flex-1 truncate text-sm",
             !list.name && "italic text-muted-foreground"

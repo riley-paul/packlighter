@@ -1,18 +1,25 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-export interface Store {
+interface State {
   isSidebarOpen: boolean;
+}
+
+const defaultState: State = {
+  isSidebarOpen: false,
+};
+
+interface Actions {
   toggleSidebar: (open?: boolean) => void;
 }
 
-export const useStore = create<Store>()(
+export const useStore = create<State & Actions>()(
   persist(
     (set) => ({
-      isSidebarOpen: true,
+      ...defaultState,
       toggleSidebar: (open) =>
         set((state) => ({
-          isSidebarOpen: open !== undefined ? open : !state.isSidebarOpen,
+          isSidebarOpen: open ?? !state.isSidebarOpen,
         })),
     }),
     { name: "packlighter-store" }
