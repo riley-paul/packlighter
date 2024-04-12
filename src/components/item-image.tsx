@@ -15,10 +15,10 @@ import { Collections, ItemsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pb } from "@/lib/pocketbase";
 import { useMutation } from "@tanstack/react-query";
-import { deleteItemImage, setItemImage } from "@/actions/item";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
+import actions from "@/actions";
 
 interface Props {
   item: ItemsResponse;
@@ -30,11 +30,9 @@ const ItemImage: React.FC<Props> = (props) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const { listId } = useParams();
 
-  const updateToastId = React.useRef<string | number | undefined>(undefined);
-  const deleteToastId = React.useRef<string | number | undefined>(undefined);
-
+  const updateToastId = React.useRef<string | number | undefined>();
   const updateMutation = useMutation({
-    mutationFn: (image: Blob) => setItemImage({ id: item.id, image }),
+    mutationFn: (image: Blob) => actions.items.setImage({ id: item.id, image }),
     onMutate: () => {
       updateToastId.current = toast.loading("Updating image...");
     },
@@ -48,8 +46,9 @@ const ItemImage: React.FC<Props> = (props) => {
     },
   });
 
+  const deleteToastId = React.useRef<string | number | undefined>();
   const deleteMutation = useMutation({
-    mutationFn: () => deleteItemImage(item.id),
+    mutationFn: () => actions.items.deleteImage(item.id),
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting image...");
     },

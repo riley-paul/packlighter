@@ -1,4 +1,3 @@
-import { getItems } from "@/actions/item";
 import AppHeader from "@/components/app-header";
 import Loader from "@/components/base/loader";
 import { DataTable } from "@/components/gear-table/data-table";
@@ -8,11 +7,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { columns } from "../components/gear-table/columns";
+import actions from "@/actions";
 
 export default function GearPage(): ReturnType<React.FC> {
   const itemsQuery = useQuery({
     queryKey: [Collections.Items],
-    queryFn: getItems,
+    queryFn: actions.items.get,
   });
 
   return (

@@ -2,7 +2,6 @@ import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
-import { deleteItem } from "@/actions/item";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -12,6 +11,7 @@ import Gripper from "../base/gripper";
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { ActiveDraggable } from "../app-dnd-wrapper";
+import actions from "@/actions";
 
 interface Props {
   item: ItemsResponse;
@@ -39,7 +39,7 @@ const PackingItem: React.FC<Props> = (props) => {
   const deleteToastId = React.useRef<string | number | undefined>(undefined);
 
   const deleteItemMutation = useMutation({
-    mutationFn: () => deleteItem(item.id),
+    mutationFn: () => actions.items.delete(item.id),
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting item...");
     },

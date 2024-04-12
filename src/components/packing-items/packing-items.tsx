@@ -1,4 +1,3 @@
-import { getItems } from "@/actions/item";
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -27,6 +26,7 @@ import {
 } from "../ui/tooltip";
 import Placeholder from "../base/placeholder";
 import { getPaths } from "@/lib/utils";
+import actions from "@/actions";
 
 enum SortOptions {
   Name = "Name",
@@ -60,7 +60,7 @@ const PackingItems: React.FC = () => {
 
   const itemsQuery = useQuery<ItemsResponse[], Error>({
     queryKey: [Collections.Items],
-    queryFn: getItems,
+    queryFn: actions.items.get,
     retry: false,
   });
 

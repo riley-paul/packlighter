@@ -11,13 +11,13 @@ import { Plus, X } from "lucide-react";
 import { ExpandedCategory } from "@/actions/list";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Collections, ItemsResponse } from "@/lib/types";
-import { getItems } from "@/actions/item";
 import SelectPackingItem from "./select-packing-item";
 import { pb } from "@/lib/pocketbase";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
 import { Input } from "../ui/input";
+import actions from "@/actions";
 
 type Props = {
   category: ExpandedCategory;
@@ -41,7 +41,7 @@ const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
 
   const itemsQuery = useQuery({
     queryKey: [Collections.Items],
-    queryFn: getItems,
+    queryFn: actions.items.get,
   });
 
   const toastId = React.useRef<string | number | undefined>();
