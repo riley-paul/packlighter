@@ -16,7 +16,7 @@ export type Item = z.infer<typeof zItem>;
 
 export const zCategoryItem = z.object({
   id: z.string().default(() => uuid()),
-  itemId: z.string(),
+  itemId: z.string().default(""),
   quantity: z.number().default(1),
   packed: z.boolean().default(false),
 });
@@ -37,8 +37,8 @@ export const zList = z.object({
 });
 export type List = z.infer<typeof zList>;
 
-export const zState = z.object({
+export const zItemsLists = z.object({
   lists: z.array(zList).default([]),
   items: z.array(zItem).default([]),
 });
-export type State = z.infer<typeof zState>;
+export type ItemsLists = z.infer<typeof zItemsLists>;
