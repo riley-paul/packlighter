@@ -126,6 +126,62 @@ const listRouter = router({
       .set({ packed: false })
       .where(inArray(categoriesItemsTable.id, ids));
   }),
+  duplicate: privateProcedure
+    .input(z.string())
+    .mutation(async ({ input, ctx: { userId } }) => {
+      // const currentSortOrders = await db
+      //   .select({ value: listsTable.sortOrder })
+      //   .from(listsTable)
+      //   .where(eq(listsTable.user, userId));
+      // const maxSortOrder = Math.max(...currentSortOrders.map((r) => r.value));
+      // const newSortOrder = maxSortOrder + 1;
+
+      const currentListQuery = await db
+        .select()
+        .from(listsTable)
+        .where(eq(listsTable.id, input));
+      const currentList = currentListQuery[0];
+
+      if (!currentList) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "List not found" });
+      }
+
+      if (currentList.user !== userId) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not allowed to access this list",
+        });
+      }
+
+      // const currentCategories = await db
+      //   .select({
+
+      //   })
+      //   .from(categoriesTable)
+      //   .groupBy(categoriesTable.id);
+
+      // console.log(currentCategories);
+
+      // const newList = await db
+      //   .insert(listsTable)
+      //   .values({
+      //     user: userId,
+      //     name: `${currentList.name} (Copy)`,
+      //     sortOrder: newSortOrder,
+      //     description: currentList.description,
+      //   })
+      //   .returning();
+
+      // const newCategories = await Promise.all(
+      //   currentCategoriesItems.map(async (ci) => {
+      //     const newCategory = await db
+      //       .insert(categoriesTable)
+      //       .values({ list: newList[0].id, name: ci.categories.name })
+      //       .returning();
+      //     return newCategory[0];
+      //   })
+      // );
+    }),
 });
 
 export default listRouter;

@@ -49,7 +49,7 @@ const PackingList: React.FC<Props> = (props) => {
 
   const deleteToastId = React.useRef<string | number | undefined>();
   const deleteListMutation = useMutation({
-    mutationFn: trpc.lists.delete.mutate,
+    mutationFn: () => trpc.lists.delete.mutate(list.id),
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting list...");
     },
@@ -62,6 +62,24 @@ const PackingList: React.FC<Props> = (props) => {
     },
     onError: (error) => {
       toast.error(error.message, { id: deleteToastId.current });
+    },
+  });
+
+  const duplicateToastId = React.useRef<string | number | undefined>();
+  const duplicateListMutation = useMutation({
+    mutationFn: () => trpc.lists.duplicate.mutate(list.id),
+    onMutate: () => {
+      duplicateToastId.current = toast.loading("Duplicating list...");
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
+      toast.success("List duplicated successfully", {
+        id: duplicateToastId.current,
+      });
+      console.log(data);
+    },
+    onError: (error) => {
+      toast.error(error.message, { id: duplicateToastId.current });
     },
   });
 
@@ -95,9 +113,7 @@ const PackingList: React.FC<Props> = (props) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteListMutation.mutate(list.id)}
-            >
+            <AlertDialogAction onClick={() => deleteListMutation.mutate()}>
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -149,10 +165,7 @@ const PackingList: React.FC<Props> = (props) => {
               </DropdownMenuShortcut>
             </DropdownMenuItem>
 
-            <DropdownMenuItem
-              disabled
-              onClick={() => deleteListMutation.mutate(list.id)}
-            >
+            <DropdownMenuItem onClick={() => duplicateListMutation.mutate()}>
               Duplicate List
               <DropdownMenuShortcut>
                 <Copy size="1rem" />
