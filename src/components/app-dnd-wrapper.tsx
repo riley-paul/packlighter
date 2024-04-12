@@ -1,4 +1,3 @@
-import { updateCategoriesOrder } from "@/actions/category";
 import {
   ExpandedCategory,
   ExpandedCategoryItem,
@@ -25,6 +24,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import ListCategoryItem from "./list-category/list-category-item";
 import PackingItem from "./packing-items/packing-item";
+import actions from "@/actions";
 
 export type ActiveDraggable =
   | {
@@ -43,7 +43,7 @@ const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const reorderCategoriesMutation = useMutation({
     mutationFn: (categories: ExpandedCategory[]) =>
-      updateCategoriesOrder(categories.map((i) => i.id)),
+      actions.categories.reorder(categories.map((i) => i.id)),
     onMutate: async (newCategories) => {
       await queryClient.cancelQueries({
         queryKey: [Collections.Lists, listId],

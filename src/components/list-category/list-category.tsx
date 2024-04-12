@@ -21,11 +21,6 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import {
-  deleteCategory,
-  toggleCategoryPacked,
-  updateCategory,
-} from "@/actions/category";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
@@ -40,6 +35,7 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 import { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
+import actions from "@/actions";
 
 interface Props {
   category: ExpandedCategory;
@@ -84,7 +80,7 @@ const ListCategory: React.FC<Props> = (props) => {
   };
 
   const deleteCategoryMutation = useMutation({
-    mutationFn: () => deleteCategory(category),
+    mutationFn: () => actions.categories.delete(category),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       toast.success(`${category.name || "Unnamed"} category deleted`);
@@ -93,14 +89,14 @@ const ListCategory: React.FC<Props> = (props) => {
 
   const updateCategoryMutation = useMutation({
     mutationFn: (data: Partial<ExpandedCategory>) =>
-      updateCategory({ id: category.id, category: data }),
+      actions.categories.update({ id: category.id, category: data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
   });
 
-  const toggleCompletionMutation = useMutation({
-    mutationFn: () => toggleCategoryPacked(category),
+  const togglePackedMutation = useMutation({
+    mutationFn: () => actions.categories.togglePacked(category),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
@@ -126,7 +122,7 @@ const ListCategory: React.FC<Props> = (props) => {
               <TableHead className="w-8">
                 <Checkbox
                   checked={isCategoryFullyPacked(category)}
-                  onCheckedChange={() => toggleCompletionMutation.mutate()}
+                  onCheckedChange={() => togglePackedMutation.mutate()}
                 />
               </TableHead>
             )}

@@ -1,4 +1,3 @@
-import { createCategory } from "@/actions/category";
 import { ListWithCategories, getList, updateList } from "@/actions/list";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
@@ -15,6 +14,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import ServerTextarea from "@/components/input/server-textarea";
 import ListCategory from "@/components/list-category/list-category";
+import actions from "@/actions";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -35,7 +35,7 @@ export default function ListPage(): ReturnType<React.FC> {
   });
 
   const createCategoryMutation = useMutation({
-    mutationFn: () => createCategory(listId),
+    mutationFn: () => actions.categories.create(listId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },

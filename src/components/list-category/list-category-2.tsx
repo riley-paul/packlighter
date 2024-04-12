@@ -5,13 +5,7 @@ import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
 import DeleteButton from "../base/delete-button";
 import Gripper from "../base/gripper";
-
 import { useMutation } from "@tanstack/react-query";
-import {
-  deleteCategory,
-  toggleCategoryPacked,
-  updateCategory,
-} from "@/actions/category";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
 import { useParams } from "react-router-dom";
@@ -24,6 +18,7 @@ import {
 } from "@/lib/helpers";
 import { createCategoryItem } from "@/actions/categoryItem";
 import ListCategoryItem2 from "./list-category-item-2";
+import actions from "@/actions";
 
 interface Props {
   category: ExpandedCategory;
@@ -41,7 +36,7 @@ const ListCategory2: React.FC<Props> = (props) => {
   ]);
 
   const deleteCategoryMutation = useMutation({
-    mutationFn: () => deleteCategory(category),
+    mutationFn: () => actions.categories.delete(category),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
       toast.success(`${category.name || "Unnamed"} category deleted`);
@@ -50,7 +45,7 @@ const ListCategory2: React.FC<Props> = (props) => {
 
   const updateCategoryMutation = useMutation({
     mutationFn: (data: Partial<ExpandedCategory>) =>
-      updateCategory({ id: category.id, category: data }),
+      actions.categories.update({ id: category.id, category: data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
@@ -65,7 +60,7 @@ const ListCategory2: React.FC<Props> = (props) => {
   });
 
   const toggleCompletionMutation = useMutation({
-    mutationFn: () => toggleCategoryPacked(category),
+    mutationFn: () => actions.categories.togglePacked(category),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
     },
