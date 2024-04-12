@@ -26,7 +26,8 @@ interface Props {
 
 const ListCategoryItem: React.FC<Props> = (props) => {
   const { categoryItem, isOverlay, list } = props;
-  const { itemGet, categoryItemUpdate, itemUpdate } = useAppStore();
+  const { itemGet, categoryItemUpdate, itemUpdate, categoryItemRemove } =
+    useAppStore();
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({
@@ -126,7 +127,9 @@ const ListCategoryItem: React.FC<Props> = (props) => {
         />
       </TableCell>
       <TableCell className="py-0.5 pl-0">
-        <DeleteButton handleDelete={() => deleteMutation.mutate()} />
+        <DeleteButton
+          handleDelete={() => categoryItemRemove(categoryItem.id)}
+        />
       </TableCell>
     </TableRow>
   );

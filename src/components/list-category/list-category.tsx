@@ -19,19 +19,11 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
-import { Collections, ListsWeightUnitOptions } from "@/lib/types";
-import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
+import { ListsWeightUnitOptions } from "@/lib/types";
 import ServerInput from "../input/server-input";
 import ListCategoryItem from "./list-category-item";
-import {
-  formatWeight,
-  getCategoryWeight,
-  isCategoryFullyPacked,
-} from "@/lib/helpers";
+import { formatWeight, getCategoryWeight } from "@/lib/helpers";
 import { useDroppable } from "@dnd-kit/core";
-import actions from "@/actions";
 import { Category, List } from "@/store/schema";
 import useAppStore from "@/store";
 import { Button } from "../ui/button";
@@ -46,9 +38,13 @@ interface Props {
 const ListCategory: React.FC<Props> = (props) => {
   const { category, isOverlay, list } = props;
 
-  const { listId } = useParams();
-  const { categoryRemove, categoryUpdate, categoryItemCreate, itemCreate } =
-    useAppStore();
+  const {
+    categoryRemove,
+    categoryUpdate,
+    categoryItemCreate,
+    itemCreate,
+    categoryTogglePacked,
+  } = useAppStore();
 
   const {
     attributes,
@@ -71,13 +67,6 @@ const ListCategory: React.FC<Props> = (props) => {
     transition,
   };
 
-  const togglePackedMutation = useMutation({
-    mutationFn: () => actions.categories.togglePacked(category),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [Collections.Lists, listId] });
-    },
-  });
-
   return (
     <div
       ref={sortableRef}
@@ -97,8 +86,8 @@ const ListCategory: React.FC<Props> = (props) => {
             {list.showPacked && (
               <TableHead className="w-8">
                 <Checkbox
-                  checked={isCategoryFullyPacked(category)}
-                  onCheckedChange={() => togglePackedMutation.mutate()}
+                  checked={category.items.every((i) => i.packed)}
+                  onCheckedChange={() => categoryTogglePacked(category.id)}
                 />
               </TableHead>
             )}
