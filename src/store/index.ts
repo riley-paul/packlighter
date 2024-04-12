@@ -5,6 +5,7 @@ import { Item, ItemsLists, List, zItem, zList } from "./schema";
 
 type Updater<T> = (id: string, data: Partial<T>) => void;
 type Remover = (id: string) => void;
+type Reorderer<T> = (entities: T[]) => void;
 
 type State = ItemsLists;
 
@@ -14,12 +15,13 @@ const defaultState = {
 };
 
 type Actions = {
-  itemCreate: () => void;
+  itemCreate: () => Item;
   itemUpdate: Updater<Item>;
 
-  listCreate: () => void;
+  listCreate: () => List;
   listUpdate: Updater<List>;
   listRemove: Remover;
+  listReorder: Reorderer<List>;
 };
 
 const useAppStore = create<State & Actions>()(
@@ -27,11 +29,13 @@ const useAppStore = create<State & Actions>()(
     immer((set) => ({
       ...defaultState,
 
-      itemCreate: () =>
+      itemCreate: () => {
+        const newItem = zItem.parse({});
         set((s) => {
-          const newItem = zItem.parse({});
           s.items.push(newItem);
-        }),
+        });
+        return newItem;
+      },
       itemUpdate: (id, data) =>
         set((s) => {
           const index = s.items.findIndex((i) => i.id === id);
@@ -39,12 +43,13 @@ const useAppStore = create<State & Actions>()(
           s.items[index] = { ...s.items[index], ...data };
         }),
 
-      listCreate: () =>
+      listCreate: () => {
+        const newList = zList.parse({});
         set((s) => {
-          const newList = zList.parse({});
-          console.log(newList);
           s.lists.push(newList);
-        }),
+        });
+        return newList;
+      },
       listUpdate: (id, data) =>
         set((s) => {
           const index = s.lists.findIndex((l) => l.id === id);
@@ -54,6 +59,10 @@ const useAppStore = create<State & Actions>()(
       listRemove: (id) =>
         set((s) => {
           s.lists = s.lists.filter((l) => l.id !== id);
+        }),
+      listReorder: (lists) =>
+        set((s) => {
+          s.lists = lists;
         }),
     })),
     { name: "app-storage" }
