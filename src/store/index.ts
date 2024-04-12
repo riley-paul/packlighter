@@ -19,6 +19,7 @@ type Getter<T> = (id: string) => T | undefined;
 type Updater<T> = (id: string, data: Partial<T>) => void;
 type Remover = (id: string) => void;
 type Reorderer<T> = (entities: T[]) => void;
+type ReordererParent<T> = (parentId: string, entities: T[]) => void;
 type TogglePacked = (id: string, packed?: boolean) => void;
 
 type State = ItemsLists;
@@ -44,6 +45,7 @@ type Actions = {
   categoryUpdate: Updater<Category>;
   categoryRemove: Remover;
   categoryTogglePacked: TogglePacked;
+  categoryReorder: ReordererParent<Category>;
 
   categoryItemCreate: CreatorParent<CategoryItem>;
   categoryItemUpdate: Updater<CategoryItem>;
@@ -157,6 +159,13 @@ const useAppStore = create<State & Actions>()(
             ...i,
             packed: packed ?? !fullyPacked,
           }));
+        }),
+
+      categoryReorder: (listId, categories) =>
+        set((s) => {
+          const list = s.lists.find((l) => l.id == listId);
+          if (!list) return;
+          list.categories = categories;
         }),
 
       categoryItemCreate: (categoryId, data) => {
