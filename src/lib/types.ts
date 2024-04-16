@@ -98,10 +98,10 @@ export type ListsRecord<Tcategories = unknown> = {
 	weight_unit?: ListsWeightUnitOptions
 }
 
-export type UsersRecord<Tschema = unknown> = {
+export type UsersRecord<Tdata = unknown> = {
 	avatar?: string
+	data?: null | Tdata
 	name?: string
-	schema?: null | Tschema
 }
 
 // Response types include system fields and match responses from the PocketBase API
@@ -110,7 +110,7 @@ export type ItemTagsResponse<Texpand = unknown> = Required<ItemTagsRecord> & Bas
 export type ItemsResponse<Texpand = unknown> = Required<ItemsRecord> & BaseSystemFields<Texpand>
 export type ListCategoriesResponse<Texpand = unknown> = Required<ListCategoriesRecord> & BaseSystemFields<Texpand>
 export type ListsResponse<Tcategories = unknown, Texpand = unknown> = Required<ListsRecord<Tcategories>> & BaseSystemFields<Texpand>
-export type UsersResponse<Tschema = unknown, Texpand = unknown> = Required<UsersRecord<Tschema>> & AuthSystemFields<Texpand>
+export type UsersResponse<Tdata = unknown, Texpand = unknown> = Required<UsersRecord<Tdata>> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
 
