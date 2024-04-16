@@ -1,6 +1,6 @@
 import { cn, getPaths } from "@/lib/utils";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +42,7 @@ interface Props {
 const PackingList: React.FC<Props> = (props) => {
   const { list, isOverlay } = props;
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const { listRemove } = useAppStore();
 
@@ -86,7 +87,14 @@ const PackingList: React.FC<Props> = (props) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => listRemove(list.id)}>
+            <AlertDialogAction
+              onClick={() => {
+                listRemove(list.id);
+                if (pathname.includes(list.id)) {
+                  navigate(getPaths.home());
+                }
+              }}
+            >
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -96,6 +96,7 @@ const ListCategory: React.FC<Props> = (props) => {
               className="text-foregound text-base font-semibold px-1"
             >
               <ServerInput
+                autoFocus
                 className="text-base py-0.5"
                 placeholder="Category Name"
                 currentValue={category.name}

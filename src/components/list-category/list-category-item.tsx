@@ -70,6 +70,7 @@ const ListCategoryItem: React.FC<Props> = (props) => {
       )}
       <TableCell className="px-1 py-0.5">
         <ServerInput
+          autoFocus
           placeholder="Name"
           currentValue={item.name}
           onUpdate={(name) => itemUpdate(item.id, { name })}

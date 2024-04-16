@@ -29,7 +29,6 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { Category } from "@/store/schema";
-import PackingList from "@/components/packing-lists/packing-list";
 
 export default function ListPage(): ReturnType<React.FC> {
   const { listId = "" } = useParams();
@@ -109,7 +108,7 @@ export default function ListPage(): ReturnType<React.FC> {
             onDragStart={handleDragStart}
           >
             <SortableContext
-              id="packing-lists"
+              id="categories"
               items={list.categories}
               strategy={verticalListSortingStrategy}
             >
