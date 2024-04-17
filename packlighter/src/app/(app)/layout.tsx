@@ -1,16 +1,19 @@
 import SideBar from "@/components/side-bar";
-import React from "react";
-import { Outlet } from "react-router-dom";
+import type React from "react";
 
-export default function Root(): ReturnType<React.FC> {
+type Props = React.PropsWithChildren;
+
+const Root: React.FC<Props> = (props) => {
+  const { children } = props;
+
   return (
-    <main className="h-[100svh] flex overflow-hidden">
+    <main className="flex h-[100svh] overflow-hidden">
       <div className="flex w-full">
         <SideBar />
-        <div className="flex-1">
-          <Outlet />
-        </div>
+        <div className="flex-1">{children}</div>
       </div>
     </main>
   );
-}
+};
+
+export default Root;

@@ -1,11 +1,10 @@
 import { Bug } from "lucide-react";
 import React from "react";
-import { type ErrorResponse, isRouteErrorResponse } from "react-router-dom";
 import { Button } from "../ui/button";
-import { cn, getPaths } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 interface Props {
-  error: Error | ErrorResponse | null;
+  error: Error | null;
   showGoHome?: boolean;
   retry?: () => void;
   small?: boolean;
@@ -15,27 +14,23 @@ const Error: React.FC<Props> = (props) => {
   const { error, showGoHome, retry, small } = props;
 
   const status = error && "status" in error ? error.status : 500;
-  const message = isRouteErrorResponse(error)
-    ? error.statusText
-    : error?.message ??
-      "An unknown error occurred. Please try again later or contact support.";
 
   return (
-    <div className="flex-1 flex items-center justify-center h-full">
-      <div className="flex flex-col gap-4 max-w-sm w-full p-4 max-h-[50%] h-full">
+    <div className="flex h-full flex-1 items-center justify-center">
+      <div className="flex h-full max-h-[50%] w-full max-w-sm flex-col gap-4 p-4">
         <div
           className={cn(
-            "flex flex-row gap-4 items-center",
-            small && "flex-col gap-2"
+            "flex flex-row items-center gap-4",
+            small && "flex-col gap-2",
           )}
         >
           <Bug
             size={small ? "2rem" : "3rem"}
-            className="text-primary flex-shrink-0"
+            className="flex-shrink-0 text-primary"
           />
           <div className="flex flex-col">
-            <h2 className="font-bold mr-2 text-lg">{status} Error</h2>
-            <p className="text-muted-foreground text-sm">{message}</p>
+            <h2 className="mr-2 text-lg font-bold">{500} Error</h2>
+            <p className="text-sm text-muted-foreground">{error?.message}</p>
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -43,7 +38,6 @@ const Error: React.FC<Props> = (props) => {
           {showGoHome && (
             <Button
               variant="secondary"
-              onClick={() => (window.location.href = getPaths.home())}
             >
               Go Home
             </Button>

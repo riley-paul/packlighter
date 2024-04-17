@@ -1,8 +1,8 @@
-import { CacheKeys, queryClient } from "@/lib/query";
+"use client";
+
 import { Plus } from "lucide-react";
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import PackingList from "./packing-list";
@@ -29,43 +29,45 @@ import {
 } from "@dnd-kit/sortable";
 import { cn, getPaths } from "@/lib/utils";
 import Placeholder from "../base/placeholder";
-import { type List } from "@/db/schema";
-import { trpc } from "@/client";
+import { api } from "@/trpc/react";
+import type { List } from "@/server/db/schema";
+import { useRouter } from "next/navigation";
+import { getQueryKey } from "@trpc/react-query";
 
 export default function PackingLists(): ReturnType<React.FC> {
-  const navigate = useNavigate();
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [activeList, setActiveList] = React.useState<List | null>(null);
 
-  const listsQuery = useQuery({
-    queryKey: [CacheKeys.Lists],
-    queryFn: () => trpc.lists.get.query(),
-    retry: false,
-  });
+  const listsQuery = api.list.get.useQuery();
 
-  const newListMutation = useMutation({
-    mutationFn: trpc.lists.create.mutate,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
-      navigate(getPaths.list(data.id));
+  const newListMutation = api.list.create.useMutation({
+    onSuccess: async (data) => {
+      const queryKey = getQueryKey(api.list.get);
+      await queryClient.invalidateQueries({ queryKey });
+      router.push(getPaths.list(data.id));
     },
   });
 
-  const reorderListsMutation = useMutation({
-    mutationFn: (lists: List[]) =>
-      trpc.lists.reorder.mutate(lists.map((i) => i.id)),
+  const reorderListsMutation = api.list.reorder.useMutation({
     onMutate: async (newLists) => {
-      await queryClient.cancelQueries({ queryKey: [CacheKeys.Lists] });
-      const previousLists = queryClient.getQueryData([CacheKeys.Lists]);
-      queryClient.setQueryData([CacheKeys.Lists], newLists);
+      const queryKey = getQueryKey(api.list.get);
+      await queryClient.cancelQueries({ queryKey });
+
+      const previousLists = queryClient.getQueryData(queryKey);
+      queryClient.setQueryData(queryKey, newLists);
+
       return { previousLists };
     },
     onError: (_, __, context) => {
+      const queryKey = getQueryKey(api.list.get);
       if (context?.previousLists)
-        queryClient.setQueryData([CacheKeys.Lists], context.previousLists);
+        queryClient.setQueryData(queryKey, context.previousLists);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
+    onSuccess: async () => {
+      const queryKey = getQueryKey(api.list.get);
+      await queryClient.invalidateQueries({ queryKey });
     },
   });
 
@@ -74,7 +76,7 @@ export default function PackingLists(): ReturnType<React.FC> {
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
-    useSensor(TouchSensor)
+    useSensor(TouchSensor),
   );
 
   function handleDragStart(event: DragStartEvent) {
@@ -92,13 +94,13 @@ export default function PackingLists(): ReturnType<React.FC> {
     const newIndex = listsQuery.data.findIndex((i) => i.id === over?.id);
 
     const newData = arrayMove(listsQuery.data, oldIndex, newIndex);
-    reorderListsMutation.mutate(newData);
+    reorderListsMutation.mutate(newData.map((i) => i.id));
   }
 
   return (
-    <div className="flex flex-col h-full gap-2 p-4">
+    <div className="flex h-full flex-col gap-2 p-4">
       <header className="flex items-center justify-between">
-        <span className="font-semibold text-sm">Lists</span>
+        <span className="text-sm font-semibold">Lists</span>
         <Button
           size="sm"
           variant="linkMuted"
@@ -110,8 +112,8 @@ export default function PackingLists(): ReturnType<React.FC> {
       </header>
       <Card
         className={cn(
-          "py-2 h-full overflow-y-auto overflow-x-hidden transition-colors",
-          activeList && "border-primary"
+          "h-full overflow-y-auto overflow-x-hidden py-2 transition-colors",
+          activeList && "border-primary",
         )}
       >
         {listsQuery.isLoading && <Loader />}

@@ -1,6 +1,7 @@
+"use client";
+
 import { cn, getPaths } from "@/lib/utils";
 import React from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,15 +25,18 @@ import {
 
 import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { CacheKeys, queryClient } from "@/lib/query";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Gripper from "../base/gripper";
 import { toast } from "sonner";
-import type { List } from "@/db/schema";
-import { trpc } from "@/client";
+import type { List } from "@/server/db/schema";
+import { useParams, usePathname } from "next/navigation";
+import { api } from "@/trpc/react";
+import { getQueryKey } from "@trpc/react-query";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Props {
   list: List;
@@ -41,23 +45,25 @@ interface Props {
 
 const PackingList: React.FC<Props> = (props) => {
   const { list, isOverlay } = props;
-  const { pathname } = useLocation();
-  const { listId } = useParams();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const { listId } = useParams<{ listId: string }>();
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
 
   const deleteToastId = React.useRef<string | number | undefined>();
-  const deleteListMutation = useMutation({
-    mutationFn: () => trpc.lists.delete.mutate(list.id),
+  const deleteListMutation = api.list.delete.useMutation({
     onMutate: () => {
       deleteToastId.current = toast.loading("Deleting list...");
     },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
+    onSuccess: async (_, variables) => {
+      const queryKey = getQueryKey(api.list.get);
+      await queryClient.invalidateQueries({ queryKey });
       toast.success("List deleted successfully", { id: deleteToastId.current });
       if (variables === listId) {
-        navigate(getPaths.home());
+        router.push(getPaths.home());
       }
     },
     onError: (error) => {
@@ -66,13 +72,13 @@ const PackingList: React.FC<Props> = (props) => {
   });
 
   const duplicateToastId = React.useRef<string | number | undefined>();
-  const duplicateListMutation = useMutation({
-    mutationFn: () => trpc.lists.duplicate.mutate(list.id),
+  const duplicateListMutation = api.list.duplicate.useMutation({
     onMutate: () => {
       duplicateToastId.current = toast.loading("Duplicating list...");
     },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: [CacheKeys.Lists] });
+    onSuccess: async (data) => {
+      const queryKey = getQueryKey(api.list.get);
+      await queryClient.invalidateQueries({ queryKey });
       toast.success("List duplicated successfully", {
         id: duplicateToastId.current,
       });
@@ -113,7 +119,9 @@ const PackingList: React.FC<Props> = (props) => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={() => deleteListMutation.mutate()}>
+            <AlertDialogAction
+              onClick={() => deleteListMutation.mutate(list.id)}
+            >
               Continue
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -124,11 +132,11 @@ const PackingList: React.FC<Props> = (props) => {
         ref={setNodeRef}
         style={style}
         className={cn(
-          "flex gap-2 items-center pr-2 pl-4 hover:border-l-4 hover:pl-3 py-0.5",
+          "flex items-center gap-2 py-0.5 pl-4 pr-2 hover:border-l-4 hover:pl-3",
           pathname === getPaths.list(list.id) &&
-            "border-l-4 pl-3 border-primary text-secondary-foreground bg-secondary",
-          isOverlay && "bg-card/70 border rounded",
-          isDragging && "opacity-30"
+            "border-l-4 border-primary bg-secondary pl-3 text-secondary-foreground",
+          isOverlay && "rounded border bg-card/70",
+          isDragging && "opacity-30",
         )}
       >
         <Gripper
@@ -137,13 +145,13 @@ const PackingList: React.FC<Props> = (props) => {
           isGrabbing={isOverlay}
         ></Gripper>
         <Link
-          to={getPaths.list(list.id)}
+          href={getPaths.list(list.id)}
           className={cn(
             "flex-1 truncate text-sm",
-            !list.name && "italic text-muted-foreground"
+            !list.name && "italic text-muted-foreground",
           )}
         >
-          {list.name || "Unnamed List"}
+          {list.name ?? "Unnamed List"}
         </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -165,7 +173,9 @@ const PackingList: React.FC<Props> = (props) => {
               </DropdownMenuShortcut>
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => duplicateListMutation.mutate()}>
+            <DropdownMenuItem
+              onClick={() => duplicateListMutation.mutate(list.id)}
+            >
               Duplicate List
               <DropdownMenuShortcut>
                 <Copy size="1rem" />

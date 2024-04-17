@@ -6,8 +6,6 @@ import Loader from "../base/loader";
 import { Button } from "../ui/button";
 import { ArrowDownWideNarrow, Table } from "lucide-react";
 import PackingItem from "./packing-item";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useStore } from "@/lib/store";
 import Error from "../base/error";
 import {
   DropdownMenu,
@@ -24,10 +22,7 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import Placeholder from "../base/placeholder";
-import { getPaths } from "@/lib/utils";
-import { CacheKeys } from "@/lib/query";
-import { trpc } from "@/client";
-import type { Item } from "@/db/schema";
+import type { Item } from "@/server/db/schema";
 
 enum SortOptions {
   Name = "Name",
@@ -77,15 +72,15 @@ const PackingItems: React.FC = () => {
   const { pathname } = useLocation();
 
   const [sortOption, setSortOption] = React.useState<SortOptions>(
-    SortOptions.Name
+    SortOptions.Name,
   );
   const [filterQuery, setFilterQuery] = React.useState("");
 
   return (
-    <div className="p-4 flex flex-col gap-2 h-full flex-1 overflow-hidden">
-      <header className="flex gap-2 flex-col">
-        <div className="flex justify-between items-center w-full">
-          <span className="font-semibold text-sm">Gear</span>
+    <div className="flex h-full flex-1 flex-col gap-2 overflow-hidden p-4">
+      <header className="flex flex-col gap-2">
+        <div className="flex w-full items-center justify-between">
+          <span className="text-sm font-semibold">Gear</span>
           <Button
             size="sm"
             variant={pathname === getPaths.gear() ? "secondary" : "linkMuted"}
@@ -136,7 +131,7 @@ const PackingItems: React.FC = () => {
           </DropdownMenu>
         </div>
       </header>
-      <Card className="flex-1 h-full overflow-y-auto overflow-x-hidden">
+      <Card className="h-full flex-1 overflow-y-auto overflow-x-hidden">
         {itemsQuery.isLoading && <Loader />}
         {itemsQuery.isError && <Error small error={itemsQuery.error} />}
         {itemsQuery.isSuccess &&

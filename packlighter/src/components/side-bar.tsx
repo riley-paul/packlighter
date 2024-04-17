@@ -1,8 +1,10 @@
+"use client"
+
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import React from "react";
 import Logo from "./logo";
-import PackingItems from "./packing-items/packing-items";
+// import PackingItems from "./packing-items/packing-items";
 import PackingLists from "./packing-lists/packing-lists";
 import { Button } from "./ui/button";
 import {
@@ -10,11 +12,11 @@ import {
   ResizablePanel,
   ResizableHandle,
 } from "./ui/resizable";
-import { useStore } from "@/lib/store";
+// import { useStore } from "@/lib/store";
 import { useMediaQuery } from "usehooks-ts";
 
 const SideBar: React.FC = () => {
-  const { isSidebarOpen, toggleSidebar } = useStore();
+  // const { isSidebarOpen, toggleSidebar } = useStore();
 
   const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -24,7 +26,7 @@ const SideBar: React.FC = () => {
         <aside
           className={cn(
             "border-r w-[300px] flex flex-col transition-all overflow-hidden absolute top-0 left-0 h-full z-50 bg-background",
-            !isSidebarOpen && "w-0 border-none"
+            // !isSidebarOpen && "w-0 border-none"
           )}
         >
           <header className="border-b h-14 flex items-center">
@@ -34,7 +36,7 @@ const SideBar: React.FC = () => {
               className={cn(
                 "rounded-none h-14 w-14 transition-all flex-shrink-0 overflow-hidden"
               )}
-              onClick={() => toggleSidebar()}
+              // onClick={() => toggleSidebar()}
             >
               <Menu size="1.2rem" className="flex-shrink-0" />
             </Button>
@@ -46,16 +48,16 @@ const SideBar: React.FC = () => {
             </ResizablePanel>
             <ResizableHandle withHandle />
             <ResizablePanel>
-              <PackingItems />
+              {/* <PackingItems /> */}
             </ResizablePanel>
           </ResizablePanelGroup>
         </aside>
-        {isSidebarOpen && (
+        {/* {isSidebarOpen && (
           <div
             onClick={() => toggleSidebar(false)}
             className="bg-muted/50 absolute inset-0 z-40"
           />
-        )}
+        )} */}
       </>
     );
   }
@@ -64,7 +66,7 @@ const SideBar: React.FC = () => {
     <aside
       className={cn(
         "border-r w-[300px] flex flex-col transition-all overflow-hidden",
-        !isSidebarOpen && "w-0 border-none"
+        // !isSidebarOpen && "w-0 border-none"
       )}
     >
       <header className="border-b h-14 flex items-center">
@@ -74,7 +76,7 @@ const SideBar: React.FC = () => {
           className={cn(
             "rounded-none h-14 w-14 transition-all flex-shrink-0 overflow-hidden"
           )}
-          onClick={() => toggleSidebar()}
+          // onClick={() => toggleSidebar()}
         >
           <Menu size="1.2rem" className="flex-shrink-0" />
         </Button>
@@ -86,7 +88,7 @@ const SideBar: React.FC = () => {
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel>
-          <PackingItems />
+          {/* <PackingItems /> */}
         </ResizablePanel>
       </ResizablePanelGroup>
     </aside>
