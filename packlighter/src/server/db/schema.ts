@@ -123,7 +123,7 @@ export type CategoryInsert = typeof categories.$inferInsert;
 export const categorySchema = createSelectSchema(categories);
 export const categoryInsertSchema = createInsertSchema(categories);
 
-export const categoriesItems = createTable("categories_items", {
+export const categoriesItems = createTable("category_item", {
   id: varchar("id")
     .notNull()
     .default(sql`gen_random_uuid ()`)
