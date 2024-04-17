@@ -1,0 +1,13 @@
+---
+import db from "@/db/drizzle";
+import { categoriesTable, itemsTable } from "@/db/schema";
+import RootLayout from "@/layouts/RootLayout.astro";
+
+const data = await db.select().from(categoriesTable);
+---
+
+<RootLayout>
+  <div class="flex flex-col gap-2">
+    {data.map((item) => <div>{item.name}</div>)}
+  </div>
+</RootLayout>
