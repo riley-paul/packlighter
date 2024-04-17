@@ -2,7 +2,7 @@ import React from "react";
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query.ts";
-import Root from "./routes/root";
+import Root from "./layout";
 import ListPage from "./routes/list";
 import GearPage from "./routes/all-gear";
 import Home from "./routes/home";

@@ -26,12 +26,15 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "bg-background min-h-screen font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased",
           inter.variable,
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system">
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            root layout
+            {children}
+          </TRPCReactProvider>
         </ThemeProvider>
       </body>
     </html>
