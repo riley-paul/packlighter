@@ -1,11 +1,10 @@
 import { Bug } from "lucide-react";
 import React from "react";
-import { ErrorResponse, Link, isRouteErrorResponse } from "react-router-dom";
 import { Button, buttonVariants } from "../ui/button";
-import { getPaths } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
 
 interface Props {
-  error: Error | ErrorResponse | null;
+  error: Error | null;
   showGoHome?: boolean;
   retry?: () => void;
 }
@@ -13,11 +12,10 @@ interface Props {
 const Error: React.FC<Props> = (props) => {
   const { error, showGoHome, retry } = props;
 
-  const status = error && "status" in error ? error.status : 500;
-  const message = isRouteErrorResponse(error)
-    ? error.statusText
-    : error?.message ??
-      "An unknown error occurred. Please try again later or contact support.";
+  const status = error && "status" in error ? (error.status as number) : 500;
+  const message =
+    error?.message ??
+    "An unknown error occurred. Please try again later or contact support.";
 
   return (
     <div className="flex-1 flex items-center justify-center h-full">
@@ -34,10 +32,7 @@ const Error: React.FC<Props> = (props) => {
         <div className="flex flex-col gap-2">
           {retry && <Button onClick={() => retry()}>Retry</Button>}
           {showGoHome && (
-            <Link
-              className={buttonVariants({ variant: "secondary" })}
-              to={getPaths.home()}
-            >
+            <Link className={buttonVariants({ variant: "secondary" })} to={"/"}>
               Go Home
             </Link>
           )}

@@ -1,9 +1,9 @@
 import AppHeader from "@/components/app-header";
+import { createFileRoute } from "@tanstack/react-router";
 import { HomeIcon } from "lucide-react";
-import React from "react";
 
-export default function Home(): ReturnType<React.FC> {
-  return (
+export const Route = createFileRoute("/_app/")({
+  component: () => (
     <div className="h-full">
       <AppHeader />
       <div className="flex justify-center items-center h-full">
@@ -16,5 +16,5 @@ export default function Home(): ReturnType<React.FC> {
         </div>
       </div>
     </div>
-  );
-}
+  ),
+});

@@ -1,14 +1,13 @@
 import SideBar from "@/components/side-bar";
-import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
-export default function App(): ReturnType<React.FC> {
-  return (
+export const Route = createFileRoute("/_app")({
+  component: () => (
     <div className="flex w-full">
       <SideBar />
       <div className="flex-1">
         <Outlet />
       </div>
     </div>
-  );
-}
+  ),
+});

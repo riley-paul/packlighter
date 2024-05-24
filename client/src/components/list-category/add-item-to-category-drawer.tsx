@@ -15,9 +15,9 @@ import SelectPackingItem from "./select-packing-item";
 import { pb } from "@/lib/pocketbase";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
 import { Input } from "../ui/input";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 type Props = {
   category: ExpandedCategory;
@@ -33,7 +33,7 @@ const filterItems = (item: ItemsResponse, query: string) => {
 
 const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
   const { category } = props;
-  const { listId = "" } = useParams();
+  const listId = useListId()
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [selection, setSelection] = React.useState<string[]>([]);

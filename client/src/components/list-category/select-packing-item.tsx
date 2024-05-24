@@ -3,13 +3,13 @@ import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatWeight } from "@/lib/helpers";
 
 import { Checkbox } from "../ui/checkbox";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   item: ItemsResponse;
@@ -19,7 +19,7 @@ interface Props {
 
 const SelectPackingItem: React.FC<Props> = (props) => {
   const { item, selected, onSelect } = props;
-  const { listId } = useParams();
+  const listId = useListId()
 
   const itemName = item.name || "Unnamed Gear";
 

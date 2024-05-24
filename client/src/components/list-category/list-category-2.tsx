@@ -8,7 +8,6 @@ import Gripper from "../base/gripper";
 import { useMutation } from "@tanstack/react-query";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ServerInput from "../input/server-input";
 import {
@@ -19,6 +18,7 @@ import {
 import { createCategoryItem } from "@/actions/categoryItem";
 import ListCategoryItem2 from "./list-category-item-2";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   category: ExpandedCategory;
@@ -27,8 +27,7 @@ interface Props {
 
 const ListCategory2: React.FC<Props> = (props) => {
   const { category, isOverlay } = props;
-
-  const { listId } = useParams();
+  const listId = useListId();
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,

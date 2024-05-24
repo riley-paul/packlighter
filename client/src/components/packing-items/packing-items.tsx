@@ -7,7 +7,6 @@ import Loader from "../base/loader";
 import { Button } from "../ui/button";
 import { ArrowDownWideNarrow, Table } from "lucide-react";
 import PackingItem from "./packing-item";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useStore } from "@/lib/store";
 import Error from "../base/error";
 import {
@@ -25,8 +24,8 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip";
 import Placeholder from "../base/placeholder";
-import { getPaths } from "@/lib/utils";
 import actions from "@/actions";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 
 enum SortOptions {
   Name = "Name",
@@ -79,9 +78,9 @@ const PackingItems: React.FC = () => {
           <span className="font-semibold text-sm">Gear</span>
           <Button
             size="sm"
-            variant={pathname === getPaths.gear() ? "secondary" : "linkMuted"}
+            variant={pathname === "/gear" ? "secondary" : "linkMuted"}
             onClick={() => {
-              navigate(getPaths.gear());
+              navigate({ to: "/gear" });
               toggleSidebar(false);
             }}
           >

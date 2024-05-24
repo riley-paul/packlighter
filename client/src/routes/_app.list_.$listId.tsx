@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import type { ListWithCategories } from "@/actions/list";
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
@@ -11,13 +12,13 @@ import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
 import ServerTextarea from "@/components/input/server-textarea";
 import ListCategory from "@/components/list-category/list-category";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
-export default function ListPage(): ReturnType<React.FC> {
-  const { listId = "" } = useParams();
+function ListPage(): ReturnType<React.FC> {
+  const listId = useListId();
 
   const listQuery = useQuery<ListWithCategories, Error>({
     queryKey: [Collections.Lists, listId],
@@ -99,3 +100,7 @@ export default function ListPage(): ReturnType<React.FC> {
     </div>
   );
 }
+
+export const Route = createFileRoute("/_app/list/$listId")({
+  component: ListPage,
+});

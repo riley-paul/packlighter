@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import AppHeader from "@/components/app-header";
 import Loader from "@/components/base/loader";
 import { DataTable } from "@/components/gear-table/data-table";
@@ -9,7 +10,7 @@ import { Plus } from "lucide-react";
 import { columns } from "../components/gear-table/columns";
 import actions from "@/actions";
 
-export default function GearPage(): ReturnType<React.FC> {
+function GearPage(): ReturnType<React.FC> {
   const itemsQuery = useQuery({
     queryKey: [Collections.Items],
     queryFn: actions.items.get,
@@ -35,3 +36,7 @@ export default function GearPage(): ReturnType<React.FC> {
     </div>
   );
 }
+
+export const Route = createFileRoute("/_app/gear")({
+  component: GearPage,
+});

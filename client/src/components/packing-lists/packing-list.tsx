@@ -1,7 +1,6 @@
 import { Collections, ListsResponse } from "@/lib/types";
-import { cn, getPaths } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import React from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +35,8 @@ import { useMediaQuery } from "usehooks-ts";
 import { MOBILE_MEDIA_QUERY } from "@/lib/constants";
 import { useStore } from "@/lib/store";
 import actions from "@/actions";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   list: ListsResponse;
@@ -45,7 +46,7 @@ interface Props {
 const PackingList: React.FC<Props> = (props) => {
   const { list, isOverlay } = props;
   const { pathname } = useLocation();
-  const { listId } = useParams();
+  const listId = useListId();
   const navigate = useNavigate();
 
   const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
@@ -69,7 +70,7 @@ const PackingList: React.FC<Props> = (props) => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
       toast.success("List deleted successfully", { id: deleteToastId.current });
       if (variables === listId) {
-        navigate(getPaths.home());
+        navigate({ to: "/" });
       }
     },
     onError: (error) => {
@@ -121,7 +122,7 @@ const PackingList: React.FC<Props> = (props) => {
         style={style}
         className={cn(
           "flex gap-2 items-center pr-2 pl-4 hover:border-l-4 hover:pl-3 py-0.5",
-          pathname === getPaths.list(list.id) &&
+          pathname === `/list/${list.id}` &&
             "border-l-4 pl-3 border-primary text-secondary-foreground bg-secondary",
           isOverlay && "bg-card/70 border rounded",
           isDragging && "opacity-30"
@@ -129,7 +130,8 @@ const PackingList: React.FC<Props> = (props) => {
       >
         <Gripper {...attributes} {...listeners} isGrabbing={isOverlay} />
         <Link
-          to={getPaths.list(list.id)}
+          to={`/list/$listId`}
+          params={{ listId: list.id }}
           onClick={onNavigate}
           className={cn(
             "flex-1 truncate text-sm",

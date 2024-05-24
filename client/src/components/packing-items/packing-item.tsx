@@ -3,7 +3,6 @@ import React from "react";
 import DeleteButton from "../base/delete-button";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatWeight } from "@/lib/helpers";
@@ -12,6 +11,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import { ActiveDraggable } from "../app-dnd-wrapper";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   item: ItemsResponse;
@@ -20,7 +20,7 @@ interface Props {
 
 const PackingItem: React.FC<Props> = (props) => {
   const { item, isOverlay } = props;
-  const { listId } = useParams();
+  const listId = useListId()
 
   const sortableData: ActiveDraggable = {
     type: "item",

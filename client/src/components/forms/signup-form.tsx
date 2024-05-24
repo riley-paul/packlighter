@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { SignUpSchema, signUp, signUpSchema } from "@/actions/auth";
 import { Loader2, Send } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { ClientResponseError } from "pocketbase";
 import { toast } from "sonner";
 import {
@@ -24,7 +23,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { getPaths } from "@/lib/utils";
+import { useNavigate } from "@tanstack/react-router";
 
 const defaultForm: SignUpSchema = {
   username: "",
@@ -50,7 +49,7 @@ export default function SignupForm(): ReturnType<React.FC> {
       submitToastId.current = toast.loading("Signing up...");
     },
     onSuccess: () => {
-      navigate(getPaths.home());
+      navigate({ to: "/" });
       toast.success("Signed up successfully", { id: submitToastId.current });
     },
     onError: (error: ClientResponseError) => {

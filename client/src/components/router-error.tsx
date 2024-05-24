@@ -1,11 +1,13 @@
 import AppHeader from "@/components/app-header";
 import Error from "@/components/base/error";
 import Logo from "@/components/logo";
+import { ErrorComponentProps } from "@tanstack/react-router";
 import React from "react";
-import { ErrorResponse, useRouteError } from "react-router-dom";
 
-export default function ErrorPage(): ReturnType<React.FC> {
-  const error = useRouteError() as ErrorResponse & Error;
+export default function RouterError(
+  props: ErrorComponentProps
+): ReturnType<React.FC> {
+  const { error } = props;
   console.error(error);
 
   return (

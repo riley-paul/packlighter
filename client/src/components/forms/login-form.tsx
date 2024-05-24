@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { LoginSchema, login, loginSchema } from "@/actions/auth";
 import { Loader2, Send } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { ClientResponseError } from "pocketbase";
 import { toast } from "sonner";
 import {
@@ -24,7 +23,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { getPaths } from "@/lib/utils";
+import { useNavigate } from "@tanstack/react-router";
 
 const defaultForm: LoginSchema = {
   email: "",
@@ -48,7 +47,7 @@ export default function LoginForm(): ReturnType<React.FC> {
       submitToastId.current = toast.loading("Logging in...");
     },
     onSuccess: () => {
-      navigate(getPaths.home());
+      navigate({ to: "/" });
       toast.success("Logged in successfully", { id: submitToastId.current });
     },
     onError: (error: ClientResponseError) => {

@@ -1,12 +1,11 @@
 import LoginForm from "@/components/forms/login-form";
 import SignupForm from "@/components/forms/signup-form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
+import { createFileRoute } from "@tanstack/react-router";
 import { Feather } from "lucide-react";
-import React from "react";
 
-export default function AuthPage(): ReturnType<React.FC> {
-  return (
+export const Route = createFileRoute("/auth")({
+  component: () => (
     <div className="flex w-full h-full items-center justify-center">
       <div className="max-w-xs w-full max-h-[80vh] h-full">
         <div className="mb-8 flex flex-col items-center">
@@ -30,5 +29,5 @@ export default function AuthPage(): ReturnType<React.FC> {
         </Tabs>
       </div>
     </div>
-  );
-}
+  ),
+});

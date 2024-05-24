@@ -23,7 +23,6 @@ import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
 import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ServerInput from "../input/server-input";
 import ListCategoryItem from "./list-category-item";
@@ -36,6 +35,7 @@ import { useDroppable } from "@dnd-kit/core";
 import { ActiveDraggable } from "../app-dnd-wrapper";
 import AddItemToCategoryDrawer from "./add-item-to-category-drawer";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   category: ExpandedCategory;
@@ -44,8 +44,8 @@ interface Props {
 
 const ListCategory: React.FC<Props> = (props) => {
   const { category, isOverlay } = props;
+  const listId = useListId()
 
-  const { listId } = useParams();
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,

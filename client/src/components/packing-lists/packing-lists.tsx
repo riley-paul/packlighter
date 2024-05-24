@@ -3,7 +3,6 @@ import { Collections, ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";
 import React from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import PackingList from "./packing-list";
@@ -27,9 +26,10 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { cn, getPaths } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import Placeholder from "../base/placeholder";
 import actions from "@/actions";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ export default function PackingLists(): ReturnType<React.FC> {
     mutationFn: actions.lists.create,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [Collections.Lists] });
-      navigate(getPaths.list(data.id));
+      navigate({ to: "/list/$listId", params: { listId: data.id } });
     },
   });
 

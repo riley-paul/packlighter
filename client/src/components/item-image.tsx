@@ -17,8 +17,8 @@ import { pb } from "@/lib/pocketbase";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/query";
-import { useParams } from "react-router-dom";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   item: ItemsResponse;
@@ -28,7 +28,7 @@ const ItemImage: React.FC<Props> = (props) => {
   const { item } = props;
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const { listId } = useParams();
+  const listId = useListId()
 
   const updateToastId = React.useRef<string | number | undefined>();
   const updateMutation = useMutation({

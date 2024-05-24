@@ -21,10 +21,10 @@ import {
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
 import ListCategoryItem from "./list-category/list-category-item";
 import PackingItem from "./packing-items/packing-item";
 import actions from "@/actions";
+import useListId from "@/hooks/useListId";
 
 export type ActiveDraggable =
   | {
@@ -36,7 +36,7 @@ export type ActiveDraggable =
   | null;
 
 const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const { listId } = useParams();
+  const listId = useListId()
 
   const [activeDraggable, setActiveDraggable] =
     React.useState<ActiveDraggable>(null);

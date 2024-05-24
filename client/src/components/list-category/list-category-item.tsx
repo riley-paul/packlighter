@@ -14,7 +14,6 @@ import {
   ItemsResponse,
   ItemsWeightUnitOptions,
 } from "@/lib/types";
-import { useParams } from "react-router-dom";
 import ItemImage from "../item-image";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
@@ -27,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import useListId from "@/hooks/useListId";
 
 interface Props {
   item: ExpandedCategoryItem;
@@ -35,7 +35,7 @@ interface Props {
 
 const ListCategoryItem: React.FC<Props> = (props) => {
   const { item, isOverlay } = props;
-  const { listId } = useParams();
+  const listId = useListId()
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,
