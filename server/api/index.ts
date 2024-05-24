@@ -1,4 +1,4 @@
-import { app } from "../src/index.js";
+import { app } from "@/index.js";
 import { handle } from "hono/vercel";
 
 // export const config = {

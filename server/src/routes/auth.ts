@@ -1,15 +1,15 @@
 import { Hono } from "hono";
 import { generateState } from "arctic";
 import { setCookie } from "hono/cookie";
-import { github, lucia } from "@/lib/lucia";
+import { github, lucia } from "@/lib/lucia.ts";
 import { OAuth2RequestError } from "arctic";
-import { db } from "@/db";
-import { userTable } from "@/db/schema";
+import { db } from "@/db/index.ts";
+import { userTable } from "@/db/schema.ts";
 import { eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { luciaToHonoCookieAttributes } from "../helpers/cookie-attributes";
-import authMiddleware from "../middleware/auth";
+import { luciaToHonoCookieAttributes } from "../helpers/cookie-attributes.ts";
+import authMiddleware from "../middleware/auth.ts";
 
 const app = new Hono()
   .get("/login/github", async (c) => {

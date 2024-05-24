@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import authRoutes from "./routes/auth";
+import authRoutes from "./routes/auth.ts";
 
 export const config = {
   runtime: "edge",
