@@ -2,7 +2,8 @@
   "scripts": {
     "dev": "bun run --hot ./api/index.ts",
     "deploy": "vercel",
-    "check:types": "tsc --noEmit"
+    "check:types": "tsc --noEmit",
+    "vercel-build": "echp hello"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.2.1",
