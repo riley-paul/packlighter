@@ -3,7 +3,7 @@
     "dev": "bun run --hot ./api/index.ts",
     "deploy": "vercel",
     "check:types": "tsc --noEmit",
-    "vercel-build": "echp hello"
+    "vercel-build": "echo hello"
   },
   "dependencies": {
     "@hono/zod-validator": "^0.2.1",
