@@ -8,8 +8,8 @@ import { userTable } from "@/db/schema.ts";
 import { eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { luciaToHonoCookieAttributes } from "../helpers/cookie-attributes.ts";
-import authMiddleware from "../middleware/auth.ts";
+import { luciaToHonoCookieAttributes } from "@/helpers/cookie-attributes.ts";
+import authMiddleware from "@/middleware/auth.ts";
 
 const app = new Hono()
   .get("/login/github", async (c) => {
