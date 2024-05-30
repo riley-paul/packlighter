@@ -1,0 +1,26 @@
+---
+import { Button } from "@/components/ui/button.tsx";
+import RootLayout from "@/layouts/root-layout.astro";
+import { Feather } from "lucide-react";
+---
+
+<RootLayout>
+  <div class="w-full h-full py-16 overflow-auto">
+    <div class="prose dark:prose-invert mx-auto">
+      <Feather size="5rem" className="text-primary mx-auto mb-16" />
+      <h1 class="text-center">Weather Summarizer</h1>
+      <p class="text-center">
+        A tool to summarize data from personal weather stations and deliver
+        email reports
+      </p>
+      <div>
+        <a href="/api/auth/login/github">
+          <Button variant="secondary" className="w-full">
+            Login with Github
+          </Button>
+        </a>
+      </div>
+      <br />
+    </div>
+  </div>
+</RootLayout>
