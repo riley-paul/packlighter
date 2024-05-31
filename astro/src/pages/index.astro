@@ -1,6 +1,16 @@
 ---
 import { Button } from "@/components/ui/button.tsx";
+import UserAvatar from "@/components/user-avatar.tsx";
 import RootLayout from "@/layouts/root-layout.astro";
+import { createClient } from "@/lib/client.ts";
+
+const client = createClient(Astro);
+
+const res = await client.api.auth.me.$get();
+const user = await res.json();
 ---
 
-<RootLayout> <Button>Hello World</Button> </RootLayout>
+<RootLayout>
+  <Button>Hello World</Button>
+  <UserAvatar client:load user={user} />
+</RootLayout>
