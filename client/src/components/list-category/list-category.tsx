@@ -20,9 +20,8 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
-import { queryClient } from "@/lib/query";
 import { toast } from "sonner";
 import ServerInput from "../input/server-input";
 import ListCategoryItem from "./list-category-item";
@@ -44,8 +43,8 @@ interface Props {
 
 const ListCategory: React.FC<Props> = (props) => {
   const { category, isOverlay } = props;
-  const listId = useListId()
-
+  const listId = useListId();
+  const queryClient = useQueryClient();
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,

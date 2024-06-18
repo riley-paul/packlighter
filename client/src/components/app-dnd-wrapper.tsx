@@ -4,7 +4,6 @@ import {
   ListWithCategories,
 } from "@/actions/list";
 import ListCategory from "@/components/list-category/list-category";
-import { queryClient } from "@/lib/query";
 import { Collections, ItemsResponse } from "@/lib/types";
 import {
   DndContext,
@@ -20,7 +19,7 @@ import {
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import React from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ListCategoryItem from "./list-category/list-category-item";
 import PackingItem from "./packing-items/packing-item";
 import actions from "@/actions";
@@ -37,6 +36,7 @@ export type ActiveDraggable =
 
 const AppDndWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   const listId = useListId()
+  const queryClient = useQueryClient()
 
   const [activeDraggable, setActiveDraggable] =
     React.useState<ActiveDraggable>(null);

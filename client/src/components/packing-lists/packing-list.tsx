@@ -24,8 +24,7 @@ import {
 
 import { MoreHorizontal, Delete, Copy } from "lucide-react";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -48,6 +47,7 @@ const PackingList: React.FC<Props> = (props) => {
   const { pathname } = useLocation();
   const listId = useListId();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY);
   const { isSidebarOpen, toggleSidebar } = useStore();

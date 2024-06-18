@@ -9,12 +9,11 @@ import {
 import { Button } from "../ui/button";
 import { Plus, X } from "lucide-react";
 import { ExpandedCategory } from "@/actions/list";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Collections, ItemsResponse } from "@/lib/types";
 import SelectPackingItem from "./select-packing-item";
 import { pb } from "@/lib/pocketbase";
 import { toast } from "sonner";
-import { queryClient } from "@/lib/query";
 import { Input } from "../ui/input";
 import actions from "@/actions";
 import useListId from "@/hooks/useListId";
@@ -33,7 +32,8 @@ const filterItems = (item: ItemsResponse, query: string) => {
 
 const AddItemToCategoryDrawer: React.FC<Props> = (props) => {
   const { category } = props;
-  const listId = useListId()
+  const listId = useListId();
+  const queryClient = useQueryClient();
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [selection, setSelection] = React.useState<string[]>([]);

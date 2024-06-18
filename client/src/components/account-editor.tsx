@@ -3,7 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { AtSign, Lock, LogOut, Trash, User } from "lucide-react";
 import { getProfilePhoto } from "@/actions/auth";
 import { pb } from "@/lib/pocketbase";
-import { queryClient } from "@/lib/query";
 
 import {
   DropdownMenu,
@@ -19,10 +18,12 @@ import ChangeEmailDialog from "./forms/change-email-dialog";
 import ChangePasswordDialog from "./forms/change-password-dialog";
 import DeleteAccountDialog from "./forms/delete-account-dialog";
 import { useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AccountEditor(): ReturnType<React.FC> {
   const user = pb.authStore.model;
   const imageUrl = getProfilePhoto();
+  const queryClient = useQueryClient()
 
   const [isEmailDialogOpen, setIsEmailDialogOpen] = React.useState(false);
   const [isPasswordDialogOpen, setIsPasswordDialogOpen] = React.useState(false);

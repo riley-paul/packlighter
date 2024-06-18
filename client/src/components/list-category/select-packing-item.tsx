@@ -1,8 +1,7 @@
 import { Collections, ItemsResponse } from "@/lib/types";
 import React from "react";
 import DeleteButton from "../base/delete-button";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { formatWeight } from "@/lib/helpers";
@@ -19,7 +18,8 @@ interface Props {
 
 const SelectPackingItem: React.FC<Props> = (props) => {
   const { item, selected, onSelect } = props;
-  const listId = useListId()
+  const listId = useListId();
+  const queryClient = useQueryClient();
 
   const itemName = item.name || "Unnamed Gear";
 

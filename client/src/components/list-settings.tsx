@@ -19,8 +19,7 @@ import {
   ListsResponse,
   ListsWeightUnitOptions,
 } from "@/lib/types";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import actions from "@/actions";
 
 interface Props {
@@ -29,6 +28,7 @@ interface Props {
 
 const ListSettings: React.FC<Props> = (props) => {
   const { list } = props;
+  const queryClient = useQueryClient();
 
   const updateMutation = useMutation({
     mutationFn: (data: Partial<ListsResponse>) =>

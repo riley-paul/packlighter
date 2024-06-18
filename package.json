@@ -13,6 +13,6 @@
     "server"
   ],
   "dependencies": {
-    "hono": "^4.3.11"
+    "hono": "^4.4.6"
   }
 }

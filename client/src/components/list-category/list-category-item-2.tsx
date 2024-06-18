@@ -4,9 +4,8 @@ import { Checkbox } from "../ui/checkbox";
 import ServerInput from "../input/server-input";
 import { ExpandedCategoryItem, ListWithCategories } from "@/actions/list";
 import DeleteButton from "../base/delete-button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteCategoryItem, updateCategoryItem } from "@/actions/categoryItem";
-import { queryClient } from "@/lib/query";
 import {
   CategoriesItemsResponse,
   Collections,
@@ -30,7 +29,8 @@ interface Props {
 
 const ListCategoryItem2: React.FC<Props> = (props) => {
   const { item } = props;
-  const listId = useListId()
+  const listId = useListId();
+  const queryClient = useQueryClient();
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,

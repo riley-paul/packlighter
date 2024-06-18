@@ -1,8 +1,7 @@
-import { queryClient } from "@/lib/query";
 import { Collections, ListsResponse } from "@/lib/types";
 import { Plus } from "lucide-react";
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import PackingList from "./packing-list";
@@ -33,6 +32,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 export default function PackingLists(): ReturnType<React.FC> {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [activeList, setActiveList] = React.useState<ListsResponse | null>(
     null

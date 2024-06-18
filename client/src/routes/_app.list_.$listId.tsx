@@ -6,12 +6,11 @@ import Loader from "@/components/base/loader";
 import ServerInput from "@/components/input/server-input";
 import ListSettings from "@/components/list-settings";
 import { Button } from "@/components/ui/button";
-import { queryClient } from "@/lib/query";
 import { Collections } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { Plus } from "lucide-react";
 import React from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ServerTextarea from "@/components/input/server-textarea";
 import ListCategory from "@/components/list-category/list-category";
 import actions from "@/actions";
@@ -19,6 +18,7 @@ import useListId from "@/hooks/useListId";
 
 function ListPage(): ReturnType<React.FC> {
   const listId = useListId();
+  const queryClient = useQueryClient();
 
   const listQuery = useQuery<ListWithCategories, Error>({
     queryKey: [Collections.Lists, listId],

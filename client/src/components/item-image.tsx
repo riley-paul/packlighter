@@ -14,9 +14,8 @@ import { Trash } from "lucide-react";
 import { Collections, ItemsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { pb } from "@/lib/pocketbase";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { queryClient } from "@/lib/query";
 import actions from "@/actions";
 import useListId from "@/hooks/useListId";
 
@@ -26,9 +25,10 @@ interface Props {
 
 const ItemImage: React.FC<Props> = (props) => {
   const { item } = props;
+  const queryClient = useQueryClient();
 
   const [isOpen, setIsOpen] = React.useState(false);
-  const listId = useListId()
+  const listId = useListId();
 
   const updateToastId = React.useRef<string | number | undefined>();
   const updateMutation = useMutation({

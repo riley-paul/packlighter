@@ -5,9 +5,8 @@ import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
 import DeleteButton from "../base/delete-button";
 import Gripper from "../base/gripper";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Collections, ListsWeightUnitOptions } from "@/lib/types";
-import { queryClient } from "@/lib/query";
 import { toast } from "sonner";
 import ServerInput from "../input/server-input";
 import {
@@ -28,6 +27,7 @@ interface Props {
 const ListCategory2: React.FC<Props> = (props) => {
   const { category, isOverlay } = props;
   const listId = useListId();
+  const queryClient = useQueryClient();
 
   const list = queryClient.getQueryData<ListWithCategories>([
     Collections.Lists,
