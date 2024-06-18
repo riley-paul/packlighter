@@ -1,5 +1,4 @@
-import type { AppType } from "@repo/server/src/index";
+import type { AppType } from "@repo/server";
 import { hc } from "hono/client";
 
-const client = hc<AppType>(process.env.API_URL ?? "/");
-export default client;
+export const api = hc<AppType>("http://localhost:4321").api;

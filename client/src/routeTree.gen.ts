@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WelcomeImport } from './routes/welcome'
 import { Route as AuthImport } from './routes/auth'
 import { Route as AppImport } from './routes/_app'
 import { Route as AppIndexImport } from './routes/_app.index'
@@ -18,6 +19,11 @@ import { Route as AppGearImport } from './routes/_app.gear'
 import { Route as AppListListIdImport } from './routes/_app.list_.$listId'
 
 // Create/Update Routes
+
+const WelcomeRoute = WelcomeImport.update({
+  path: '/welcome',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRoute = AuthImport.update({
   path: '/auth',
@@ -62,6 +68,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeImport
+      parentRoute: typeof rootRoute
+    }
     '/_app/gear': {
       id: '/_app/gear'
       path: '/gear'
@@ -95,6 +108,7 @@ export const routeTree = rootRoute.addChildren({
     AppListListIdRoute,
   }),
   AuthRoute,
+  WelcomeRoute,
 })
 
 /* prettier-ignore-end */
@@ -106,7 +120,8 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/_app",
-        "/auth"
+        "/auth",
+        "/welcome"
       ]
     },
     "/_app": {
@@ -119,6 +134,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/auth": {
       "filePath": "auth.tsx"
+    },
+    "/welcome": {
+      "filePath": "welcome.tsx"
     },
     "/_app/gear": {
       "filePath": "_app.gear.tsx",

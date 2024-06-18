@@ -1,16 +1,16 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { Menu } from "lucide-react";
-import AccountEditor from "./account-editor";
-import { ModeToggle } from "./mode-toggle";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
+import UserAvatar from "./user-avatar.tsx";
 
 type Props = React.PropsWithChildren;
 
 export default function AppHeader(props: Props): ReturnType<React.FC<Props>> {
   const { children } = props;
   const { isSidebarOpen, toggleSidebar } = useStore();
+
   return (
     <header className="flex h-14 items-center border-b">
       <Button
@@ -28,8 +28,7 @@ export default function AppHeader(props: Props): ReturnType<React.FC<Props>> {
         <div className="flex flex-1 items-center justify-between">
           {children}
         </div>
-        <ModeToggle />
-        <AccountEditor />
+        <UserAvatar />
       </div>
     </header>
   );
