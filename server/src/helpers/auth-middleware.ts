@@ -1,8 +1,8 @@
 import { createMiddleware } from "hono/factory";
 import { verifyRequestOrigin, type Session } from "lucia";
 import { getCookie, setCookie } from "hono/cookie";
-import { lucia } from "@/lib/lucia.ts";
-import { luciaToHonoCookieAttributes } from "../helpers/cookie-attributes.ts";
+import { lucia } from "@/lib/lucia";
+import { luciaToHonoCookieAttributes } from "./cookie-attributes";
 import type { User } from "lucia";
 
 type Env = {

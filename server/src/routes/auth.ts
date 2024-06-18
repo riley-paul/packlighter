@@ -1,15 +1,15 @@
 import { Hono } from "hono";
 import { generateState } from "arctic";
 import { setCookie } from "hono/cookie";
-import { github, lucia } from "@/lib/lucia.ts";
+import { github, lucia } from "@/lib/lucia";
 import { OAuth2RequestError } from "arctic";
-import { db } from "@/db/index.ts";
-import { userTable } from "@/db/schema.ts";
+import { db } from "@/db";
+import { userTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { luciaToHonoCookieAttributes } from "@/helpers/cookie-attributes.ts";
-import authMiddleware from "@/middleware/auth.ts";
+import { luciaToHonoCookieAttributes } from "../helpers/cookie-attributes";
+import authMiddleware from "../helpers/auth-middleware";
 
 const app = new Hono()
   .get("/login/github", async (c) => {
@@ -18,7 +18,7 @@ const app = new Hono()
 
     setCookie(c, "github_oauth_state", state, {
       path: "/",
-      secure: Boolean(process.env.PROD),
+      secure: import.meta.env.PROD,
       httpOnly: true,
       maxAge: 60 * 10,
       sameSite: "Lax",
@@ -33,11 +33,11 @@ const app = new Hono()
       z.object({
         code: z.string(),
         state: z.string(),
-      })
+      }),
     ),
     zValidator(
       "cookie",
-      z.object({ github_oauth_state: z.string().nullable() })
+      z.object({ github_oauth_state: z.string().nullable() }),
     ),
     async (c) => {
       const { code, state } = c.req.valid("query");
@@ -54,7 +54,7 @@ const app = new Hono()
             Authorization: `Bearer ${tokens.accessToken}`,
           },
         });
-        const githubUser = (await githubUserResponse.json()) as GitHubUser;
+        const githubUser: GitHubUser = await githubUserResponse.json();
 
         // Replace this with your own DB client.
         const existingUser = await db
@@ -70,7 +70,7 @@ const app = new Hono()
             c,
             sessionCookie.name,
             sessionCookie.value,
-            luciaToHonoCookieAttributes(sessionCookie.attributes)
+            luciaToHonoCookieAttributes(sessionCookie.attributes),
           );
           return c.redirect("/");
         }
@@ -93,7 +93,7 @@ const app = new Hono()
           c,
           sessionCookie.name,
           sessionCookie.value,
-          luciaToHonoCookieAttributes(sessionCookie.attributes)
+          luciaToHonoCookieAttributes(sessionCookie.attributes),
         );
         return c.redirect("/");
       } catch (e) {
@@ -103,7 +103,7 @@ const app = new Hono()
         }
         return c.json({ error: "An error occurred" }, 500);
       }
-    }
+    },
   )
   .get("/logout", authMiddleware, async (c) => {
     const session = c.get("session");
@@ -119,7 +119,7 @@ const app = new Hono()
       c,
       sessionCookie.name,
       sessionCookie.value,
-      luciaToHonoCookieAttributes(sessionCookie.attributes)
+      luciaToHonoCookieAttributes(sessionCookie.attributes),
     );
 
     return c.redirect("/");
@@ -135,6 +135,11 @@ const app = new Hono()
       .where(eq(userTable.id, user.id))
       .then((rows) => rows[0]);
     return c.json(data);
+  })
+  .post("/delete", authMiddleware, async (c) => {
+    const user = c.get("user");
+    await db.delete(userTable).where(eq(userTable.id, user.id));
+    return c.redirect("/");
   });
 
 interface GitHubUser {

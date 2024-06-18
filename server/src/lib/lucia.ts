@@ -1,8 +1,9 @@
 import { Lucia } from "lucia";
-import {  DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
-import { db } from "@/db/index.ts";
-import { sessionTable, userTable, type User } from "@/db/schema.ts";
+import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
+import { db } from "@/db";
+import { sessionTable, userTable, type User } from "@/db/schema";
 import { GitHub } from "arctic";
+import env from "@/env";
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, userTable);
 
@@ -29,6 +30,6 @@ declare module "lucia" {
 type DatabaseUserAttributes = Omit<User, "id">;
 
 export const github = new GitHub(
-  process.env.GITHUB_CLIENT_ID,
-  process.env.GITHUB_CLIENT_SECRET,
+  env.GITHUB_CLIENT_ID,
+  env.GITHUB_CLIENT_SECRET,
 );

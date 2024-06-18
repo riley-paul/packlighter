@@ -1,30 +1,44 @@
 {
+  "name": "@repo/server",
+  "type": "module",
+  "version": "0.0.0",
+  "main": "src/index.ts",
   "scripts": {
-    "dev": "bun run --hot ./api/index.ts",
-    "deploy": "vercel",
-    "check:types": "tsc --noEmit"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check:types": "tsc --noEmit",
+    "check:lint": "eslint .",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx src/api/db/seed.ts"
   },
   "dependencies": {
-    "@hono/zod-validator": "^0.2.1",
+    "@astrojs/check": "0.7.0",
+    "@astrojs/vercel": "^7.6.0",
+    "@hono/zod-validator": "^0.2.2",
     "@libsql/client": "^0.6.0",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
-    "@types/uuid": "^9.0.8",
-    "arctic": "^1.9.0",
+    "@node-rs/argon2": "^1.8.3",
+    "arctic": "^1.8.1",
+    "astro": "^4.10.3",
+    "drizzle-kit": "^0.21.1",
     "drizzle-orm": "^0.30.10",
     "drizzle-zod": "^0.5.1",
+    "hono": "^4.4.5",
     "lucia": "^3.2.0",
-    "uuid": "^9.0.1"
+    "typescript": "^5.4.5",
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
-    "vercel": "^32.4.1",
-    "bun-types": "latest"
-  },
-  "name": "@repo/server",
-  "private": true,
-  "version": "1.0.0",
-  "module": "index.ts",
-  "type": "module",
-  "peerDependencies": {
-    "typescript": "^5.0.0"
+    "@types/bun": "^1.1.2",
+    "@types/node": "^20.12.11",
+    "@types/uuid": "^9.0.8",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.6.1",
+    "tsx": "^4.10.2"
   }
 }

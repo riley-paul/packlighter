@@ -1,5 +1,5 @@
 import type { CookieOptions } from "hono/utils/cookie";
-import { CookieAttributes } from "lucia";
+import type { CookieAttributes } from "lucia";
 
 export const sameSiteConversion = (
   sameSite: "strict" | "none" | "lax" | undefined,
